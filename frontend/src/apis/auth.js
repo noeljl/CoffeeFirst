@@ -5,7 +5,7 @@ export const login = async (credentials) => {
   try {
     const response = await API.post('auth/login', credentials)
 
-    console.log("Reponse in apis/auth.js " + response)
+    console.log('Reponse in apis/auth.js ' + JSON.stringify(credentials))
 
     return response.data
   } catch (err) {

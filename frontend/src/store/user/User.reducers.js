@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { checkLoginStatus, loginUser } from '../auth/Auth.actions'
+import { checkLoginStatus, loginUser } from '../auth/Auth.actions.js'
 
-const initialState = {}
+const initialState = {
+  user: null, // initialer Zustand
+}
 
 const userSlice = createSlice({
   name: 'user',
@@ -9,15 +11,15 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Login success
       .addCase(loginUser.fulfilled, (state, action) => {
         const { user } = action.payload
-        Object.assign(state, user)
+        console.log('Daten in UserReducer:', user) // Debug: Zeigt an, welche Daten ankommen
+        state.user = user
       })
-      // Check login status success
       .addCase(checkLoginStatus.fulfilled, (state, action) => {
         const { user } = action.payload
-        Object.assign(state, user)
+        console.log('Check Login Status:', user) // Debug: Zeigt an, welche Daten ankommen
+        state.user = user
       })
   },
 })

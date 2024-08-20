@@ -19,10 +19,11 @@ const Login = () => {
   // Login handler
   const handleLogin = async (credentials) => {
     try {
+      console.log(credentials)
       setIsLoading(true)
       await dispatch(loginUser(credentials))
       setIsLoading(false)
-      navigate('/')
+      navigate('/home')
     } catch (err) {
       setIsLoading(false)
     }

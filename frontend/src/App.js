@@ -8,17 +8,20 @@ import {
   Navigate,
 } from 'react-router-dom'
 import Header from './components/Header/Header.js'
-// import Home from '../routes/Home/Home'
+import Home from './routes/Home/Home.js'
 import Login from './routes/Login/Login.js'
+import GuestRegistry from './routes/GuestRegistry/GuestRegistry.js'
 
 function App() {
   return (
     <div style={{ flex: 1 }}>
       <Router>
-        <Header />
+        <Header style />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/guestRegistry" element={<GuestRegistry />} />
           {/* Private Routes */}
           {/* <Route path="/account" element={<Account />} /> */}
           <Route path="*" element={<Navigate to="/" />} />
