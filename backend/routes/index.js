@@ -1,5 +1,9 @@
-const authRouter = require('./auth')
+import authRouter from './auth.js'
+import userRoute from './user.js'
 
-module.exports = (app, passport) => {
+const routeLoader = (app, passport) => {
   authRouter(app, passport)
+  userRoute(app)
 }
+
+export default routeLoader

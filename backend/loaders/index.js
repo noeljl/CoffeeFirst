@@ -1,24 +1,22 @@
-const expressLoader = require('./express');
-const passportLoader = require('./passport');
-const routeLoader = require('../routes');
+import expressLoader from './express.js'
+import passportLoader from './passport.js'
+import routeLoader from '../routes/index.js'
 
-module.exports = async (app) => {
+// Exportiere die Funktion als Standardexport
+export default async function loaders(app) {
+  // Lädt Express-Middleware. Mehr dazu im ExpressLoader selbst.
+  const expressApp = await expressLoader(app)
 
-  // Lädt Express middleware. Mehr dazu im ExpressLoader selbst.
-  const expressApp = await expressLoader(app);
+  // Lädt Passport-Middleware
+  const passport = await passportLoader(expressApp)
 
-  // LÄdt Passport middleware 
-  const passport = await passportLoader(expressApp);
+  // Lädt Routen-Handler. Ruft in routes die index.js auf, die die Routen initialisiert.
+  // Ohne das laufen die Routen nicht
+  await routeLoader(app, passport)
 
-  // Load RoutenHandler, ruft in routes die index.js auf, die die Routen initialisiert. Ohne das
-  //  laufen die Routen nicht
-  await routeLoader(app, passport);
-  
   // Error Handler
   app.use((err, req, res, next) => {
-
-    const { message, status } = err;
-  
-    return res.status(status).send({ message });
-  });
+    console.error(err.stack)
+    res.status(err.status || 500).json({ error: err.message })
+  })
 }

@@ -1,9 +1,9 @@
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const session = require('express-session'); // npm install express-session
-const { SESSION_SECRET } = require('../config');
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import session from 'express-session' // npm install express-session
+import { SESSION_SECRET } from '../config.js'
 
-module.exports = (app) => {
+const expressLoader = (app) => {
   // Aktiviert Cors. CORS ist ein Sicherheitsfeature moderner Browser,
   // das standardmäßig verhindert, dass Webanwendungen HTTP-Anfragen
   // an eine andere Domain als die eigene senden.
@@ -23,10 +23,10 @@ module.exports = (app) => {
   // } geparst
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  //Um Express-Server mitzuteilen, dass er sich hinter einem vertrauenswürdigen Reverse-Proxy (wie z.B. Nginx, HAProxy oder einem Load Balancer) 
-  // befindet. Dies hat Auswirkungen darauf, wie die Anwendung bestimmte Informationen, die durch den Proxy weitergeleitet werden, verarbeitet, 
-  // insbesondere die IP-Adresse des Clients. 
-  // Der Reverse Proxy leitet dann ja Anfragen an den Clienten in Form von HtML Daten weiter 
+  //Um Express-Server mitzuteilen, dass er sich hinter einem vertrauenswürdigen Reverse-Proxy (wie z.B. Nginx, HAProxy oder einem Load Balancer)
+  // befindet. Dies hat Auswirkungen darauf, wie die Anwendung bestimmte Informationen, die durch den Proxy weitergeleitet werden, verarbeitet,
+  // insbesondere die IP-Adresse des Clients.
+  // Der Reverse Proxy leitet dann ja Anfragen an den Clienten in Form von HtML Daten weiter
   // und kann Anfragen entgegennehmen. Daher muss diesem vertraut werden
   app.set('trust proxy', 1)
 
@@ -50,3 +50,5 @@ module.exports = (app) => {
 
   return app
 }
+
+export default expressLoader

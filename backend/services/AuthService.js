@@ -1,19 +1,19 @@
-const createError = require('http-errors')
-const UserModel = require('../models/user')
+import createError from 'http-errors'
+import UserModel from '../models/user.js'
 const UserModelInstance = new UserModel()
 
 // Anpassen
-module.exports = class AuthService {
+class AuthService {
   async register(data) {
-    const { email } = data
+    const { mail } = data
 
     try {
       // Check if user already exists
-      const user = await UserModelInstance.findOneByEmail(email)
+      const user = await UserModelInstance.findOneByMail(mail)
 
       // If user already exists, reject
       if (user) {
-        throw createError(409, 'Email already in use')
+        throw createError(409, 'Mail already in use')
       }
 
       // User doesn't exist, create new user record
@@ -24,11 +24,13 @@ module.exports = class AuthService {
   }
 
   async login(data) {
-    const { email, password } = data
+    const { username, password } = data
+    console.log("Daten login services/AuthServices " + username + " " + password)
 
     try {
       // Check if user exists
-      const user = await UserModelInstance.findOneByEmail(email)
+      const user = await UserModelInstance.findOneByUsername(username)
+      console.log(user)
 
       // If no user found, reject
       if (!user) {
@@ -46,6 +48,7 @@ module.exports = class AuthService {
     }
   }
 
+  // untested
   async googleLogin(profile) {
     const { id, displayName } = profile
 
@@ -65,6 +68,7 @@ module.exports = class AuthService {
     }
   }
 
+  // untested
   async facebookLogin(profile) {
     const { id, displayName } = profile
 
@@ -84,3 +88,5 @@ module.exports = class AuthService {
     }
   }
 }
+
+export default AuthService

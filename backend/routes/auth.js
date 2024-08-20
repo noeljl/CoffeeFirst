@@ -1,12 +1,28 @@
-const express = require('express')
+import express from 'express'
 const router = express.Router()
 
 // Instantiate Services
-const AuthService = require('../services/AuthService')
+import AuthService from '../services/AuthService.js'
 const AuthServiceInstance = new AuthService()
 
-module.exports = (app, passport) => {
+import UserService from '../services/UserService.js'
+const UserServiceInstance = new UserService()
+
+const Auth = (app, passport) => {
   app.use('/api/auth', router)
+
+  // Registration Endpoint
+  router.post('/register', async (req, res, next) => {
+    try {
+      const data = req.body
+      console.log('/routes/auth.js register Data: ' + data)
+
+      const response = await AuthServiceInstance.register(data)
+      res.status(200).send(response)
+    } catch (err) {
+      next(err)
+    }
+  })
 
   // Login Endpoint
   router.post(
@@ -15,9 +31,12 @@ module.exports = (app, passport) => {
     async (req, res, next) => {
       try {
         const { username, password } = req.body
+        console.log(
+          'Daten aus login in routes/auth ' + username + ' ' + password
+        )
 
         const response = await AuthServiceInstance.login({
-          email: username,
+          username,
           password,
         })
 
@@ -41,9 +60,11 @@ module.exports = (app, passport) => {
   )
 
   // Facebook Login Endpoint
+  // untested
   router.get('/facebook', passport.authenticate('facebook'))
 
   // Facebook Login Callback Endpoint
+  // untested
   router.get(
     '/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
@@ -53,15 +74,14 @@ module.exports = (app, passport) => {
   )
 
   // Check Login Status Endpoint
+  // untested. Bracht noch passport
   router.get('/logged_in', async (req, res, next) => {
     try {
       const { id } = req.user
 
-      const cart = await CartServiceInstance.loadCart(id)
-      const user = await UserServiceInstance.get({ id })
+      const user = await UserServiceInstance.getById({ id })
 
       res.status(200).send({
-        cart,
         loggedIn: true,
         user,
       })
@@ -70,3 +90,5 @@ module.exports = (app, passport) => {
     }
   })
 }
+
+export default Auth

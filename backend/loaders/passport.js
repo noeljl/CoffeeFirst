@@ -1,14 +1,13 @@
-const passport = require('passport'); //npm install passport
-const FacebookStrategy = require('passport-facebook').Strategy; //npm install passport-facebook
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy; //npm install ...
-const LocalStrategy = require('passport-local'); //npm install ...
+import passport from 'passport' //npm install passport
+import { Strategy as FacebookStrategy } from 'passport-facebook' //npm install passport-facebook
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth' //npm install ...
+import LocalStrategy from 'passport-local' //npm install ...
+import { FACEBOOK, GOOGLE } from '../config.js'
 
-const AuthService = require('../services/AuthService');
-const AuthServiceInstance = new AuthService();
+import AuthService from '../services/AuthService.js'
+const AuthServiceInstance = new AuthService()
 
-const { FACEBOOK, GOOGLE } = require('../config');
-
-module.exports = (app) => {
+const passportLoader = (app) => {
   // Initialisiert passport und Session
   app.use(passport.initialize())
   app.use(passport.session())
@@ -27,7 +26,7 @@ module.exports = (app) => {
   })
 
   // Set method to deserialize data stored in cookie and attach to req.user
-  // deserializeUser: Diese Methode wird bei jeder Anfrage aufgerufen, nachdem Passport die in der Sitzung gespeicherte ID (die durch serializeUser hinterlegt wurde) extrahiert hat. 
+  // deserializeUser: Diese Methode wird bei jeder Anfrage aufgerufen, nachdem Passport die in der Sitzung gespeicherte ID (die durch serializeUser hinterlegt wurde) extrahiert hat.
   // Ziel ist es, basierend auf dieser ID die vollständigen Benutzerdaten wiederherzustellen und an die Anfrage (req) anzuhängen, damit sie während der Anfrage verfügbar sind.
   passport.deserializeUser((id, done) => {
     done(null, { id })
@@ -38,7 +37,7 @@ module.exports = (app) => {
     new LocalStrategy(async (username, password, done) => {
       try {
         const user = await AuthServiceInstance.login({
-          email: username,
+          username,
           password,
         })
         return done(null, user)
@@ -89,3 +88,5 @@ module.exports = (app) => {
 
   return passport
 }
+
+export default passportLoader

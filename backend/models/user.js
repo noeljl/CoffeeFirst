@@ -1,5 +1,5 @@
 // Orientierngsfile
-import { query } from '../db/index.js' 
+import { query } from '../db/index.js'
 import pgPromise from 'pg-promise'
 const pgp = pgPromise({ capSQL: true }) // npm install pg-promise
 
@@ -34,15 +34,12 @@ class UserModel {
    */
   async update(data) {
     try {
-      const { username, ...params } = data
+      const { id, ...params } = data
 
       // Generate SQL statement - using helper for dynamic parameter injection
-      const condition = pgp.as.format(
-        'WHERE username = ${username} RETURNING *',
-        {
-          username,
-        }
-      )
+      const condition = pgp.as.format('WHERE id = ${id} RETURNING *', {
+        id,
+      })
       const statement = pgp.helpers.update(params, null, 'user') + condition
 
       // Execute SQL statment
@@ -58,20 +55,36 @@ class UserModel {
     }
   }
 
-  /**
-   * Finds a user record by email
-   * @param  {String}      email [Email address]
-   * @return {Object|null}       [User record]
-   */
-
   //Es braucht "" um user und mail, sonst funktioniert es nicht.
-  async findOneByEmail(email) {
+  async findOneByMail(mail) {
     try {
       // Es ben
       const statement = `SELECT *
                        FROM "user"
                        WHERE "mail" = $1`
-      const values = [email]
+      const values = [mail]
+
+      // Führe die SQL-Abfrage aus
+      const result = await query(statement, values)
+
+      // Überprüfe, ob ein Ergebnis vorliegt
+      if (result.rows?.length) {
+        return result.rows[0]
+      }
+
+      return null
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+
+  async findOneByUsername(username) {
+    try {
+      // Es ben
+      const statement = `SELECT *
+                       FROM "user"
+                       WHERE "username" = $1`
+      const values = [username]
 
       // Führe die SQL-Abfrage aus
       const result = await query(statement, values)
@@ -96,7 +109,7 @@ class UserModel {
     try {
       // Generate SQL statement
       const statement = `SELECT *
-                         FROM users
+                         FROM "user"
                          WHERE id = $1`
       const values = [id]
 
@@ -122,7 +135,7 @@ class UserModel {
     try {
       // Generate SQL statement
       const statement = `SELECT *
-                         FROM users
+                         FROM "user"
                          WHERE google ->> 'id' = $1`
       const values = [id]
 
@@ -148,7 +161,7 @@ class UserModel {
     try {
       // Generate SQL statement
       const statement = `SELECT *
-                         FROM users
+                         FROM "user"
                          WHERE facebook ->> 'id' = $1`
       const values = [id]
 
