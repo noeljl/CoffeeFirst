@@ -1,4 +1,4 @@
-import { registerAttendee } from '../attendee.js' // Stelle sicher, dass der Pfad zur API-Datei korrekt ist
+import { registerAttendee, fetchAttendees } from '../attendee.js' // Stelle sicher, dass der Pfad zur API-Datei korrekt ist
 
 const data = {
   firstName: 'Jan',
@@ -16,4 +16,15 @@ const testRegisterUser = async () => {
   }
 }
 
-testRegisterUser()
+const testfetchAttendees = async () => {
+  try {
+    const userData = await fetchAttendees() // Pass userId and data to updateUser
+    console.log('Attendees:', userData)
+  } catch (error) {
+    console.error('Error registring user:', error)
+  }
+}
+
+// testRegisterUser()
+
+testfetchAttendees()

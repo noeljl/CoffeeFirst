@@ -30,8 +30,12 @@ const Home = () => {
     console.log(container)
   }
 
-  const handleGuestRegistry = async () => {
+  const toGuestRegistry = async () => {
     navigate('/guestRegistry')
+  }
+
+  const toAttendenceRegistry = async () => {
+    navigate('/attendenceRegistry')
   }
 
   const particlesOptions = useMemo(
@@ -125,14 +129,12 @@ const Home = () => {
         </Title>
         {/* <Text>Rotaract hat dich lieb.</Text> */}
         <Space style={{ marginTop: 5 }} size={20}>
-          <GradientButton
-            type="primary"
-            size="large"
-            onClick={handleGuestRegistry}
-          >
+          <GradientButton type="primary" size="large" onClick={toGuestRegistry}>
             Gast registrieren
           </GradientButton>
-          <Button size="large">Anwesenheit Eintragen</Button>
+          <Button size="large" onClick={toAttendenceRegistry}>
+            Anwesenheit Eintragen
+          </Button>
         </Space>
       </Content>
     </Layout>

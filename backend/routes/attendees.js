@@ -1,5 +1,4 @@
 import express from 'express'
-import UserService from '../services/UserService.js'
 import AttendeeService from '../services/AttendeeService.js'
 
 const router = express.Router()
@@ -16,6 +15,92 @@ export default (app) => {
 
       const response = await AttendeeServiceInstance.register(data)
       console.log(JSON.stringify(response))
+      res.status(200).send(response)
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  // Update Endpoint
+  router.put('/:firstName/:middleName/:lastName', async (req, res, next) => {
+    try {
+      const { firstName, middleName, lastName } = req.params
+      const data = req.body
+
+      console.log(
+        `/routes/attendees.js update Data: ${JSON.stringify({
+          firstName,
+          middleName,
+          lastName,
+          ...data,
+        })}`
+      )
+
+      const response = await AttendeeServiceInstance.update(
+        firstName,
+        middleName,
+        lastName,
+        data
+      )
+      res.status(200).send(response)
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  // Delete Endpoint
+  router.delete('/:firstName/:middleName/:lastName', async (req, res, next) => {
+    try {
+      const { firstName, middleName, lastName } = req.params
+
+      console.log(
+        `/routes/attendees.js delete Data: ${JSON.stringify({
+          firstName,
+          middleName,
+          lastName,
+        })}`
+      )
+
+      const response = await AttendeeServiceInstance.delete(
+        firstName,
+        middleName,
+        lastName
+      )
+      res.status(200).send(response)
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  router.get('/', async (req, res, next) => {
+    try {
+      console.log('/routes/attendees.js fetchAttendees called')
+
+      const response = await AttendeeServiceInstance.fetchAttendees()
+      res.status(200).send(response)
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  router.patch('/:attendeeId/times-attended', async (req, res, next) => {
+    try {
+      const { attendeeId } = req.params
+      const { incrementBy } = req.body
+
+      console.log(attendeeId)
+
+      console.log(
+        `/routes/attendees.js updateTimesAttended Data: ${JSON.stringify({
+          attendeeId,
+          incrementBy,
+        })}`
+      )
+
+      const response = await AttendeeServiceInstance.updateTimesAttended(
+        attendeeId,
+        incrementBy
+      )
       res.status(200).send(response)
     } catch (err) {
       next(err)

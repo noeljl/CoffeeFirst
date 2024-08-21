@@ -7,12 +7,14 @@ import App from './App.js'
 import reportWebVitals from './reportWebVitals.js'
 import authReducer from './store/auth/Auth.reducers.js' // Passe den Pfad zum Auth-Reducer an
 import userReducer from './store/user/User.reducers.js' // Importiere den User-Reducer
+import attendeesReducer from './store/attendees/Attendees.reducers.js'
 
 // Konfiguriere den Redux Store
 const store = configureStore({
   reducer: {
     auth: authReducer, // Dein Auth-Reducer
     user: userReducer, // Dein User-Reducer
+    attendees: attendeesReducer,
   },
 })
 

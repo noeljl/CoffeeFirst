@@ -11,3 +11,55 @@ export const registerAttendee = async (data) => {
     throw err.response ? err.response.data : err // Anpassung für Fehler ohne `response`
   }
 }
+
+// API interface for updating the attendee
+export const updateAttendee = async (data) => {
+  try {
+    const { firstName, middleName, lastName } = data
+
+    const response = await API.put(
+      `attendees/${firstName}/${middleName}/${lastName}`,
+      data
+    )
+    return response.data
+  } catch (err) {
+    throw err.response ? err.response.data : err
+  }
+}
+
+// API interface for deleting the attendee
+export const deleteAttendee = async (data) => {
+  try {
+    const { firstName, middleName, lastName } = data
+
+    const response = await API.delete(
+      `attendees/${firstName}/${middleName}/${lastName}`
+    )
+    return response.data
+  } catch (err) {
+    throw err.response ? err.response.data : err
+  }
+}
+
+// API interface for fetching all attendees
+export const fetchAttendees = async () => {
+  try {
+    const response = await API.get('attendees/')
+    console.log('apis/attendee data:', response.data) // Nur response.data ausgeben
+    return response.data
+  } catch (err) {
+    throw err.response ? err.response.data : err
+  }
+}
+
+export const updateTimesAttended = async (attendeeId, incrementBy) => {
+  try {
+    console.log('apis/attendee updateTimesAttended ' + incrementBy)
+    const response = await API.patch(`attendees/${attendeeId}/times-attended`, {
+      incrementBy,
+    })
+    return response.data
+  } catch (err) {
+    throw err.response ? err.response.data : err
+  }
+}

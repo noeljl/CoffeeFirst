@@ -1,5 +1,4 @@
 // npm install formik yup react-redux
-// npm install formik yup react-redux
 import React, { useState } from 'react'
 import { Layout, Form, Input, Button } from 'antd'
 import { Formik } from 'formik'
@@ -7,7 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 
-import { registerAttendeeAction } from '../../store/attendees/Attendees.actions.js'
+import {
+  registerAttendeeAction,
+  updateAttendeeAction,
+  deleteAttendeeAction,
+} from '../../store/attendees/Attendees.actions.js'
 
 const { Content } = Layout
 
@@ -16,21 +19,32 @@ const GuestRegistry = () => {
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
 
-  // Login handler
-  const handleGuestRegistry = async (data) => {
+  const handleGuestAction = async (data, actionType) => {
     try {
-      console.log(data)
       setIsLoading(true)
-      await dispatch(registerAttendeeAction(data))
+      switch (actionType) {
+        case 'create':
+          await dispatch(registerAttendeeAction(data))
+          break
+        case 'update':
+          console.log('Update clicked')
+          await dispatch(updateAttendeeAction(data))
+          break
+        case 'delete':
+          await dispatch(deleteAttendeeAction(data))
+          break
+        default:
+          break
+      }
       setIsLoading(false)
       navigate('/home')
     } catch (err) {
       setIsLoading(false)
-      // Handle error (optional: you might want to display an error message here)
+      // Fehlerbehandlung (optional: hier könnte eine Fehlermeldung angezeigt werden)
     }
   }
 
-  const loginSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('Vorname ist ein verpflichtendes Feld'),
     lastName: Yup.string().required('Nachname ist ein verpflichtendes Feld'),
     timesAttended: Yup.string().required(
@@ -49,20 +63,14 @@ const GuestRegistry = () => {
             lastName: '',
             timesAttended: 0,
           }}
-          validationSchema={loginSchema}
+          validationSchema={validationSchema}
           validateOnBlur
-          onSubmit={async (values) => {
-            const { firstName, middleName, lastName, timesAttended } = values
-            await handleGuestRegistry({
-              firstName,
-              middleName,
-              lastName,
-              timesAttended,
-            })
+          onSubmit={async (values, { setSubmitting, setFieldValue }) => {
+            setSubmitting(false)
           }}
         >
           {({ handleSubmit, handleChange, values, errors, touched }) => (
-            <Form onFinish={handleSubmit} style={styles.form}>
+            <Form style={styles.form}>
               <Form.Item
                 validateStatus={
                   errors.firstName && touched.firstName ? 'error' : ''
@@ -130,11 +138,28 @@ const GuestRegistry = () => {
               <Form.Item>
                 <Button
                   type="primary"
-                  htmlType="submit"
                   loading={isLoading}
-                  style={styles.button}
+                  style={styles.registerButton}
+                  onClick={() => handleGuestAction(values, 'create')}
                 >
-                  Registrieren
+                  Gast Registrieren
+                </Button>
+                <Button
+                  type="primary"
+                  loading={isLoading}
+                  style={styles.updateButton}
+                  onClick={() => handleGuestAction(values, 'update')}
+                >
+                  Gast Updaten
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  loading={isLoading}
+                  style={styles.deleteButton}
+                  onClick={() => handleGuestAction(values, 'delete')}
+                >
+                  Gast Löschen
                 </Button>
               </Form.Item>
             </Form>
@@ -169,8 +194,17 @@ const styles = {
   form: {
     width: '100%',
   },
-  button: {
+  registerButton: {
     width: '100%',
+  },
+  updateButton: {
+    width: '100%',
+    marginTop: '10px',
+    backgroundColor: 'green',
+  },
+  deleteButton: {
+    width: '100%',
+    marginTop: '10px',
   },
 }
 
