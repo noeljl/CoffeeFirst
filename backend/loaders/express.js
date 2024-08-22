@@ -11,7 +11,7 @@ const expressLoader = (app) => {
   // versucht, eine Ressource von http://api.example.com oder http://anotherdomain.com
   // abzurufen, der Browser diese Anfragen blockiert, wenn CORS nicht korrekt konfiguriert ist.
   //  Es werden also Anfragen jeder Domain akzeptiert
-  app.use(cors()) // npm install cors
+  app.use(cors({ origin: 'http://localhost:3000' })) // npm install cors
 
   // Transformiert einen String zu einem JSON String, damit weiterverarbietet werden kann
   app.use(bodyParser.json())
