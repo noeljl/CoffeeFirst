@@ -78,7 +78,24 @@ const AttendanceRegistry = () => {
               >
                 -
               </Button>
-              <span>{timesMap[attendee.id]}</span>
+              <div
+                style={{
+                  marginRight: '5px',
+                  minWidth: '30px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <span
+                  style={{
+                    width: '4ch',
+                    textAlign: 'center',
+                  }}
+                >
+                  {timesMap[attendee.id]}
+                </span>
+              </div>
               <Button
                 type="primary"
                 onClick={(e) => {

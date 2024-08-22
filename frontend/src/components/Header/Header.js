@@ -1,26 +1,29 @@
 import React from 'react'
-// npm install antd
-import { Layout, Menu } from 'antd'
+import { Layout } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const { Header } = Layout
 
-const items = [
-  { label: 'Home', key: '1' },
-  { label: 'About', key: '2' },
-  { label: 'Contact', key: '3' },
-]
-
 const AppHeader = () => {
+  const navigate = useNavigate() // useNavigate-Hook für die Navigation
+
+  const handleLogoClick = () => {
+    navigate('/home') // Weiterleitung zur /home-Route
+  }
+
+  const handleStatisticsClick = () => {
+    navigate('/statisticsTable') // Weiterleitung zur /statistics-Route
+  }
+
   return (
     <Layout>
       <Header style={styles.header}>
-        <div style={styles.logo}>Rotaract Distrikt 1842</div>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['1']}
-          items={items}
-        />
+        <div style={styles.logo} onClick={handleLogoClick}>
+          Rotaract Distrikt 1842
+        </div>
+        <div style={styles.link} onClick={handleStatisticsClick}>
+          Statistik
+        </div>
       </Header>
     </Layout>
   )
@@ -44,6 +47,13 @@ const styles = {
     color: 'white',
     fontSize: '18px',
     fontWeight: 'bold',
+    cursor: 'pointer', // Cursor als Zeiger für Logo
+  },
+  link: {
+    color: 'white',
+    fontSize: '15px', // Gleiche Schriftgröße wie das Logo
+    fontWeight: 'bold', // Gleiche Schriftstärke wie das Logo
+    cursor: 'pointer', // Cursor als Zeiger für den Link
   },
 }
 
