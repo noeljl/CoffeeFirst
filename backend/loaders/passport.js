@@ -49,42 +49,44 @@ const passportLoader = (app) => {
 
   //  Für login üer Facebook oder Google, ohne Registrierung
   // Google Login Strategie
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: GOOGLE.CONSUMER_KEY,
-        clientSecret: GOOGLE.CONSUMER_SECRET,
-        callbackURL: GOOGLE.CALLBACK_URL,
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        try {
-          const user = await AuthServiceInstance.googleLogin(profile)
-          return done(null, user)
-        } catch (err) {
-          return done(err)
-        }
-      }
-    )
-  )
+  // passport.use(
+  //   new GoogleStrategy(
+  //     {
+  //       clientID: process.env.GOOGLE_CONSUMER_KEY, // Google clientID
+  //       clientSecret: process.env.GOOGLE_CONSUMER_SECRET, // Google clientSecret
+  //       callbackURL: process.env.GOOGLE_CALLBACK_URL, // Google callback URL
+  //     },
+  //     async (accessToken, refreshToken, profile, done) => {
+  //       try {
+  //         const user = await AuthServiceInstance.googleLogin(profile)
+  //         return done(null, user)
+  //       } catch (err) {
+  //         return done(err)
+  //       }
+  //     }
+  //   )
+  // )
 
-  // Facebook Login Strategie
-  passport.use(
-    new FacebookStrategy(
-      {
-        clientID: FACEBOOK.CONSUMER_KEY,
-        clientSecret: FACEBOOK.CONSUMER_SECRET,
-        callbackURL: FACEBOOK.CALLBACK_URL,
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        try {
-          const user = await AuthServiceInstance.facebookLogin(profile)
-          return done(null, user)
-        } catch (err) {
-          return done(err)
-        }
-      }
-    )
-  )
+  // // Facebook Login Strategie
+  // passport.use(
+  //   new FacebookStrategy(
+  //     {
+  //       clientID: FACEBOOK.CONSUMER_KEY,
+  //       clientSecret: FACEBOOK.CONSUMER_SECRET,
+  //       callbackURL: FACEBOOK.CALLBACK_URL,
+  //       profileFields: ['id', 'emails', 'name'], // Optional: Um sicherzustellen, dass die benötigten Felder abgerufen werden
+  //     },
+  //     async (accessToken, refreshToken, profile, done) => {
+  //       try {
+  //         // Hier sollten Sie die Logik zur Verarbeitung des Facebook-Profils implementieren
+  //         const user = await AuthServiceInstance.facebookLogin(profile)
+  //         return done(null, user)
+  //       } catch (err) {
+  //         return done(err)
+  //       }
+  //     }
+  //   )
+  // )
 
   return passport
 }

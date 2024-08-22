@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:80'  # Mappen von Host-Port 3000 auf Container-Port 80 (Nginx)
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - '3001:3001'  # Mappen von Host-Port 3001 auf Container-Port 3001
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

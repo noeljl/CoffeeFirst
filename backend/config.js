@@ -1,7 +1,9 @@
 // npm install dotenv. Installieren auf /backend ebene
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({
+  path: './Users/laurensohl/Documents/rotaractuserproject/backend/.env',
+})
 
 // Imporitert die Daten aus der .env Datei
 export const DB = {

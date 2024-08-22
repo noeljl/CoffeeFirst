@@ -34,7 +34,7 @@ const expressLoader = (app) => {
   app.use(
     session({
       // Zum identifizieren des Nutzers. Dies verhindert, dass jemand die Sitzung manipuliert.
-      secret: SESSION_SECRET,
+      secret: 'your-secret-key',
       //Wenn resave auf false gesetzt ist, wird die Sitzung nur dann erneut gespeichert, wenn sie tatsächlich verändert wurde. Dies verhindert unnötige Speicheroperationen und verbessert die Effizienz.
       resave: false,
       //Wenn saveUninitialized auf false gesetzt ist, werden Sitzungen, die nicht verändert wurden, nicht gespeichert. Dies ist nützlich, um unnötige Sitzungseinträge in der Datenbank oder im Speicher zu vermeiden
