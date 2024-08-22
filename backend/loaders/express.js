@@ -59,7 +59,7 @@ const expressLoader = (app) => {
       saveUninitialized: false,
       cookie: {
         // Die secure-Option legt fest, ob das Cookie nur über HTTPS gesendet werden soll. Wenn secure: false gesetzt ist, wird das Cookie auch über HTTP gesendet.
-        secure: false,
+        secure: true, //Sobald ssl 0> true
         // maxAge gibt die Lebensdauer des Sitzungscookies in Millisekunden an. In diesem Fall ist das Cookie 24 Stunden gültig (24 Stunden * 60 Minuten * 60 Sekunden * 1000 Millisekunden).
         maxAge: 24 * 60 * 60 * 1000,
       },
