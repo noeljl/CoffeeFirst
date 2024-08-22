@@ -14,6 +14,7 @@ const expressLoader = (app) => {
   const allowedOrigins = [
     'http://localhost:3000',
     'https://rotaract-district-1866.de',
+    'https://www.rotaract-district-1866.de', // Diese Zeile hinzufügen
   ]
 
   app.use(
