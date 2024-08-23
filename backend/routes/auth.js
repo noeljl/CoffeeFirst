@@ -8,15 +8,6 @@ const AuthServiceInstance = new AuthService()
 import UserService from '../services/UserService.js'
 const UserServiceInstance = new UserService()
 
-// Middleware, um sicherzustellen, dass der Benutzer authentifiziert ist
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next()
-  } else {
-    res.redirect('/login') // Leitet zum Login um, wenn nicht authentifiziert
-  }
-}
-
 const Auth = (app, passport) => {
   app.use('/api/auth', router)
 
@@ -24,6 +15,8 @@ const Auth = (app, passport) => {
   router.post('/register', async (req, res, next) => {
     try {
       const data = req.body
+      console.log('/routes/auth.js register Data: ' + data)
+
       const response = await AuthServiceInstance.register(data)
       res.status(200).send(response)
     } catch (err) {
@@ -38,7 +31,15 @@ const Auth = (app, passport) => {
     async (req, res, next) => {
       try {
         const { username, password } = req.body
-        const response = await AuthServiceInstance.login({ username, password })
+        console.log(
+          'Daten aus login in routes/auth ' + username + ' ' + password
+        )
+
+        const response = await AuthServiceInstance.login({
+          username,
+          password,
+        })
+
         res.status(200).send(response)
       } catch (err) {
         next(err)
@@ -59,9 +60,11 @@ const Auth = (app, passport) => {
   )
 
   // Facebook Login Endpoint
+  // untested
   router.get('/facebook', passport.authenticate('facebook'))
 
   // Facebook Login Callback Endpoint
+  // untested
   router.get(
     '/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
@@ -70,17 +73,18 @@ const Auth = (app, passport) => {
     }
   )
 
-  // Geschützte Route: Beispiel für eine Route, die Authentifizierung erfordert
-  router.get('/protected-route', ensureAuthenticated, (req, res) => {
-    res.send('Diese Seite ist geschützt und erfordert eine Anmeldung.')
-  })
-
   // Check Login Status Endpoint
+  // untested. Bracht noch passport
   router.get('/logged_in', async (req, res, next) => {
     try {
       const { id } = req.user
+
       const user = await UserServiceInstance.getById({ id })
-      res.status(200).send({ loggedIn: true, user })
+
+      res.status(200).send({
+        loggedIn: true,
+        user,
+      })
     } catch (err) {
       next(err)
     }

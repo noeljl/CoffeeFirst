@@ -23,13 +23,9 @@ export const loginUser = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const user = await login(credentials)
-      // console.log('Daten aus loginUser ' + JSON.stringify(user))
-      return {
-        user, // Es muss ein `user`-Objekt geben
-        isAuthenticated: true,
-      }
+      return { user, isAuthenticated: true }
     } catch (err) {
-      throw err
+      return thunkAPI.rejectWithValue(err.response.data) // oder passende Fehlerdaten
     }
   }
 )

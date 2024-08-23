@@ -14,6 +14,8 @@ import GuestRegistry from './routes/GuestRegistry/GuestRegistry.js'
 import AttendenceRegistry from './routes/AttendenceRegistry/AttendenceRegistry.js'
 import StatisticsTable from './routes/Statistics/StatisticsTable.js'
 
+import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
+
 function App() {
   return (
     <div style={{ flex: 1 }}>
@@ -22,12 +24,23 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/guestRegistry" element={<GuestRegistry />} />
-          <Route path="/attendenceRegistry" element={<AttendenceRegistry />} />
-          <Route path="/statisticsTable" element={<StatisticsTable />} />
+
           {/* Private Routes */}
-          {/* <Route path="/account" element={<Account />} /> */}
+          <Route path="/home" element={<PrivateRoute element={Home} />} />
+          <Route
+            path="/guestRegistry"
+            element={<PrivateRoute element={GuestRegistry} />}
+          />
+          <Route
+            path="/attendenceRegistry"
+            element={<PrivateRoute element={AttendenceRegistry} />}
+          />
+          <Route
+            path="/statisticsTable"
+            element={<PrivateRoute element={StatisticsTable} />}
+          />
+
+          {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
