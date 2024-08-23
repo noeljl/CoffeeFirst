@@ -137,7 +137,7 @@ const AttendanceRegistry = () => {
     <Layout style={{ minHeight: '100vh' }}>
       <Content
         style={{
-          padding: '50px',
+          padding: '20px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
@@ -148,9 +148,10 @@ const AttendanceRegistry = () => {
         <Title
           style={{
             color: '#fff',
-            marginBottom: '30px',
-            marginTop: '200px',
-            fontSize: '50px',
+            marginBottom: '20px',
+            marginTop: '100px',
+            fontSize: '32px',
+            textAlign: 'center',
           }}
         >
           Rotaract Search
@@ -158,12 +159,13 @@ const AttendanceRegistry = () => {
         <AutoComplete
           options={options}
           onSearch={onChange}
-          style={{ width: 600 }}
+          style={{ width: '100%', maxWidth: '600px' }}
         >
           <Search
             placeholder="Suche nach einem registrierten Mitglied oder Gast"
             enterButton="Search"
             size="large"
+            style={{ width: '100%' }}
           />
         </AutoComplete>
       </Content>
