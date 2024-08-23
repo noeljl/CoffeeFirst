@@ -12,9 +12,9 @@ const expressLoader = (app) => {
   // abzurufen, der Browser diese Anfragen blockiert, wenn CORS nicht korrekt konfiguriert ist.
   // Es werden nur Anfragen von spezifischen Domains akzeptiert
   const corsOptions = {
-    origin: 'https://www.rotaract-district-1866.de', // Produktions-Frontend-Domain
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Erlaube nur benötigte Methoden
-    credentials: true, // Erlaube das Senden von Cookies oder Authentifizierungsdaten
+    origin: 'https://www.rotaract-district-1866.de',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Füge OPTIONS hinzu
+    credentials: true,
   }
 
   app.use(cors(corsOptions))
