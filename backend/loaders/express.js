@@ -11,12 +11,13 @@ const expressLoader = (app) => {
   // versucht, eine Ressource von http://api.example.com oder http://anotherdomain.com
   // abzurufen, der Browser diese Anfragen blockiert, wenn CORS nicht korrekt konfiguriert ist.
   // Es werden nur Anfragen von spezifischen Domains akzeptiert
-  app.use(
-    cors({
-      origin: 'http://localhost:3000', // Erlaube Anfragen vom Frontend
-      credentials: true, // Wenn du Cookies oder Authentifizierungsdaten sendest
-    })
-  )
+  const corsOptions = {
+    origin: 'https://www.rotaract-district-1866.de', // Produktions-Frontend-Domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Erlaube nur benötigte Methoden
+    credentials: true, // Erlaube das Senden von Cookies oder Authentifizierungsdaten
+  }
+
+  app.use(cors(corsOptions))
 
   // Transformiert einen String zu einem JSON String, damit weiterverarbeitet werden kann
   app.use(bodyParser.json())
