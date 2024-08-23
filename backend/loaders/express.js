@@ -16,7 +16,7 @@ const expressLoader = (app) => {
       'https://rotaract-district-1866.de',
       'https://www.rotaract-district-1866.de',
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   }
   app.use(cors(corsOptions))
