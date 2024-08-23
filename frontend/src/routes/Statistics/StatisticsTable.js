@@ -25,7 +25,6 @@ const AttendanceTable = () => {
     setCurrentPage(pagination.current)
   }
 
-  // Sortiere die Teilnehmer nach timesAttended absteigend, um die Positionen zu berechnen
   const sortedAttendeesByAttendance = [...attendees].sort(
     (a, b) => b.timesAttended - a.timesAttended
   )
@@ -35,19 +34,18 @@ const AttendanceTable = () => {
       title: 'Position',
       key: 'position',
       render: (text, record) => {
-        // Finde die Position des aktuellen Teilnehmers basierend auf der timesAttended-Sortierung
         const position =
           sortedAttendeesByAttendance.findIndex((att) => att.id === record.id) +
           1
         let backgroundColor
         if (position === 1) {
-          backgroundColor = '#FFD700' // Gold
+          backgroundColor = '#FFD700'
         } else if (position === 2) {
-          backgroundColor = '#C0C0C0' // Silber
+          backgroundColor = '#C0C0C0'
         } else if (position === 3) {
-          backgroundColor = '#CD7F32' // Bronze
+          backgroundColor = '#CD7F32'
         } else {
-          backgroundColor = '#87CEEB' // Blau
+          backgroundColor = '#87CEEB'
         }
         return (
           <div
@@ -90,7 +88,7 @@ const AttendanceTable = () => {
       sorter: (a, b) => a.timesAttended - b.timesAttended,
       align: 'center',
       sortOrder: sortedInfo.columnKey === 'timesAttended' && sortedInfo.order,
-      defaultSortOrder: 'descend', // Standardmäßig nach `timesAttended` absteigend sortiert
+      defaultSortOrder: 'descend',
     },
   ]
 
@@ -103,9 +101,9 @@ const AttendanceTable = () => {
     >
       <Content
         style={{
-          margin: '150px auto',
-          padding: '20px',
-          width: '50%',
+          margin: '50px auto',
+          padding: '10px',
+          width: '90%',
           maxWidth: '1500px',
           borderRadius: '12px',
           backgroundColor: '#fff',
@@ -116,7 +114,7 @@ const AttendanceTable = () => {
           level={2}
           style={{
             textAlign: 'center',
-            marginBottom: '30px',
+            marginBottom: '20px',
             color: '#21226b',
           }}
         >
@@ -126,8 +124,9 @@ const AttendanceTable = () => {
           columns={columns}
           dataSource={attendees}
           onChange={handleChange}
-          pagination={{ position: ['bottomCenter'], pageSize: 8 }} // 8 Einträge pro Seite
+          pagination={{ position: ['bottomCenter'], pageSize: 8 }}
           bordered
+          scroll={{ x: 600 }} // Ermöglicht horizontales Scrollen bei kleineren Bildschirmen
         />
       </Content>
     </Layout>
