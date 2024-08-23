@@ -11,29 +11,12 @@ const expressLoader = (app) => {
   // versucht, eine Ressource von http://api.example.com oder http://anotherdomain.com
   // abzurufen, der Browser diese Anfragen blockiert, wenn CORS nicht korrekt konfiguriert ist.
   // Es werden nur Anfragen von spezifischen Domains akzeptiert
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'https://rotaract-district-1866.de',
-    'https://www.rotaract-district-1866.de', // Diese Zeile hinzufügen
-  ]
-
   app.use(
     cors({
-      origin: function (origin, callback) {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-          callback(null, true)
-        } else {
-          callback(new Error('Not allowed by CORS'))
-        }
-      },
-      methods: 'GET, POST, PUT, DELETE, OPTIONS, PATCH', // Hinzufügen der Methoden, die von der API unterstützt werden
-      allowedHeaders: 'Content-Type, Authorization', // Erlaubt den Zugriff auf diese Header
-      credentials: true, // Erlaubt Cookies und andere Anmeldeinformationen, wenn nötig
+      origin: 'http://localhost:3000', // Erlaube Anfragen vom Frontend
+      credentials: true, // Wenn du Cookies oder Authentifizierungsdaten sendest
     })
   )
-
-  // Handle OPTIONS preflight requests
-  app.options('*', cors()) // Dies stellt sicher, dass alle OPTIONS-Anfragen mit den entsprechenden CORS-Headern beantwortet werden
 
   // Transformiert einen String zu einem JSON String, damit weiterverarbeitet werden kann
   app.use(bodyParser.json())
