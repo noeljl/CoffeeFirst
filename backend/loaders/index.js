@@ -16,7 +16,19 @@ export default async function loaders(app) {
 
   // Error Handler
   app.use((err, req, res, next) => {
+    console.log(`Received ${req.method} request for ${req.url}`)
     console.error(err.stack)
     res.status(err.status || 500).json({ error: err.message })
+  })
+
+  app.options('*', (req, res) => {
+    console.log('Handling OPTIONS request for ', req.headers.origin)
+    res.header('Access-Control-Allow-Origin', req.headers.origin)
+    res.header(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, OPTIONS'
+    )
+    res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type')
+    res.sendStatus(204) // Erfolgreicher Preflight-Request
   })
 }

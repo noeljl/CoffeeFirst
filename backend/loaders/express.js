@@ -12,11 +12,13 @@ const expressLoader = (app) => {
   // abzurufen, der Browser diese Anfragen blockiert, wenn CORS nicht korrekt konfiguriert ist.
   // Es werden nur Anfragen von spezifischen Domains akzeptiert
   const corsOptions = {
-    origin: 'https://www.rotaract-district-1866.de',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Füge OPTIONS hinzu
+    origin: [
+      'https://rotaract-district-1866.de',
+      'https://www.rotaract-district-1866.de',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   }
-
   app.use(cors(corsOptions))
 
   // Transformiert einen String zu einem JSON String, damit weiterverarbeitet werden kann
