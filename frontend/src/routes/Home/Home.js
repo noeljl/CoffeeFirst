@@ -133,7 +133,7 @@ const Home = () => {
             Gast registrieren
           </GradientButton>
           <Button size="large" onClick={toAttendenceRegistry}>
-            Anwesenheit Eintragen
+            Anwesenheit eintragen
           </Button>
         </Space>
       </Content>
