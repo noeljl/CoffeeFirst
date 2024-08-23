@@ -23,7 +23,7 @@ function App() {
         <Header style />
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
 
           {/* Private Routes */}
           <Route path="/home" element={<PrivateRoute element={Home} />} />
