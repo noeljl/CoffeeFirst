@@ -1,6 +1,5 @@
 import './App.css'
 import React from 'react'
-// npm install react-router-dom
 import {
   BrowserRouter as Router,
   Route,
@@ -26,22 +25,41 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           {/* Private Routes */}
-          <Route path="/home" element={<PrivateRoute element={Home} />} />
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/guestRegistry"
-            element={<PrivateRoute element={GuestRegistry} />}
+            element={
+              <PrivateRoute>
+                <GuestRegistry />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/attendenceRegistry"
-            element={<PrivateRoute element={AttendenceRegistry} />}
+            element={
+              <PrivateRoute>
+                <AttendenceRegistry />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/statisticsTable"
-            element={<PrivateRoute element={StatisticsTable} />}
+            element={
+              <PrivateRoute>
+                <StatisticsTable />
+              </PrivateRoute>
+            }
           />
 
           {/* Fallback Route */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </Router>
     </div>
