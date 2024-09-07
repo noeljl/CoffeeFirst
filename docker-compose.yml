@@ -1,21 +1,25 @@
-version: '3.8'
-
 services:
   frontend:
-    build: ./frontend
+    image: node:14  # Verwende das richtige Image
+    container_name: frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app  # Binde das lokale Frontend-Verzeichnis
     ports:
-      - '3000:80'  # Mappen von Host-Port 3000 auf Container-Port 80 (Nginx)
-    depends_on:
-      - backend
+      - "3000:3000"  # Mappe Port 3000 auf den Host
+    command: npm start
     networks:
       - app-network
 
   backend:
-    build: ./backend
-    env_file:
-      - ./backend/.env
+    image: node:14
+    container_name: backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app  # Binde das lokale Backend-Verzeichnis
     ports:
-      - '3001:3001'  # Mappen von Host-Port 3001 auf Container-Port 3001
+      - "3001:3001"
+    command: npm start
     networks:
       - app-network
 

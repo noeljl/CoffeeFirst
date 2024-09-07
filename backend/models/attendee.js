@@ -1,4 +1,3 @@
-// Orientierngsfile
 import { query } from '../db/index.js'
 import pgPromise from 'pg-promise'
 
@@ -12,17 +11,16 @@ class AttendeeModel {
    */
   async register(data) {
     try {
-      // Generate SQL statement - using helper for dynamic parameter injection
+      // Ensure dateOfRegistry is provided if not already in data
+      data.dateOfRegistry = data.dateOfRegistry || new Date() // defaults to current date if not provided
+
       const statement =
         pgp.helpers.insert(data, null, 'attendees') + ' RETURNING *'
-
-      // Execute SQL statement
       const result = await query(statement)
 
       if (result.rows?.length) {
         return result.rows[0]
       }
-
       return result
     } catch (err) {
       throw new Error(err)
@@ -61,12 +59,34 @@ class AttendeeModel {
     }
   }
 
+  async findOneByUsername(username) {
+    try {
+      const statement = `SELECT *
+                       FROM "attendees"
+                       WHERE "username" = $1`
+      const values = [username]
+
+      // Führe die SQL-Abfrage aus
+      const result = await query(statement, values)
+
+      // Überprüfe, ob ein Ergebnis vorliegt
+      if (result.rows?.length) {
+        console.log('Gefunden')
+        return result.rows[0]
+      }
+
+      return null
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+
   async findOneById(id) {
     try {
       // SQL statement to find attendee by full name
       const statement = `SELECT *
                          FROM "attendees"
-                         WHERE "id" = $1`
+                         WHERE "attendee_id" = $1`
 
       const values = [id]
 
@@ -92,7 +112,9 @@ class AttendeeModel {
   async update(id, data) {
     try {
       // Generate the SET clause dynamically
-      const condition = pgp.as.format(' WHERE id = $1 RETURNING *', [id])
+      const condition = pgp.as.format(' WHERE attendee_id = $1 RETURNING *', [
+        id,
+      ])
       const statement = pgp.helpers.update(data, null, 'attendees') + condition
 
       // Execute SQL statement
@@ -116,7 +138,7 @@ class AttendeeModel {
   async delete(id) {
     try {
       // SQL statement to delete attendee by ID
-      const statement = `DELETE FROM "attendees" WHERE id = $1 RETURNING *`
+      const statement = `DELETE FROM "attendees" WHERE attendee_id = $1 RETURNING *`
       const values = [id]
 
       // Execute SQL statement
@@ -135,33 +157,19 @@ class AttendeeModel {
   async findAll() {
     try {
       // SQL statement to fetch all attendees
+      console.log('Was geht ab')
       const statement = `SELECT * FROM "attendees" ORDER BY "lastName", "firstName"`
 
       // Execute SQL statement
       const result = await query(statement)
+
+      console.log('ModelAttendees: ' + JSON.stringify(result))
 
       if (result.rows?.length) {
         return result.rows
       }
 
       return []
-    } catch (err) {
-      throw new Error(err)
-    }
-  }
-
-  async update(id, data) {
-    try {
-      const condition = pgp.as.format(' WHERE id = $1 RETURNING *', [id])
-      const statement = pgp.helpers.update(data, null, 'attendees') + condition
-
-      const result = await query(statement)
-
-      if (result.rows?.length) {
-        return result.rows[0]
-      }
-
-      return null
     } catch (err) {
       throw new Error(err)
     }

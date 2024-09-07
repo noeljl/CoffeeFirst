@@ -2,6 +2,10 @@ import createError from 'http-errors'
 import UserModel from '../models/user.js'
 const UserModelInstance = new UserModel()
 
+import AttendeeModel from "../models/attendee.js"
+
+const AttendeeModelInstance = new AttendeeModel()
+
 // Anpassen
 class AuthService {
   async register(data) {
@@ -23,9 +27,11 @@ class AuthService {
     }
   }
 
-  async login(data) {
+  async loginUser(data) {
     const { username, password } = data
-    console.log("Daten login services/AuthServices " + username + " " + password)
+    console.log(
+      'Daten login services/AuthServices ' + username + ' ' + password
+    )
 
     try {
       // Check if user exists
@@ -43,6 +49,33 @@ class AuthService {
       }
 
       return user
+    } catch (err) {
+      throw createError(500, err)
+    }
+  }
+
+  async loginAttendee(data) {
+    const { username, password } = data
+    console.log(
+      'Daten login services/AuthServices/eventAttendee ' + username + ' ' + password
+    )
+
+    try {
+      // Check if user exists
+      const attendee = await AttendeeModelInstance.findOneByUsername(username)
+      console.log(attendee)
+
+      // If no user found, reject
+      if (!attendee) {
+        throw createError(401, 'Incorrect username or password')
+      }
+
+      // Check for matching passwords
+      if (attendee.password !== password) {
+        throw createError(401, 'Incorrect username or password')
+      }
+
+      return attendee
     } catch (err) {
       throw createError(500, err)
     }

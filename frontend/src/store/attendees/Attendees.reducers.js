@@ -4,7 +4,6 @@ import {
   updateAttendeeAction,
   deleteAttendeeAction,
   fetchAttendeesAction,
-  updateTimesAttendedAction,
 } from '../attendees/Attendees.actions.js'
 
 const initialState = {
@@ -50,21 +49,12 @@ const attendeesSlice = createSlice({
       })
       // Fetch attendees - success state
       .addCase(fetchAttendeesAction.fulfilled, (state, action) => {
-        // console.log('reducer/attendees ' + JSON.stringify(response))
         state.loading = false
         state.attendees = action.payload // Setze die abgerufenen Teilnehmerdaten
       })
       // Fetch attendees - failure state
       .addCase(fetchAttendeesAction.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message
-      })
-      // Delete success
-      .addCase(updateTimesAttendedAction.fulfilled, (state, action) => {
-        state.error = null
-      })
-      // Delete failure
-      .addCase(updateTimesAttendedAction.rejected, (state, action) => {
         state.error = action.error.message
       })
   },

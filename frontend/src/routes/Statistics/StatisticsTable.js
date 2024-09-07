@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Layout, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAttendeesAction } from '../../store/attendees/Attendees.actions.js'
+import { fetchTotalAttendanceAction } from '../../store/attendeeEvents/AttendeeEvents.actions.js'
 
 const { Content } = Layout
 const { Title } = Typography
@@ -9,15 +9,18 @@ const { Title } = Typography
 const AttendanceTable = () => {
   const [sortedInfo, setSortedInfo] = useState({
     order: 'descend',
-    columnKey: 'timesAttended',
+    columnKey: 'total_times_attended',
   })
   const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useDispatch()
-  const attendees = useSelector((state) => state.attendees.attendees)
+  const attendees = useSelector((state) => {
+    console.log('Redux State:', state) // Debugging Log hinzufügen
+    return state.attendeeEvents.totalAttendance
+  })
 
   useEffect(() => {
-    console.log('Fetching Attendees ...')
-    dispatch(fetchAttendeesAction())
+    console.log('Dispatching fetchTotalAttendanceAction...') // Debugging Log hinzufügen
+    dispatch(fetchTotalAttendanceAction())
   }, [dispatch])
 
   const handleChange = (pagination, filters, sorter) => {
@@ -25,18 +28,19 @@ const AttendanceTable = () => {
     setCurrentPage(pagination.current)
   }
 
-  const sortedAttendeesByAttendance = [...attendees].sort(
-    (a, b) => b.timesAttended - a.timesAttended
-  )
+  // Füge der Teilnehmerliste eine Positionsnummer hinzu, die unabhängig von der Sortierung ist
+  const attendeesWithPosition = attendees.map((attendee, index) => ({
+    ...attendee,
+    position: index + 1, // Position basiert auf der ursprünglichen Reihenfolge
+  }))
 
   const columns = [
     {
       title: 'Position',
       key: 'position',
+      dataIndex: 'position', // Nutze die vorberechnete Positionsnummer
       render: (text, record) => {
-        const position =
-          sortedAttendeesByAttendance.findIndex((att) => att.id === record.id) +
-          1
+        const position = record.position
         let backgroundColor
         if (position === 1) {
           backgroundColor = '#FFD700'
@@ -83,11 +87,12 @@ const AttendanceTable = () => {
     },
     {
       title: 'Anzahl an Präsenzen',
-      dataIndex: 'timesAttended',
-      key: 'timesAttended',
-      sorter: (a, b) => a.timesAttended - b.timesAttended,
+      dataIndex: 'total_times_attended',
+      key: 'total_times_attended',
+      sorter: (a, b) => a.total_times_attended - b.total_times_attended,
       align: 'center',
-      sortOrder: sortedInfo.columnKey === 'timesAttended' && sortedInfo.order,
+      sortOrder:
+        sortedInfo.columnKey === 'total_times_attended' && sortedInfo.order,
       defaultSortOrder: 'descend',
     },
   ]
@@ -122,7 +127,7 @@ const AttendanceTable = () => {
         </Title>
         <Table
           columns={columns}
-          dataSource={attendees}
+          dataSource={attendeesWithPosition} // Verwende die Liste mit Positionsnummern
           onChange={handleChange}
           pagination={{ position: ['bottomCenter'], pageSize: 8 }}
           bordered

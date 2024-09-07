@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { checkLoginStatus, loginUser, registerUser } from './Auth.actions.js'
+import {
+  checkLoginStatus,
+  loginUser,
+  registerUser,
+  loginEventAttendeeAction,
+} from './Auth.actions.js'
 
 const initialState = {
   isFetching: false,
@@ -25,24 +30,30 @@ const authSlice = createSlice({
       })
       // Login failure
       .addCase(loginUser.rejected, (state, action) => {
-        const { error } = action.payload
         state.isAuthenticated = false
-        state.error = error
+        state.error = action.payload.error
+      })
+      // Login Event Attendee success
+      .addCase(loginEventAttendeeAction.fulfilled, (state, action) => {
+        console.log("Attendee is logged in")
+        const { isAuthenticated } = action.payload
+        state.isAuthenticated = isAuthenticated
+      })
+      // Login Event Attendee failure
+      .addCase(loginEventAttendeeAction.rejected, (state, action) => {
+        state.isAuthenticated = false
+        state.error = action.payload.error
       })
       // Registration success
       .addCase(registerUser.fulfilled, (state, action) => {
-        // const { error } = action.payload;
-        // state.isAuthenticated = false;
-        // state.error = error;
+        // Optionally handle registration success
       })
       // Registration failure
       .addCase(registerUser.rejected, (state, action) => {
-        const { error } = action.payload
         state.isAuthenticated = false
-        state.error = error
+        state.error = action.payload.error
       })
   },
 })
 
-// Export reducer function by default
 export default authSlice.reducer

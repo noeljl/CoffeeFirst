@@ -1,6 +1,11 @@
 // npm install @reduxjs/toolkit
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { isLoggedIn, login, register } from '../../apis/auth.js'
+import {
+  isLoggedIn,
+  login,
+  register,
+  loginEventAttendee,
+} from '../../apis/auth.js'
 
 export const checkLoginStatus = createAsyncThunk(
   'auth/checkLogin',
@@ -24,6 +29,19 @@ export const loginUser = createAsyncThunk(
     try {
       const user = await login(credentials)
       return { user, isAuthenticated: true }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data) // oder passende Fehlerdaten
+    }
+  }
+)
+
+export const loginEventAttendeeAction = createAsyncThunk(
+  'auth/loginEventAttendee',
+  async (credentials, thunkAPI) => {
+    try {
+      const attendee = await loginEventAttendee(credentials)
+      console.log(attendee)
+      return { attendee, isAuthenticated: true }
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data) // oder passende Fehlerdaten
     }

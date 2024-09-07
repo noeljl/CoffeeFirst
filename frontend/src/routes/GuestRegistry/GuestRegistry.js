@@ -1,6 +1,5 @@
-// npm install formik yup react-redux
 import React, { useState } from 'react'
-import { Layout, Form, Input, Button } from 'antd'
+import { Layout, Form, Input, Button, Select } from 'antd'
 import { Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -8,11 +7,11 @@ import * as Yup from 'yup'
 
 import {
   registerAttendeeAction,
-  updateAttendeeAction,
   deleteAttendeeAction,
 } from '../../store/attendees/Attendees.actions.js'
 
 const { Content } = Layout
+const { Option } = Select
 
 const GuestRegistry = () => {
   const navigate = useNavigate()
@@ -25,10 +24,6 @@ const GuestRegistry = () => {
       switch (actionType) {
         case 'create':
           await dispatch(registerAttendeeAction(data))
-          break
-        case 'update':
-          console.log('Update clicked')
-          await dispatch(updateAttendeeAction(data))
           break
         case 'delete':
           await dispatch(deleteAttendeeAction(data))
@@ -47,8 +42,12 @@ const GuestRegistry = () => {
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('Vorname ist ein verpflichtendes Feld'),
     lastName: Yup.string().required('Nachname ist ein verpflichtendes Feld'),
-    timesAttended: Yup.string().required(
-      'Anzahl an Präsenzzeiten ist ein verpflichtendes Feld'
+    username: Yup.string().required(
+      'Benutzername ist ein verpflichtendes Feld'
+    ),
+    password: Yup.string().required('Passwort ist ein verpflichtendes Feld'),
+    attendee_category: Yup.string().required(
+      'Kategorie ist ein verpflichtendes Feld'
     ),
   })
 
@@ -61,7 +60,9 @@ const GuestRegistry = () => {
             firstName: '',
             middleName: '',
             lastName: '',
-            timesAttended: 0,
+            username: '',
+            password: '',
+            attendee_category: 'guest', // Standardmäßig Gast
           }}
           validationSchema={validationSchema}
           validateOnBlur
@@ -69,7 +70,14 @@ const GuestRegistry = () => {
             setSubmitting(false)
           }}
         >
-          {({ handleSubmit, handleChange, values, errors, touched }) => (
+          {({
+            handleSubmit,
+            handleChange,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+          }) => (
             <Form style={styles.form}>
               <Form.Item
                 validateStatus={
@@ -120,20 +128,57 @@ const GuestRegistry = () => {
               </Form.Item>
               <Form.Item
                 validateStatus={
-                  errors.timesAttended && touched.timesAttended ? 'error' : ''
+                  errors.username && touched.username ? 'error' : ''
                 }
                 help={
-                  errors.timesAttended && touched.timesAttended
-                    ? errors.timesAttended
-                    : ''
+                  errors.username && touched.username ? errors.username : ''
                 }
               >
                 <Input
-                  name="timesAttended"
-                  placeholder="Anzahl an Präsenzen"
+                  name="username"
+                  placeholder="Benutzername"
                   onChange={handleChange}
-                  value={values.timesAttended}
+                  value={values.username}
                 />
+              </Form.Item>
+              <Form.Item
+                validateStatus={
+                  errors.password && touched.password ? 'error' : ''
+                }
+                help={
+                  errors.password && touched.password ? errors.password : ''
+                }
+              >
+                <Input.Password
+                  name="password"
+                  placeholder="Passwort"
+                  onChange={handleChange}
+                  value={values.password}
+                />
+              </Form.Item>
+              <Form.Item
+                validateStatus={
+                  errors.attendee_category && touched.attendee_category
+                    ? 'error'
+                    : ''
+                }
+                help={
+                  errors.attendee_category && touched.attendee_category
+                    ? errors.attendee_category
+                    : ''
+                }
+              >
+                <Select
+                  name="attendee_category"
+                  placeholder="Kategorie wählen"
+                  value={values.attendee_category}
+                  onChange={(value) =>
+                    setFieldValue('attendee_category', value)
+                  }
+                >
+                  <Option value="guest">Gast</Option>
+                  <Option value="member">Mitglied</Option>
+                </Select>
               </Form.Item>
               <Form.Item>
                 <Button
@@ -146,20 +191,19 @@ const GuestRegistry = () => {
                 </Button>
                 <Button
                   type="primary"
-                  loading={isLoading}
-                  style={styles.updateButton}
-                  onClick={() => handleGuestAction(values, 'update')}
-                >
-                  Gast Updaten
-                </Button>
-                <Button
-                  type="primary"
                   danger
                   loading={isLoading}
                   style={styles.deleteButton}
                   onClick={() => handleGuestAction(values, 'delete')}
                 >
                   Gast Löschen
+                </Button>
+                <Button
+                  type="default"
+                  style={styles.eventsButton}
+                  onClick={() => navigate('/eventsRegistry')}
+                >
+                  Zu den Events
                 </Button>
               </Form.Item>
             </Form>
@@ -197,14 +241,14 @@ const styles = {
   registerButton: {
     width: '100%',
   },
-  updateButton: {
-    width: '100%',
-    marginTop: '10px',
-    backgroundColor: 'green',
-  },
   deleteButton: {
     width: '100%',
     marginTop: '10px',
+  },
+  eventsButton: {
+    width: '100%',
+    marginTop: '10px',
+    borderRadius: '15px',
   },
 }
 

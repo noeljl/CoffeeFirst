@@ -11,15 +11,47 @@ const expressLoader = (app) => {
   // versucht, eine Ressource von http://api.example.com oder http://anotherdomain.com
   // abzurufen, der Browser diese Anfragen blockiert, wenn CORS nicht korrekt konfiguriert ist.
   // Es werden nur Anfragen von spezifischen Domains akzeptiert
+  // const corsOptions = {
+  //   origin: ['https://rotaract-district-1866.de',
+  //     'https://www.rotaract-district-1866.de'],
+  //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  //   credentials: true,
+  // }
+
+  // app.options('*', (req, res) => {
+  //   console.log('Handling OPTIONS request for ', req.headers.origin)
+  //   res.header('Access-Control-Allow-Origin', req.headers.origin)
+  //   res.header(
+  //     'Access-Control-Allow-Methods',
+  //     'GET, POST, PUT, DELETE, OPTIONS'
+  //   )
+  //   res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type')
+  //   res.sendStatus(204) // Erfolgreicher Preflight-Request
+  // })
+
+  console.log('hello')
+
+  // LOKALE ENTWICKLUNG
   const corsOptions = {
-    origin: [
-      'https://rotaract-district-1866.de',
-      'https://www.rotaract-district-1866.de',
-    ],
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: true,
   }
+
   app.use(cors(corsOptions))
+
+  app.options('*', (req, res) => {
+    console.log('Handling OPTIONS request')
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*')
+    res.header(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, OPTIONS'
+    )
+    res.header('Access-Control-çAllow-Headers', 'Authorization, Content-Type')
+    res.header('Access-Control-Allow-Credentials', 'true')
+    res.sendStatus(204)
+  })
 
   // Transformiert einen String zu einem JSON String, damit weiterverarbeitet werden kann
   app.use(bodyParser.json())

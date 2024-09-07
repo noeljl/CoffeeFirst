@@ -27,15 +27,40 @@ const Auth = (app, passport) => {
   // Login Endpoint
   router.post(
     '/login',
-    passport.authenticate('local'),
+    passport.authenticate('local-user'),
     async (req, res, next) => {
       try {
         const { username, password } = req.body
         console.log(
-          'Daten aus login in routes/auth ' + username + ' ' + password
+          'Daten aus login in routes/auth/login ' + username + ' ' + password
         )
 
-        const response = await AuthServiceInstance.login({
+        const response = await AuthServiceInstance.loginUser({
+          username,
+          password,
+        })
+
+        res.status(200).send(response)
+      } catch (err) {
+        next(err)
+      }
+    }
+  )
+
+  router.post(
+    '/loginEventAttendee',
+    passport.authenticate('local-attendee'),
+    async (req, res, next) => {
+      try {
+        const { username, password } = req.body
+        console.log(
+          'Daten aus login in routes/auth/eventAttendee ' +
+            username +
+            ' ' +
+            password
+        )
+
+        const response = await AuthServiceInstance.loginAttendee({
           username,
           password,
         })

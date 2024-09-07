@@ -13,6 +13,18 @@ export const login = async (credentials) => {
   }
 }
 
+export const loginEventAttendee = async (credentials) => {
+  try {
+    const response = await API.post('auth/loginEventAttendee', credentials)
+
+    console.log('Reponse in apis/auth.js/LoginEventAttendee ' + JSON.stringify(credentials))
+
+    return response.data
+  } catch (err) {
+    throw err.response.data
+  }
+}
+
 // API interface for registering a user
 export const register = async (data) => {
   try {

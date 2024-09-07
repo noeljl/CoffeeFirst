@@ -72,6 +72,7 @@ export default (app) => {
     }
   })
 
+  // Fetch all attendees
   router.get('/', async (req, res, next) => {
     try {
       console.log('/routes/attendees.js fetchAttendees called')
@@ -83,27 +84,4 @@ export default (app) => {
     }
   })
 
-  router.patch('/:attendeeId/times-attended', async (req, res, next) => {
-    try {
-      const { attendeeId } = req.params
-      const { incrementBy } = req.body
-
-      console.log(attendeeId)
-
-      console.log(
-        `/routes/attendees.js updateTimesAttended Data: ${JSON.stringify({
-          attendeeId,
-          incrementBy,
-        })}`
-      )
-
-      const response = await AttendeeServiceInstance.updateTimesAttended(
-        attendeeId,
-        incrementBy
-      )
-      res.status(200).send(response)
-    } catch (err) {
-      next(err)
-    }
-  })
 }

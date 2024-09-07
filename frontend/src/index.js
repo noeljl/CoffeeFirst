@@ -8,6 +8,10 @@ import reportWebVitals from './reportWebVitals.js'
 import authReducer from './store/auth/Auth.reducers.js' // Passe den Pfad zum Auth-Reducer an
 import userReducer from './store/user/User.reducers.js' // Importiere den User-Reducer
 import attendeesReducer from './store/attendees/Attendees.reducers.js'
+import eventsReducers from './store/events/Events.reducers.js'
+import attendeeEventsReducers from './store/attendeeEvents/AttendeeEvents.reducers.js'
+import QRCodeReducers from './store/qrCodeVerfication/QRCode.reducers.js'
+import attendeeReducers from './store/attendee/attendee.reducers.js'
 
 // Konfiguriere den Redux Store
 const store = configureStore({
@@ -15,6 +19,10 @@ const store = configureStore({
     auth: authReducer, // Dein Auth-Reducer
     user: userReducer, // Dein User-Reducer
     attendees: attendeesReducer,
+    events: eventsReducers,
+    attendeeEvents: attendeeEventsReducers,
+    qrCode: QRCodeReducers,
+    attendee: attendeeReducers,
   },
 })
 

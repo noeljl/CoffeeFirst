@@ -12,35 +12,61 @@ const passportLoader = (app) => {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  //  Dies ist eine Passport-Funktion, die verwendet wird, um festzulegen, wie Benutzerdaten (in diesem Fall der user.id) in der Sitzung gespeichert werden sollen.
-  // Diese Funktion wird aufgerufen, nachdem ein Benutzer erfolgreich authentifiziert wurde.
-  //  Das user-Objekt ist das, was du von deiner Authentifizierungsstrategie (z.B. lokale Strategie, OAuth, etc.) zurückbekommst. Es enthält in der Regel Benutzerdaten, die aus deiner Datenbank stammen, wie z.B. die Benutzer-ID, den Namen, die E-Mail-Adresse, etc.
-  // done(null, user.id): Der done-Callback speichert die user.id in der Sitzung. null ist das erste Argument und steht für den Fehlerfall (da hier kein Fehler auftritt, wird null übergeben). Die user.id ist das, was in der Sitzung gespeichert wird und zur Identifizierung des Benutzers verwendet wird. Dies bedeutet, dass nur die Benutzer-ID in der Sitzung gespeichert wird, nicht das gesamte Benutzerobjekt.
-
-  // Ein Benutzer meldet sich an. Passport authentifiziert den Benutzer erfolgreich.
-  // Passport ruft die serializeUser-Funktion auf, um zu bestimmen, welche Daten über den Benutzer in der Sitzung gespeichert werden sollen.
-  // Die user.id wird in der Sitzung gespeichert.
-  // Bei zukünftigen Anfragen wird die gespeicherte user.id verwendet, um den Benutzer in der Datenbank nachzuschlagen und das vollständige Benutzerobjekt wiederherzustellen.
-  passport.serializeUser((user, done) => {
-    done(null, user.id)
+  passport.serializeUser((entity, done) => {
+    // Unterscheide zwischen Benutzer und Teilnehmer
+    if (entity.type === 'user') {
+      done(null, { id: entity.id, type: 'user' })
+    } else if (entity.type === 'attendee') {
+      done(null, { id: entity.id, type: 'attendee' })
+    }
   })
 
-  // Set method to deserialize data stored in cookie and attach to req.user
-  // deserializeUser: Diese Methode wird bei jeder Anfrage aufgerufen, nachdem Passport die in der Sitzung gespeicherte ID (die durch serializeUser hinterlegt wurde) extrahiert hat.
-  // Ziel ist es, basierend auf dieser ID die vollständigen Benutzerdaten wiederherzustellen und an die Anfrage (req) anzuhängen, damit sie während der Anfrage verfügbar sind.
-  passport.deserializeUser((id, done) => {
-    done(null, { id })
+  passport.deserializeUser(async (serialized, done) => {
+    try {
+      let entity
+      if (serialized.type === 'user') {
+        // Deserialisiere Benutzer
+        entity = await AuthServiceInstance.findUserById(serialized.id)
+      } else if (serialized.type === 'attendee') {
+        // Deserialisiere Teilnehmer (attendee)
+        entity = await AuthServiceInstance.findAttendeeById(serialized.id)
+      }
+      done(null, entity)
+    } catch (err) {
+      done(err)
+    }
   })
 
-  // Konfigurieren der Stratgie für den Lokalen Login
   passport.use(
+    'local-user',
     new LocalStrategy(async (username, password, done) => {
       try {
-        const user = await AuthServiceInstance.login({
+        const user = await AuthServiceInstance.loginUser({
           username,
           password,
         })
+        if (user) {
+          user.type = 'user' // Füge den Typ hinzu
+        }
         return done(null, user)
+      } catch (err) {
+        return done(err)
+      }
+    })
+  )
+
+  passport.use(
+    'local-attendee',
+    new LocalStrategy(async (username, password, done) => {
+      try {
+        const attendee = await AuthServiceInstance.loginAttendee({
+          username,
+          password,
+        })
+        if (attendee) {
+          attendee.type = 'attendee' // Füge den Typ hinzu
+        }
+        return done(null, attendee)
       } catch (err) {
         return done(err)
       }

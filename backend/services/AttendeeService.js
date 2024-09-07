@@ -43,7 +43,7 @@ export default class AttendeeService {
       }
 
       // Update the attendee data
-      return await AttendeeModelInstance.update(attendee.id, data)
+      return await AttendeeModelInstance.update(attendee.attendee_id, data)
     } catch (err) {
       throw createError(500, err)
     }
@@ -73,18 +73,20 @@ export default class AttendeeService {
       throw createError(500, err)
     }
   }
+
   async fetchAttendees() {
     try {
       console.log('services/AttendeeService fetchAttendees aufgerufen')
+      console.log('hier auch')
 
       // Fetch all attendees from the database
-      return await AttendeeModelInstance.findAll()
+      const result = await AttendeeModelInstance.findAll()
+      return result
     } catch (err) {
       throw createError(500, err)
     }
   }
 
-  // Neue Methode zum Aktualisieren der Anwesenheitszeiten
   async updateTimesAttended(attendeeId, incrementBy) {
     try {
       console.log(

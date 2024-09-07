@@ -1,11 +1,11 @@
 // npm install @reduxjs/toolkit
+// npm install @reduxjs/toolkit
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   registerAttendee,
   updateAttendee,
   deleteAttendee,
   fetchAttendees,
-  updateTimesAttended,
 } from '../../apis/attendee.js'
 
 export const registerAttendeeAction = createAsyncThunk(
@@ -14,7 +14,7 @@ export const registerAttendeeAction = createAsyncThunk(
     try {
       const attendee = await registerAttendee(registerData)
       console.log(attendee)
-      return {}
+      return attendee
     } catch (err) {
       throw err
     }
@@ -27,7 +27,7 @@ export const updateAttendeeAction = createAsyncThunk(
     try {
       const attendee = await updateAttendee(updateData)
       console.log(attendee)
-      return {}
+      return attendee
     } catch (err) {
       throw err
     }
@@ -40,7 +40,7 @@ export const deleteAttendeeAction = createAsyncThunk(
     try {
       const attendee = await deleteAttendee(deleteData)
       console.log(attendee)
-      return {}
+      return attendee
     } catch (err) {
       throw err
     }
@@ -57,21 +57,6 @@ export const fetchAttendeesAction = createAsyncThunk(
       return attendees
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response ? err.response.data : err)
-    }
-  }
-)
-
-export const updateTimesAttendedAction = createAsyncThunk(
-  'attendees/updateTimesAttended',
-  async ({ attendeeId, incrementBy }, thunkAPI) => {
-    try {
-      console.log('Kommt an bei attendees/updateTimesAttended: ' + attendeeId)
-      const updatedAttendee = await updateTimesAttended(attendeeId, incrementBy)
-      return updatedAttendee
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response ? err.response.data : err.message
-      )
     }
   }
 )

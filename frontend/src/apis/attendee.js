@@ -51,15 +51,3 @@ export const fetchAttendees = async () => {
     throw err.response ? err.response.data : err
   }
 }
-
-export const updateTimesAttended = async (attendeeId, incrementBy) => {
-  try {
-    console.log('apis/attendee updateTimesAttended ' + incrementBy)
-    const response = await API.patch(`attendees/${attendeeId}/times-attended`, {
-      incrementBy,
-    })
-    return response.data
-  } catch (err) {
-    throw err.response ? err.response.data : err
-  }
-}
