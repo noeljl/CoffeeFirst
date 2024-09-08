@@ -69,10 +69,10 @@ const Home = () => {
       },
       particles: {
         color: {
-          value: '#21226b', // Partikelfarbe blau
+          value: '#D51067', // Partikelfarbe blau
         },
         links: {
-          color: '#21226b', // Verbindungsfarbe der Partikel auch blau
+          color: '#D51067', // Verbindungsfarbe der Partikel auch blau
           distance: 150,
           enable: true,
           opacity: 0.5,
@@ -159,7 +159,7 @@ const styles = {
   title: {
     marginTop: '300px',
     fontSize: '50px',
-    color: '#21226b',
+    color: '#D51067',
     textAlign: 'center',
   },
   particles: {

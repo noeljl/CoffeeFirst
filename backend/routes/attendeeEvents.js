@@ -6,7 +6,7 @@ const AttendeeEventServiceInstance = new AttendeeEventService()
 
 export default (app) => {
   // Base path is /api/events
-  app.use('/api/events', router)
+  app.use('/api/attendeeEvents', router)
 
   // Fetch attendees for a specific event
   router.get('/:eventID/attendees', async (req, res, next) => {

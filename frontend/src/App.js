@@ -1,4 +1,3 @@
-// App.js
 import React from 'react'
 import {
   BrowserRouter as Router,
@@ -16,6 +15,7 @@ import EventsRegistry from './routes/Events/EventsRegistry.js'
 import EventLogin from './routes/EventLogin/EventLogin.js' // Import EventLogin
 import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
 import EventHome from './routes/EventHome/EventHome.js'
+import EventSuccess from './routes/EventSuccess/EventSucces.js' // Import EventSuccess
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function AppRoutes() {
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/event/:id" element={<EventLogin />} /> {/* Public Route */}
+      {/* Success Page Route */}
       {/* Private Routes */}
       <Route
         path="/home"
@@ -51,6 +52,14 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/event/:id/success"
+        element={
+          <PrivateRoute>
+            <EventSuccess />
+          </PrivateRoute>
+        }
+      />{' '}
       <Route
         path="/guestRegistry"
         element={

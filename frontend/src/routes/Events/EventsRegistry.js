@@ -176,7 +176,7 @@ const EventsRegistry = () => {
 
 const styles = {
   content: {
-    backgroundColor: '#21226b',
+    backgroundColor: '#D51067',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -193,7 +193,7 @@ const styles = {
   title: {
     textAlign: 'center',
     marginBottom: '30px',
-    color: '#21226b',
+    color: '#D51067',
   },
   form: {
     width: '100%',

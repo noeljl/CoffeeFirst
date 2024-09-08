@@ -3,7 +3,7 @@ import API from './client.js'
 // API interface for fetching attendees for a specific event
 export const fetchAttendeesForEvent = async (eventID) => {
   try {
-    const response = await API.get(`events/${eventID}/attendees`)
+    const response = await API.get(`attendeeEvents/${eventID}/attendees`)
     return response.data
   } catch (err) {
     throw err.response ? err.response.data : err
@@ -16,7 +16,7 @@ export const updateAttendeesForEvent = async (data) => {
     const { attendeeId, incrementBy, eventID } = data
 
     const response = await API.put(
-      `events/${eventID}/attendees/${attendeeId}`,
+      `attendeeEvents/${eventID}/attendees/${attendeeId}`,
       { incrementBy }
     )
     return response.data
@@ -28,7 +28,8 @@ export const updateAttendeesForEvent = async (data) => {
 // API interface for fetching total attendance across all events for each attendee
 export const fetchTotalAttendance = async () => {
   try {
-    const response = await API.get('/events/total-attendance') // Endpunkt prüfen
+    console.log('apis/fetchTotalAttendance ')
+    const response = await API.get('/attendeeEvents/total-attendance') // Endpunkt prüfen
     console.log('API response: ', response.data) // Log the response
     return response.data
   } catch (error) {

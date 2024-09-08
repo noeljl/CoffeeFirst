@@ -17,6 +17,7 @@ const expressLoader = (app) => {
   //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   //   credentials: true,
   // }
+  
 
   // app.options('*', (req, res) => {
   //   console.log('Handling OPTIONS request for ', req.headers.origin)
@@ -29,7 +30,7 @@ const expressLoader = (app) => {
   //   res.sendStatus(204) // Erfolgreicher Preflight-Request
   // })
 
-  console.log('hello')
+  // console.log('hello')
 
   // LOKALE ENTWICKLUNG
   const corsOptions = {

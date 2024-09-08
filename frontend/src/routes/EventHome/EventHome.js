@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Typography, Layout, Space } from 'antd'
+import { Typography, Layout, Space, message } from 'antd'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
 
 import { fetchEventAction } from '../../store/events/Events.actions.js'
+
+import { updateAttendeesForEventAction } from '../../store/attendeeEvents/AttendeeEvents.actions.js'
 
 import GradientButton from '../../components/GradientButton/GradientButton.js'
 
@@ -26,7 +28,7 @@ const EventHome = () => {
   const [init, setInit] = useState(false)
   const [eventData, setEventData] = useState(null)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const navigate = useNavigate() // Use navigate for redirection
 
   // Fetch event data when eventID or token change
   useEffect(() => {
@@ -50,8 +52,23 @@ const EventHome = () => {
     })
   }, [])
 
-  const toEventRegistration = async () => {
-    navigate('/eventRegistration')
+  const handleRegisterAttendeeForEvent = async () => {
+    const attendeeId = userState?.attendee_id
+    const eventId = eventData?.event_id
+
+    if (attendeeId && eventId) {
+      // Dispatch the action to update attendees for the event
+      await dispatch(
+        updateAttendeesForEventAction({
+          attendeeId,
+          incrementBy: 1,
+          eventID: eventId,
+        })
+      )
+
+      // Redirect to the success page after registration
+      navigate(`/event/${eventId}/success`) // Redirect to a success page
+    }
   }
 
   const particlesOptions = useMemo(
@@ -69,9 +86,9 @@ const EventHome = () => {
         },
       },
       particles: {
-        color: { value: '#21226b' },
+        color: { value: '#D51067' },
         links: {
-          color: '#21226b',
+          color: '#D51067',
           distance: 150,
           enable: true,
           opacity: 0.5,
@@ -115,11 +132,11 @@ const EventHome = () => {
           </div>
         )}
 
-        <Space style={{ marginTop: 5 }} size={20}>
+        <Space style={{ marginTop: 17 }} size={20}>
           <GradientButton
             type="primary"
             size="large"
-            onClick={toEventRegistration}
+            onClick={handleRegisterAttendeeForEvent} // Updated to use the new handler
           >
             Für Event Anmelden
           </GradientButton>
@@ -144,10 +161,11 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'column',
   },
+  // #D51067
   title: {
     marginTop: '300px',
     fontSize: '50px',
-    color: '#21226b',
+    color: '#D51067',
     textAlign: 'center',
   },
   particles: {
@@ -159,16 +177,17 @@ const styles = {
     zIndex: 0,
   },
   eventDetailsBox: {
-    marginTop: '50px',
-    padding: '20px',
-    border: '2px solid #21226b',
+    marginTop: '20px',
+    padding: '10px',
+    border: '2px solid #D51067',
     borderRadius: '10px',
     backgroundColor: '#f0f0f0',
     textAlign: 'center',
   },
   eventName: {
-    color: '#21226b',
-    fontSize: '40px',
+    color: '#D51067',
+    fontSize: '24px',
+    marginBottom: '10px',
   },
 }
 

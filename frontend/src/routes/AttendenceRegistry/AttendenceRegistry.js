@@ -241,7 +241,7 @@ const AttendanceRegistry = () => {
           flexDirection: 'column',
           justifyContent: 'flex-start',
           alignItems: 'center',
-          backgroundColor: '#21226b',
+          backgroundColor: '#D51067',
         }}
       >
         <Title

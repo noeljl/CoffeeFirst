@@ -32,6 +32,7 @@ const AttendanceTable = () => {
   const attendeesWithPosition = attendees.map((attendee, index) => ({
     ...attendee,
     position: index + 1, // Position basiert auf der ursprünglichen Reihenfolge
+    key: attendee.id || index, // Füge einen eindeutigen 'key' hinzu
   }))
 
   const columns = [
@@ -101,7 +102,7 @@ const AttendanceTable = () => {
     <Layout
       style={{
         minHeight: '100vh',
-        backgroundColor: '#21226b',
+        backgroundColor: '#D51067',
       }}
     >
       <Content
@@ -120,7 +121,7 @@ const AttendanceTable = () => {
           style={{
             textAlign: 'center',
             marginBottom: '20px',
-            color: '#21226b',
+            color: '#D51067',
           }}
         >
           Teilnehmerübersicht
