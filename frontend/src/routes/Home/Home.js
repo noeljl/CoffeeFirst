@@ -1,5 +1,3 @@
-// import React from 'react'
-// https://github.com/tsparticles/react/#readme
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -14,7 +12,8 @@ const { Title, Text } = Typography
 const { Content } = Layout
 
 const Home = () => {
-  const userState = useSelector((state) => state.user.user)
+  // CORRECTED: Changed from state.user.user to state.member.member based on Member.reducers.js
+  const userState = useSelector((state) => state.member.member) //
   const [init, setInit] = useState(false)
   const navigate = useNavigate()
 

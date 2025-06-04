@@ -1,9 +1,7 @@
 // npm install dotenv. Installieren auf /backend ebene
 import dotenv from 'dotenv'
 
-dotenv.config({
-  path: './Users/laurensohl/Documents/rotaractuserproject/backend/.env',
-})
+dotenv.config()
 
 // Imporitert die Daten aus der .env Datei
 export const DB = {
@@ -26,9 +24,12 @@ export const GOOGLE = {
   CONSUMER_SECRET: process.env.GOOGLE_CONSUMER_SECRET,
 }
 
-export const PORT = process.env.SERVER_PORT
+export const MONGO_URI = process.env.MONGO_URI
+export const PORT = process.env.SERVER_PORT || 3001
 export const SESSION_SECRET = process.env.SESSION_SECRET
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
+
+console.log('MONGO_URI:', MONGO_URI)
 
 // Testen, ob aus env Daten verfügbar. In
 console.log('Database host:', process.env.PGHOST)

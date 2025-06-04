@@ -49,7 +49,7 @@ const expressLoader = (app) => {
       'Access-Control-Allow-Methods',
       'GET, POST, PUT, DELETE, OPTIONS'
     )
-    res.header('Access-Control-çAllow-Headers', 'Authorization, Content-Type')
+    res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type')
     res.header('Access-Control-Allow-Credentials', 'true')
     res.sendStatus(204)
   })

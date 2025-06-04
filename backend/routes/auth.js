@@ -1,119 +1,39 @@
 import express from 'express'
-const router = express.Router()
-
-// Instantiate Services
 import AuthService from '../services/AuthService.js'
+import passport from 'passport' // since you use passport.authenticate
+
+const router = express.Router()
 const AuthServiceInstance = new AuthService()
 
-import UserService from '../services/UserService.js'
-const UserServiceInstance = new UserService()
+router.post('/register', async (req, res, next) => {
+  try {
+    const response = await AuthServiceInstance.register(req.body)
+    res.status(200).json(response)
+  } catch (err) {
+    next(err)
+  }
+})
 
-const Auth = (app, passport) => {
-  app.use('/api/auth', router)
-
-  // Registration Endpoint
-  router.post('/register', async (req, res, next) => {
+router.post(
+  '/login',
+  passport.authenticate('local-user'),
+  async (req, res, next) => {
     try {
-      const data = req.body
-      console.log('/routes/auth.js register Data: ' + data)
-
-      const response = await AuthServiceInstance.register(data)
-      res.status(200).send(response)
+      const response = await AuthServiceInstance.loginMember(req.body)
+      res.status(200).json(response)
     } catch (err) {
       next(err)
     }
-  })
+  }
+)
 
-  // Login Endpoint
-  router.post(
-    '/login',
-    passport.authenticate('local-user'),
-    async (req, res, next) => {
-      try {
-        const { username, password } = req.body
-        console.log(
-          'Daten aus login in routes/auth/login ' + username + ' ' + password
-        )
+router.get('/logged_in', async (req, res, next) => {
+  try {
+    const user = await AuthServiceInstance.getById(req.user.id)
+    res.status(200).json({ loggedIn: true, user })
+  } catch (err) {
+    next(err)
+  }
+})
 
-        const response = await AuthServiceInstance.loginUser({
-          username,
-          password,
-        })
-
-        res.status(200).send(response)
-      } catch (err) {
-        next(err)
-      }
-    }
-  )
-
-  router.post(
-    '/loginEventAttendee',
-    passport.authenticate('local-attendee'),
-    async (req, res, next) => {
-      try {
-        const { username, password } = req.body
-        console.log(
-          'Daten aus login in routes/auth/eventAttendee ' +
-            username +
-            ' ' +
-            password
-        )
-
-        const response = await AuthServiceInstance.loginAttendee({
-          username,
-          password,
-        })
-
-        res.status(200).send(response)
-      } catch (err) {
-        next(err)
-      }
-    }
-  )
-
-  // Google Login Endpoint
-  router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
-
-  // Google Login Callback Endpoint
-  router.get(
-    '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    async (req, res) => {
-      res.redirect('/')
-    }
-  )
-
-  // Facebook Login Endpoint
-  // untested
-  router.get('/facebook', passport.authenticate('facebook'))
-
-  // Facebook Login Callback Endpoint
-  // untested
-  router.get(
-    '/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-    async (req, res) => {
-      res.redirect('/')
-    }
-  )
-
-  // Check Login Status Endpoint
-  // untested. Bracht noch passport
-  router.get('/logged_in', async (req, res, next) => {
-    try {
-      const { id } = req.user
-
-      const user = await UserServiceInstance.getById({ id })
-
-      res.status(200).send({
-        loggedIn: true,
-        user,
-      })
-    } catch (err) {
-      next(err)
-    }
-  })
-}
-
-export default Auth
+export default router

@@ -1,3 +1,4 @@
+import './db/index.js' // ← das verbindet mit Mongo
 import express from 'express'
 import { PORT } from './config.js'
 
@@ -13,7 +14,7 @@ async function startServer() {
   // Start server
   app.listen(PORT, () => {
     console.log(`Server listening on PORT ${PORT}`)
-    console.log("Hello")
+    console.log('Hello')
   })
 }
 

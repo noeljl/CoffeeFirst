@@ -1,62 +1,64 @@
-// npm install formik yup react-redux
 import React, { useState } from 'react'
-import { Layout, Form, Input, Button, Divider } from 'antd'
+import { Layout, Form, Input, Button } from 'antd'
 import { Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 
-import { loginMemberAction } from '../../store/auth/Auth.actions.js'
+import { registerMemberAction } from '../../store/auth/Auth.actions.js'
 
 const { Content } = Layout
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { error } = useSelector((state) => state.auth)
   const [isLoading, setIsLoading] = useState(false)
 
-  // Login handler
-  const handleLogin = async (credentials) => {
+  // Register handler
+  const handleRegister = async (credentials) => {
     try {
-      console.log(credentials)
       setIsLoading(true)
-      await dispatch(loginMemberAction(credentials))
+      await dispatch(registerMemberAction(credentials))
       setIsLoading(false)
-      navigate('/home')
+      // Nach erfolgreicher Registrierung z.B. zum Login weiterleiten
+      navigate('/login')
     } catch (err) {
       setIsLoading(false)
     }
   }
 
-  const loginSchema = Yup.object().shape({
+  // Validation-Schema ohne Username
+  const registerSchema = Yup.object().shape({
     email: Yup.string()
-      .email('Bitte gib eine gültige E-Mail ein')
-      .required('E-Mail-Adresse ist erforderlich'),
-    password: Yup.string().required('Password is required'),
+      .email('Ungültige E-Mail')
+      .required('E-Mail ist erforderlich'),
+    password: Yup.string()
+      .min(6, 'Mindestens 6 Zeichen')
+      .required('Passwort ist erforderlich'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwörter müssen übereinstimmen')
+      .required('Bitte bestätige dein Passwort'),
   })
 
   return (
     <Content style={styles.content}>
       <div style={styles.container}>
-        <h2 style={styles.title}>Login</h2>
+        <h2 style={styles.title}>Register</h2>
         <Formik
-          initialValues={{ email: '', password: '' }}
-          validationSchema={loginSchema}
+          initialValues={{
+            email: '',
+            password: '',
+            confirmPassword: '',
+          }}
+          validationSchema={registerSchema}
           validateOnBlur
           onSubmit={async (values) => {
             const { email, password } = values
-            await handleLogin({ email, password })
+            await handleRegister({ email, password })
           }}
         >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            errors,
-            touched,
-          }) => (
+          {({ handleSubmit, handleChange, values, errors, touched }) => (
             <Form onFinish={handleSubmit} style={styles.form}>
               <Form.Item
                 validateStatus={errors.email && touched.email ? 'error' : ''}
@@ -64,13 +66,12 @@ const Login = () => {
               >
                 <Input
                   name="email"
-                  type="email"
                   placeholder="E-Mail"
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   value={values.email}
                 />
               </Form.Item>
+
               <Form.Item
                 validateStatus={
                   errors.password && touched.password ? 'error' : ''
@@ -81,13 +82,34 @@ const Login = () => {
               >
                 <Input.Password
                   name="password"
-                  placeholder="Password"
+                  placeholder="Passwort"
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   value={values.password}
                 />
               </Form.Item>
+
+              <Form.Item
+                validateStatus={
+                  errors.confirmPassword && touched.confirmPassword
+                    ? 'error'
+                    : ''
+                }
+                help={
+                  errors.confirmPassword && touched.confirmPassword
+                    ? errors.confirmPassword
+                    : ''
+                }
+              >
+                <Input.Password
+                  name="confirmPassword"
+                  placeholder="Passwort bestätigen"
+                  onChange={handleChange}
+                  value={values.confirmPassword}
+                />
+              </Form.Item>
+
               {error && <div style={styles.error}>{error}</div>}
+
               <Form.Item>
                 <Button
                   type="primary"
@@ -95,7 +117,7 @@ const Login = () => {
                   loading={isLoading}
                   style={styles.button}
                 >
-                  Log in
+                  Registrieren
                 </Button>
               </Form.Item>
             </Form>
@@ -133,20 +155,10 @@ const styles = {
   button: {
     width: '100%',
   },
-  socialButtons: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  facebookButton: {
-    width: '48%',
-  },
-  googleButton: {
-    width: '48%',
-  },
   error: {
     color: 'red',
     marginBottom: '10px',
   },
 }
 
-export default Login
+export default Register

@@ -1,26 +1,21 @@
-'use strict'
-
-// npm install pg
 import dotenv from 'dotenv'
-import pkg from 'pg'
-import { DB } from '../config.js' 
+import mongoose from 'mongoose'
+dotenv.config() // will load ./app/.env
 
-// Nutze absoluten Pfad zur .env.Sont findet er sie nciht
-dotenv.config({
-  path: '/Users/laurensohl/Documents/rotaractuserproject/backend/.env',
+const mongoURI = process.env.MONGO_URI || 'mongodb://mongodb:27017/admin'
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+const db = mongoose.connection
+
+db.on('error', (err) => {
+  console.error('MongoDB connection error:', err)
 })
 
-const { Pool } = pkg
-
-console.log('Loaded PGUSER:', process.env.PGUSER)
-// console.log(DB.PGUSER)
-
-const pool = new Pool({
-  user: DB.PGUSER,
-  host: DB.PGHOST,
-  database: DB.PGDATABASE,
-  password: DB.PGPASSWORD,
-  port: DB.PGPORT,
+db.once('open', () => {
+  console.log('MongoDB connected successfully')
 })
 
-export const query = (text, params) => pool.query(text, params)
+export default mongoose

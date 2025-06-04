@@ -1,121 +1,72 @@
 import createError from 'http-errors'
-import UserModel from '../models/user.js'
-const UserModelInstance = new UserModel()
+import MembersModel from '../models/members.js'
+import bcrypt from 'bcrypt'
 
-import AttendeeModel from "../models/attendee.js"
+const MembersModelInstance = new MembersModel()
 
-const AttendeeModelInstance = new AttendeeModel()
-
-// Anpassen
 class AuthService {
-  async register(data) {
-    const { mail } = data
+  async register({ email, password, ...other }) {
+    // 1. Passwort hashen
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
 
-    try {
-      // Check if user already exists
-      const user = await UserModelInstance.findOneByMail(mail)
+    // 2. Neuen Member anlegen – hier müssen username & passwordHash mit rein
+    const newMember = await MembersModelInstance.create({
+      email, // falls Du E-Mail separat speicherst
+      passwordHash, // der gehashte Passwort-String
+      ...other, // z.B. firstName, lastName, agreedToNewsLetter, etc.
+    })
 
-      // If user already exists, reject
-      if (user) {
-        throw createError(409, 'Mail already in use')
-      }
-
-      // User doesn't exist, create new user record
-      return await UserModelInstance.create(data)
-    } catch (err) {
-      throw createError(500, err)
-    }
+    return newMember
   }
 
-  async loginUser(data) {
-    const { username, password } = data
-    console.log(
-      'Daten login services/AuthServices ' + username + ' ' + password
-    )
-
-    try {
-      // Check if user exists
-      const user = await UserModelInstance.findOneByUsername(username)
-      console.log(user)
-
-      // If no user found, reject
-      if (!user) {
-        throw createError(401, 'Incorrect username or password')
-      }
-
-      // Check for matching passwords
-      if (user.password !== password) {
-        throw createError(401, 'Incorrect username or password')
-      }
-
-      return user
-    } catch (err) {
-      throw createError(500, err)
+  async loginMember(data) {
+    const { email, password } = data // Sollte email sein
+    const member = await MembersModelInstance.findOneByMail(email)
+    if (!member) {
+      throw createError(401, 'Incorrect username or password')
     }
+
+    // Hier geschieht der eigentliche Vergleich
+    const isMatch = await bcrypt.compare(password, member.passwordHash) // Punkt 3: Korrekter Passwortvergleich
+    if (!isMatch) {
+      throw createError(401, 'Incorrect username or password')
+    }
+
+    return member // Punkt 4: Gibt Mitglied zurück, aber kein Token
   }
 
-  async loginAttendee(data) {
-    const { username, password } = data
-    console.log(
-      'Daten login services/AuthServices/eventAttendee ' + username + ' ' + password
-    )
-
-    try {
-      // Check if user exists
-      const attendee = await AttendeeModelInstance.findOneByUsername(username)
-      console.log(attendee)
-
-      // If no user found, reject
-      if (!attendee) {
-        throw createError(401, 'Incorrect username or password')
-      }
-
-      // Check for matching passwords
-      if (attendee.password !== password) {
-        throw createError(401, 'Incorrect username or password')
-      }
-
-      return attendee
-    } catch (err) {
-      throw createError(500, err)
-    }
-  }
-
-  // untested
   async googleLogin(profile) {
     const { id, displayName } = profile
 
     try {
-      // Check if user exists
-      const user = await UserModelInstance.findOneByGoogleId(id)
+      const member = await MembersModelInstance.findOneByGoogleId(id)
 
-      // If no user found, create new user
-      if (!user) {
-        return await UserModelInstance.create({ google: { id, displayName } })
+      if (!member) {
+        return await MembersModelInstance.create({
+          google: { id, displayName },
+        })
       }
 
-      // User already exists, return profile
-      return user
+      return member
     } catch (err) {
       throw createError(500, err)
     }
   }
 
-  // untested
   async facebookLogin(profile) {
     const { id, displayName } = profile
 
     try {
-      // Check if user exists
-      const user = await UserModelInstance.findOneByFacebookId(id)
+      const member = await MembersModelInstance.findOneByFacebookId(id)
 
-      // If no user found, create new user
-      if (!user) {
-        return await UserModelInstance.create({ facebook: { id, displayName } })
+      if (!member) {
+        return await MembersModelInstance.create({
+          facebook: { id, displayName },
+        })
       }
 
-      // User already exists, return profile
-      return user
+      return member
     } catch (err) {
       throw createError(500, err)
     }

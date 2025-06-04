@@ -8,14 +8,8 @@ import {
 import Header from './components/Header/Header.js'
 import Home from './routes/Home/Home.js'
 import Login from './routes/Login/Login.js'
-import GuestRegistry from './routes/GuestRegistry/GuestRegistry.js'
-import AttendenceRegistry from './routes/AttendenceRegistry/AttendenceRegistry.js'
-import StatisticsTable from './routes/Statistics/StatisticsTable.js'
-import EventsRegistry from './routes/Events/EventsRegistry.js'
-import EventLogin from './routes/EventLogin/EventLogin.js' // Import EventLogin
+import Register from './routes/Register/Register.js'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
-import EventHome from './routes/EventHome/EventHome.js'
-import EventSuccess from './routes/EventSuccess/EventSucces.js' // Import EventSuccess
 
 function App() {
   return (
@@ -31,11 +25,14 @@ function App() {
 function AppRoutes() {
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Root → Register */}
+      <Route path="/" element={<Navigate to="/register" replace />} />
+
+      {/* Public */}
+      <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/event/:id" element={<EventLogin />} /> {/* Public Route */}
-      {/* Success Page Route */}
-      {/* Private Routes */}
+
+      {/* Geschützte */}
       <Route
         path="/home"
         element={
@@ -44,49 +41,9 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/eventHome/:id"
-        element={
-          <PrivateRoute>
-            <EventHome />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/event/:id/success"
-        element={
-          <PrivateRoute>
-            <EventSuccess />
-          </PrivateRoute>
-        }
-      />{' '}
-      <Route
-        path="/guestRegistry"
-        element={
-          <PrivateRoute>
-            <GuestRegistry />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/attendenceRegistry"
-        element={
-          <PrivateRoute>
-            <AttendenceRegistry />
-          </PrivateRoute>
-        }
-      />
-      <Route path="/eventsRegistry" element={<EventsRegistry />} />
-      <Route
-        path="/statisticsTable"
-        element={
-          <PrivateRoute>
-            <StatisticsTable />
-          </PrivateRoute>
-        }
-      />
-      {/* Fallback Route */}
-      <Route path="*" element={<Navigate to="/home" />} />
+
+      {/* Alles andere → Register */}
+      <Route path="*" element={<Navigate to="/register" replace />} />
     </Routes>
   )
 }

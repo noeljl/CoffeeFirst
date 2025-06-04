@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   checkLoginStatus,
-  loginUser,
-  registerUser,
+  loginMemberAction,
+  registerMemberAction,
   loginEventAttendeeAction,
 } from './Auth.actions.js'
 
@@ -23,35 +23,43 @@ const authSlice = createSlice({
         const { isAuthenticated } = action.payload
         state.isAuthenticated = isAuthenticated
       })
-      // Login success
-      .addCase(loginUser.fulfilled, (state, action) => {
+
+      // Login Member success
+      .addCase(loginMemberAction.fulfilled, (state, action) => {
         const { isAuthenticated } = action.payload
         state.isAuthenticated = isAuthenticated
+        state.error = null
       })
-      // Login failure
-      .addCase(loginUser.rejected, (state, action) => {
+
+      // Login Member failure
+      .addCase(loginMemberAction.rejected, (state, action) => {
         state.isAuthenticated = false
-        state.error = action.payload.error
+        state.error = action.payload || 'Login failed'
       })
+
       // Login Event Attendee success
       .addCase(loginEventAttendeeAction.fulfilled, (state, action) => {
-        console.log("Attendee is logged in")
         const { isAuthenticated } = action.payload
         state.isAuthenticated = isAuthenticated
+        state.error = null
       })
+
       // Login Event Attendee failure
       .addCase(loginEventAttendeeAction.rejected, (state, action) => {
         state.isAuthenticated = false
-        state.error = action.payload.error
+        state.error = action.payload || 'Login failed'
       })
-      // Registration success
-      .addCase(registerUser.fulfilled, (state, action) => {
-        // Optionally handle registration success
+
+      // Register Member success
+      .addCase(registerMemberAction.fulfilled, (state, action) => {
+        // Registrierung erfolgreich, könnte optional Flags setzen
+        state.error = null
       })
-      // Registration failure
-      .addCase(registerUser.rejected, (state, action) => {
+
+      // Register Member failure
+      .addCase(registerMemberAction.rejected, (state, action) => {
         state.isAuthenticated = false
-        state.error = action.payload.error
+        state.error = action.payload || 'Registration failed'
       })
   },
 })

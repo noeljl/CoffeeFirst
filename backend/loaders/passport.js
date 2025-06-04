@@ -1,11 +1,15 @@
 import passport from 'passport' //npm install passport
 import { Strategy as FacebookStrategy } from 'passport-facebook' //npm install passport-facebook
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth' //npm install ...
-import LocalStrategy from 'passport-local' //npm install ...
 import { FACEBOOK, GOOGLE } from '../config.js'
+import passportLocal from 'passport-local'
+import bcrypt from 'bcrypt'
+import MembersModel from '../models/members.js'
 
 import AuthService from '../services/AuthService.js'
 const AuthServiceInstance = new AuthService()
+const MembersModelInstance = new MembersModel()
+const LocalStrategy = passportLocal.Strategy
 
 const passportLoader = (app) => {
   // Initialisiert passport und Session
@@ -39,40 +43,26 @@ const passportLoader = (app) => {
 
   passport.use(
     'local-user',
-    new LocalStrategy(async (username, password, done) => {
-      try {
-        const user = await AuthServiceInstance.loginUser({
-          username,
-          password,
-        })
-        if (user) {
-          user.type = 'user' // Füge den Typ hinzu
+    new LocalStrategy(
+      { usernameField: 'email', passwordField: 'password' },
+      async (email, password, done) => {
+        try {
+          const member = await MembersModelInstance.findOneByMail(email)
+          if (!member) {
+            return done(null, false, { message: 'Unbekannte E-Mail' })
+          }
+          const match = await bcrypt.compare(password, member.passwordHash)
+          if (!match) {
+            return done(null, false, { message: 'Falsches Passwort' })
+          }
+          member.type = 'user'
+          return done(null, member)
+        } catch (err) {
+          return done(err)
         }
-        return done(null, user)
-      } catch (err) {
-        return done(err)
       }
-    })
+    )
   )
-
-  passport.use(
-    'local-attendee',
-    new LocalStrategy(async (username, password, done) => {
-      try {
-        const attendee = await AuthServiceInstance.loginAttendee({
-          username,
-          password,
-        })
-        if (attendee) {
-          attendee.type = 'attendee' // Füge den Typ hinzu
-        }
-        return done(null, attendee)
-      } catch (err) {
-        return done(err)
-      }
-    })
-  )
-
   //  Für login üer Facebook oder Google, ohne Registrierung
   // Google Login Strategie
   // passport.use(
