@@ -1,0 +1,50 @@
+.hero {
+    position: relative;
+    width: 100%;
+    height: 650px; /* Adjust as needed */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.4); /* 40% black */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    color: white;
+    text-align: center;
+    max-width: 800px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.cta-button {
+    background-color: #DA0000;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    border-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 20px 20px;
+}
+
+.cta-button:hover {
+    background-color: #b30000;
+    cursor: pointer;
+}
