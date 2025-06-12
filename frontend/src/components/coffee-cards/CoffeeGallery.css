@@ -1,0 +1,9 @@
+.coffee-gallery {
+  display: flex;
+  gap: 24px;
+  justify-content: start;
+  flex-wrap: wrap;
+  /* optional for responsiveness */
+  padding: 0;
+  margin: 0;
+}
