@@ -1,6 +1,17 @@
 # CoffeeFirst
 
-
+1. You will need to install Docker and the Docker app https://www.docker.com/products/docker-desktop/
+2. Start the Docker app. You might have to complete some installation steps. Defaults should be fine.
+3. Clone the project/open it
+4. Go to the level, where the docker-compose.yml lies
+5. Type docker compose up --build to start the container. This might take a while. Give it some time. There might be some warnings, but it should be fine.
+6. Wait for the lines "MongoDB connected successfully" and "backend | Server listening on PORT 3001"
+7. Type into your browser localhost:3000. You should then see a register site or a login page
+8. If you are on the login page, change the path to localhost:3000/register
+9. Register with a mailadress and a password
+10. Change the browserpath to localhost:3000/login and login with the same credentials
+11. You should see a "welcome, !" sign.
+12. Done
 
 ## Getting started
 
