@@ -1,4 +1,3 @@
-import React from "react";
 import "./Sidebar.css";
 import sidebarData from "./SidebarData";
 import { useNavigate } from "react-router-dom";

@@ -1,5 +1,5 @@
 import React from "react";
-import NavbarSignedOut from "../../components/navbar/Navbar";
+import NavBar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import "./SignUp.css";
 import Button from "../../components/buttons/Button";
@@ -10,7 +10,7 @@ function PlanForm() {
     const navigate = useNavigate();
     return (
         <div>
-            <NavbarSignedOut />
+            <NavBar />
             <div className="signup-form-section">
                 <div className="signup-form-text">
                     <p className="step-indicator">STEP <span style={{ fontWeight: "bold" }}>2</span> OF <span style={{ fontWeight: "bold" }}>3</span></p>

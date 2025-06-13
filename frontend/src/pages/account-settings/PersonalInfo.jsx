@@ -1,5 +1,5 @@
 import React from "react";
-import { NavbarSignedIn } from "../../components/navbar/Navbar";
+import NavBar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 
 function PersonalInfo() {
@@ -8,7 +8,7 @@ function PersonalInfo() {
     return (
         
         <div>
-            <NavbarSignedIn />
+            <NavBar />
             <h1>Perosnal information</h1>
             <Footer />
         </div>

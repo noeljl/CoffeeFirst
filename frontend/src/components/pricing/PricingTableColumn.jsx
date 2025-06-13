@@ -1,4 +1,3 @@
-import React from "react";
 import "./PricingTableColumn.css";
 import checkImg from "../../assets/check.svg";
 

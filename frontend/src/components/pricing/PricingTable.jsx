@@ -1,4 +1,3 @@
-import React from 'react'
 import PricingTableColumn from './PricingTableColumn'
 import './PricingTable.css'
 import membershipData from './MembershipData'

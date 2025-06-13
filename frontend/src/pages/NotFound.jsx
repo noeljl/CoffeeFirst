@@ -1,12 +1,12 @@
 import React from "react";
-import NavbarSignedOut from "../components/navbar/Navbar";
+import NavBar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 
 function NotFound() {
     return (
         
         <div>
-            <NavbarSignedOut />
+            <NavBar />
             <h1>404 - page not found</h1>
             <Footer />
         </div>

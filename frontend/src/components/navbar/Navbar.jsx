@@ -1,56 +1,56 @@
-import React from "react";
+import { useState } from "react";
 import "./Navbar.css";
 import logo from '../../assets/Logo.svg';
-import searchIcon from '../../assets/search-favorite.svg';
-import filterIcon from '../../assets/setting-4.svg';
-import checkInIcon from '../../assets/scan-barcode.svg';
-import menuIcon from '../../assets/menu.svg';
 import Button from "../buttons/Button";
 import { useNavigate } from "react-router-dom";
+import BurgerMenuButton from "../burger-menu/BurgerMenu";
+import Avatar from "../avatar/Avatar";
+import FilterButton from "../filter/Filter";
+import SearchBar from "../search-bar/SearchBar";
+import CheckInButton from "../check-in/CheckIn";
 
+// Handles both navbar types: logged in and out.
+function NavBar() {
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    return (<div>
+        {isLoggedIn ? <SignedIn /> : <SignedOut />}
+    </div>
+    );
+};
 
-
-function NavbarSignedOut() {
+// Logged out navbar.
+function SignedOut() {
     const navigate = useNavigate();
-
     return (
         <div className="navbar-container">
-            <img src={logo} alt="CoffeeFirst Logo" className="logo" onClick={() => {navigate("/")}}/>
-            <div className="button-group">
+            <img src={logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
+            <div className="gap">
                 <Button bg="white" fs="medium" radius="small" padding="small">Sign-In</Button>
-                <Button bg="red" fs="medium" radius="small" padding="small" onClick={() => {navigate("/signup/regform");}}>Sign-Up</Button>
+                <Button bg="red" fs="medium" radius="small" padding="small" onClick={() => { navigate("/signup/regform"); }}>Sign-Up</Button>
             </div>
         </div>
     );
 };
 
-function NavbarSignedIn() {
+// Logged in navbar
+function SignedIn() {
     const navigate = useNavigate();
+    const menuState = useState(false);
     return (
-        <div className="navbar-container signed-in">
-            <img src={logo} alt="CoffeeFirst Logo" className="logo" onClick={() => {navigate("/")}}/>
-            <div className="navbar-search-section">
-                <div className="search-box">
-                    <div className="search-info">
-                        <strong>Where</strong>
-                        <input type="text" placeholder="Search partner store" />
-                    </div>
-                    <button className="search-icon">
-                        <img src={searchIcon} alt="Search" />
-                    </button>
-                </div>
-                <Button bg="white" fs="small" radius="full" icon={filterIcon} padding="medium" fw="bold">Filter</Button>
+        <div className="navbar-container">
+            <img src={logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
+
+            <div className="gap">
+                <SearchBar />
+                <FilterButton />
             </div>
-            <div className="navbar-right-section">
-                <Button bg="red" fs="small" radius="full" icon={checkInIcon} padding="medium" fw="bold">Check-in</Button>
-                <img className="user-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
-                <button className="menu-button">
-                    <img src={menuIcon} alt="Menu" />
-                </button>
+            <div className="gap">
+                <CheckInButton />
+                <Avatar />
+                <BurgerMenuButton />
             </div>
         </div>
     );
 };
 
-export default NavbarSignedOut;
-export { NavbarSignedIn };
+export default NavBar;

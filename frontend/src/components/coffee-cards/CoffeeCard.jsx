@@ -1,4 +1,3 @@
-import React from "react";
 import "./CoffeeCard.css";
 
 function CoffeeCard(props) {

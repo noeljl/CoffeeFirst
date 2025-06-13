@@ -1,15 +1,14 @@
 import React from "react";
-import NavbarSignedOut from "../components/navbar/Navbar";
+import NavBar from "../components/navbar/Navbar";
 import Hero from "../components/hero/Hero";
 import CoffeeGallery from "../components/coffee-cards/CoffeeGallery";
 import Footer from "../components/footer/Footer";
-import { Link } from "react-router-dom";
 import PricingTable from "../components/pricing/PricingTable";
 
 function HomePage() {
     return (
         <div>
-            <NavbarSignedOut />
+            <NavBar />
             <Hero />
             <div className="section">
                 <h2>Some of our partners</h2>

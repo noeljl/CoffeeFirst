@@ -1,4 +1,3 @@
-import React from "react";
 import "./DashboardContent.css";
 import CoffeeGallery from "../coffee-cards/CoffeeGallery"
 

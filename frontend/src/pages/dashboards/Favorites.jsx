@@ -1,5 +1,5 @@
 import React from "react";
-import { NavbarSignedIn } from "../../components/navbar/Navbar";
+import NavBar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Sidebar from "../../components/sidebar/Sidebar";
 import DashboardContent from "../../components/dashboard-content/DashboardContent";
@@ -11,7 +11,7 @@ function Favorites() {
     return (
         
         <div>
-            <NavbarSignedIn />
+            <NavBar />
             <div className="container">
                  <Sidebar />
                  <DashboardContent />

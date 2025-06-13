@@ -1,4 +1,3 @@
-import React from "react";
 import "./SignupForm.css";
 import Button from "../buttons/Button";
 import { useNavigate } from "react-router-dom";
