@@ -1,41 +1,63 @@
-import React from "react";
-import NavbarSignedOut from "../../components/navbar/Navbar";
-import Footer from "../../components/footer/Footer";
-import "./SignUp.css";
-import Button from "../../components/buttons/Button";
-import { useNavigate } from "react-router-dom";
-import checkImg from "../../assets/check.svg"
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import Button from '../../components/buttons/Button.jsx'
+import { setRegistrationDetails } from '../../store/auth/signupSlice'
 
-function SignUp() {
-    const navigate = useNavigate();
-    return (
-        <div>
-            <NavbarSignedOut />
-            <div className="signup-form-section">
-                <div className="signup-form-text">
-                    <p className="step-indicator">STEP <span style={{ fontWeight: "bold" }}>2</span> OF <span style={{ fontWeight: "bold" }}>3</span></p>
-                    <h2>Choose your membership</h2>
-                    <p className="subtitle">Just a few more steps to get your first coffee!</p>
-                    <ul className="advantages-list">
-                        <li>
-                            <img src={checkImg} alt="icon" className="list-icon" />
-                            Free coffee every month
-                        </li>
-                        <li>
-                            <img src={checkImg} alt="icon" className="list-icon" />
-                            Access Munich’s top cafés
-                        </li>
-                        <li>
-                            <img src={checkImg} alt="icon" className="list-icon" />
-                            Cancel anytime
-                        </li>
-                    </ul>
-                    <div><Button type="submit" fs="medium" padding="medium" bg="red" radius="small" width="full" onClick={() => { navigate("/signup/planform") }}>NEXT</Button></div>
-                </div>
-            </div>
-            <Footer />
-        </div>
-    );
+export default function SignupForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [subscribe, setSubscribe] = useState(false) // falls du das Checkbox-Flag brauchst
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log({ email, password })
+    dispatch(setRegistrationDetails({ email, password }))
+    navigate('/signup/planform')
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="signup-form">
+      <input
+        type="email"
+        placeholder="Email"
+        className="inputField"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+
+      <input
+        type="password"
+        placeholder="Add a password"
+        className="inputField"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+
+      <label className="checkbox-container">
+        <input
+          type="checkbox"
+          checked={subscribe}
+          onChange={(e) => setSubscribe(e.target.checked)}
+        />
+        Yes, please email me CoffeeFirst special offers.
+      </label>
+
+      <Button
+        type="submit"
+        fs="medium"
+        padding="medium"
+        bg="red"
+        radius="small"
+        width="full"
+      >
+        NEXT
+      </Button>
+    </form>
+  )
 }
-
-export default SignUp;

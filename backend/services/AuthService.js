@@ -5,19 +5,29 @@ import bcrypt from 'bcrypt'
 const MembersModelInstance = new MembersModel()
 
 class AuthService {
-  async register({ email, password, ...other }) {
-    // 1. Passwort hashen
+  async register(input) {
+    // 1. Passwort extrahieren und hashen
+    const { password, ...fields } = input
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
 
-    // 2. Neuen Member anlegen – hier müssen username & passwordHash mit rein
-    const newMember = await MembersModelInstance.create({
-      email, // falls Du E-Mail separat speicherst
-      passwordHash, // der gehashte Passwort-String
-      ...other, // z.B. firstName, lastName, agreedToNewsLetter, etc.
-    })
+    // 2. Payload zusammenbauen: alle anderen Felder + passwordHash
+    //    (das Feld `password` bleibt außen vor)
+    const payload = {
+      ...fields, // z.B. username, vorname, nachname, whatever
+      email: fields.email, // falls email nicht in fields, kann man sie hier mappen
+      passwordHash, // gehashter string
+    }
 
-    return newMember
+    console.log('Register payload:', payload)
+    // Ausgabe aller mitgegebenen Felder (ohne raw password)
+
+    // 3. Datensatz anlegen
+    const newMember = await MembersModelInstance.create(payload)
+
+    // 4. Optional: alle gespeicherten Werte (inkl. defaults) zurückgeben
+    //    .toJSON() gibt dir ein reines Objekt ohne Sequelize-Instanz-Methoden
+    return newMember.toJSON()
   }
 
   async loginMember(data) {

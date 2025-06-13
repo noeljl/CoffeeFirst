@@ -58,3 +58,15 @@
   height: 30px;
   margin-top: 4px;
 }
+
+.PricingTableColumnContainer {
+  /* Existing styles */
+  border: 2px solid transparent; /* Add a default transparent border */
+  transition: border 0.3s ease-in-out; /* Smooth transition for border change */
+  cursor: pointer; /* Indicate it's clickable */
+}
+
+.PricingTableColumnContainer.selected-plan {
+  border: 2px solid #007bff; /* Example: A blue border for the selected plan */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Optional: Add a subtle shadow */
+}
