@@ -1,5 +1,3 @@
-Test
-
 # CoffeeFirst
 
 1. You will need to install Docker and the Docker app https://www.docker.com/products/docker-desktop/
