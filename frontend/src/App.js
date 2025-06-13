@@ -33,7 +33,6 @@ function App() {
   return (
     <div
       className="page-wrapper"
-      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
       <Router>
         <AppRoutes />

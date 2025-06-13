@@ -6,17 +6,3 @@ body {
   background-color: white; /* optional */
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
-
-/* Root wrapper for entire app */
-.page-wrapper {
-  width: 1440px;
-  min-height: 100vh;
-  margin: 0 auto;
-  background-color: white; /* optional */
-}
-
-/* Default container style for inner content */
-.container {
-  width: 1280px;
-  margin: 0 auto;
-}
