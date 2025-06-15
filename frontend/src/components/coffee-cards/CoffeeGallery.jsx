@@ -1,14 +1,6 @@
 import CoffeeCard from './CoffeeCard'
 import './CoffeeGallery.css'
-import coffeeShops from './CoffeeShops.json'
-
-// Bild manuell importieren
-import mvmCafeImg from '../../assets/mvm-cafe.png'
-
-// Bildzuordnung (für spätere Erweiterung mit mehreren Bildern)
-const imageMap = {
-  'mvm-cafe.png': mvmCafeImg,
-}
+import coffeeShops from './CoffeeShops'
 
 function CoffeeGallery() {
   return (
@@ -16,7 +8,7 @@ function CoffeeGallery() {
       {coffeeShops.map((coffeeShop) => (
         <CoffeeCard
           key={coffeeShop.id}
-          imgSrc={imageMap[coffeeShop.img]}
+          imgSrc={coffeeShop.img}
           title={coffeeShop.title}
           rate={coffeeShop.rate}
           address={coffeeShop.address}

@@ -1,28 +1,30 @@
 import React from "react";
-import cup from "../../assets/dashboard-icons/coffee-cup.png";
-import wishlist from "../../assets/dashboard-icons/wishlist.svg";
-import map from "../../assets/dashboard-icons/map.png";
-import favorite from "../../assets/dashboard-icons/favorite.png";
+// import cup from "../../assets/coffee-cup.png";
+// import wishlist from "../../assets/wishlist.svg";
+// import map from "../../assets/map.png";
+// import favorite from "../../assets/favorite.png";
+
+import Icons from "../../assets/Icons.js";
 
 const menuData = [
     {
         title: "Partners",
-        icon: cup,
+        icon: Icons.coffeeCup,
         link: "/dashboard/partners",
     },
     {
         title: "Wishlist",
-        icon: wishlist,
+        icon: Icons.wishlist,
         link: "/dashboard/wishlist",
     }, 
     {
         title: "Favorites",
-        icon: favorite,
+        icon: Icons.favorite,
         link: "/dashboard/favorites",
     },
     {
         title: "Visited",
-        icon: map,
+        icon: Icons.map,
         link: "/dashboard/visited",
     }
 ];
@@ -30,22 +32,22 @@ const menuData = [
 const accountData = [
     {
         title: "Partners",
-        icon: cup,
+        icon: Icons.coffeeCup,
         link: "/dashboard/partners",
     },
     {
         title: "Wishlist",
-        icon: wishlist,
+        icon: Icons.wishlist,
         link: "/dashboard/wishlist",
     }, 
     {
         title: "Favorites",
-        icon: favorite,
+        icon: Icons.favorite,
         link: "/dashboard/favorites",
     },
     {
         title: "Visited",
-        icon: map,
+        icon: Icons.map,
         link: "/dashboard/visited",
     }
 ];

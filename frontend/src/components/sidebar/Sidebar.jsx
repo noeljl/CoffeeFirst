@@ -1,5 +1,5 @@
 import "./Sidebar.css";
-import sidebarData from "./MenuData";
+import sidebarData from "./MenuData.js";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 

@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./BurgerMenu.css";
-import menuData, { accountData } from "../sidebar/MenuData"; // reuse the same icons
-import menuIcon from '../../assets/menu.svg';
-import settingsIcon from '../../assets/setting.svg';
-import logoutIcon from '../../assets/logout.svg';
+import menuData, { accountData } from "../sidebar/MenuData"; 
+import Icons from "../../assets/Icons";
 
 /* The burger menu icon as a button. It triggers the open/close movement of the actual menu */
 function BurgerMenuButton() {
@@ -12,7 +10,7 @@ function BurgerMenuButton() {
   return (
     <div>
       <button className="menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <img src={menuIcon} alt="Menu" />
+        <img src={Icons.menu} alt="Menu" />
       </button>
       {isMenuOpen && <Menu onClose={() => setIsMenuOpen(false)} />}
     </div>
@@ -40,7 +38,7 @@ function Menu({ onClose }) {
         </div>
         <li className="entries" id={(location.pathname === "/account-settings") && "active"} onClick={() => { navigate("/account-settings"); onClose(); }}>
           <div id="icon">
-            <img src={settingsIcon} alt="Account" />
+            <img src={Icons.setting} alt="Account" />
           </div>
           <div id="title">
             <span>Account settings</span>
@@ -49,7 +47,7 @@ function Menu({ onClose }) {
 
         <li className="entries" id={(location.pathname === "/logout") && "active"} onClick={() => { navigate("/logout"); onClose(); }}>
           <div id="icon">
-            <img src={logoutIcon} alt="Logout" />
+            <img src={Icons.logout} alt="Logout" />
           </div>
           <div id="title">
             <span>Logout</span>

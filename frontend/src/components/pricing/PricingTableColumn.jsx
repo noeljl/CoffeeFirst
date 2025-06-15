@@ -1,6 +1,5 @@
-import React from 'react'
 import './PricingTableColumn.css'
-import checkImg from '../../assets/check.svg'
+import Icons from '../../assets/Icons'
 
 function PricingTableColumn({
   name,
@@ -34,7 +33,7 @@ function PricingTableColumn({
           return (
             <li key={key}>
               <div>
-                <img src={checkImg} className="list-icon" alt="Checkmark" />
+                <img src={Icons.check} className="list-icon" alt="Checkmark" />
               </div>
               <div>{val}</div>
             </li>

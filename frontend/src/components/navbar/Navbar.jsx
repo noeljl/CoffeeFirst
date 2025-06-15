@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./Navbar.css";
-import logo from '../../assets/Logo.svg';
 import Button from "../buttons/Button";
 import { useNavigate } from "react-router-dom";
 import BurgerMenuButton from "../burger-menu/BurgerMenu";
@@ -8,6 +7,8 @@ import Avatar from "../avatar/Avatar";
 import FilterButton from "../filter/Filter";
 import SearchBar from "../search-bar/SearchBar";
 import CheckInButton from "../check-in/CheckIn";
+
+import Icons from "../../assets/Icons";
 
 // Handles both navbar types: logged in and out.
 function NavBar() {
@@ -23,7 +24,7 @@ function SignedOut() {
     const navigate = useNavigate();
     return (
         <div className="navbar-container">
-            <img src={logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
+            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
             <div className="gap">
                 <Button bg="white" fs="medium" radius="small" padding="small">Sign-In</Button>
                 <Button bg="red" fs="medium" radius="small" padding="small" onClick={() => { navigate("/signup/regform"); }}>Sign-Up</Button>
@@ -38,7 +39,7 @@ function SignedIn() {
     const menuState = useState(false);
     return (
         <div className="navbar-container">
-            <img src={logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
+            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
 
             <div className="gap">
                 <SearchBar />
