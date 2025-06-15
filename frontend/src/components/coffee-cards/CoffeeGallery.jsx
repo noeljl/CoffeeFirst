@@ -1,4 +1,3 @@
-import React from 'react'
 import CoffeeCard from './CoffeeCard'
 import './CoffeeGallery.css'
 import coffeeShops from './CoffeeShops.json'

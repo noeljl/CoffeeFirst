@@ -1,5 +1,5 @@
 import React from "react";
-import NavbarSignedOut from "../../components/navbar/Navbar";
+import NavBar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import SignupForm from "../../components/signup-form/SignupForm";
 import "./SignUp.css";
@@ -7,7 +7,7 @@ import "./SignUp.css";
 function RegForm() {
     return (
         <div>
-            <NavbarSignedOut />
+            <NavBar />
             <div className="signup-form-section">
                 <div className="signup-form-text">
                     <p className="step-indicator">STEP <span style={{ fontWeight: "bold" }}>1</span> OF <span style={{ fontWeight: "bold" }}>3</span></p>

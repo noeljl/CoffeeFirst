@@ -1,4 +1,3 @@
-import React from "react";
 import heroBackground from "../../assets/hero-background.jpg";
 import "./Hero.css";
 import Button from "../buttons/Button";
