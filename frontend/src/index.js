@@ -1,3 +1,4 @@
+// index.js
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -5,14 +6,18 @@ import { configureStore } from '@reduxjs/toolkit'
 import './index.css'
 import App from './App.js'
 import reportWebVitals from './reportWebVitals.js'
-import authReducer from './store/auth/Auth.reducers.js' // Passe den Pfad zum Auth-Reducer an
+
+// Importiere deine Reducer
+import authReducer from './store/auth/Auth.reducers.js'
 import memberReducer from './store/member/Member.reducers.js'
+import signupReducer from './store/auth/signupSlice.js' // <-- NEU: Importiere deinen signupReducer
 
 // Konfiguriere den Redux Store
 const store = configureStore({
   reducer: {
-    auth: authReducer, // Dein Auth-Reducer
-    member: memberReducer, // Dein User-Reducer
+    auth: authReducer,
+    member: memberReducer,
+    signup: signupReducer, // <-- NEU: Füge den signupReducer hinzu
   },
 })
 
@@ -25,7 +30,4 @@ root.render(
   </React.StrictMode>
 )
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
