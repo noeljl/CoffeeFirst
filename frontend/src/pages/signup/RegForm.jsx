@@ -1,8 +1,8 @@
 import React from "react";
-import NavBar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import SignupForm from "../../components/signup-form/SignupForm";
 import "./SignUp.css";
+import NavBar from "../../components/ui/navbar/Navbar";
 
 function RegForm() {
     return (

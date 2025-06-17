@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./BurgerMenu.css";
-import dashboardMenu from "../../sidebars/MenuData";
+import dashboardMenu from "../sidebars/MenuData";
 import Icons from "../../../assets/Icons";
 
 /* The burger menu icon as a button. It triggers the open/close movement of the actual menu */

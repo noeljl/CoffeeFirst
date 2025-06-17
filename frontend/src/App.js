@@ -24,6 +24,7 @@ import AccountSettings from './components/views/AccountSettings.jsx'
 // Dynamic routings
 import DashboardLayout from './components/layout/DashboardLayout.jsx'
 import SettingsLayout from './components/layout/SettingsLayout.jsx'
+import CafePage from './components/cafe/CafePage.jsx'
 
 
 
@@ -58,7 +59,10 @@ function AppRoutes() {
       {/* Dynamic dashboard routing */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Navigate to="partners" replace />} />
+        {/* List pages (partners, favorites, etc.) */}
         <Route path=":section" element={<Dashboard />} />
+        {/* Single café page */}
+        <Route path=":section/:cafeSlug" element={<CafePage />} />
       </Route>
 
       {/* Dynamic Account Settings routings */}

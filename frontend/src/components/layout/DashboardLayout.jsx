@@ -1,6 +1,6 @@
 import React from "react";
 import TwoColumnLayout from "./TwoColumnLayout";
-import DashboardSidebar from "../sidebars/DashboardSidebar";
+import DashboardSidebar from "../ui/sidebars/DashboardSidebar";
 import { Outlet } from "react-router-dom";
 
 /* 

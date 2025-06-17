@@ -1,13 +1,13 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import NavbarSignedOut from '../../components/navbar/Navbar'
 import Footer from '../../components/footer/Footer'
 import './SignUp.css'
 import { useNavigate } from 'react-router-dom'
-import PricingTable from '../../components/pricing/PricingTable'
 // Corrected import path for setPlanDetails from the signupSlice
 import { setPlanDetails } from '../../store/auth/signupSlice.js' // <-- IMPORTANT CHANGE HERE!
 import Button from '../../components/ui/buttons/Button.jsx'
+import NavBar from '../../components/ui/navbar/Navbar.jsx'
+import PricingTable from '../../components/ui/pricing/PricingTable.jsx'
 
 function PlanForm() {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ function PlanForm() {
 
   return (
     <div>
-      <NavbarSignedOut />
+      <NavBar />
       <div className="signup-form-section">
         <div className="signup-form-text">
           <p className="step-indicator">

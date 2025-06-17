@@ -23,7 +23,6 @@ import logo2 from "./svg/Logo.svg"
 import logout from "./svg/logout.svg"
 import map from "./png/map.png"
 import menu from "./svg/menu.svg"
-import mvmCafe from "./png/mvm-cafe.png"
 import person from "./svg/person.svg"
 import pet from "./svg/pet.svg"
 import place from "./svg/place.svg"
@@ -71,7 +70,6 @@ const Icons = {
     logout: logout,
     map: map,
     menu: menu,
-    mvmCafe: mvmCafe,
     person: person,
     pet: pet,
     place: place,
