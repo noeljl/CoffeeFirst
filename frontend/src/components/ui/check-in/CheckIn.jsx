@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./CheckIn.css";
 import Button from "../buttons/Button";
-import Icons from "../../assets/Icons";
+import Icons from "../../../assets/Icons";
+
 
 function CheckInButton() {
     const [isCheckInOpen, setCheckInOpen] = useState(false);

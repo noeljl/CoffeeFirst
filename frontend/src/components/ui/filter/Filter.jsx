@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./Filter.css";
 import Button from "../buttons/Button";
-import Icons from "../../assets/Icons";
+import Icons from "../../../assets/Icons";
+
 
 function FilterButton() {
     const [isFilterOpen, setFilterOpen] = useState(false);

@@ -1,14 +1,11 @@
 import React from "react";
-import PricingTableColumn from "../components/pricing/PricingTableColumn";
-import PricingTable from "../components/pricing/PricingTable";
-import NavBar from "../components/navbar/Navbar";
 
 function TempBlankPage() {
     return (
         <div>
-            <NavBar />
-            <PricingTableColumn />
-            <PricingTable />
+            <h1>Temporary Blank Page</h1>
+            <p>This page is under construction. Please check back later.</p>
+            <p>Feel free to explore other sections of the application.</p>
         </div>
     );
 }

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "./Navbar.css";
-import Button from "../buttons/Button";
+import Button from "../ui/buttons/Button";
 import { useNavigate } from "react-router-dom";
-import BurgerMenuButton from "../burger-menu/BurgerMenu";
-import Avatar from "../avatar/Avatar";
-import FilterButton from "../filter/Filter";
-import SearchBar from "../search-bar/SearchBar";
-import CheckInButton from "../check-in/CheckIn";
+import BurgerMenuButton from "../ui/burger-menu/BurgerMenu";
+import Avatar from "../ui/avatar/Avatar";
+import FilterButton from "../ui/filter/Filter";
+import SearchBar from "../ui/search-bar/SearchBar";
+import CheckInButton from "../ui/check-in/CheckIn";
 
 import Icons from "../../assets/Icons";
 

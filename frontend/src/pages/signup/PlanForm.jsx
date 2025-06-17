@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux'
 import NavbarSignedOut from '../../components/navbar/Navbar'
 import Footer from '../../components/footer/Footer'
 import './SignUp.css'
-import Button from '../../components/buttons/Button'
 import { useNavigate } from 'react-router-dom'
 import PricingTable from '../../components/pricing/PricingTable'
 // Corrected import path for setPlanDetails from the signupSlice
 import { setPlanDetails } from '../../store/auth/signupSlice.js' // <-- IMPORTANT CHANGE HERE!
+import Button from '../../components/ui/buttons/Button.jsx'
 
 function PlanForm() {
   const navigate = useNavigate()

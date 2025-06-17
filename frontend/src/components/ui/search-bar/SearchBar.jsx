@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./SearchBar.css";
-import Icons from "../../assets/Icons";
+import Icons from "../../../assets/Icons";
 
 function SearchBar() {
     const [isSearchBarOpen, setSearchBarOpen] = useState(false);

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./BurgerMenu.css";
-import menuData, { accountData } from "../sidebar/MenuData"; 
-import Icons from "../../assets/Icons";
+import dashboardMenu from "../../sidebars/MenuData";
+import Icons from "../../../assets/Icons";
 
 /* The burger menu icon as a button. It triggers the open/close movement of the actual menu */
 function BurgerMenuButton() {
@@ -25,7 +25,7 @@ function Menu({ onClose }) {
     <div className="burger-menu">
       <ul>
         <div className="border">
-          {menuData.map((val, key) => (
+          {dashboardMenu.map((val, key) => (
             <li key={key} className="entries" id={(location.pathname === val.link) && "active"} onClick={() => { navigate(val.link); onClose(); }}>
               <div id="icon">
                 <img src={val.icon} alt={val.title} />

@@ -1,11 +1,6 @@
-.sidebar {
-  height: 100%;
-  width: 250px;
-
-  padding: 40px 20px;
-  /* border-right: 1px solid #eaeaea; */
+h2 {
+  font-size: 20px;;
 }
-
 .sidebarList {
   height: auto;
   width: 100%;
@@ -31,10 +26,6 @@
   cursor: pointer;
 }
 
-#active {
-  background-color: #F2F2F2;
-}
-
 #icon {
   height: 26px;
   width: 26px;
@@ -42,8 +33,4 @@
   flex: 30%;
   place-items: center;
   object-fit: contain;
-}
-
-.sidebarEntries #title {
-  flex: 70%
 }
