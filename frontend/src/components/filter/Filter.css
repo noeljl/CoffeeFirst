@@ -34,6 +34,11 @@
   cursor: pointer;
 }
 
+.close-btn img {
+  width: 20px;
+  height: 20px;
+}
+
 .filter-section {
   margin-bottom: 1.5rem;
 }
