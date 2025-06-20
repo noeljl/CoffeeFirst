@@ -59,7 +59,7 @@ function FilterModal({ onClose }) {
         <div className="filter-header">
           <h2>Filters</h2>
           <button className="close-btn" onClick={onClose}>
-            <img src={Icons.x} alt="close" />
+            <img src={Icons.cancel} alt="close" />
           </button>
         </div>
         <div className="filter-section">
