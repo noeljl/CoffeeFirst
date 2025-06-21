@@ -1,0 +1,79 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 40px; /* Increased padding */
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Adjust width for responsiveness */
+  max-width: 500px; /* Max width for larger screens */
+}
+
+.heart-icon {
+  margin-bottom: 20px;
+  color: #e53935; /* Red color for the broken heart */
+}
+
+.heart-icon svg {
+  width: 80px; /* Adjusted icon size */
+  height: 80px; /* Adjusted icon size */
+  stroke-width: 2; /* Adjust stroke thickness */
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 24px; /* Adjusted font size */
+}
+
+.modal-content p {
+  margin-bottom: 30px; /* Increased margin */
+  color: #555;
+  font-size: 16px; /* Adjusted font size */
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Increased gap */
+}
+
+.modal-buttons button {
+  padding: 12px 25px; /* Adjusted padding */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px; /* Adjusted font size */
+  transition: background-color 0.3s ease;
+}
+
+.modal-buttons .continue-button {
+  background-color: #333; /* Darker color for continue */
+  color: #fff;
+}
+
+.modal-buttons .continue-button:hover {
+  background-color: #555;
+}
+
+.modal-buttons .cancel-button {
+  background-color: #e53935; /* Red for cancel */
+  color: #fff;
+}
+
+.modal-buttons .cancel-button:hover {
+  background-color: #c62828;
+}
