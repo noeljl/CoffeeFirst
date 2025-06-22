@@ -15,19 +15,19 @@ import RegForm from './pages/signup/RegForm.jsx'
 import PlanForm from './pages/signup/PlanForm.jsx'
 import Payment from './pages/signup/Payment.jsx'
 
-// Dashboard pages
-import Partners from './pages/dashboards/Partners.jsx'
-import Wishlist from './pages/dashboards/Wishlist.jsx'
-import Favorites from './pages/dashboards/Favorites.jsx'
-import Visited from './pages/dashboards/Visited.jsx'
-
-// Account settings
-import PersonalInfo from './pages/account-settings/PersonalInfo.jsx'
-import Membership from './pages/account-settings/Membership.jsx'
-
 // Misc
 import NotFound from './pages/NotFound.jsx'
 import TempBlankPage from './pages/TempBlankPage.jsx'
+import Dashboard from './components/views/Dashboard.jsx'
+import AccountSettings from './components/views/AccountSettings.jsx'
+
+// Dynamic routings
+import DashboardLayout from './components/layout/DashboardLayout.jsx'
+import SettingsLayout from './components/layout/SettingsLayout.jsx'
+import CafePage from './components/cafe/CafePage.jsx'
+
+
+
 
 function App() {
   return (
@@ -56,69 +56,20 @@ function AppRoutes() {
       {/* Testing */}
       <Route path="/testing" element={<TempBlankPage />} />
 
-      <Route path="/dashboard/partners" element={<Partners />} />
-      <Route path="/dashboard/wishlist" element={<Wishlist />} />
-      <Route path="/dashboard/favorites" element={<Favorites />} />
-      <Route path="/dashboard/visited" element={<Visited />} />
+      {/* Dynamic dashboard routing */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<Navigate to="partners" replace />} />
+        {/* List pages (partners, favorites, etc.) */}
+        <Route path=":section" element={<Dashboard />} />
+        {/* Single café page */}
+        <Route path=":section/:cafeSlug" element={<CafePage />} />
+      </Route>
 
-      {/* Account Settings */}
-      <Route
-        path="/account-settings"
-        element={<Navigate to="/account-settings/personal-info" replace />}
-      />
-      <Route
-        path="/account-settings/personal-info"
-        element={<PersonalInfo />}
-      />
-      <Route path="/account-settings/membership" element={<Membership />} />
-
-      <Route
-        path="/dashboard"
-        element={<Navigate to="/dashboard/partners" replace />}
-      />
-      <Route path="/dashboard/partners" element={<Partners />} />
-      <Route path="/dashboard/wishlist" element={<Wishlist />} />
-      <Route path="/dashboard/favorites" element={<Favorites />} />
-      <Route path="/dashboard/visited" element={<Visited />} />
-
-      <Route
-        path="/account-settings"
-        element={<Navigate to="/account-settings/personal-info" replace />}
-      />
-      <Route
-        path="/account-settings/personal-info"
-        element={<PersonalInfo />}
-      />
-      <Route path="/account-settings/membership" element={<Membership />} />
-
-      {/* 
-      Protected Dashboard & Settings
-      <Route
-        element={
-          <PrivateRoute>
-            <React.Fragment />
-          </PrivateRoute>
-        }
-      >
-        <Route
-          path="/dashboard"
-          element={<Navigate to="/dashboard/partners" replace />}
-        />
-        <Route path="/dashboard/partners" element={<Partners />} />
-        <Route path="/dashboard/wishlist" element={<Wishlist />} />
-        <Route path="/dashboard/favorites" element={<Favorites />} />
-        <Route path="/dashboard/visited" element={<Visited />} />
-
-        <Route
-          path="/account-settings"
-          element={<Navigate to="/account-settings/personal-info" replace />}
-        />
-        <Route
-          path="/account-settings/personal-info"
-          element={<PersonalInfo />}
-        />
-        <Route path="/account-settings/membership" element={<Membership />} />
-      </Route>  */}
+      {/* Dynamic Account Settings routings */}
+      <Route path="/account-settings" element={<SettingsLayout />}>
+        <Route index element={<Navigate to="personal" replace />} />
+        <Route path=":section" element={<AccountSettings />} />
+      </Route>
 
       {/* Catch-all 404 */}
       <Route path="*" element={<NotFound />} />

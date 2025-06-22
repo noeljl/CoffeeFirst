@@ -23,7 +23,6 @@ import logo2 from "./svg/Logo.svg"
 import logout from "./svg/logout.svg"
 import map from "./png/map.png"
 import menu from "./svg/menu.svg"
-import mvmCafe from "./png/mvm-cafe.png"
 import person from "./svg/person.svg"
 import pet from "./svg/pet.svg"
 import place from "./svg/place.svg"
@@ -44,6 +43,8 @@ import wishlist from "./svg/wishlist.svg"
 import facebook from "./svg/facebookIcon.svg"
 import x from "./svg/xIcon.svg"
 import linkedin from "./svg/linkedinIcon.svg"
+import coffeeShopColor from "./svg/coffeeShopColor.svg"
+import starGold2 from "./svg/starGold2.svg"
 
 const Icons = {
     logo: logo,
@@ -71,7 +72,6 @@ const Icons = {
     logout: logout,
     map: map,
     menu: menu,
-    mvmCafe: mvmCafe,
     person: person,
     pet: pet,
     place: place,
@@ -91,7 +91,9 @@ const Icons = {
     wishlist: wishlist,
     x: x,
     facebook: facebook,
-    linkedin: linkedin
+    linkedin: linkedin,
+    coffeeShopColor: coffeeShopColor,
+    starGold2: starGold2
 }
 
 

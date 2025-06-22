@@ -1,6 +1,6 @@
 import heroBackground from "../../assets/png/hero-background.jpg";
+import Button from "../ui/buttons/Button";
 import "./Hero.css";
-import Button from "../buttons/Button";
 import { useNavigate } from "react-router-dom";
 
 function Hero() {

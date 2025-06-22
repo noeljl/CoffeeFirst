@@ -1,9 +1,9 @@
 import React from "react";
-import NavBar from "../components/navbar/Navbar";
 import Hero from "../components/hero/Hero";
-import CoffeeGallery from "../components/coffee-cards/CoffeeGallery";
+import CoffeeGallery from "../components/cafes/CafeGallery";
 import Footer from "../components/footer/Footer";
-import PricingTable from "../components/pricing/PricingTable";
+import PricingTable from "../components/ui/pricing/PricingTable";
+import NavBar from "../components/ui/navbar/Navbar";
 
 function HomePage() {
     return (

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Button from '../../components/buttons/Button.jsx'
 import { setRegistrationDetails } from '../../store/auth/signupSlice'
+import Button from '../../components/ui/buttons/Button'
 
 export default function SignupForm() {
   const [email, setEmail] = useState('')
