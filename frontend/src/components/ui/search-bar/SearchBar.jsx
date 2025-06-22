@@ -19,31 +19,31 @@ function SearchBar() {
 };
 
 export default SearchBar; */
-import React, { useState, useMemo } from 'react';
-import { SEARCH_ITEMS } from '../../components/coffee-cards/CoffeeShops';
-import searchIcon from '../../assets/svg/searchFavorite.svg';
-import placeIcon  from '../../assets/svg/place.svg';
-import cafeIcon   from '../../assets/svg/coffeeShop.svg';
-import './SearchBar.css';
+import React, { useState, useMemo } from 'react'
+import { SEARCH_ITEMS } from './../../cafes/CafesData.js'
+import searchIcon from '../../../assets/svg/searchFavorite.svg'
+import placeIcon from '../../../assets/svg/place.svg'
+import cafeIcon from '../../../assets/svg/coffeeShop.svg'
+import './SearchBar.css'
 
 export default function SearchBar({ onSelect }) {
-  const [query, setQuery] = useState('');
-  const [open,  setOpen]  = useState(false);
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
 
   // memoized filter
   const suggestions = useMemo(() => {
-    if (!query) return [];
-    return SEARCH_ITEMS.filter(item =>
+    if (!query) return []
+    return SEARCH_ITEMS.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
-    );
-  }, [query]);
+    )
+  }, [query])
 
   // handler for both click-on-icon and selecting an item
-  const handleSelect = item => {
-    onSelect?.(item);
-    setQuery(item.name);
-    setOpen(false);
-  };
+  const handleSelect = (item) => {
+    onSelect?.(item)
+    setQuery(item.name)
+    setOpen(false)
+  }
 
   return (
     <div className="search-box">
@@ -52,9 +52,9 @@ export default function SearchBar({ onSelect }) {
         <input
           type="text"
           value={query}
-          onChange={e => {
-            setQuery(e.target.value);
-            setOpen(!!e.target.value);
+          onChange={(e) => {
+            setQuery(e.target.value)
+            setOpen(!!e.target.value)
           }}
           onBlur={() => setTimeout(() => setOpen(false), 100)}
         />
@@ -69,7 +69,7 @@ export default function SearchBar({ onSelect }) {
 
       {open && suggestions.length > 0 && (
         <ul className="search-dropdown">
-          {suggestions.map(item => (
+          {suggestions.map((item) => (
             <li key={item.name} onMouseDown={() => handleSelect(item)}>
               <img
                 src={item.type === 'district' ? placeIcon : cafeIcon}
@@ -87,5 +87,5 @@ export default function SearchBar({ onSelect }) {
         </ul>
       )}
     </div>
-  );
+  )
 }
