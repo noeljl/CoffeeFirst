@@ -1,10 +1,8 @@
 // src/pages/membership/Membership.jsx
 import React, { useState } from 'react' // Import useState
-import NavBar from '../../components/navbar/Navbar'
-import Footer from '../../components/footer/Footer'
-import CancellationModal from '../../components/cancellationModal/CancellationModal' // Import the modal
+import CancellationModal from '../cancellationModal/CancellationModal' // Import the modal
 import './Membership.css'
-import Button from '../../components/buttons/Button'
+import Button from '../../components/ui/buttons/Button.jsx'
 
 const advantages = [
   'Large plan advantage 1',
@@ -35,8 +33,6 @@ export default function Membership() {
 
   return (
     <div className="membership-settings-page">
-      <NavBar />
-
       <main className="membership-info-container">
         <h1 className="membership-info-title">Membership Settings</h1>
         <section className="ms-section auto-renew">
@@ -72,15 +68,10 @@ export default function Membership() {
           </ul>
         </section>
         <hr className="ms-divider" />
-        <div className="button-group">
-          {/* Attach the handler to the Button component */}
-          <Button onClick={handleCancelMembershipClick}>
-            Cancel membership
-          </Button>
-        </div>
+        <Button bg="red" radius="small" padding="medium" fw="bold">
+          Cancel membership
+        </Button>
       </main>
-
-      <Footer />
 
       {/* Render the CancellationModal, passing props to control its visibility and actions */}
       <CancellationModal

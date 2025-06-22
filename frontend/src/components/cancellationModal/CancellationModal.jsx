@@ -1,6 +1,6 @@
 import React from 'react'
 import './CancellationModal.css' // You'll need to create this CSS file
-import Button from '../buttons/Button'
+import Button from '../../components/ui/buttons/Button.jsx'
 
 export default function CancellationModal({ isOpen, onClose, onContinue }) {
   if (!isOpen) return null

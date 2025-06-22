@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import NavBar from '../../components/navbar/Navbar'
-import Footer from '../../components/footer/Footer'
 import './PersonalInfo.css'
-import Button from '../../components/buttons/Button.jsx'
+import Button from '../../components/ui/buttons/Button.jsx'
 
 function PersonalInfo() {
   // State, welches Feld gerade editiert wird: 'legalName' | 'profilePic' | 'email' | 'password' | null
@@ -58,8 +56,6 @@ function PersonalInfo() {
 
   return (
     <div className="personal-info-page">
-      <NavBar />
-
       <main className="personal-info-container">
         <h1 className="personal-info-title">Personal information</h1>
 
@@ -338,13 +334,11 @@ function PersonalInfo() {
         </div>
 
         <div className="delete-account-container">
-          <div className="button-group">
-            <Button>Delete account</Button>
-          </div>
+          <Button bg="red" radius="small" padding="medium" fw="bold">
+            Delete account
+          </Button>
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }
