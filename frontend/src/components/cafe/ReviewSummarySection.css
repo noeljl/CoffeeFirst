@@ -1,0 +1,55 @@
+.reviewContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 20px;
+  border-bottom: 1px solid #D4D4D4;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.title {
+    font-size: 22px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    color: black;
+}
+
+.ratingsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+}
+
+.ratingItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border-right: 1px solid #D4D4D4;
+    padding-right: 50px;
+}
+
+.ratingItem,p {
+    margin: 0;
+    padding: 0;
+}

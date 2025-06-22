@@ -24,13 +24,13 @@ function CafePage() {
     <>
       <CafeHeaderSection cafe={cafe} />
       <VisitStatusCardSection lastVisit="2025-04-24" />
-      <AboutSection title="About the café"   text={cafe.aboutCafe} />
-      <AboutSection title="About the coffee" text={cafe.aboutCoffee} />
+      <AboutSection title="About the café"   description={cafe.aboutCafe} />
+      <AboutSection title="About the coffee" description={cafe.aboutCoffee} />
       <SustainabilitySection   list={cafe.sustainability} />
-      <CoffeeVariantsSection   variants={cafe.variants} />
-      <CafeOffersSection       offers={cafe.offers} />
+      <CoffeeVariantsSection   list={cafe.variants} />
+      <CafeOffersSection       list={cafe.offers} />
       <ReviewSummarySection    ratings={cafe.ratings} />
-      <MapEmbedSection         coords={cafe.coords} name={cafe.name} />
+      <MapEmbedSection         coords={cafe.coords}/>
     </>
   );
 }

@@ -43,6 +43,8 @@ import wishlist from "./svg/wishlist.svg"
 import facebook from "./svg/facebookIcon.svg"
 import x from "./svg/xIcon.svg"
 import linkedin from "./svg/linkedinIcon.svg"
+import coffeeShopColor from "./svg/coffeeShopColor.svg"
+import starGold2 from "./svg/starGold2.svg"
 
 const Icons = {
     logo: logo,
@@ -89,7 +91,9 @@ const Icons = {
     wishlist: wishlist,
     x: x,
     facebook: facebook,
-    linkedin: linkedin
+    linkedin: linkedin,
+    coffeeShopColor: coffeeShopColor,
+    starGold2: starGold2
 }
 
 

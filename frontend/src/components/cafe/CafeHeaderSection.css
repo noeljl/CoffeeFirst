@@ -12,7 +12,6 @@ h1 {
 .imageContainer {
     display: flex;
     flex-direction: row;
-    width: 845px;
     height: 388px;
     gap: 18px;
     padding: 0;
