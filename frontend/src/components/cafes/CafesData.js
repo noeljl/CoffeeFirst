@@ -38,4 +38,28 @@ const CoffeeShops = [
   }
 ]
 
+export const Districts = [
+  "Maxvorstadt",
+  "Schwabing",
+  "Glockenbach",
+  "Lehel",
+  "Altstadt-Lehel",
+  "Sendling",
+  "Sendling-Westpark",
+  "Au-Haidhausen",
+  "Bogenhausen",
+  "Ludwigsvorstadt-Isarvorstadt",
+  "Neuhausen-Nymphenburg" 
+]
+
+// after your existing `export const Districts = […]` and `export default CoffeeShops;`
+
+export const SEARCH_ITEMS = [
+  // first all districts
+  ...Districts.map(name => ({ type: 'district', name })),
+  // then all cafés (using their title)
+  ...CoffeeShops.map(shop => ({ type: 'cafe',     name: shop.title }))
+];
+
 export default CoffeeShops;
+
