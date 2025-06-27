@@ -1,29 +1,28 @@
 // Filter.jsx
-import { useState } from "react";
-import "./Filter.css";
-import Button from "../buttons/Button";
-import Icons from "../../../assets/Icons";
-
+import { useState } from 'react'
+import './Filter.css'
+import Button from '../buttons/Button'
+import Icons from '../../../assets/Icons'
 
 const offers = [
-  { label: "Indoor Sitting", icon: Icons.couch },
-  { label: "Outdoor Sitting", icon: Icons.sun },
-  { label: "Free Wifi", icon: Icons.wifi },
-  { label: "Free Water", icon: Icons.water },
-  { label: "Free Charging", icon: Icons.charging },
-  { label: "Pet Friendly", icon: Icons.pet },
-  { label: "Wheelchair Friendly", icon: Icons.wheelchair },
-];
+  { label: 'Indoor Sitting', icon: Icons.couch },
+  { label: 'Outdoor Sitting', icon: Icons.sun },
+  { label: 'Free Wifi', icon: Icons.wifi },
+  { label: 'Free Water', icon: Icons.water },
+  { label: 'Free Charging', icon: Icons.charging },
+  { label: 'Pet Friendly', icon: Icons.pet },
+  { label: 'Wheelchair Friendly', icon: Icons.wheelchair },
+]
 
 const coffeeVariants = [
-  { label: "Espresso", icon: Icons.coffeeBean },
-  { label: "Flat White", icon: Icons.coffeeBean },
-  { label: "Cold Brew", icon: Icons.coffeeBean },
-  { label: "Cappuccino", icon: Icons.coffeeBean },
-];
+  { label: 'Espresso', icon: Icons.coffeeBean },
+  { label: 'Flat White', icon: Icons.coffeeBean },
+  { label: 'Cold Brew', icon: Icons.coffeeBean },
+  { label: 'Cappuccino', icon: Icons.coffeeBean },
+]
 
 function FilterButton() {
-  const [isFilterOpen, setFilterOpen] = useState(false);
+  const [isFilterOpen, setFilterOpen] = useState(false)
   return (
     <div>
       <Button
@@ -39,20 +38,20 @@ function FilterButton() {
       </Button>
       {isFilterOpen && <FilterModal onClose={() => setFilterOpen(false)} />}
     </div>
-  );
+  )
 }
 
 function FilterModal({ onClose }) {
-  const [selectedOffers, setSelectedOffers] = useState([]);
-  const [selectedVariants, setSelectedVariants] = useState([]);
+  const [selectedOffers, setSelectedOffers] = useState([])
+  const [selectedVariants, setSelectedVariants] = useState([])
 
   const toggleSelection = (value, list, setList) => {
     setList(
       list.includes(value)
         ? list.filter((item) => item !== value)
         : [...list, value]
-    );
-  };
+    )
+  }
 
   return (
     <div className="filter-overlay">
@@ -70,9 +69,15 @@ function FilterModal({ onClose }) {
               <button
                 key={offer.label}
                 className={`filter-option ${
-                  selectedOffers.includes(offer.label) ? "active" : ""
+                  selectedOffers.includes(offer.label) ? 'active' : ''
                 }`}
-                onClick={() => toggleSelection(offer.label, selectedOffers, setSelectedOffers)}
+                onClick={() =>
+                  toggleSelection(
+                    offer.label,
+                    selectedOffers,
+                    setSelectedOffers
+                  )
+                }
               >
                 <img src={offer.icon} alt={offer.label} /> {offer.label}
               </button>
@@ -86,10 +91,14 @@ function FilterModal({ onClose }) {
               <button
                 key={variant.label}
                 className={`filter-option ${
-                  selectedVariants.includes(variant.label) ? "active" : ""
+                  selectedVariants.includes(variant.label) ? 'active' : ''
                 }`}
                 onClick={() =>
-                  toggleSelection(variant.label, selectedVariants, setSelectedVariants)
+                  toggleSelection(
+                    variant.label,
+                    selectedVariants,
+                    setSelectedVariants
+                  )
                 }
               >
                 <img src={variant.icon} alt={variant.label} /> {variant.label}
@@ -104,7 +113,7 @@ function FilterModal({ onClose }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default FilterButton;
+export default FilterButton
