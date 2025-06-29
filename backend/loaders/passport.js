@@ -4,7 +4,7 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth' //npm i
 import { FACEBOOK, GOOGLE } from '../config.js'
 import passportLocal from 'passport-local'
 import bcrypt from 'bcrypt'
-import MembersModel from '../models/members.js'
+import MembersModel from '../models/member.js'
 
 import AuthService from '../services/AuthService.js'
 const AuthServiceInstance = new AuthService()
