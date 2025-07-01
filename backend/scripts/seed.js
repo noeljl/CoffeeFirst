@@ -2,12 +2,9 @@
 // Injects some static Instances into the database, which
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import {
-  MembershipType,
-  MembershipTier,
-  MembershipPrice,
-  CoffeeType,
-} from '../models/membershipType.js'
+import { MembershipType } from '../models/membershipType.js'
+
+import { MembershipTier, MembershipPrice, CoffeeType } from '../models/enums.js'
 
 // Lade die Umgebungsvariablen aus der .env Datei
 dotenv.config()
