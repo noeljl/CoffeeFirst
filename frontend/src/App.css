@@ -1,0 +1,8 @@
+/* Limit screen width to 1440px */
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  background-color: white; /* optional */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}

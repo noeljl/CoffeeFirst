@@ -1,0 +1,11 @@
+FROM node:18
+
+WORKDIR /app
+
+# Nur package* kopieren, damit npm install gecacht wird
+COPY package*.json ./
+RUN npm install
+
+# Quellcode wird NICHT per COPY eingebrannt,
+# sondern per Volume von außen reingemountet
+CMD ["npm", "run", "dev"]
