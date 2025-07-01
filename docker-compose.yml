@@ -1,0 +1,47 @@
+services:
+  backend:
+    build: # statt image:
+      context: ./backend # Pfad zu deinem Code
+      dockerfile: Dockerfile.dev # Für Devlopment, damit Änderungen sofort vom Container übernommen werden ohne neustart
+    container_name: backend
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true # fallback für macOS/Windows
+      - MONGO_URI=mongodb://mongodb:27017/admin
+    volumes:
+      - ./backend:/app # Live-Code
+      - /app/node_modules # keeps container’s node_modules
+    ports:
+      - '3001:3001'
+    depends_on:
+      mongodb:
+        condition: service_healthy
+  frontend:
+    image: node:18
+    container_name: frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: sh -c "npm install && npm start"
+    ports:
+      - '3000:3000'
+
+  mongodb:
+    image: mongo:5
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/admin --quiet
+      interval: 5s
+      timeout: 2s
+      retries: 5
+
+volumes:
+  mongodb_data:
