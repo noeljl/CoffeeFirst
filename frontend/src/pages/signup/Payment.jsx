@@ -3,12 +3,12 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import NavbarSignedOut from '../../components/navbar/Navbar'
 import Footer from '../../components/footer/Footer'
-import './SignUp.css'
+// import './SignUp.css'
 import Button from '../../components/buttons/Button'
 import { useNavigate } from 'react-router-dom'
 import { registerMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 // Angepasster Importpfad für clearSignupForm vom signupSlice
-import { clearSignupForm } from '../../store/auth/signupSlice.js' // <-- HIER IST DIE WICHTIGE ÄNDERUNG!
+import { clearSignupForm } from '../../store/auth/signupSlice.js'
 
 function Payment() {
   const navigate = useNavigate()
@@ -21,7 +21,6 @@ function Payment() {
   )
 
   const handleStartPaidMembership = async () => {
-
     const paymentMethodId = 'pm_card_visa' // Diese käme von Stripe nach der Tokenisierung
 
     // Bereite Anmeldedaten für die Registrierung vor

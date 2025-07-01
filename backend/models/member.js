@@ -1,57 +1,51 @@
 import mongoose from 'mongoose'
 
+// Define possible payment statuses
 export const PaymentStatus = Object.freeze({
   SUCCESS: 'Success',
   FAILED: 'Failed',
   PENDING: 'Pending',
 })
 
+// Define Member schema
 const MemberSchema = new mongoose.Schema(
   {
-    firstName: { type: String, required: true, trim: true }, // Added trim
-    lastName: { type: String, required: true, trim: true }, // Added trim
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
     email: {
       type: String,
       required: true,
       unique: true,
       trim: true,
       lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'], // Added basic email validation
+      match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
     },
     passwordHash: { type: String, required: true },
     profilePicture: {
       type: String,
-      default: 'https://example.com/default-profile.png', // Added a more concrete default
+      default: 'https://example.com/default-profile.png',
       trim: true,
     },
     agreedToNewsletter: { type: Boolean, default: false },
-
     stripeCustomerId: { type: String, unique: true, sparse: true, trim: true },
     paymentStatus: {
       type: String,
       enum: Object.values(PaymentStatus),
       default: PaymentStatus.PENDING,
-      required: true, // Assuming payment status is always present
+      required: true,
     },
-
-    // Enforcing 1-to-1 relationships as per UML cardinality '1'
-    // This means a Member MUST have a Membership and a MemberCard.
-    // In a real application, you might handle creation of these related
-    // documents in a service layer to ensure they are always linked.
     membership: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Membership',
-      required: true, // Changed from optional to required
-      unique: true, // A member has one unique membership
+      required: true,
+      unique: true,
     },
     memberCard: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'MemberCard',
-      required: true, // Changed from optional to required
-      unique: true, // A member has one unique member card
+      required: true,
+      unique: true,
     },
-
-    // Lists of CoffeeShops (already well-defined)
     wishlistCoffeeShops: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'CoffeeShop' },
     ],
@@ -64,35 +58,26 @@ const MemberSchema = new mongoose.Schema(
     reviewedCoffeeShops: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'CoffeeShop' },
     ],
-
-    // External authentication IDs (good additions, kept)
-    google: {
-      id: String,
-    },
-    facebook: {
-      id: String,
-    },
+    google: { id: String },
+    facebook: { id: String },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt
-    toObject: { virtuals: true }, // Ensure virtuals are included when converting to object
-    toJSON: { virtuals: true }, // Ensure virtuals are included when converting to JSON
+    timestamps: true,
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
   }
 )
 
-// Virtual for full name (already good)
+// Virtual for full name
 MemberSchema.virtual('fullName').get(function () {
   return `${this.firstName} ${this.lastName}`
 })
 
-// --- Methods for the MembersModel ---
-class MembersModel {
-  /**
-   * Creates a new member.
-   * @param {Object} data - The data for the new member.
-   * @returns {Promise<Document>} The created member document.
-   * @throws {Error} If there's a database error or a member with the email/Stripe ID already exists.
-   */
+// Create the Mongoose model
+const Member = mongoose.model('Member', MemberSchema)
+
+// MembersModel class wrapping Mongoose operations
+export class MembersModel {
   async create(data) {
     try {
       const member = new Member(data)
@@ -100,14 +85,11 @@ class MembersModel {
     } catch (err) {
       if (err.code === 11000) {
         throw new Error(
-          'A member with this email, Stripe ID, membership, or member card already exists. Each member must have unique values for these fields.'
+          'A member with this email, Stripe ID, membership, or member card already exists.'
         )
       }
-      // Check for validation errors if required fields are missing
       if (err.name === 'ValidationError') {
-        const errors = Object.keys(err.errors).map(
-          (key) => err.errors[key].message
-        )
+        const errors = Object.values(err.errors).map((e) => e.message)
         throw new Error(
           `Validation error creating member: ${errors.join(', ')}`
         )
@@ -116,34 +98,22 @@ class MembersModel {
     }
   }
 
-  /**
-   * Updates an existing member.
-   * @param {string} id - The ID of the member to update.
-   * @param {Object} updateData - The data to update.
-   * @returns {Promise<Document|null>} The updated member document or null if not found.
-   * @throws {Error} If there's a database error.
-   */
   async update(id, updateData) {
     try {
-      // Ensure unique fields are handled carefully if updated
       const member = await Member.findByIdAndUpdate(id, updateData, {
-        new: true, // Return the updated document
-        runValidators: true, // Run schema validators on update
+        new: true,
+        runValidators: true,
       }).exec()
-      if (!member) {
-        throw new Error(`Member with ID ${id} not found.`)
-      }
+      if (!member) throw new Error(`Member with ID ${id} not found.`)
       return member
     } catch (err) {
       if (err.code === 11000) {
         throw new Error(
-          'Update failed: A duplicate value exists for a unique field (e.g., email, Stripe ID, membership, member card).'
+          'Duplicate value exists for a unique field (e.g., email, Stripe ID).'
         )
       }
       if (err.name === 'ValidationError') {
-        const errors = Object.keys(err.errors).map(
-          (key) => err.errors[key].message
-        )
+        const errors = Object.values(err.errors).map((e) => e.message)
         throw new Error(
           `Validation error updating member: ${errors.join(', ')}`
         )
@@ -152,30 +122,17 @@ class MembersModel {
     }
   }
 
-  /**
-   * Deletes a member by ID.
-   * @param {string} id - The ID of the member to delete.
-   * @returns {Promise<Document|null>} The deleted member document or null if not found.
-   * @throws {Error} If there's a database error.
-   */
   async delete(id) {
     try {
       const member = await Member.findByIdAndDelete(id).exec()
-      if (!member) {
+      if (!member)
         throw new Error(`Member with ID ${id} not found for deletion.`)
-      }
       return member
     } catch (err) {
       throw new Error(`Error deleting member: ${err.message}`)
     }
   }
 
-  /**
-   * Finds a single member by their email address.
-   * @param {string} email - The email address of the member to find.
-   * @returns {Promise<Document|null>} The member document or null if not found.
-   * @throws {Error} If there's a database error.
-   */
   async findOneByEmail(email) {
     try {
       return await Member.findOne({ email }).exec()
@@ -184,35 +141,21 @@ class MembersModel {
     }
   }
 
-  /**
-   * Finds a single member by their ID.
-   * Populates related documents like membership, memberCard, and wishlistCoffeeShops.
-   * @param {string} id - The ID of the member to find.
-   * @returns {Promise<Document|null>} The member document or null if not found.
-   * @throws {Error} If there's a database error.
-   */
   async findOneById(id) {
     try {
-      const member = await Member.findById(id)
+      return await Member.findById(id)
         .populate('membership')
         .populate('memberCard')
         .populate('wishlistCoffeeShops')
-        .populate('favoriteCoffeeShops') // Added populate for favorite shops
-        .populate('visitedCoffeeShops') // Added populate for visited shops
-        .populate('reviewedCoffeeShops') // Added populate for reviewed shops
+        .populate('favoriteCoffeeShops')
+        .populate('visitedCoffeeShops')
+        .populate('reviewedCoffeeShops')
         .exec()
-      return member
     } catch (err) {
       throw new Error(`Error finding member by ID: ${err.message}`)
     }
   }
 
-  /**
-   * Finds a single member by their Google ID.
-   * @param {string} id - The Google ID of the member to find.
-   * @returns {Promise<Document|null>} The member document or null if not found.
-   * @throws {Error} If there's a database error.
-   */
   async findOneByGoogleId(id) {
     try {
       return await Member.findOne({ 'google.id': id }).exec()
@@ -221,12 +164,6 @@ class MembersModel {
     }
   }
 
-  /**
-   * Finds a single member by their Facebook ID.
-   * @param {string} id - The Facebook ID of the member to find.
-   * @returns {Promise<Document|null>} The member document or null if not found.
-   * @throws {Error} If there's a database error.
-   */
   async findOneByFacebookId(id) {
     try {
       return await Member.findOne({ 'facebook.id': id }).exec()
@@ -235,14 +172,6 @@ class MembersModel {
     }
   }
 
-  /**
-   * Adds a coffee shop to a specified list for a member.
-   * @param {string} memberId - The ID of the member.
-   * @param {string} coffeeShopId - The ID of the coffee shop to add.
-   * @param {string} listType - The type of list ('wishlistCoffeeShops', 'favoriteCoffeeShops', etc.).
-   * @returns {Promise<Document|null>} The updated member document or null if not found.
-   * @throws {Error} If there's a database error or invalid listType.
-   */
   async addCoffeeShopToList(memberId, coffeeShopId, listType) {
     const validLists = [
       'wishlistCoffeeShops',
@@ -260,26 +189,16 @@ class MembersModel {
     try {
       const member = await Member.findByIdAndUpdate(
         memberId,
-        { $addToSet: { [listType]: coffeeShopId } }, // $addToSet prevents duplicates
+        { $addToSet: { [listType]: coffeeShopId } },
         { new: true }
       ).exec()
-      if (!member) {
-        throw new Error(`Member with ID ${memberId} not found.`)
-      }
+      if (!member) throw new Error(`Member with ID ${memberId} not found.`)
       return member
     } catch (err) {
       throw new Error(`Error adding to ${listType}: ${err.message}`)
     }
   }
 
-  /**
-   * Removes a coffee shop from a specified list for a member.
-   * @param {string} memberId - The ID of the member.
-   * @param {string} coffeeShopId - The ID of the coffee shop to remove.
-   * @param {string} listType - The type of list ('wishlistCoffeeShops', 'favoriteCoffeeShops', etc.).
-   * @returns {Promise<Document|null>} The updated member document or null if not found.
-   * @throws {Error} If there's a database error or invalid listType.
-   */
   async removeCoffeeShopFromList(memberId, coffeeShopId, listType) {
     const validLists = [
       'wishlistCoffeeShops',
@@ -297,12 +216,10 @@ class MembersModel {
     try {
       const member = await Member.findByIdAndUpdate(
         memberId,
-        { $pull: { [listType]: coffeeShopId } }, // $pull removes all instances
+        { $pull: { [listType]: coffeeShopId } },
         { new: true }
       ).exec()
-      if (!member) {
-        throw new Error(`Member with ID ${memberId} not found.`)
-      }
+      if (!member) throw new Error(`Member with ID ${memberId} not found.`)
       return member
     } catch (err) {
       throw new Error(`Error removing from ${listType}: ${err.message}`)
@@ -310,5 +227,5 @@ class MembersModel {
   }
 }
 
-export const MemberPaymentStatus = PaymentStatus
-export default new MembersModel()
+// Export the class to allow instantiation
+export default MembersModel

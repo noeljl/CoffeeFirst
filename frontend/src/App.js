@@ -10,7 +10,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
 
 // Public pages
 import HomePage from './pages/HomePage.jsx'
-import SignUp from './pages/signup/SignUp.jsx'
+// import SignUp from './pages/signup/SignUp.jsx'
 import RegForm from './pages/signup/RegForm.jsx'
 import PlanForm from './pages/signup/PlanForm.jsx'
 import Payment from './pages/signup/Payment.jsx'
@@ -31,9 +31,7 @@ import TempBlankPage from './pages/TempBlankPage.jsx'
 
 function App() {
   return (
-    <div
-      className="page-wrapper"
-    >
+    <div className="page-wrapper">
       <Router>
         <AppRoutes />
       </Router>
@@ -48,7 +46,7 @@ function AppRoutes() {
       <Route path="/" element={<HomePage />} />
 
       {/* Public → Sign-Up */}
-      <Route path="/signup" element={<SignUp />} />
+      {/* <Route path="/signup" element={<SignUp />} /> */}
       <Route path="/signup/regform" element={<RegForm />} />
       <Route path="/signup/planform" element={<PlanForm />} />
       <Route path="/signup/payment" element={<Payment />} />

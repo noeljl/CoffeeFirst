@@ -40,17 +40,11 @@ export const loginMemberAction = createAsyncThunk(
 export const registerMemberAction = createAsyncThunk(
   'auth/registerMember',
   async (registrationData, thunkAPI) => {
-    // Benenne 'credentials' um in 'registrationData' für mehr Klarheit
     try {
-      // Zugriff auf den Redux-Store, um den aktuellen Zustand zu erhalten
-      // const state = thunkAPI.getState();
-      // const { email, password, plan } = state.signup; // Hier holst du die Daten aus dem Redux-Store
-
-      // Wenn du alle Daten direkt als Argument übergibst (empfohlen für diese Aktion):
-      await registerMember(registrationData) // registrationData sollte hier alle benötigten Felder enthalten
-      return {}
+      const user = await registerMember(registrationData)
+      return { user, isAuthenticated: true }
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message)
+      return thunkAPI.rejectWithValue(err)
     }
   }
 )
