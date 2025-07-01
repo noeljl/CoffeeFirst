@@ -1,11 +1,5 @@
 import mongoose from 'mongoose'
-
-// Define possible payment statuses
-export const PaymentStatus = Object.freeze({
-  SUCCESS: 'Success',
-  FAILED: 'Failed',
-  PENDING: 'Pending',
-})
+import { PaymentStatus } from './enums.js'
 
 // Define Member schema
 const MemberSchema = new mongoose.Schema(
@@ -26,7 +20,7 @@ const MemberSchema = new mongoose.Schema(
       default: 'https://example.com/default-profile.png',
       trim: true,
     },
-    agreedToNewsletter: { type: Boolean, default: false },
+    subscribe: { type: Boolean, default: false },
     stripeCustomerId: { type: String, unique: true, sparse: true, trim: true },
     paymentStatus: {
       type: String,

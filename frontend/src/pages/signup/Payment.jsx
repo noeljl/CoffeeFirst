@@ -16,15 +16,25 @@ function Payment() {
 
   // Hole Registrierungsdetails und Plan aus dem Redux Store
   // Die 'loading' und 'error' States für den Registrierungsprozess kommen ebenfalls vom signupSlice
-  const { email, password, plan, loading, error } = useSelector(
-    (state) => state.signup
-  )
+  const {
+    firstName,
+    lastName,
+    subscribe,
+    email,
+    password,
+    plan,
+    loading,
+    error,
+  } = useSelector((state) => state.signup)
 
   const handleStartPaidMembership = async () => {
     const paymentMethodId = 'pm_card_visa' // Diese käme von Stripe nach der Tokenisierung
 
     // Bereite Anmeldedaten für die Registrierung vor
     const credentials = {
+      firstName,
+      lastName,
+      subscribe,
       email,
       password,
       plan, // Füge den ausgewählten Plan hinzu

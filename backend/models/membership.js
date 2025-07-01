@@ -71,11 +71,13 @@ MembershipSchema.index({ member: 1 }, { unique: true })
 const Membership = mongoose.model('Membership', MembershipSchema)
 
 class MembershipModel {
-
-  async create(data) {
+  // Alte Signatur: async create(data) { … }
+  // Neue Signatur:
+  async create(data, session = null) {
     try {
       const membership = new Membership(data)
-      await membership.save()
+      // session weiterreichen – oder {} wenn keine übergeben
+      await membership.save(session ? { session } : undefined)
       return membership.populate('chosenMembership')
     } catch (err) {
       if (err.code === 11000) {

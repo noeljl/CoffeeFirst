@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 // Import CoffeeType enum from the membershipType file, or a centralized enums file if available.
-import { CoffeeType } from './membershipType.js'
+import { CoffeeType } from './enums.js'
 // Import Ingredient model for population reference.
 // No need to import CoffeeShopModel directly for the schema reference, but it will be needed for the model class definition.
 

@@ -1,32 +1,6 @@
 import mongoose from 'mongoose'
+import { Allergen } from './enums.js'
 
-// --- Enums ---
-
-// Allergen Enum (from UML)
-export const Allergen = Object.freeze({
-  PEANUTS: 'Peanuts',
-  SOY: 'Soy',
-  MILK: 'Milk', // Added common allergens as examples
-  EGGS: 'Eggs',
-  WHEAT: 'Wheat',
-  TREE_NUTS: 'TreeNuts',
-  FISH: 'Fish',
-  SHELLFISH: 'Shellfish',
-  SESAME: 'Sesame',
-  SULPHITES: 'Sulphites',
-})
-
-// CoffeeType Enum (from UML, and used in CoffeeVariant and MembershipType)
-// Note: This enum is defined here for completeness of the original file,
-// but it is not directly used within the IngredientSchema itself.
-// For better project structure, consider moving shared enums to a central 'enums.js' file.
-export const CoffeeType = Object.freeze({
-  FLAT_WHITE: 'FlatWhite',
-  LATTE_MACCHIATO: 'Latte Macchiato',
-  ESPRESSO: 'Espresso',
-  AMERICANO: 'Americano',
-  CAPPUCCINO: 'Cappuccino',
-})
 
 // --- Schema for Ingredient ---
 

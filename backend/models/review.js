@@ -1,17 +1,9 @@
 import mongoose from 'mongoose'
+import { ReviewTopic } from './enums.js'
 
 // --- Enums ---
 
 // NEW: ReviewTopic Enum as per UML diagram
-export const ReviewTopic = Object.freeze({
-  OVERALL: 'Overall Experience',
-  COFFEE_QUALITY: 'Coffee Quality',
-  AMBIENCE: 'Ambience',
-  SERVICE: 'Service',
-  FOOD: 'Food & Pastries',
-  VALUE: 'Value for Money',
-  SUSTAINABILITY: 'Sustainability Efforts',
-})
 
 const ReviewSchema = new mongoose.Schema(
   {

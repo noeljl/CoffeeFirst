@@ -1,26 +1,6 @@
 import mongoose from 'mongoose'
 // Import enums from their respective files or a centralized 'enums.js' if created.
-import { CoffeeType } from './membershipType.js' // Assuming CoffeeType is here
-import { Offer } from './coffeeShopEnums.js' // Assuming these enums are moved to a common file for clarity
-import { SustainabilityFeature } from './coffeeShopEnums.js' // Assuming these enums are moved to a common file for clarity
-
-// For demonstration, if you haven't moved them to a separate file, you can keep them here:
-// export const SustainabilityFeature = Object.freeze({
-//   SMALL_BATCH_ROASTING: 'SmallBatchRoasting',
-//   ETHICAL_SOURCING: 'EthicalSourcing',
-//   ECO_FRIENDLY_PACKAGING: 'EcoFriendlyPackaging',
-//   ARABICA_ONLY: 'ArabicaOnly',
-// })
-
-// export const Offer = Object.freeze({
-//   FREE_WATER: 'FreeWater',
-//   WHEELCHAIR_FRIENDLY: 'WheelchairFriendly',
-//   INDOOR_SITTING: 'IndoorSitting',
-//   OUTDOOR_SITTING: 'OutdoorSitting',
-//   PET_FRIENDLY: 'PetFriendly',
-//   FREE_CHARGING: 'FreeCharging',
-//   STUDY_FRIENDLY: 'StudyFriendly',
-// })
+import { CoffeeType, Offer, SustainabilityFeature } from './enums.js'
 
 // --- Schema for CoffeeShop ---
 

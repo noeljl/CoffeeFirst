@@ -8,6 +8,8 @@ import './SignupForm.css' // Dein CSS
 export default function SignupForm() {
   // State für Email, Passwort und das Checkbox-Flag
   const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
   const [subscribe, setSubscribe] = useState(false) // Für die Checkbox
 
@@ -19,7 +21,9 @@ export default function SignupForm() {
   const handleSubmit = (e) => {
     e.preventDefault() // Verhindert das Neuladen der Seite beim Absenden des Formulars
     console.log(email, password)
-    dispatch(setRegistrationDetails({ email, password }))
+    dispatch(
+      setRegistrationDetails({ firstName, lastName, subscribe, email, password })
+    )
     navigate('/signup/planform')
   }
 
@@ -28,6 +32,22 @@ export default function SignupForm() {
       <form onSubmit={handleSubmit}>
         {' '}
         {/* onSubmit-Handler auf das Formular anwenden */}
+        <input
+          type="FirstName"
+          placeholder="Legal First Name"
+          className="inputField"
+          value={firstName} // Wert an den State binden
+          onChange={(e) => setFirstName(e.target.value)} // State bei Änderung aktualisieren
+          required
+        />
+        <input
+          type="LastName"
+          placeholder="Legal Last Name"
+          className="inputField"
+          value={lastName} // Wert an den State binden
+          onChange={(e) => setLastName(e.target.value)} // State bei Änderung aktualisieren
+          required
+        />
         <input
           type="email"
           placeholder="Email"

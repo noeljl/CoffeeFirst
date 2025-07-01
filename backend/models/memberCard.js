@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { CoffeeType } from './membershipType.js' // Adjust path if necessary
+import { CoffeeType, MembershipTier } from './enums.js'
 
 const MemberCardSchema = new mongoose.Schema(
   {

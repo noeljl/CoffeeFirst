@@ -1,23 +1,5 @@
 import mongoose from 'mongoose'
-
-export const MembershipTier = Object.freeze({
-  SILVER: 'Silver',
-  GOLD: 'Gold',
-  BLACK: 'Black',
-})
-
-export const MembershipPrice = Object.freeze({
-  LEVEL_1: 29,
-  LEVEL_2: 59,
-  LEVEL_3: 99,
-})
-
-export const CoffeeType = Object.freeze({
-  FLAT_WHITE: 'FlatWhite',
-  LATTE_MACCHIATO: 'Latte Macchiato',
-  ESPRESSO: 'Espresso', // Example: Added another coffee type for demonstration
-  AMERICANO: 'Americano',
-})
+import { CoffeeType, MembershipTier, MembershipPrice } from './enums.js'
 
 const MembershipTypeSchema = new mongoose.Schema(
   {
@@ -63,7 +45,6 @@ const MembershipTypeSchema = new mongoose.Schema(
 const MembershipType = mongoose.model('MembershipType', MembershipTypeSchema)
 
 class MembershipTypeModel {
-
   async create(data) {
     try {
       const membershipType = new MembershipType(data)
@@ -101,13 +82,10 @@ class MembershipTypeModel {
     }
   }
 
-  async findByName(name) {
-    try {
-      const membershipType = await MembershipType.findOne({ name }).exec()
-      return membershipType
-    } catch (err) {
-      throw new Error(`Error finding membership type by name: ${err.message}`)
-    }
+  async findByName(name, session = null) {
+    const q = MembershipType.findOne({ name })
+    if (session) q.session(session)
+    return q.exec()
   }
 
   async update(id, updateData) {
@@ -156,3 +134,5 @@ class MembershipTypeModel {
 }
 
 export default new MembershipTypeModel()
+
+export { MembershipType }

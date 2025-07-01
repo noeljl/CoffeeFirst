@@ -1,29 +1,9 @@
 // npm install dotenv. Installieren auf /backend ebene
+// Retieves data from the .env file, so you can access it easily and centrally
+// import from config.js: import { GOOGLE } from './config.js'. Way more comfortable than to write process.env.VARIABLE with .env all the time
 import dotenv from 'dotenv'
 
 dotenv.config()
-
-// Imporitert die Daten aus der .env Datei
-export const DB = {
-  PGHOST: process.env.PGHOST,
-  PGUSER: process.env.PGUSER,
-  PGDATABASE: process.env.PGDATABASE,
-  PGPASSWORD: process.env.PGPASSWORD,
-  PGPORT: process.env.PGPORT,
-}
-
-export const FACEBOOK = {
-  CALLBACK_URL: process.env.FACEBOOK_CALLBACK_URL,
-  CONSUMER_KEY: process.env.FACEBOOK_CONSUMER_KEY,
-  CONSUMER_SECRET: process.env.FACEBOOK_CONSUMER_SECRET,
-}
-
-export const GOOGLE = {
-  CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL,
-  CONSUMER_KEY: process.env.GOOGLE_CONSUMER_KEY,
-  CONSUMER_SECRET: process.env.GOOGLE_CONSUMER_SECRET,
-}
-
 export const MONGO_URI = process.env.MONGO_URI
 export const PORT = process.env.SERVER_PORT || 3001
 export const SESSION_SECRET = process.env.SESSION_SECRET
@@ -33,5 +13,3 @@ export const NODE_ENV = 'development'
 
 console.log('MONGO_URI:', MONGO_URI)
 
-// Testen, ob aus env Daten verfügbar. In
-console.log('Database host:', process.env.PGHOST)

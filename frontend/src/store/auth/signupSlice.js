@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import { registerMemberAction } from '../../store/auth/Auth.actions.js' // Pfad anpassen
 
 const initialState = {
+  firstName: '',
+  lastName: '',
+  subscribe: '',
   email: '',
   password: '',
   plan: null,
@@ -14,8 +17,10 @@ const signupSlice = createSlice({
   name: 'signup',
   initialState,
   reducers: {
-    // Hier wird setRegistrationDetails DEFINIERT und GENERIERT!
     setRegistrationDetails: (state, action) => {
+      state.firstName = action.payload.firstName
+      state.lastName = action.payload.lastName
+      state.subscribe = action.payload.subscribe
       state.email = action.payload.email
       state.password = action.payload.password
     },

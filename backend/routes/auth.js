@@ -14,6 +14,7 @@ router.post('/register', async (req, res, next) => {
   }
 })
 
+// To be completed
 router.post(
   '/login',
   passport.authenticate('local-user'),
@@ -27,13 +28,5 @@ router.post(
   }
 )
 
-router.get('/logged_in', async (req, res, next) => {
-  try {
-    const user = await AuthServiceInstance.getById(req.user.id)
-    res.status(200).json({ loggedIn: true, user })
-  } catch (err) {
-    next(err)
-  }
-})
 
 export default router

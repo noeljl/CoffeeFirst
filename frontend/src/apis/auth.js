@@ -3,7 +3,6 @@ import API from './client.js'
 // Login für Mitglieder
 export const loginMember = async (credentials) => {
   try {
-    console.log('This is a question')
 
     const response = await API.post('auth/login', credentials)
 

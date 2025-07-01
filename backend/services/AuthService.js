@@ -1,85 +1,104 @@
 import createError from 'http-errors'
-import MembersModel from '../models/member.js'
+import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
-
-const MembersModelInstance = new MembersModel()
+import crypto from 'crypto'
+import MembersModel from '../models/member.js'
+import MembershipTypeModel from '../models/membershipType.js'
+import MembershipModel from '../models/membership.js'
+import MemberCardModel from '../models/memberCard.js'
 
 class AuthService {
+  constructor() {
+    this.membersModel = new MembersModel()
+  }
+
   async register(input) {
-    // 1. Passwort extrahieren und hashen
-    const { password, ...fields } = input
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(password, saltRounds)
+    const {
+      password,
+      firstName,
+      lastName,
+      email,
+      plan,
+      subscribe = false,
+    } = input
 
-    // 2. Payload zusammenbauen: alle anderen Felder + passwordHash
-    //    (das Feld `password` bleibt außen vor)
-    const payload = {
-      ...fields, // z.B. username, vorname, nachname, whatever
-      email: fields.email, // falls email nicht in fields, kann man sie hier mappen
-      passwordHash, // gehashter string
+    // 1) Doppelter Nutzer?
+    if (await this.membersModel.findOneByEmail(email)) {
+      throw createError(409, 'Email already registered')
     }
 
-    console.log('Register payload:', payload)
-    // Ausgabe aller mitgegebenen Felder (ohne raw password)
-
-    // 3. Datensatz anlegen
-    const newMember = await MembersModelInstance.create(payload)
-
-    // 4. Optional: alle gespeicherten Werte (inkl. defaults) zurückgeben
-    //    .toJSON() gibt dir ein reines Objekt ohne Sequelize-Instanz-Methoden
-    return newMember.toJSON()
-  }
-
-  async loginMember(data) {
-    const { email, password } = data // Sollte email sein
-    const member = await MembersModelInstance.findOneByMail(email)
-    if (!member) {
-      throw createError(401, 'Incorrect username or password')
+    // 2) Plan validieren
+    const membershipType = await MembershipTypeModel.findByName(plan.name)
+    if (!membershipType) {
+      throw createError(400, 'Unknown membership plan')
     }
 
-    // Hier geschieht der eigentliche Vergleich
-    const isMatch = await bcrypt.compare(password, member.passwordHash) // Punkt 3: Korrekter Passwortvergleich
-    if (!isMatch) {
-      throw createError(401, 'Incorrect username or password')
-    }
+    // 3) Daten vorbereiten
+    const now = new Date()
+    const end = new Date(now)
+    end.setDate(now.getDate() + (membershipType.durationDays ?? 30))
+    const passwordHash = await bcrypt.hash(password, 10)
 
-    return member // Punkt 4: Gibt Mitglied zurück, aber kein Token
-  }
-
-  async googleLogin(profile) {
-    const { id, displayName } = profile
+    // 4) IDs erzeugen
+    const memberId = new mongoose.Types.ObjectId()
+    const membershipId = new mongoose.Types.ObjectId()
+    const memberCardId = new mongoose.Types.ObjectId()
 
     try {
-      const member = await MembersModelInstance.findOneByGoogleId(id)
+      // a) Membership anlegen
+      const membership = await MembershipModel.create({
+        _id: membershipId,
+        member: memberId,
+        chosenMembership: membershipType._id,
+        startDate: now,
+        endDate: end,
+        payDate: now,
+        coffeeQuotaLeft: membershipType.coffeeQuota ?? 0,
+      })
 
-      if (!member) {
-        return await MembersModelInstance.create({
-          google: { id, displayName },
-        })
-      }
+      // b) MemberCard anlegen
+      const memberCard = await MemberCardModel.create({
+        _id: memberCardId,
+        name: `${firstName} ${lastName}`,
+        coffeeType: membershipType.coffeeTypes[0],
+        cardCode: crypto.randomBytes(6).toString('hex'),
+        membershipTier: membershipType.membershipTier,
+        membership: membership._id,
+      })
 
-      return member
+      // c) Member anlegen
+      const member = await this.membersModel.create({
+        _id: memberId,
+        firstName,
+        lastName,
+        email,
+        passwordHash,
+        subscribe,
+        membership: membership._id,
+        memberCard: memberCard._id,
+      })
+
+      return this.membersModel.findOneById(member._id)
     } catch (err) {
-      throw createError(500, err)
+      // Im Fehlerfall: optional Cleanup
+      console.error('Registration failed, cleaning up:', err)
+      // z.B. Membership.deleteOne({ _id: membershipId }), usw.
+      throw createError(
+        500,
+        `Registration could not be completed: ${err.message}`
+      )
     }
   }
 
-  async facebookLogin(profile) {
-    const { id, displayName } = profile
+  /* ---------- Login ---------- */
+  async loginMember({ email, password }) {
+    const member = await this.membersModel.findOneByEmail(email)
+    if (!member) throw createError(401, 'Incorrect username or password')
 
-    try {
-      const member = await MembersModelInstance.findOneByFacebookId(id)
+    const isMatch = await bcrypt.compare(password, member.passwordHash)
+    if (!isMatch) throw createError(401, 'Incorrect username or password')
 
-      if (!member) {
-        return await MembersModelInstance.create({
-          facebook: { id, displayName },
-        })
-      }
-
-      return member
-    } catch (err) {
-      throw createError(500, err)
-    }
+    return member // JWT-Erstellung z. B. hier anhängen
   }
 }
 

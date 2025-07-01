@@ -4,10 +4,10 @@ import routeLoader from '../routes/index.js'
 
 // Exportiere die Funktion als Standardexport
 export default async function loaders(app) {
-  // Lädt Express-Middleware. Mehr dazu im ExpressLoader selbst.
+  // Loads the Express-Middleware. Assigns express configurations to our server. Go to express.js!
   const expressApp = await expressLoader(app)
 
-  // Lädt Passport-Middleware
+  // Lädt Passport-Middleware, 
   const passport = await passportLoader(expressApp)
 
   // Lädt Routen-Handler. Ruft in routes die index.js auf, die die Routen initialisiert.

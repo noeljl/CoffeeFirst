@@ -1,11 +1,9 @@
-// npm install axios
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'http://localhost:3001/api', // Für lokale Entwicklung
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: 'http://localhost:3001/api',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 })
 
 export default API
