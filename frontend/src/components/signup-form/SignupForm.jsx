@@ -18,7 +18,7 @@ export default function SignupForm() {
   // Handler für das Absenden des Formulars
   const handleSubmit = (e) => {
     e.preventDefault() // Verhindert das Neuladen der Seite beim Absenden des Formulars
-
+    console.log(email, password)
     dispatch(setRegistrationDetails({ email, password }))
     navigate('/signup/planform')
   }

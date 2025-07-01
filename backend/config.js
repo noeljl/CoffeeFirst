@@ -29,6 +29,8 @@ export const PORT = process.env.SERVER_PORT || 3001
 export const SESSION_SECRET = process.env.SESSION_SECRET
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
 
+export const NODE_ENV = 'development'
+
 console.log('MONGO_URI:', MONGO_URI)
 
 // Testen, ob aus env Daten verfügbar. In

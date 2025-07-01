@@ -1,5 +1,5 @@
 import createError from 'http-errors'
-import MembersModel from '../models/members.js' // Beachte: Pfad ggf. anpassen
+import MembersModel from '../models/member.js' // Beachte: Pfad ggf. anpassen
 
 const MembersModelInstance = new MembersModel()
 

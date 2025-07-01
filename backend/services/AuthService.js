@@ -1,5 +1,5 @@
 import createError from 'http-errors'
-import MembersModel from '../models/members.js'
+import MembersModel from '../models/member.js'
 import bcrypt from 'bcrypt'
 
 const MembersModelInstance = new MembersModel()
