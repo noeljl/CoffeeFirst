@@ -116,6 +116,38 @@ export class MembersModel {
     }
   }
 
+  // --- Corrected updateByMail method ---
+  async updateByMail(mail, updateData) {
+    try {
+      // Use findOneAndUpdate to find by email and update
+      const member = await Member.findOneAndUpdate(
+        { email: mail },
+        updateData,
+        {
+          new: true, // Return the modified document rather than the original
+          runValidators: true, // Run Mongoose validators on the update operation
+        }
+      ).exec()
+
+      if (!member) throw new Error(`Member with email ${mail} not found.`) // Changed ID to email for clarity
+      return member
+    } catch (err) {
+      if (err.code === 11000) {
+        throw new Error(
+          'Duplicate value exists for a unique field (e.g., email, Stripe ID).'
+        )
+      }
+      if (err.name === 'ValidationError') {
+        const errors = Object.values(err.errors).map((e) => e.message)
+        throw new Error(
+          `Validation error updating member: ${errors.join(', ')}`
+        )
+      }
+      throw new Error(`Error updating member: ${err.message}`)
+    }
+  }
+  // --- End of corrected updateByMail method ---
+
   async delete(id) {
     try {
       const member = await Member.findByIdAndDelete(id).exec()

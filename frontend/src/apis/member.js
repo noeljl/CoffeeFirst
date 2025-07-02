@@ -1,21 +1,84 @@
 import API from './client.js'
 
-// API interface for loading a member's profile
-export const fetchMember = async (memberId) => {
+// Get a member by ID
+export const getMemberById = async (id) => {
   try {
-    const response = await API.get(`members/${memberId}`)
-
+    const response = await API.get(`member/${id}`)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message
   }
 }
 
-// API interface for updating a member's profile
-export const updateMember = async (memberId, data) => {
+export const getMemberByMail = async (mail) => {
   try {
-    const response = await API.put(`members/${memberId}`, data)
+    console.log('api/getMemberByMail called')
+    const response = await API.get(`member/mail/${mail}`)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
 
+// Update a member's profile by ID
+export const updateMemberProfile = async (id, data) => {
+  try {
+    const response = await API.put(`member/${id}`, data)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
+// Update a member's profile by ID
+export const updateMemberProfileByMail = async (mail, data) => {
+  try {
+    console.log('updateMemberProfileByMail called with ', mail)
+    console.log('updateMemberProfileByMail called with ', data)
+    const response = await API.put(`member/mail/${mail}`, data)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
+// Delete a member by ID
+export const deleteMember = async (id) => {
+  try {
+    const response = await API.delete(`member/${id}`)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
+// Add a coffee shop to a member's list
+export const addCoffeeShopToMemberList = async (
+  memberId,
+  coffeeShopId,
+  listType
+) => {
+  try {
+    const response = await API.post(
+      `member/${memberId}/coffeeshops/${listType}`,
+      { coffeeShopId }
+    )
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
+// Remove a coffee shop from a member's list
+export const removeCoffeeShopFromMemberList = async (
+  memberId,
+  coffeeShopId,
+  listType
+) => {
+  try {
+    const response = await API.delete(
+      `member/${memberId}/coffeeshops/${listType}/${coffeeShopId}`
+    )
     return response.data
   } catch (err) {
     throw err.response?.data || err.message

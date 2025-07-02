@@ -1,8 +1,14 @@
-import authRouter from './auth.js'
+// index.js (in your routes folder)
+import authRouter from './auth.js' // Make sure this path is correct for your auth routes
+import coffeeShopRouter from './coffeeShop.js' // Make sure this path points to coffeeShopRoutes.js
+import memberCardRouter from './memberCardRoute.js' // Make sure this path points to coffeeShopRoutes.js
+import memberRouter from './memberRoute.js' // Make sure this path points to coffeeShopRoutes.js
+import reviewRouter from './reviewRoute.js' // Make sure this path points to coffeeShopRoutes.js
 
-// prevenst that we have to /api/auth in front of all the routes in auth.js. Because technicall all paths start with /api/auth, but we dont want to
-// write that for all paths
-//remember: index.js is always the first file to be called in a folder. If someone calls the /routes-folder, index.js is meant.
 export default (app) => {
   app.use('/api/auth', authRouter)
+  app.use('/api/coffeeshop', coffeeShopRouter)
+  app.use('/api/memberCard', memberCardRouter)
+  app.use('/api/member', memberRouter)
+  app.use('/api/review', reviewRouter)
 }

@@ -9,15 +9,15 @@ import reportWebVitals from './reportWebVitals.js'
 
 // Importiere deine Reducer
 import authReducer from './store/auth/Auth.reducers.js'
-import memberReducer from './store/member/Member.reducers.js'
-import signupReducer from './store/auth/signupSlice.js' // <-- NEU: Importiere deinen signupReducer
+import accountSettingsReducer from './store/accountSettings/AccountSettings.reducers.js' // Besserer Name
+import signupReducer from './store/auth/signupSlice.js'
 
 // Konfiguriere den Redux Store
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    member: memberReducer,
-    signup: signupReducer, // <-- NEU: Füge den signupReducer hinzu
+    accountSettings: accountSettingsReducer, // ← Ändere "member" zu "accountSettings"
+    signup: signupReducer,
   },
 })
 
