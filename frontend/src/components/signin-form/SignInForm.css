@@ -1,0 +1,72 @@
+.signup-form-section {
+  display: flex;
+  justify-content: center;
+  padding: 120px 0px;
+}
+
+.signup-form-text {
+  width: 432px;
+}
+
+h2 {
+  font-size: 32px;
+  margin: 0px;
+}
+
+.subtitle {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.step-indicator {
+  font-size: 13px;
+}
+
+.advantages-list {
+  list-style: none;
+  padding: 0px;
+  margin-bottom: 30px;
+}
+
+.advantages-list li {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 15px 0px;
+  font-size: 16px;
+}
+
+.list-icon {
+  width: 30px;
+  height: 30px;
+  margin-top: 4px;
+}
+
+form {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputField {
+  padding: 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  gap: 12px;
+}
+
+.checkbox-container input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
