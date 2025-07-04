@@ -57,6 +57,23 @@ coffeeShopRouter.get('/by-name/:name', async (req, res, next) => {
 })
 
 /**
+ * @route GET /api/coffeeshops/by-slug/:slug
+ * @desc Get a coffee shop by slug
+ * @param {string} slug - Coffee shop slug
+ * @access Public
+ */
+coffeeShopRouter.get('/by-slug/:slug', async (req, res, next) => {
+  try {
+    const coffeeShop = await coffeeShopService.getCoffeeShopBySlug(
+      req.params.slug
+    )
+    res.status(200).json(coffeeShop)
+  } catch (error) {
+    next(error)
+  }
+})
+
+/**
  * @route GET /api/coffeeshops/:id
  * @desc Get a coffee shop by ID
  * @param {string} id - Coffee shop ID

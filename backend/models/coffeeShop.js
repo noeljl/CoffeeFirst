@@ -6,6 +6,14 @@ import { CoffeeType, Offer, SustainabilityFeature } from './enums.js'
 
 const CoffeeShopSchema = new mongoose.Schema(
   {
+    slug: {
+      type: String,
+      required: true,
+      unique: true, // Slugs are unique for each coffee shop
+      trim: true,
+      minlength: [3, 'Slug must be at least 3 characters long.'],
+      maxlength: [100, 'Slug cannot exceed 100 characters.'],
+    },
     name: {
       type: String,
       required: true,
@@ -14,6 +22,11 @@ const CoffeeShopSchema = new mongoose.Schema(
       minlength: [3, 'Coffee shop name must be at least 3 characters long.'],
       maxlength: [100, 'Coffee shop name cannot exceed 100 characters.'],
     },
+    brand: {
+      type: String,
+      trim: true,
+      maxlength: [100, 'Brand name cannot exceed 100 characters.'],
+    },
     address: {
       type: String,
       required: true,
@@ -21,30 +34,24 @@ const CoffeeShopSchema = new mongoose.Schema(
       minlength: [5, 'Address must be at least 5 characters long.'],
       maxlength: [200, 'Address cannot exceed 200 characters.'],
     },
-    // The average rating for the coffee shop, calculated from reviews
-    averageRating: {
-      type: Number,
-      min: [0, 'Average rating cannot be negative.'],
-      max: [5, 'Average rating cannot exceed 5.'],
-      default: 0,
-      set: (v) => parseFloat(v.toFixed(1)), // Keep one decimal place
+    coords: {
+      lat: { type: Number },
+      lng: { type: Number },
     },
-    // The number of reviews received
-    numberOfReviews: {
-      type: Number,
-      min: [0, 'Number of reviews cannot be negative.'],
-      default: 0,
+    images: {
+      type: [String],
+      default: [],
     },
-    // NEW: 'level' changed from String to Number, as per UML.
-    // Represents a numerical level or tier for the coffee shop.
-    level: {
-      type: Number,
-      required: true, // Assuming a coffee shop always has a level
-      min: [1, 'Coffee shop level must be at least 1.'], // Assuming levels start from 1
-      default: 1,
+    aboutCafe: {
+      type: String,
+      maxlength: [1000, 'About cafe cannot exceed 1000 characters.'],
     },
-    // Features offered by the coffee shop (e.g., FreeWater, PetFriendly)
-    features: {
+    aboutCoffee: {
+      type: String,
+      maxlength: [1000, 'About coffee cannot exceed 1000 characters.'],
+    },
+    // Amenities offered by the coffee shop (e.g., FreeWater, PetFriendly)
+    amenities: {
       type: [String], // Array of strings, matching the 'Offer' enum values
       enum: Object.values(Offer), // Restrict values to the Offer enum
       default: [],
@@ -61,15 +68,7 @@ const CoffeeShopSchema = new mongoose.Schema(
       enum: Object.values(CoffeeType),
       default: [],
       // Optional: Add validation to ensure at least one coffee type is listed if required.
-    },
-    // NEW: Array to store references to CoffeeVariant documents that this CoffeeShop offers.
-    // This explicitly models the 1..* relationship from CoffeeShop to CoffeeVariant.
-    offeredCoffeeVariants: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'CoffeeVariant',
-      },
-    ],
+    }
   },
   {
     timestamps: true, // Adds createdAt and updatedAt automatically
@@ -138,6 +137,21 @@ class CoffeeShopModel {
       return coffeeShop
     } catch (err) {
       throw new Error(`Error finding coffee shop by name: ${err.message}`)
+    }
+  }
+
+  /**
+   * Finds a coffee shop by its slug.
+   * @param {string} slug - The slug of the coffee shop to find.
+   * @returns {Promise<Document|null>} The coffee shop document or null if not found.
+   * @throws {Error} If there's a database error.
+   */
+  async findBySlug(slug) {
+    try {
+      const coffeeShop = await CoffeeShop.findOne({ slug }).exec()
+      return coffeeShop
+    } catch (err) {
+      throw new Error(`Error finding coffee shop by slug: ${err.message}`)
     }
   }
 
@@ -303,3 +317,4 @@ class CoffeeShopModel {
 }
 
 export default new CoffeeShopModel()
+export { CoffeeShop }

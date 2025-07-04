@@ -3,7 +3,7 @@ import Icons from '../../assets/Icons';
 
 function CoffeeVariantsSection({list}) {
  return <section className='sustainabilitySection'>
-    <h2 className='sectionName'>Sustainability commitment</h2>
+    <h2 className='sectionName'>Coffee variants (in membership included)</h2>
     <div className="sustainabilityAspects">
       <div className="aspectGrid">
         {list.map((aspect, index) => (

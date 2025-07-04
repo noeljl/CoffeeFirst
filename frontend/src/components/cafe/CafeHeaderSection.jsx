@@ -3,18 +3,25 @@ import Icons from "../../assets/Icons";
 import "./CafeHeaderSection.css";
 
 function CafeHeaderSection({ cafe }) {
+  // Use backend URL for images
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+  
+  // Construct full image URLs
+  const mainImageUrl = cafe.images?.[0] ? `${backendUrl}${cafe.images[0]}` : '';
+  const secondaryImage1Url = cafe.images?.[1] ? `${backendUrl}${cafe.images[1]}` : '';
+  const secondaryImage2Url = cafe.images?.[2] ? `${backendUrl}${cafe.images[2]}` : '';
 
   return (
     <section>
       <h1>{cafe.name}</h1>
       <div className="imageContainer">
         <img className="mainImage"
-          src={cafe.images[0]}
+          src={mainImageUrl}
           alt={cafe.name}
         />
         <div className="secondaryImages">
-          <img className="secondaryImage upperImage" src={cafe.images[1]} alt="Gallery 1" />
-          <img className="secondaryImage lowerImage" src={cafe.images[2]} alt="Gallery 2" />
+          <img className="secondaryImage upperImage" src={secondaryImage1Url} alt="Gallery 1" />
+          <img className="secondaryImage lowerImage" src={secondaryImage2Url} alt="Gallery 2" />
         </div>
       </div>
       <div className="buttonContainer">

@@ -73,6 +73,29 @@ class CoffeeShopService {
   }
 
   /**
+   * Retrieves a coffee shop by its slug.
+   * @param {string} slug - The slug of the coffee shop.
+   * @returns {Promise<Document>} The coffee shop document.
+   * @throws {HttpError} If the coffee shop is not found or a server error occurs.
+   */
+  async getCoffeeShopBySlug(slug) {
+    try {
+      const coffeeShop = await this.coffeeShopModel.findBySlug(slug)
+      if (!coffeeShop) {
+        throw createError(404, 'Coffee shop with this slug not found')
+      }
+      return coffeeShop
+    } catch (error) {
+      console.error(`Error in getCoffeeShopBySlug: ${error.message}`)
+      if (error.statusCode) throw error // Re-throw http-errors
+      throw createError(
+        500,
+        `Failed to retrieve coffee shop by slug: ${error.message}`
+      )
+    }
+  }
+
+  /**
    * Retrieves all coffee shops.
    * @returns {Promise<Array<Document>>} An array of coffee shop documents.
    * @throws {HttpError} If a server error occurs.

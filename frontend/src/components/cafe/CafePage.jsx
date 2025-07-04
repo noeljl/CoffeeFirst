@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import dummyCafesData from "./DummySingleCafeData.js";
+import { useEffect, useState } from "react";
+import { getCoffeeShopBySlug } from "../../apis/coffeeshop";
 
 import CafeHeaderSection from "./CafeHeaderSection.jsx";
 import VisitStatusCardSection from "./VisitStatusCardSection.jsx";
@@ -12,25 +13,39 @@ import MapEmbedSection from "./MapEmbedSection.jsx";
 
 function CafePage() {
   const { cafeSlug } = useParams();
+  const [cafe, setCafe] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Find the matching café object
-  const cafe = dummyCafesData.find((c) => c.slug === cafeSlug);
+  useEffect(() => {
+    getCoffeeShopBySlug(cafeSlug)
+      .then(data => {
+        console.log('Cafe data:', data);
+        setCafe(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching cafe:', err);
+        setError(err);
+        setLoading(false);
+      });
+  }, [cafeSlug]);
 
-  if (!cafe) {
-    return <div style={{ padding: "2rem" }}>Café not found.</div>;
-  }
+  if (loading) return <div style={{ padding: "2rem" }}>Loading café...</div>;
+  if (error) return <div style={{ padding: "2rem" }}>Error loading café: {error.toString()}</div>;
+  if (!cafe) return <div style={{ padding: "2rem" }}>Café not found.</div>;
 
   return (
     <>
       <CafeHeaderSection cafe={cafe} />
       <VisitStatusCardSection lastVisit="2025-04-24" />
-      <AboutSection title="About the café"   description={cafe.aboutCafe} />
+      <AboutSection title="About the café" description={cafe.aboutCafe} />
       <AboutSection title="About the coffee" description={cafe.aboutCoffee} />
-      <SustainabilitySection   list={cafe.sustainability} />
-      <CoffeeVariantsSection   list={cafe.variants} />
-      <CafeOffersSection       list={cafe.offers} />
-      <ReviewSummarySection    ratings={cafe.ratings} />
-      <MapEmbedSection         coords={cafe.coords}/>
+      <SustainabilitySection list={cafe.sustainabilityFeatures} />
+      <CoffeeVariantsSection list={cafe.coffeeTypes} />
+      <CafeOffersSection list={cafe.amenities} />
+      {/* <ReviewSummarySection ratings={cafe.averageRating} /> */}
+      <MapEmbedSection coords={cafe.coords} />
     </>
   );
 }

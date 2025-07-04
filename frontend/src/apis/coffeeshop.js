@@ -85,3 +85,13 @@ export const removeCoffeeVariantFromShop = async (shopId, variantId) => {
     throw err.response?.data || err.message
   }
 }
+
+// Get a coffee shop by slug
+export const getCoffeeShopBySlug = async (slug) => {
+  try {
+    const response = await API.get(`coffeeshop/by-slug/${encodeURIComponent(slug)}`)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
