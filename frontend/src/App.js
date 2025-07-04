@@ -31,7 +31,7 @@ import CafePage from './components/cafe/CafePage.jsx'
 
 function App() {
   return (
-    <div className="page-wrapper">
+    <div className="page-frame">
       <Router>
         <AppRoutes />
       </Router>

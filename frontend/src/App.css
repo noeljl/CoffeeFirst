@@ -1,8 +1,15 @@
 /* Limit screen width to 1440px */
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
   background-color: white; /* optional */
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+.page-frame {
+  width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+  box-sizing: border-box;
 }

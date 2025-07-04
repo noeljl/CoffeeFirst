@@ -11,6 +11,27 @@ function CafeHeaderSection({ cafe }) {
   const secondaryImage1Url = cafe.images?.[1] ? `${backendUrl}${cafe.images[1]}` : '';
   const secondaryImage2Url = cafe.images?.[2] ? `${backendUrl}${cafe.images[2]}` : '';
 
+  // Handler for 'Get direction' button
+  const handleGetDirection = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        const destLat = cafe.coords.lat;
+        const destLng = cafe.coords.lng;
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}`;
+        window.open(url, "_blank");
+      },
+      (error) => {
+        alert("Could not get your location. Please allow location access.");
+      }
+    );
+  };
+
   return (
     <section>
       <h1>{cafe.name}</h1>
@@ -27,7 +48,7 @@ function CafeHeaderSection({ cafe }) {
       <div className="buttonContainer">
         <Button icon={Icons.heart} radius="small" fw="bold" fs="medium" bg="white" padding="medium">Add to Wishlist</Button>
         <Button icon={Icons.favorite} radius="small" fw="bold" bg="white" padding="medium">Add to Favorites</Button>
-        <Button icon={Icons.map} radius="small" fw="bold" bg="white" padding="medium">Get direction</Button>
+        <Button icon={Icons.map} radius="small" fw="bold" bg="white" padding="medium" onClick={handleGetDirection}>Get direction</Button>
       </div>
     </section>
   );
