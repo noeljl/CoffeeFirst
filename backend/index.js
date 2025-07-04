@@ -22,6 +22,13 @@ async function startServer() {
   //await loaders.default(app) calls the main initialization function from loaders/index.js to load all important modules (Express Middleware, DB, Auth, etc.).
   await loaders.default(app)
 
+
+  //test
+  app.get('/api/hello', (req, res) => {
+    res.json({ message: 'Hello from backend!' })
+  })
+
+
   // Start server, Tells the server to listen on the desired port, from which it will be reached by the frontend
   app.listen(PORT, () => {
     console.log(`Server listening on PORT ${PORT}`)
