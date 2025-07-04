@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../ui/buttons/Button'
 import './SignInForm.css' // This import is already correct in SignInForm.jsx
+import { loginMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 
 export default function SignInForm() {
   const [email, setEmail] = useState('')
@@ -11,31 +12,41 @@ export default function SignInForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    // Mache die Funktion async, um await zu nutzen
     e.preventDefault()
     console.log('Attempting to log in with:', { email, password })
 
-    // In a real application, you would dispatch an action to an authentication API here.
-    // For example:
-    // dispatch(loginUser({ email, password }))
-    //   .then((response) => {
-    //     if (response.payload.success) { // Assuming your loginUser action returns success
-    //       navigate('/dashboard'); // Navigate to a protected route after successful login
-    //     } else {
-    //       // Handle login failure (e.g., show an error message)
-    //       console.error('Login failed:', response.payload.message);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error('Login error:', error);
-    //   });
+    try {
+      const resultAction = await dispatch(
+        loginMemberAction({ email, password })
+      )
 
-    // For now, let's simulate a successful login and navigate
-    // You'd replace this with actual authentication logic.
-    alert(
-      'Simulating login with Email: ' + email + ' and Password: ' + password
-    )
-    navigate('/dashboard') // Redirect to a dashboard or main page after login
+      // Überprüfe, ob die Action erfolgreich war (fulfilled)
+      if (loginMemberAction.fulfilled.match(resultAction)) {
+        // Hier prüfen wir auf 'isAuthenticated', da deine Action das zurückgibt
+        if (resultAction.payload.isAuthenticated) {
+          alert('Login erfolgreich für Email: ' + email)
+          navigate('/dashboard') // Navigiere nur bei Erfolg
+        } else {
+          console.error(
+            'Login erfolgreich, aber Authentifizierung ist false:',
+            resultAction.payload
+          )
+          alert('Login nicht erfolgreich. Bitte versuchen Sie es erneut.')
+        }
+      } else if (loginMemberAction.rejected.match(resultAction)) {
+        // Die Action wurde abgelehnt (Fehler)
+        const errorMessage =
+          resultAction.payload ||
+          'Login fehlgeschlagen. Ungültige Anmeldeinformationen.'
+        console.error('Login failed:', errorMessage)
+        alert('Login fehlgeschlagen: ' + errorMessage)
+      }
+    } catch (error) {
+      console.error('Unhandled login error:', error)
+      alert('Ein unerwarteter Fehler ist aufgetreten.')
+    }
   }
 
   return (
