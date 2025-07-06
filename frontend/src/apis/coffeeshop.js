@@ -85,3 +85,25 @@ export const removeCoffeeVariantFromShop = async (shopId, variantId) => {
     throw err.response?.data || err.message
   }
 }
+
+// Get a coffee shop by slug
+export const getCoffeeShopBySlug = async (slug) => {
+  try {
+    const response = await API.get(`coffeeshop/by-slug/${encodeURIComponent(slug)}`)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
+export function getCoffeeShopsByDistrict(district) {
+  return API.get(`coffeeshop?district=${encodeURIComponent(district)}`).then(res => res.data)
+}
+
+export function getAllDistricts() {
+  return API.get('/coffeeshop/districts').then(res => res.data)
+}
+
+export function getAllCoffeeShopsGroupedByDistrict() {
+  return API.get('/coffeeshop/districts').then(res => res.data)
+}

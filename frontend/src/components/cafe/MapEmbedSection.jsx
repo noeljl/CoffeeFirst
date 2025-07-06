@@ -14,7 +14,7 @@ export default function MapEmbedSection({coords}) {
     <section style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <h2 style={{fontSize: "22px"}}>Find the café</h2>
     <APIProvider apiKey={"AIzaSyC89_WpYeV6ocfM01wfJRSuIa6XadUq8pY"}>
-      <div style={{ height: "620px", width: "100%" }}>
+      <div style={{ height: "620px", width: "100%", borderRadius: "10px", overflow: "hidden" }}>
         <Map zoom={18} center={position} mapId={"e09678bdb8a175f651fc8ad3"}>
           <AdvancedMarker position={position}>
             <Pin

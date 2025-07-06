@@ -19,8 +19,8 @@ function SearchBar() {
 };
 
 export default SearchBar; */
-import React, { useState, useMemo } from 'react'
-import { SEARCH_ITEMS } from './../../cafes/CafesData.js'
+import React, { useState, useMemo, useEffect } from 'react'
+import { getAllCoffeeShops } from '../../../apis/coffeeshop'
 import searchIcon from '../../../assets/svg/searchFavorite.svg'
 import placeIcon from '../../../assets/svg/place.svg'
 import cafeIcon from '../../../assets/svg/coffeeShop.svg'
@@ -29,14 +29,24 @@ import './SearchBar.css'
 export default function SearchBar({ onSelect }) {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const [coffeeShops, setCoffeeShops] = useState([])
+
+  useEffect(() => {
+    getAllCoffeeShops()
+      .then(data => setCoffeeShops(data))
+      .catch(err => {
+        console.error('Error fetching coffee shops:', err)
+        setCoffeeShops([])
+      })
+  }, [])
 
   // memoized filter
   const suggestions = useMemo(() => {
     if (!query) return []
-    return SEARCH_ITEMS.filter((item) =>
+    return coffeeShops.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
     )
-  }, [query])
+  }, [query, coffeeShops])
 
   // handler for both click-on-icon and selecting an item
   const handleSelect = (item) => {
@@ -70,17 +80,15 @@ export default function SearchBar({ onSelect }) {
       {open && suggestions.length > 0 && (
         <ul className="search-dropdown">
           {suggestions.map((item) => (
-            <li key={item.name} onMouseDown={() => handleSelect(item)}>
+            <li key={item._id} onMouseDown={() => handleSelect(item)}>
               <img
-                src={item.type === 'district' ? placeIcon : cafeIcon}
+                src={cafeIcon}
                 className="item-icon"
-                alt={item.type}
+                alt="Cafe"
               />
               <div className="item-text">
                 <span className="name">{item.name}</span>
-                <span className="type">
-                  {item.type === 'district' ? 'District' : 'Café'}
-                </span>
+                <span className="type">Café</span>
               </div>
             </li>
           ))}

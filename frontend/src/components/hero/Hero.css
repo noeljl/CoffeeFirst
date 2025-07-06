@@ -21,8 +21,8 @@
 .hero-content {
     color: white;
     text-align: center;
-    max-width: 800px;
-    padding: 20px;
+    max-width: 850px;
+    gap: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,21 +30,9 @@
     height: 100%;
 }
 
-.cta-button {
-    background-color: #DA0000;
-    color: white;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    border-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    padding: 20px 20px;
+#hero-title {
+    font-size: 48px;
 }
-
-.cta-button:hover {
-    background-color: #b30000;
-    cursor: pointer;
+#hero-text {
+    font-size: 25px;
 }

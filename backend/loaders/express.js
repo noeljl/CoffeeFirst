@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import session from 'express-session' // npm install express-session
 import { SESSION_SECRET } from '../config.js'
+import express from 'express'
 
 const expressLoader = (app) => {
   // CORS for local development.
@@ -11,10 +12,13 @@ const expressLoader = (app) => {
     cors({
       origin: 'http://localhost:3000', // Where you can access from ?
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], //With which methods?
-      allowedHeaders: ['Authorization', 'Content-Type'], //The browser first sends a "preflight" request (an OPTIONS request) to ask the backend: “Am I allowed to send the Authorization and Content-Type headers?”
+      allowedHeaders: ['Authorization', 'Content-Type'], //The browser first sends a "preflight" request (an OPTIONS request) to ask the backend: "Am I allowed to send the Authorization and Content-Type headers?"
       credentials: true, // "It's okay to include credentials like cookies, authorization headers, or TLS client certificates with this request."
     })
   )
+
+  // Serve static files from the public directory
+  app.use(express.static('public'))
 
   // Body-Parsing- These lines enable Express to handle: JSON bodies (e.g. from fetch or Axios) URL-encoded data (e.g. from HTML forms)
   app.use(bodyParser.json())
@@ -30,7 +34,7 @@ const expressLoader = (app) => {
       saveUninitialized: false, //This avoids storing sessions that are empty (no data in them). Useful to avoid creating sessions for unauthenticated users or bots.
       cookie: {
         //This object contains configuration for the cookie that stores the session ID in the user's browser.
-        secure: false, // If true, the cookie is only sent over HTTPS. Since we are in development on localhost, it’s set to false.
+        secure: false, // If true, the cookie is only sent over HTTPS. Since we are in development on localhost, it's set to false.
         httpOnly: true, //Prevents JavaScript on the frontend (e.g. in the browser) from accessing the cookie. This protects against XSS (Cross-Site Scripting) attacks.
         sameSite: 'lax', //This helps prevent CSRF (Cross-Site Request Forgery) by restricting when cookies are sent across sites.
         maxAge: 24 * 60 * 60 * 1000, //This sets the cookie's expiration time to 24 hours (in milliseconds).

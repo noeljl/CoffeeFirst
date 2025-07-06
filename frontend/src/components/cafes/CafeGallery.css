@@ -7,3 +7,40 @@
   padding: 0;
   margin: 0;
 }
+
+.cafe-slider-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  gap: 0;
+}
+
+.cafe-slider {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  cursor: grab;
+  padding-bottom: 8px;
+}
+.cafe-slider:active {
+  cursor: grabbing;
+}
+
+/* Hide scrollbar for Webkit browsers */
+.cafe-slider::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for Firefox */
+.cafe-slider {
+  scrollbar-width: none;
+}
+
+/* Remove arrow button styles if present */
+.slider-arrow {
+  display: none;
+}

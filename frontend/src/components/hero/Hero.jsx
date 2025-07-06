@@ -9,10 +9,22 @@ function Hero() {
         <div className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
             <div className="overlay">
                 <div className="hero-content">
-                    <h1>Your Daily Coffee, Upgraded</h1>
-                    <p>From filter to flat white – enjoy premium coffee at partner cafés across Munich.</p>
-                    <p>Starting at €29.99/month – cancel anytime.</p>
-                    <Button bg="red" fs="l" fw="bold" radius="small" onClick={() => {navigate("/signup")}}>Become a coffee lover</Button>
+                    <h1 id="hero-title">Your Daily Coffee, Upgraded</h1>
+                    <div className="hero-content-text">
+                        <p id="hero-text">From filter to flat white – enjoy premium coffee at partner cafés across Munich.</p>
+                        <p id="hero-text">Starting at €29.99/month – cancel anytime.</p>
+                    </div>
+                    <Button 
+                      bg="red" 
+                      fs="large" 
+                      fw="bold" 
+                      radius="small" 
+                      padding="medium" 
+                      onClick={() => {navigate("/signup")}} 
+                      style={{ marginTop: 20 }}
+                    >
+                      Become a coffee lover
+                    </Button>
                 </div>
             </div>
         </div>

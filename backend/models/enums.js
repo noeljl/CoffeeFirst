@@ -6,6 +6,7 @@ export const Offer = Object.freeze({
   PET_FRIENDLY: 'PetFriendly',
   FREE_CHARGING: 'FreeCharging',
   STUDY_FRIENDLY: 'StudyFriendly',
+  WIFI: 'Wifi',
 })
 
 export const SustainabilityFeature = Object.freeze({

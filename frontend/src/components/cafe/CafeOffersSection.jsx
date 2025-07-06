@@ -1,15 +1,16 @@
-import Icons from '../../assets/Icons';
+import { AMENITY_ICONS } from './amenityIcons';
 import "./SustainabilitySection.css";
 
-function CoffeeOfferSection({ list }) {
+function CafeOffersSection({ list }) {
   return <section className='sustainabilitySection'>
-    <h2 className='sectionName'>Sustainability commitment</h2>
+    <h2 className='sectionName'>What this café offers</h2>
     <div className="sustainabilityAspects">
       <div className="aspectGrid">
         {list.map((aspect, index) => (
           <div className="sustainabilityAspect" key={index}>
-            <img src={Icons.coffeeBean} />
-            <div className="aspectDetails">{aspect}</div>
+            
+            <img id="icon"src={AMENITY_ICONS[aspect]} alt={aspect} />
+            <div className="aspectDetails">{aspect.replace(/_/g, ' ')}</div>
           </div>
         ))}
       </div>
@@ -17,4 +18,4 @@ function CoffeeOfferSection({ list }) {
   </section>;
 }
 
-export default CoffeeOfferSection;
+export default CafeOffersSection;
