@@ -10,7 +10,7 @@ function BurgerMenuButton() {
   return (
     <div>
       <button className="menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <img src={Icons.menu} alt="Menu" />
+        <img src={Icons.menu} alt="Menu" draggable={false}/>
       </button>
       {isMenuOpen && <Menu onClose={() => setIsMenuOpen(false)} />}
     </div>
@@ -28,7 +28,7 @@ function Menu({ onClose }) {
           {dashboardMenu.map((val, key) => (
             <li key={key} className="entries" id={(location.pathname === val.link) && "active"} onClick={() => { navigate(val.link); onClose(); }}>
               <div id="icon">
-                <img src={val.icon} alt={val.title} />
+                <img src={val.icon} alt={val.title} draggable={false}/>
               </div>
               <div id="title">
                 <span>{val.title}</span>
@@ -38,7 +38,7 @@ function Menu({ onClose }) {
         </div>
         <li className="entries" id={(location.pathname === "/account-settings") && "active"} onClick={() => { navigate("/account-settings"); onClose(); }}>
           <div id="icon">
-            <img src={Icons.setting} alt="Account" />
+            <img src={Icons.setting} alt="Account" draggable={false}/>
           </div>
           <div id="title">
             <span>Account settings</span>
@@ -47,7 +47,7 @@ function Menu({ onClose }) {
 
         <li className="entries" id={(location.pathname === "/logout") && "active"} onClick={() => { navigate("/logout"); onClose(); }}>
           <div id="icon">
-            <img src={Icons.logout} alt="Logout" />
+            <img src={Icons.logout} alt="Logout" draggable={false}/>
           </div>
           <div id="title">
             <span>Logout</span>

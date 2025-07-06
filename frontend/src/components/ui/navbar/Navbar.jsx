@@ -7,13 +7,14 @@ import Avatar from "../../ui/avatar/Avatar";
 import FilterButton from "../../ui/filter/Filter";
 import SearchBar from "../../ui/search-bar/SearchBar";
 import CheckInButton from "../../ui/check-in/CheckIn";
+import "../../../App.css";
 
 import Icons from "../../../assets/Icons";
 
 // Handles both navbar types: logged in and out.
 function NavBar() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
-    return (<div>
+    return (<div className="page-frame"> 
         {isLoggedIn ? <SignedIn /> : <SignedOut />}
     </div>
     );
@@ -24,7 +25,7 @@ function SignedOut() {
     const navigate = useNavigate();
     return (
         <div className="navbar-container">
-            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
+            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" draggable={false} onClick={() => { navigate("/") }} />
             <div className="gap">
                 <Button bg="white" fs="medium" radius="small" padding="small">Sign-In</Button>
                 <Button bg="red" fs="medium" radius="small" padding="small" onClick={() => { navigate("/signup/regform"); }}>Sign-Up</Button>
@@ -39,7 +40,7 @@ function SignedIn() {
     const menuState = useState(false);
     return (
         <div className="navbar-container">
-            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" onClick={() => { navigate("/") }} />
+            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" draggable={false} onClick={() => { navigate("/") }} />
 
             <div className="gap">
                 <SearchBar />

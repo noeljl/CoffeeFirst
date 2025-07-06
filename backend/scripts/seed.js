@@ -51,7 +51,12 @@ const coffeeShopsToSeed = [
     slug: 'man-vs-machine-hohenzollern',
     name: 'Man versus Machine Coffee Roasters',
     brand: 'Man versus Machine',
-    address: 'Hohenzollernstraße 32, 80801 München',
+    district: 'Schwabing-West',
+    address: {
+      streetNo: 'Hohenzollernstraße 32',
+      PLZ: '80801',
+      Place: 'München',
+    },
     coords: { lat: 48.15997773264443, lng: 11.581492083804415 },
     images: [
       '/images/cafes/man-vs-machine-hohenzollern/cover.png',
@@ -68,7 +73,12 @@ const coffeeShopsToSeed = [
     slug: 'man-vs-machine-muellerstrasse',
     name: 'Man versus Machine – Müllerstraße',
     brand: 'Man versus Machine',
-    address: 'Müllerstraße 23, 80469 München',
+    district: 'Ludwigsvorstadt-Isarvorstadt',
+    address: {
+      streetNo: 'Müllerstraße 23',
+      PLZ: '80469',
+      Place: 'München',
+    },
     coords: { lat: 48.129582, lng: 11.574003 },
     images: [
       '/images/cafes/man-vs-machine-muellerstrasse/cover.png',
@@ -86,7 +96,12 @@ const coffeeShopsToSeed = [
     slug: 'cafe-frischluft',
     name: 'Café Frischluft',
     brand: 'Frischluft',
-    address: 'Lindwurmstraße 88, 80337 München',
+    district: 'Sendling',
+    address: {
+      streetNo: 'Lindwurmstraße 88',
+      PLZ: '80337',
+      Place: 'München',
+    },
     coords: { lat: 48.123456, lng: 11.567890 },
     images: [
       '/images/cafes/cafe-frischluft/cover.png',
@@ -103,7 +118,12 @@ const coffeeShopsToSeed = [
     slug: 'urban-beans',
     name: 'Urban Beans',
     brand: 'Urban Beans',
-    address: 'Sonnenstraße 12, 80331 München',
+    district: 'Altstadt-Lehel',
+    address: {
+      streetNo: 'Sonnenstraße 12',
+      PLZ: '80331',
+      Place: 'München',
+    },
     coords: { lat: 48.137154, lng: 11.575490 },
     images: [
       '/images/cafes/urban-beans/cover.png',
@@ -120,7 +140,12 @@ const coffeeShopsToSeed = [
     slug: 'kaffee-ecke',
     name: 'Kaffee Ecke',
     brand: 'Ecke',
-    address: 'Eckeplatz 5, 80335 München',
+    district: 'Maxvorstadt',
+    address: {
+      streetNo: 'Eckeplatz 5',
+      PLZ: '80335',
+      Place: 'München',
+    },
     coords: { lat: 48.148000, lng: 11.560000 },
     images: [
       '/images/cafes/kaffee-ecke/cover.png',
@@ -137,7 +162,12 @@ const coffeeShopsToSeed = [
     slug: 'green-cup',
     name: 'Green Cup Coffee',
     brand: 'Green Cup',
-    address: 'Türkenstraße 86, 80799 München',
+    district: 'Maxvorstadt',
+    address: {
+      streetNo: 'Türkenstraße 86',
+      PLZ: '80799',
+      Place: 'München',
+    },
     coords: { lat: 48.150000, lng: 11.580000 },
     images: [
       '/images/cafes/green-cup/cover.png',
@@ -154,7 +184,12 @@ const coffeeShopsToSeed = [
     slug: 'cafe-morgenrot',
     name: 'Café Morgenrot',
     brand: 'Morgenrot',
-    address: 'Morgenstraße 1, 80469 München',
+    district: 'Ludwigsvorstadt-Isarvorstadt',
+    address: {
+      streetNo: 'Morgenstraße 1',
+      PLZ: '80469',
+      Place: 'München',
+    },
     coords: { lat: 48.130000, lng: 11.570000 },
     images: [
       '/images/cafes/cafe-morgenrot/cover.png',
@@ -171,7 +206,12 @@ const coffeeShopsToSeed = [
     slug: 'espresso-bar',
     name: 'Espresso Bar',
     brand: 'Espresso Bar',
-    address: 'Barstraße 7, 80339 München',
+    district: 'Schwanthalerhöhe',
+    address: {
+      streetNo: 'Barstraße 7',
+      PLZ: '80339',
+      Place: 'München',
+    },
     coords: { lat: 48.140000, lng: 11.550000 },
     images: [
       '/images/cafes/espresso-bar/cover.png',
@@ -188,7 +228,12 @@ const coffeeShopsToSeed = [
     slug: 'petit-cafe',
     name: 'Petit Café',
     brand: 'Petit',
-    address: 'Französische Straße 3, 80333 München',
+    district: 'Altstadt-Lehel',
+    address: {
+      streetNo: 'Französische Straße 3',
+      PLZ: '80333',
+      Place: 'München',
+    },
     coords: { lat: 48.145000, lng: 11.565000 },
     images: [
       '/images/cafes/petit-cafe/cover.png',
@@ -205,7 +250,12 @@ const coffeeShopsToSeed = [
     slug: 'study-hub-cafe',
     name: 'Study Hub Café',
     brand: 'Study Hub',
-    address: 'Studentenweg 10, 80802 München',
+    district: 'Schwabing-Freimann',
+    address: {
+      streetNo: 'Studentenweg 10',
+      PLZ: '80802',
+      Place: 'München',
+    },
     coords: { lat: 48.160000, lng: 11.590000 },
     images: [
       '/images/cafes/study-hub-cafe/cover.png',

@@ -24,7 +24,7 @@ function Button({
 
   return (
     <button className={classes} onClick={onClick} type={type}>
-      {icon && <img src={icon} alt="icon" className="btn-icon" />}
+      {icon && <img src={icon} alt="icon" className="btn-icon" draggable={false}/>}
       {children}
     </button>
   )

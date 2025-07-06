@@ -27,12 +27,34 @@ const CoffeeShopSchema = new mongoose.Schema(
       trim: true,
       maxlength: [100, 'Brand name cannot exceed 100 characters.'],
     },
-    address: {
+    district: {
       type: String,
       required: true,
       trim: true,
-      minlength: [5, 'Address must be at least 5 characters long.'],
-      maxlength: [200, 'Address cannot exceed 200 characters.'],
+      maxlength: [100, 'District name cannot exceed 100 characters.'],
+    },
+    address: {
+      streetNo: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: [3, 'Street and number must be at least 3 characters long.'],
+        maxlength: [100, 'Street and number cannot exceed 100 characters.'],
+      },
+      PLZ: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: [4, 'PLZ must be at least 4 characters long.'],
+        maxlength: [10, 'PLZ cannot exceed 10 characters.'],
+      },
+      Place: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: [2, 'Place must be at least 2 characters long.'],
+        maxlength: [100, 'Place cannot exceed 100 characters.'],
+      },
     },
     coords: {
       lat: { type: Number },

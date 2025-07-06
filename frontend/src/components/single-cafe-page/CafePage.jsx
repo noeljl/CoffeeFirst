@@ -9,7 +9,7 @@ const CafePage = () => {
     <div className="cafe-container">
       {/* Hero */}
       <section className="cafe-hero">
-        <img src={cafe.images[0]} alt={cafe.name} className="cafe-hero-img" />
+        <img src={cafe.images[0]} alt={cafe.name} draggable={false} className="cafe-hero-img" />
         <h1 className="cafe-name">{cafe.name}</h1>
         <p className="cafe-address">{cafe.location.address}</p>
       </section>
