@@ -237,6 +237,91 @@ class CoffeeShopService {
       )
     }
   }
+
+  /**
+   * Get all coffee shops by district
+   * @param {string} district
+   * @returns {Promise<Array>}
+   */
+  async getAllCoffeeShopsByDistrict(district) {
+    return this.coffeeShopModel.find({ district })
+  }
+
+  /**
+   * Get all unique districts from coffee shops
+   * @returns {Promise<Array<string>>}
+   */
+  async getAllGroupedByDistrict() {
+    return this.coffeeShopModel.findAllGroupedByDistrict();
+  }
+
+  /**
+   * Get all coffee shops grouped by district
+   * @returns {Promise<Array>}
+   */
+  async getAllCoffeeShopsGroupedByDistrict() {
+    try {
+      return await this.coffeeShopModel.findAllGroupedByDistrict();
+    } catch (error) {
+      console.error(`Error in getAllCoffeeShopsGroupedByDistrict: ${error.message}`)
+      throw createError(
+        500,
+        `Failed to retrieve coffee shops grouped by district: ${error.message}`
+      )
+    }
+  }
+
+  /**
+   * Get all coffee shops grouped by district with pagination
+   * @param {number} page - Page number (0-based)
+   * @param {number} limit - Number of districts per page
+   * @returns {Promise<Object>} Object with districts and pagination info
+   */
+  async getAllCoffeeShopsGroupedByDistrictPaginated(page = 0, limit = 3) {
+    try {
+      const skip = page * limit;
+      
+      const result = await this.coffeeShopModel.aggregate([
+        {
+          $group: {
+            _id: '$district',
+            coffeeShops: { $push: '$$ROOT' },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { _id: 1 }
+        },
+        {
+          $facet: {
+            districts: [{ $skip: skip }, { $limit: limit }],
+            totalCount: [{ $count: 'count' }]
+          }
+        }
+      ]).exec();
+
+      const districts = result[0].districts;
+      const totalCount = result[0].totalCount[0]?.count || 0;
+      const hasMore = skip + limit < totalCount;
+
+      return {
+        districts,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          hasMore,
+          totalPages: Math.ceil(totalCount / limit)
+        }
+      };
+    } catch (error) {
+      console.error(`Error in getAllCoffeeShopsGroupedByDistrictPaginated: ${error.message}`)
+      throw createError(
+        500,
+        `Failed to retrieve coffee shops grouped by district: ${error.message}`
+      )
+    }
+  }
 }
 
 export default CoffeeShopService

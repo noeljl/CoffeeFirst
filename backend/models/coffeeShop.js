@@ -336,6 +336,58 @@ class CoffeeShopModel {
       )
     }
   }
+
+  /**
+   * Finds coffee shops by district.
+   * @param {Object} filter - The filter object (e.g., { district: 'someDistrict' }).
+   * @returns {Promise<Array<Document>>} An array of coffee shop documents.
+   * @throws {Error} If there's a database error.
+   */
+  async find(filter) {
+    try {
+      return await CoffeeShop.find(filter).exec()
+    } catch (err) {
+      throw new Error(`Error finding coffee shops: ${err.message}`)
+    }
+  }
+
+  /**
+   * Gets distinct values for a field.
+   * @param {string} field - The field name to get distinct values for.
+   * @returns {Promise<Array>} An array of distinct values.
+   * @throws {Error} If there's a database error.
+   */
+  async distinct(field) {
+    try {
+      return await CoffeeShop.distinct(field).exec()
+    } catch (err) {
+      throw new Error(`Error getting distinct values for ${field}: ${err.message}`)
+    }
+  }
+
+  /**
+   * Finds all coffee shops grouped by district using aggregation.
+   * @returns {Promise<Array>} An array of district groups with coffee shops.
+   * @throws {Error} If there's a database error.
+   */
+  async findAllGroupedByDistrict() {
+    try {
+      return await CoffeeShop.aggregate([
+        {
+          $group: {
+            _id: '$district',
+            coffeeShops: { $push: '$$ROOT' },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { _id: 1 }
+        }
+      ]).exec()
+    } catch (err) {
+      throw new Error(`Error grouping coffee shops by district: ${err.message}`)
+    }
+  }
 }
 
 export default new CoffeeShopModel()

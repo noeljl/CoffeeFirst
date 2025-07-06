@@ -95,3 +95,15 @@ export const getCoffeeShopBySlug = async (slug) => {
     throw err.response?.data || err.message
   }
 }
+
+export function getCoffeeShopsByDistrict(district) {
+  return API.get(`coffeeshop?district=${encodeURIComponent(district)}`).then(res => res.data)
+}
+
+export function getAllDistricts() {
+  return API.get('/coffeeshop/districts').then(res => res.data)
+}
+
+export function getAllCoffeeShopsGroupedByDistrict() {
+  return API.get('/coffeeshop/districts').then(res => res.data)
+}

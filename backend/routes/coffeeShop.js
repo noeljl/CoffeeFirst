@@ -32,7 +32,7 @@ coffeeShopRouter.post('/', async (req, res, next) => {
  */
 coffeeShopRouter.get('/', async (req, res, next) => {
   try {
-    const coffeeShops = await coffeeShopService.getAllCoffeeShops()
+    let coffeeShops  = await coffeeShopService.getAllCoffeeShops();
     res.status(200).json(coffeeShops)
   } catch (error) {
     next(error)
@@ -72,6 +72,20 @@ coffeeShopRouter.get('/by-slug/:slug', async (req, res, next) => {
     next(error)
   }
 })
+
+/**
+ * @route GET /api/coffeeshops/districts
+ * @desc Get all coffee shops grouped by district
+ * @access Public
+ */
+coffeeShopRouter.get('/districts', async (req, res, next) => {
+  try {
+    const districts = await coffeeShopService.getAllCoffeeShopsGroupedByDistrict();
+    res.json(districts);
+  } catch (error) {
+    next(error)
+  }
+});
 
 /**
  * @route GET /api/coffeeshops/:id

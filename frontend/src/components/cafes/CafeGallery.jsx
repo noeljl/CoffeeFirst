@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
 import SingleCafeCard from './SingleCafeCard'
 import './CafeGallery.css'
-import { getAllCoffeeShops } from '../../apis/coffeeshop'
+import { getAllCoffeeShops, getCoffeeShopsByDistrict } from '../../apis/coffeeshop'
 
-function CafeGallery() {
-  const [coffeeShops, setCoffeeShops] = useState([])
-  const [loading, setLoading] = useState(true)
+function CafeGallery({ district, coffeeShops: providedCoffeeShops }) {
+  const [coffeeShops, setCoffeeShops] = useState(providedCoffeeShops || [])
+  const [loading, setLoading] = useState(!providedCoffeeShops)
   const [error, setError] = useState(null)
   const sliderRef = useRef(null)
   const isDragging = useRef(false)
@@ -13,18 +13,32 @@ function CafeGallery() {
   const scrollLeft = useRef(0)
 
   useEffect(() => {
-    getAllCoffeeShops()
-      .then(data => {
-        console.log('Coffee shops data:', data)
+    // If coffeeShops are provided as props, use them directly
+    if (providedCoffeeShops) {
+      setCoffeeShops(providedCoffeeShops)
+      setLoading(false)
+      return
+    }
+
+    // Otherwise, fetch data as before
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        let data
+        if (district) {
+          data = await getCoffeeShopsByDistrict(district)
+        } else {
+          data = await getAllCoffeeShops()
+        }
         setCoffeeShops(data)
         setLoading(false)
-      })
-      .catch(err => {
-        console.error('Error fetching coffee shops:', err)
+      } catch (err) {
         setError(err)
         setLoading(false)
-      })
-  }, [])
+      }
+    }
+    fetchData()
+  }, [district, providedCoffeeShops])
 
   // Mouse drag-to-scroll handlers
   const handleMouseDown = (e) => {
