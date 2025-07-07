@@ -48,6 +48,19 @@ export default function SearchBar({ onSelect }) {
     )
   }, [query, coffeeShops])
 
+  const uniqueDistricts = useMemo(() => {
+    const districts = coffeeShops.map(shop => shop.district).filter(Boolean);
+    return [...new Set(districts)];
+  }, [coffeeShops]);
+
+  const matchingDistricts = useMemo(() => {
+    if (!query) return [];
+    const lowerQuery = query.toLowerCase();
+    return uniqueDistricts.filter(district =>
+      district.toLowerCase().includes(lowerQuery)
+    );
+  }, [query, uniqueDistricts]);
+
   // handler for both click-on-icon and selecting an item
   const handleSelect = (item) => {
     onSelect?.(item)
@@ -77,18 +90,25 @@ export default function SearchBar({ onSelect }) {
         <img src={searchIcon} alt="Search" />
       </button>
 
-      {open && suggestions.length > 0 && (
+      {open && (matchingDistricts.length > 0 || suggestions.length > 0) && (
         <ul className="search-dropdown">
+          {/* District suggestions */}
+          {matchingDistricts.map(district => (
+            <li key={district} onMouseDown={() => setQuery(district)}>
+              <img src={placeIcon} className="item-icon" alt="District" />
+              <div className="item-text">
+                <span className="name">{district}</span>
+                <span className="type">District</span>
+              </div>
+            </li>
+          ))}
+          {/* Cafe suggestions */}
           {suggestions.map((item) => (
             <li key={item._id} onMouseDown={() => handleSelect(item)}>
-              <img
-                src={cafeIcon}
-                className="item-icon"
-                alt="Cafe"
-              />
+              <img src={cafeIcon} className="item-icon" alt="Cafe" />
               <div className="item-text">
                 <span className="name">{item.name}</span>
-                <span className="type">Café</span>
+                <span className="type">{item.district ? item.district : "Café"}</span>
               </div>
             </li>
           ))}
