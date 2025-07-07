@@ -13,6 +13,9 @@ const membershipService = new MembershipService()
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.get('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const membership = await membershipService.getMembershipById(req.params.id)
     res.status(200).json(membership)
@@ -28,6 +31,9 @@ membershipRouter.get('/:id', async (req, res, next) => {
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.get('/by-member/:memberId', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const membership = await membershipService.getMembershipByMemberId(
       req.params.memberId
@@ -46,6 +52,9 @@ membershipRouter.get('/by-member/:memberId', async (req, res, next) => {
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.put('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const updatedMembership = await membershipService.updateMembership(
       req.params.id,
@@ -64,6 +73,9 @@ membershipRouter.put('/:id', async (req, res, next) => {
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.delete('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const result = await membershipService.deleteMembership(req.params.id)
     res.status(200).json(result)
@@ -80,6 +92,9 @@ membershipRouter.delete('/:id', async (req, res, next) => {
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.put('/:id/decrement-coffee-quota', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const { amount } = req.body // Expect amount in the request body, default to 1 if not provided
     const updatedMembership = await membershipService.decrementCoffeeQuota(
@@ -100,6 +115,9 @@ membershipRouter.put('/:id/decrement-coffee-quota', async (req, res, next) => {
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.put('/:id/increment-coffee-quota', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const { amount } = req.body // Expect amount in the request body, default to 1 if not provided
     const updatedMembership = await membershipService.incrementCoffeeQuota(

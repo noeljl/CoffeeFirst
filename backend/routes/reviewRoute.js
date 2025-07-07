@@ -13,6 +13,9 @@ const reviewRouter = express.Router()
  * Creates a new review.
  */
 reviewRouter.post('/', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const review = await reviewService.createReview(req.body)
     res.status(201).json(review)
@@ -26,6 +29,9 @@ reviewRouter.post('/', async (req, res, next) => {
  * Retrieves a review by its ID.
  */
 reviewRouter.get('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const review = await reviewService.getReviewById(req.params.id)
     res.status(200).json(review)
@@ -38,6 +44,9 @@ reviewRouter.get('/:id', async (req, res, next) => {
  * Retrieves all reviews for a specific coffee shop.
  */
 reviewRouter.get('/coffee-shop/:coffeeShopId', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const reviews = await reviewService.getReviewsByCoffeeShopId(
       req.params.coffeeShopId
@@ -52,6 +61,9 @@ reviewRouter.get('/coffee-shop/:coffeeShopId', async (req, res, next) => {
  * Retrieves all reviews by a specific member.
  */
 reviewRouter.get('/member/:memberId', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const reviews = await reviewService.getReviewsByMemberId(
       req.params.memberId
@@ -66,6 +78,9 @@ reviewRouter.get('/member/:memberId', async (req, res, next) => {
  * Updates an existing review.
  */
 reviewRouter.put('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const review = await reviewService.updateReview(req.params.id, req.body)
     res.status(200).json(review)
@@ -78,6 +93,9 @@ reviewRouter.put('/:id', async (req, res, next) => {
  * Deletes a review by its ID.
  */
 reviewRouter.delete('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const result = await reviewService.deleteReview(req.params.id)
     res.status(200).json(result)

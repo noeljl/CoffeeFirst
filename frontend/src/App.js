@@ -1,77 +1,70 @@
 import React from 'react'
 import {
   BrowserRouter as Router,
-  Route,
   Routes,
+  Route,
   Navigate,
 } from 'react-router-dom'
 
+// Guards / Layouts
 import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
+import DashboardLayout from './components/layout/DashboardLayout.jsx'
+import SettingsLayout from './components/layout/SettingsLayout.jsx'
 
-// Public pages
+// Public Pages
 import HomePage from './pages/HomePage.jsx'
-// import SignUp from './pages/signup/SignUp.jsx'
 import RegForm from './pages/signup/RegForm.jsx'
 import PlanForm from './pages/signup/PlanForm.jsx'
 import Payment from './pages/signup/Payment.jsx'
+import Login from './pages/signin/SignIn.jsx'
+
+// Dynamic Views
+import Dashboard from './components/views/Dashboard.jsx'
+import AccountSettings from './components/views/AccountSettings.jsx'
+import CafePage from './components/cafe/CafePage.jsx'
 
 // Misc
 import NotFound from './pages/NotFound.jsx'
 import TempBlankPage from './pages/TempBlankPage.jsx'
-import Dashboard from './components/views/Dashboard.jsx'
-import AccountSettings from './components/views/AccountSettings.jsx'
-
-// Dynamic routings
-import DashboardLayout from './components/layout/DashboardLayout.jsx'
-import SettingsLayout from './components/layout/SettingsLayout.jsx'
-import CafePage from './components/cafe/CafePage.jsx'
-
-
-
 
 function App() {
   return (
-    <div className="">
-      <Router>
-        <AppRoutes />
-      </Router>
-    </div>
-  )
-}
+    <Router>
+      <Routes>
+        {/* Öffentliche Routen */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup/regform" element={<RegForm />} />
+        <Route path="/signup/planform" element={<PlanForm />} />
+        <Route path="/signup/payment" element={<Payment />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/testing" element={<TempBlankPage />} />
 
-function AppRoutes() {
-  return (
-    <Routes>
-      {/* Root → HomePage */}
-      <Route path="/" element={<HomePage />} />
+        {/* Geschützte Bereiche */}
+        <Route element={<PrivateRoute />}>
+          {/* Dashboard */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route
+              index
+              element={<Navigate to="/dashboard/partners" replace />}
+            />
+            <Route path=":section" element={<Dashboard />} />
+            <Route path=":section/:cafeSlug" element={<CafePage />} />
+          </Route>
 
-      {/* Public → Sign-Up */}
-      {/* <Route path="/signup" element={<SignUp />} /> */}
-      <Route path="/signup/regform" element={<RegForm />} />
-      <Route path="/signup/planform" element={<PlanForm />} />
-      <Route path="/signup/payment" element={<Payment />} />
+          {/* Account Settings */}
+          <Route path="/account-settings" element={<SettingsLayout />}>
+            <Route
+              index
+              element={<Navigate to="/account-settings/personal" replace />}
+            />
+            <Route path=":section" element={<AccountSettings />} />
+          </Route>
+        </Route>
 
-      {/* Testing */}
-      <Route path="/testing" element={<TempBlankPage />} />
-
-      {/* Dynamic dashboard routing */}
-      <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<Navigate to="partners" replace />} />
-        {/* List pages (partners, favorites, etc.) */}
-        <Route path=":section" element={<Dashboard />} />
-        {/* Single café page */}
-        <Route path=":section/:cafeSlug" element={<CafePage />} />
-      </Route>
-
-      {/* Dynamic Account Settings routings */}
-      <Route path="/account-settings" element={<SettingsLayout />}>
-        <Route index element={<Navigate to="personal" replace />} />
-        <Route path=":section" element={<AccountSettings />} />
-      </Route>
-
-      {/* Catch-all 404 */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* Fallback 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   )
 }
 

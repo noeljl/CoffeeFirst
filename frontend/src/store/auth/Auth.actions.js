@@ -4,7 +4,6 @@ import {
   isMemberLoggedIn,
   loginMember,
   registerMember,
-  loginEventAttendee,
 } from '../../apis/auth.js'
 
 // Prüfe Login-Status für Member
@@ -29,6 +28,7 @@ export const loginMemberAction = createAsyncThunk(
   'auth/loginMember',
   async (credentials, thunkAPI) => {
     try {
+      console.log('loginMemberAction called with credentials ' + credentials)
       const member = await loginMember(credentials)
       return { member, isAuthenticated: true }
     } catch (err) {
@@ -45,19 +45,6 @@ export const registerMemberAction = createAsyncThunk(
       return { user, isAuthenticated: true }
     } catch (err) {
       return thunkAPI.rejectWithValue(err)
-    }
-  }
-)
-
-// Login für Event Attendee
-export const loginEventAttendeeAction = createAsyncThunk(
-  'auth/loginEventAttendee',
-  async (credentials, thunkAPI) => {
-    try {
-      const attendee = await loginEventAttendee(credentials)
-      return { attendee, isAuthenticated: true }
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message)
     }
   }
 )

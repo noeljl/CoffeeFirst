@@ -4,8 +4,8 @@ import Button from '../../components/ui/buttons/Button.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialState as accountInitialState } from '../../store/accountSettings/AccountSettings.reducers.js'
 import {
-  getMemberByMailAction,
-  updateMemberProfileByMailAction, // Korrekter Import der Update-Action
+  getMemberByIdAction,
+  updateMemberByIDAction, // Korrekter Import der Update-Action
 } from '../../store/accountSettings/AccountSettings.actions.js'
 
 function PersonalInfo() {
@@ -14,6 +14,14 @@ function PersonalInfo() {
   // Redux-State
   const accountSettings =
     useSelector((state) => state.accountSettings) || accountInitialState
+
+  const memberId = useSelector((state) => state.auth.member?.id)
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
+  useEffect(() => {
+    if (!isAuthenticated || !memberId) return
+    dispatch(getMemberByIdAction(memberId))
+  }, [isAuthenticated, memberId, dispatch])
 
   const {
     firstName: reduxFirstName, // Umbenennen, um Konflikt mit lokalem State zu vermeiden
@@ -51,13 +59,6 @@ function PersonalInfo() {
     // Sie werden beim Bearbeiten neu eingegeben.
     setLocalProfilePic(reduxProfilePic) // Setze hier die URL, nicht das File-Objekt
   }, [reduxFirstName, reduxLastName, reduxEmail, reduxProfilePic])
-
-  // --- useEffect zum Laden der Daten beim Mounten ---
-  useEffect(() => {
-    const emailToFetch = 'janlaurens.ohl@web.de' // Verwende eine Konstante
-    console.log('Component mounted, dispatching getMemberByMail...')
-    dispatch(getMemberByMailAction(emailToFetch))
-  }, [dispatch]) // Nur dispatch als Dependency, da emailToFetch eine Konstante ist
 
   // --- Debug useEffect um Redux State Changes zu verfolgen (optional) ---
   useEffect(() => {
@@ -150,8 +151,8 @@ function PersonalInfo() {
       // Deine Action muss entsprechend angepasst werden, um ein Objekt mit den Daten zu akzeptieren:
       // updateMemberProfileByMailAction({ email: emailToUpdate, updatedFields: updatedData })
       await dispatch(
-        updateMemberProfileByMailAction({
-          email: emailToUpdate, // Identifiziert den Benutzer
+        updateMemberByIDAction({
+          id: memberId, // Identifiziert den Benutzer
           updatedFields: updatedData, // Die zu aktualisierenden Daten
         })
       ).unwrap() // .unwrap() wirft einen Fehler, wenn die Action rejected wird

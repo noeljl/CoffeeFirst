@@ -18,6 +18,9 @@ import createError from 'http-errors'
  */
 coffeeShopRouter.post('/', async (req, res, next) => {
   try {
+    if (!req.isAuthenticated()) {
+      throw createError(401, 'Unauthorized')
+    }
     const newCoffeeShop = await coffeeShopService.createCoffeeShop(req.body)
     res.status(201).json(newCoffeeShop)
   } catch (error) {
@@ -32,7 +35,7 @@ coffeeShopRouter.post('/', async (req, res, next) => {
  */
 coffeeShopRouter.get('/', async (req, res, next) => {
   try {
-    let coffeeShops  = await coffeeShopService.getAllCoffeeShops();
+    let coffeeShops = await coffeeShopService.getAllCoffeeShops()
     res.status(200).json(coffeeShops)
   } catch (error) {
     next(error)
@@ -79,13 +82,17 @@ coffeeShopRouter.get('/by-slug/:slug', async (req, res, next) => {
  * @access Public
  */
 coffeeShopRouter.get('/districts', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
-    const districts = await coffeeShopService.getAllCoffeeShopsGroupedByDistrict();
-    res.json(districts);
+    const districts =
+      await coffeeShopService.getAllCoffeeShopsGroupedByDistrict()
+    res.json(districts)
   } catch (error) {
     next(error)
   }
-});
+})
 
 /**
  * @route GET /api/coffeeshops/:id
@@ -109,6 +116,9 @@ coffeeShopRouter.get('/:id', async (req, res, next) => {
  * @access Public (or adjust based on your auth implementation)
  */
 coffeeShopRouter.put('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const updatedCoffeeShop = await coffeeShopService.updateCoffeeShop(
       req.params.id,
@@ -127,6 +137,9 @@ coffeeShopRouter.put('/:id', async (req, res, next) => {
  * @access Public (or adjust based on your auth implementation)
  */
 coffeeShopRouter.delete('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const result = await coffeeShopService.deleteCoffeeShop(req.params.id)
     res.status(200).json(result)
@@ -143,6 +156,9 @@ coffeeShopRouter.delete('/:id', async (req, res, next) => {
  * @body {string} coffeeVariantId - The ID of the coffee variant to add
  */
 coffeeShopRouter.post('/:id/variants', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const { coffeeVariantId } = req.body
     if (!coffeeVariantId) {
@@ -166,6 +182,9 @@ coffeeShopRouter.post('/:id/variants', async (req, res, next) => {
  * @access Public (or adjust based on your auth implementation)
  */
 coffeeShopRouter.delete('/:id/variants/:variantId', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const updatedCoffeeShop =
       await coffeeShopService.removeCoffeeVariantFromShop(

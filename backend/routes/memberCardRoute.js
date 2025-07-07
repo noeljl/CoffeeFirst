@@ -13,6 +13,9 @@ const memberCardService = new MemberCardService()
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberCardRouter.get('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const memberCard = await memberCardService.getMemberCardById(req.params.id)
     res.status(200).json(memberCard)
@@ -28,6 +31,9 @@ memberCardRouter.get('/:id', async (req, res, next) => {
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberCardRouter.get('/by-code/:cardCode', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const memberCard = await memberCardService.getMemberCardByCode(
       req.params.cardCode
@@ -45,6 +51,9 @@ memberCardRouter.get('/by-code/:cardCode', async (req, res, next) => {
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberCardRouter.put('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const updatedMemberCard = await memberCardService.updateMemberCard(
       req.params.id,
@@ -63,6 +72,9 @@ memberCardRouter.put('/:id', async (req, res, next) => {
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberCardRouter.delete('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const result = await memberCardService.deleteMemberCard(req.params.id)
     res.status(200).json(result)

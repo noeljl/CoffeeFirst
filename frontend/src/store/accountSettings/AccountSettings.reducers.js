@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
-  getMemberByMailAction, // Bestehende Action
-  updateMemberProfileByMailAction, // Deine neue Action
+  getMemberByIdAction, // Bestehende Action
+  updateMemberByIDAction, // Deine neue Action
 } from './AccountSettings.actions.js' // der Async‑Thunk, der die Mitgliederdaten lädt
 
 // Export, damit andere Dateien (z. B. die Komponente) ihn als Fallback nutzen können
@@ -53,11 +53,11 @@ const accountSettingsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Reducer für getMemberByMailAction
-      .addCase(getMemberByMailAction.pending, (state) => {
+      .addCase(getMemberByIdAction.pending, (state) => {
         state.isLoading = true
         state.error = null
       })
-      .addCase(getMemberByMailAction.fulfilled, (state, action) => {
+      .addCase(getMemberByIdAction.fulfilled, (state, action) => {
         state.isLoading = false
         state.error = null
 
@@ -97,17 +97,17 @@ const accountSettingsSlice = createSlice({
           )
         }
       })
-      .addCase(getMemberByMailAction.rejected, (state, action) => {
+      .addCase(getMemberByIdAction.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || 'Fehler beim Laden der Mitgliederdaten.'
       })
 
       // --- NEU: Reducer für updateMemberProfileByMailAction ---
-      .addCase(updateMemberProfileByMailAction.pending, (state) => {
+      .addCase(updateMemberByIDAction.pending, (state) => {
         state.isLoading = true // Zeigt an, dass ein Update läuft
         state.error = null // Fehler zurücksetzen
       })
-      .addCase(updateMemberProfileByMailAction.fulfilled, (state, action) => {
+      .addCase(updateMemberByIDAction.fulfilled, (state, action) => {
         state.isLoading = false
         state.error = null
 
@@ -142,7 +142,7 @@ const accountSettingsSlice = createSlice({
           )
         }
       })
-      .addCase(updateMemberProfileByMailAction.rejected, (state, action) => {
+      .addCase(updateMemberByIDAction.rejected, (state, action) => {
         state.isLoading = false
         // Fehlermeldung aus der Rejected-Payload oder Standardmeldung
         state.error = action.payload || 'Fehler beim Aktualisieren des Profils.'

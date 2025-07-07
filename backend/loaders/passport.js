@@ -3,11 +3,11 @@ import passportLocal from 'passport-local'
 import bcrypt from 'bcrypt'
 
 import MembersModel from '../models/member.js'
-import AuthService from '../services/AuthService.js'
+import MemberService from '../services/MemberService.js'
 
 const LocalStrategy = passportLocal.Strategy
 const MembersModelInstance = new MembersModel()
-const AuthServiceInstance = new AuthService()
+const MemberServiceInstance = new MemberService()
 
 // STILL NEEDS IMPLEMENTATION. WILL DO WHEN I GET TO LOGGIN IN USERS
 // 'Passport lets your app know who the user is, how to log them in, how to log them out, and optionally how to remember them across requests.'
@@ -26,15 +26,14 @@ const passportLoader = (app) => {
   app.use(passport.session())
 
   // Serialize: store only minimal info in the session
-  passport.serializeUser((user, done) => {
-    done(null, { id: user.id, type: 'user' })
+  passport.serializeUser((member, done) => {
+    done(null, { id: member.id, type: 'member' })
   })
 
-  // Deserialize: fetch full user object from DB
   passport.deserializeUser(async (serialized, done) => {
     try {
-      const user = await AuthServiceInstance.findUserById(serialized.id)
-      done(null, user)
+      const member = await MemberServiceInstance.findMemberByID(serialized.id)
+      done(null, member)
     } catch (err) {
       done(err)
     }
@@ -42,20 +41,21 @@ const passportLoader = (app) => {
 
   // Local strategy. "Look if this user actually exists"
   passport.use(
-    'local-user',
+    'local-member',
     new LocalStrategy(
       { usernameField: 'email', passwordField: 'password' },
       async (email, password, done) => {
         try {
-          const user = await MembersModelInstance.findOneByEmail(email)
-          if (!user) {
+          console.log('email ist ' + email)
+          const member = await MembersModelInstance.findOneByEmail(email)
+          if (!member) {
             return done(null, false, { message: 'Unknown email address' })
           }
-          const match = await bcrypt.compare(password, user.passwordHash)
+          const match = await bcrypt.compare(password, member.passwordHash)
           if (!match) {
             return done(null, false, { message: 'Incorrect password' })
           }
-          user.type = 'user'
+          member.type = 'member'
           //Behind the scenes, user will be set to req.user
           // why is this useful?
           // Because you can restrict certain routes using that tactic. Lets say there is a Route that retrieves some data, that only a admin should be able to retrieve:
@@ -66,7 +66,7 @@ const passportLoader = (app) => {
           //   }
           //   res.send(`Welcome, ${req.user.email}`)
           // })
-          return done(null, user)
+          return done(null, member)
         } catch (err) {
           return done(err)
         }

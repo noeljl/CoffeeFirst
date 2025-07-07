@@ -3,6 +3,7 @@ import API from './client.js'
 // Login für Mitglieder
 export const loginMember = async (credentials) => {
   try {
+    console.log('Request in auth.js/loginMember', JSON.stringify(credentials))
 
     const response = await API.post('auth/login', credentials)
 
@@ -30,22 +31,6 @@ export const registerMember = async (data) => {
 export const isMemberLoggedIn = async () => {
   try {
     const response = await API.get('auth/logged_in')
-
-    return response.data
-  } catch (err) {
-    throw err.response?.data || err.message
-  }
-}
-
-// Login für Event Attendee (falls separat)
-export const loginEventAttendee = async (credentials) => {
-  try {
-    const response = await API.post('auth/loginEventAttendee', credentials)
-
-    console.log(
-      'Response in auth.js/loginEventAttendee',
-      JSON.stringify(credentials)
-    )
 
     return response.data
   } catch (err) {

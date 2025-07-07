@@ -7,7 +7,6 @@ const MemberCardSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       minlength: [3, 'Member card name must be at least 3 characters long.'], // Added minlength validation
     },
@@ -63,6 +62,7 @@ class MemberCardModel {
       return await memberCard.save()
     } catch (err) {
       if (err.code === 11000) {
+        console.log(data)
         throw new Error(
           'A member card with this name, card code, or linked membership already exists.'
         )

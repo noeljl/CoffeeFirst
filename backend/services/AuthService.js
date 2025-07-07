@@ -78,7 +78,7 @@ class AuthService {
         memberCard: memberCard._id,
       })
 
-      return this.membersModel.findOneById(member._id)
+      return this.membersModel.findOneById(member.id)
     } catch (err) {
       // Im Fehlerfall: optional Cleanup
       console.error('Registration failed, cleaning up:', err)

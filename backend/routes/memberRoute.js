@@ -13,8 +13,11 @@ const memberService = new MemberService()
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberRouter.get('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
-    const member = await memberService.getMemberById(req.params.id)
+    const member = await memberService.findMemberByID(req.params.id)
     res.status(200).json(member)
   } catch (error) {
     next(error)
@@ -22,6 +25,9 @@ memberRouter.get('/:id', async (req, res, next) => {
 })
 
 memberRouter.get('/mail/:mail', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     console.log('memberRouter called')
     const member = await memberService.getMemberByMail(req.params.mail)
@@ -31,38 +37,13 @@ memberRouter.get('/mail/:mail', async (req, res, next) => {
   }
 })
 
-memberRouter.put('/mail/:mail', async (req, res, next) => {
-  try {
-    const memberEmail = req.params.mail // Die E-Mail aus der URL
-    const updateData = req.body // Die zu aktualisierenden Daten aus dem Request-Body
-
-    console.log('memberRouter/mail/:mail called for email:', memberEmail)
-    console.log('Update data received in router:', updateData)
-
-    const updatedMember = await memberService.updateByMail(
-      memberEmail,
-      updateData // <--- Hier werden die updateData als zweites Argument übergeben
-    )
-
-    res.status(200).json(updatedMember)
-  } catch (error) {
-    next(error) // Fehler an den Fehler-Handler weitergeben
-  }
-})
-
-/**
- * @route PUT /api/members/:id
- * @desc Update a member's profile by ID
- * @param {string} id - Member ID
- * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
- */
 memberRouter.put('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
-    const updatedMember = await memberService.updateMemberProfile(
-      req.params.id,
-      req.body
-    )
-    res.status(200).json(updatedMember)
+    const member = await memberService.updateMemberByID(req.params.id, req.body)
+    res.status(200).json(member)
   } catch (error) {
     next(error)
   }
@@ -75,6 +56,9 @@ memberRouter.put('/:id', async (req, res, next) => {
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberRouter.delete('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const result = await memberService.deleteMember(req.params.id)
     res.status(200).json(result)
@@ -92,6 +76,9 @@ memberRouter.delete('/:id', async (req, res, next) => {
  * @access Public (oder anpassen)
  */
 memberRouter.post('/:id/coffeeshops/:listType', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
   try {
     const { coffeeShopId } = req.body
     const { listType } = req.params
@@ -122,6 +109,9 @@ memberRouter.post('/:id/coffeeshops/:listType', async (req, res, next) => {
 memberRouter.delete(
   '/:id/coffeeshops/:listType/:coffeeShopId',
   async (req, res, next) => {
+    if (!req.isAuthenticated()) {
+      throw createError(401, 'Unauthorized')
+    }
     try {
       const { listType, coffeeShopId } = req.params
       const updatedMember = await memberService.removeCoffeeShop(

@@ -7,8 +7,19 @@ class MemberService {
     this.membersModel = new MembersModel()
   }
 
+  async findMemberByID(id) {
+    try {
+      const member = await this.membersModel.findOneById(id)
+      return member
+    } catch (error) {
+      console.error(`Error in findMemberByID: ${error.message}`)
+      throw createError(500, `Failed to find member: ${error.message}`)
+    }
+  }
+
   async getMemberByMail(mail) {
     try {
+      console.log('die mail ist ' + mail)
       const member = await this.membersModel.findOneByEmail(mail)
       if (!member) {
         throw createError(404, 'Member not found')
@@ -42,24 +53,11 @@ class MemberService {
     }
   }
 
-  async updateByMail(mail, data) {
+  async updateMemberByID(id, data) {
     try {
-      return await this.membersModel.updateByMail(mail, data)
+      return await this.membersModel.update(id, data)
     } catch (error) {
-      console.error(`Error in updateMemberProfile: ${error.message}`)
-      if (error.message.includes('not found')) {
-        throw createError(404, error.message)
-      }
-      if (
-        error.message.includes('Validation error') ||
-        error.message.includes('Duplicate value')
-      ) {
-        throw createError(400, error.message)
-      }
-      throw createError(
-        500,
-        `Failed to update member profile: ${error.message}`
-      )
+      console.error(`Error in updateMemberByID: ${error.message}`)
     }
   }
 

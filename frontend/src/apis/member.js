@@ -12,7 +12,7 @@ export const getMemberById = async (id) => {
 
 export const getMemberByMail = async (mail) => {
   try {
-    console.log('api/getMemberByMail called')
+    console.log('api/getMemberByMail called with mail ' + mail)
     const response = await API.get(`member/mail/${mail}`)
     return response.data
   } catch (err) {
@@ -31,11 +31,9 @@ export const updateMemberProfile = async (id, data) => {
 }
 
 // Update a member's profile by ID
-export const updateMemberProfileByMail = async (mail, data) => {
+export const updateMemberByID = async (id, data) => {
   try {
-    console.log('updateMemberProfileByMail called with ', mail)
-    console.log('updateMemberProfileByMail called with ', data)
-    const response = await API.put(`member/mail/${mail}`, data)
+    const response = await API.put(`member/${id}`, data)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message

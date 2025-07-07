@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import { PaymentStatus } from './enums.js'
-
-// Define Member schema
+import { v4 as uuidv4 } from 'uuid'
 const MemberSchema = new mongoose.Schema(
   {
+    id: { type: String, required: true, unique: true },
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
     email: {
@@ -74,6 +74,7 @@ const Member = mongoose.model('Member', MemberSchema)
 export class MembersModel {
   async create(data) {
     try {
+      data.id = uuidv4()
       const member = new Member(data)
       return await member.save()
     } catch (err) {
@@ -92,26 +93,15 @@ export class MembersModel {
     }
   }
 
-  async update(id, updateData) {
+  async updateMemberByID(id, updateData) {
     try {
-      const member = await Member.findByIdAndUpdate(id, updateData, {
+      const member = await Member.findOneAndUpdate({ id }, updateData, {
         new: true,
         runValidators: true,
-      }).exec()
+      })
       if (!member) throw new Error(`Member with ID ${id} not found.`)
       return member
     } catch (err) {
-      if (err.code === 11000) {
-        throw new Error(
-          'Duplicate value exists for a unique field (e.g., email, Stripe ID).'
-        )
-      }
-      if (err.name === 'ValidationError') {
-        const errors = Object.values(err.errors).map((e) => e.message)
-        throw new Error(
-          `Validation error updating member: ${errors.join(', ')}`
-        )
-      }
       throw new Error(`Error updating member: ${err.message}`)
     }
   }
@@ -120,14 +110,10 @@ export class MembersModel {
   async updateByMail(mail, updateData) {
     try {
       // Use findOneAndUpdate to find by email and update
-      const member = await Member.findOneAndUpdate(
-        { email: mail },
-        updateData,
-        {
-          new: true, // Return the modified document rather than the original
-          runValidators: true, // Run Mongoose validators on the update operation
-        }
-      ).exec()
+      const member = await Member.findOneAndUpdate({ id }, updateData, {
+        new: true,
+        runValidators: true,
+      })
 
       if (!member) throw new Error(`Member with email ${mail} not found.`) // Changed ID to email for clarity
       return member
@@ -150,7 +136,7 @@ export class MembersModel {
 
   async delete(id) {
     try {
-      const member = await Member.findByIdAndDelete(id).exec()
+      const member = await Member.findOneAndDelete({ id })
       if (!member)
         throw new Error(`Member with ID ${id} not found for deletion.`)
       return member
@@ -167,9 +153,9 @@ export class MembersModel {
     }
   }
 
-  async findOneById(id) {
+  async findOneById(uuid) {
     try {
-      return await Member.findById(id)
+      const member = await Member.findOne({ id: uuid })
         .populate('membership')
         .populate('memberCard')
         .populate('wishlistCoffeeShops')
@@ -177,8 +163,10 @@ export class MembersModel {
         .populate('visitedCoffeeShops')
         .populate('reviewedCoffeeShops')
         .exec()
+      if (!member) throw new Error(`Member with id ${uuid} not found.`)
+      return member
     } catch (err) {
-      throw new Error(`Error finding member by ID: ${err.message}`)
+      throw new Error(`Error finding member by UUID: ${err.message}`)
     }
   }
 
@@ -213,8 +201,8 @@ export class MembersModel {
       )
     }
     try {
-      const member = await Member.findByIdAndUpdate(
-        memberId,
+      const member = await Member.findOneAndUpdate(
+        { id: memberId },
         { $addToSet: { [listType]: coffeeShopId } },
         { new: true }
       ).exec()
@@ -240,9 +228,9 @@ export class MembersModel {
       )
     }
     try {
-      const member = await Member.findByIdAndUpdate(
-        memberId,
-        { $pull: { [listType]: coffeeShopId } },
+      const member = await Member.findOneAndUpdate(
+        { id: memberId },
+        { $addToSet: { [listType]: coffeeShopId } },
         { new: true }
       ).exec()
       if (!member) throw new Error(`Member with ID ${memberId} not found.`)
