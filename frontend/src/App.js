@@ -31,8 +31,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Standard-Redirect auf /login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         {/* Öffentliche Routen */}
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/signup/regform" element={<RegForm />} />
         <Route path="/signup/planform" element={<PlanForm />} />
         <Route path="/signup/payment" element={<Payment />} />

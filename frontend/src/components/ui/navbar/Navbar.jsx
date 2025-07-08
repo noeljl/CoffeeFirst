@@ -25,7 +25,7 @@ function SignedOut() {
     const navigate = useNavigate();
     return (
         <div className="navbar-container">
-            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" draggable={false} onClick={() => { navigate("/") }} />
+            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" draggable={false} onClick={() => { navigate('/home') }} />
             <div className="gap">
                 <Button bg="white" fs="medium" radius="small" padding="small">Sign-In</Button>
                 <Button bg="red" fs="medium" radius="small" padding="small" onClick={() => { navigate("/signup/regform"); }}>Sign-Up</Button>
@@ -40,7 +40,7 @@ function SignedIn() {
     const menuState = useState(false);
     return (
         <div className="navbar-container">
-            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" draggable={false} onClick={() => { navigate("/") }} />
+            <img src={Icons.logo} alt="CoffeeFirst Logo" className="logo" draggable={false} onClick={() => { navigate('/home') }} />
 
             <div className="gap">
                 <SearchBar />

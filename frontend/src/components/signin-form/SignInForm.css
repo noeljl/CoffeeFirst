@@ -1,72 +1,65 @@
-.signup-form-section {
-  display: flex;
-  justify-content: center;
-  padding: 120px 0px;
+/* General container for the sign-in form for better centering and presentation */
+.signin-container {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.signup-form-text {
-  width: 432px;
-}
-
-h2 {
-  font-size: 32px;
-  margin: 0px;
-}
-
-.subtitle {
-  font-size: 16px;
+/* Form title styling */
+.signin-container h2 {
+  font-size: 28px;
+  color: #333;
   margin-bottom: 30px;
 }
 
-.step-indicator {
-  font-size: 13px;
-}
-
-.advantages-list {
-  list-style: none;
-  padding: 0px;
-  margin-bottom: 30px;
-}
-
-.advantages-list li {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin: 15px 0px;
-  font-size: 16px;
-}
-
-.list-icon {
-  width: 30px;
-  height: 30px;
-  margin-top: 4px;
-}
-
-form {
-  margin: 0 auto;
+/* Styling for the form element */
+.signin-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+/* Modern styling for input fields */
 .inputField {
   padding: 16px;
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  gap: 12px;
+/* Enhanced focus effect for input fields */
+.inputField:focus {
+  outline: none;
+  border-color: #007bff; /* A nice blue for focus */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
-.checkbox-container input[type='checkbox'] {
-  width: 20px;
-  height: 20px;
+/* Container for the registration link for better spacing */
+.register-prompt {
+  font-size: 15px;
+  color: #666;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* The actual link you want to style */
+.register-link {
+  font-weight: 600;
+  color: #007bff; /* A standout color for the link */
+  text-decoration: none; /* Remove default underline */
   cursor: pointer;
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+/* The requested hover effect: lighten and underline */
+.register-link:hover {
+  color: #409eff; /* A lighter shade of the link color */
+  text-decoration: underline;
 }

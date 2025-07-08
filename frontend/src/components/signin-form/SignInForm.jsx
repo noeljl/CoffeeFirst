@@ -12,6 +12,10 @@ export default function SignInForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const handleRegisterClick = () => {
+    navigate('/signup/regform') // Assuming '/register' is your registration page path
+  }
+
   const handleSubmit = async (e) => {
     // Mache die Funktion async, um await zu nutzen
     e.preventDefault()
@@ -80,6 +84,12 @@ export default function SignInForm() {
           LOGIN {/* Changed button text */}
         </Button>
       </form>
+      <p className="register-prompt">
+        Don't have an account?{' '}
+        <span className="register-link" onClick={handleRegisterClick}>
+          Register here!
+        </span>
+      </p>
     </div>
   )
 }
