@@ -105,12 +105,12 @@ function PartnersByDistrict() {
 export default PartnersByDistrict;*/
 // File: frontend/src/routes/dashboards/PartnersByDistrict.jsx
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, useContext } from "react";
 import CafeGallery from "../cafes/CafeGallery";
 import { getAllCoffeeShopsGroupedByDistrict } from "../../apis/coffeeshop";
 //import SearchBar from "../../../components/ui/search-bar/SearchBar";
-import SearchBar from "../ui/search-bar/SearchBar";
-
+//import SearchBar from "../ui/search-bar/SearchBar";
+import { SearchContext } from "../../contexts/SearchContext";
 
 function PartnersByDistrict() {
   // existing state
@@ -123,8 +123,8 @@ function PartnersByDistrict() {
   const observerRef                             = useRef();
 
   // ─── NEW: track search-bar clicks ───
-  const [searchFilter, setSearchFilter] = useState(null);
-
+  //const [searchFilter, setSearchFilter] = useState(null);
+  const { searchFilter } = useContext(SearchContext);
   // infinite-scroll intersection observer
   const lastDistrictRef = useCallback(node => {
     if (loading) return;
@@ -188,9 +188,6 @@ function PartnersByDistrict() {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* 1) Search bar */}
-      <SearchBar onSelect={setSearchFilter} />
-
       {/* 2) Render either grouped or flat filtered */}
       {displayGroups.map((districtGroup, idx) => (
         <div
