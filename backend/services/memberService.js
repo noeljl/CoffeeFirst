@@ -122,6 +122,21 @@ class MemberService {
     }
   }
 
+  async findMemberByIDWithPopulatedList(id, listType) {
+    // Validate listType
+    const validLists = [
+      'wishlistCoffeeShops',
+      'favoriteCoffeeShops',
+      'visitedCoffeeShops',
+      'reviewedCoffeeShops',
+    ];
+    if (!validLists.includes(listType)) {
+      throw new Error(`Invalid list type: ${listType}`);
+    }
+    // Find member and populate the requested list
+    return await this.membersModel.findOne({ id }).populate(listType).exec();
+  }
+
   // You can add more member-specific methods here if needed,
   // e.g., handling password changes (which might involve the AuthService),
   // managing payment status, etc.
