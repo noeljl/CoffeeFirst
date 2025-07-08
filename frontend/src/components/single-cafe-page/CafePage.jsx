@@ -32,7 +32,7 @@ const CafePage = () => {
         <div className="icon-list">
           {cafe.sustainabilityFacts.map((fact, i) => (
             <div key={i} className="icon-item">
-              <img src={fact.icon} alt={fact.label} />
+              <img src={fact.icon} draggable={false} alt={fact.label} />
               <span>{fact.label}</span>
             </div>
           ))}
@@ -45,7 +45,7 @@ const CafePage = () => {
         <div className="icon-list">
           {cafe.coffeeVariants.map((variant, i) => (
             <div key={i} className="icon-item">
-              <img src={variant.icon} alt={variant.name} />
+              <img src={variant.icon} draggable={false} alt={variant.name} />
               <span>{variant.name}</span>
             </div>
           ))}
@@ -58,7 +58,7 @@ const CafePage = () => {
         <div className="icon-list">
           {cafe.cafeOffers.map((offer, i) => (
             <div key={i} className="icon-item">
-              <img src={offer.icon} alt={offer.label} />
+              <img src={offer.icon} draggable={false} alt={offer.label} />
               <span>{offer.label}</span>
             </div>
           ))}
