@@ -34,16 +34,15 @@ function App() {
         {/* Standard-Redirect auf /login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         {/* Öffentliche Routen */}
-        <Route path="/home" element={<HomePage />} />
         <Route path="/signup/regform" element={<RegForm />} />
         <Route path="/signup/planform" element={<PlanForm />} />
         <Route path="/signup/payment" element={<Payment />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/testing" element={<TempBlankPage />} />
 
         {/* Geschützte Bereiche */}
         <Route element={<PrivateRoute />}>
           {/* Dashboard */}
+          <Route path="/home" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route
               index
