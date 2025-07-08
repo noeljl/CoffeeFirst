@@ -1,6 +1,16 @@
 // CoffeeShopService.js
 import createError from 'http-errors'
 import CoffeeShopModel from '../models/coffeeShop.js' // Assuming CoffeeShopModel is in a file named coffeeShopModel.js
+import CoffeeVariant from '../models/coffeeVariant.js'
+import CoffeeShop from '../models/coffeeShop.js'
+
+// Mapping of frontend coffee variant labels to enum values used in the DB
+const frontendLabelToCoffeeType = {
+  Espresso: 'Espresso',
+  'Flat White': 'Flat White',
+  'Cold Brew': 'Cold Brew',
+  Cappuccino: 'Cappuccino',
+}
 
 class CoffeeShopService {
   constructor() {
@@ -252,7 +262,7 @@ class CoffeeShopService {
    * @returns {Promise<Array<string>>}
    */
   async getAllGroupedByDistrict() {
-    return this.coffeeShopModel.findAllGroupedByDistrict();
+    return this.coffeeShopModel.findAllGroupedByDistrict()
   }
 
   /**
@@ -261,9 +271,11 @@ class CoffeeShopService {
    */
   async getAllCoffeeShopsGroupedByDistrict() {
     try {
-      return await this.coffeeShopModel.findAllGroupedByDistrict();
+      return await this.coffeeShopModel.findAllGroupedByDistrict()
     } catch (error) {
-      console.error(`Error in getAllCoffeeShopsGroupedByDistrict: ${error.message}`)
+      console.error(
+        `Error in getAllCoffeeShopsGroupedByDistrict: ${error.message}`
+      )
       throw createError(
         500,
         `Failed to retrieve coffee shops grouped by district: ${error.message}`
@@ -279,30 +291,32 @@ class CoffeeShopService {
    */
   async getAllCoffeeShopsGroupedByDistrictPaginated(page = 0, limit = 3) {
     try {
-      const skip = page * limit;
-      
-      const result = await this.coffeeShopModel.aggregate([
-        {
-          $group: {
-            _id: '$district',
-            coffeeShops: { $push: '$$ROOT' },
-            count: { $sum: 1 }
-          }
-        },
-        {
-          $sort: { _id: 1 }
-        },
-        {
-          $facet: {
-            districts: [{ $skip: skip }, { $limit: limit }],
-            totalCount: [{ $count: 'count' }]
-          }
-        }
-      ]).exec();
+      const skip = page * limit
 
-      const districts = result[0].districts;
-      const totalCount = result[0].totalCount[0]?.count || 0;
-      const hasMore = skip + limit < totalCount;
+      const result = await this.coffeeShopModel
+        .aggregate([
+          {
+            $group: {
+              _id: '$district',
+              coffeeShops: { $push: '$$ROOT' },
+              count: { $sum: 1 },
+            },
+          },
+          {
+            $sort: { _id: 1 },
+          },
+          {
+            $facet: {
+              districts: [{ $skip: skip }, { $limit: limit }],
+              totalCount: [{ $count: 'count' }],
+            },
+          },
+        ])
+        .exec()
+
+      const districts = result[0].districts
+      const totalCount = result[0].totalCount[0]?.count || 0
+      const hasMore = skip + limit < totalCount
 
       return {
         districts,
@@ -311,17 +325,60 @@ class CoffeeShopService {
           limit,
           totalCount,
           hasMore,
-          totalPages: Math.ceil(totalCount / limit)
-        }
-      };
+          totalPages: Math.ceil(totalCount / limit),
+        },
+      }
     } catch (error) {
-      console.error(`Error in getAllCoffeeShopsGroupedByDistrictPaginated: ${error.message}`)
+      console.error(
+        `Error in getAllCoffeeShopsGroupedByDistrictPaginated: ${error.message}`
+      )
       throw createError(
         500,
         `Failed to retrieve coffee shops grouped by district: ${error.message}`
       )
     }
   }
+}
+
+export async function getFilteredCoffeeShops({
+  offers = [],
+  coffeeVariants = [],
+}) {
+  const filter = {}
+
+  // Normalize offers into an array
+  const offersArray = Array.isArray(offers) ? offers : [offers]
+  if (offersArray.length > 0) {
+    filter.features = { $all: offersArray } // ← Match all selected offers
+  }
+
+  const variantsArray = Array.isArray(coffeeVariants)
+    ? coffeeVariants
+    : [coffeeVariants]
+  if (variantsArray.length > 0) {
+    const frontendLabelToCoffeeType = {
+      Espresso: 'Espresso',
+      'Flat White': 'Flat White',
+      'Cold Brew': 'Cold Brew',
+      Cappuccino: 'Cappuccino',
+    }
+
+    const coffeeTypes = variantsArray
+      .map((label) => frontendLabelToCoffeeType[label])
+      .filter(Boolean)
+
+    const matchingVariants = await CoffeeVariant.find({
+      coffeeType: { $in: coffeeTypes },
+    }).select('coffeeShop')
+
+    const matchingShopIds = [
+      ...new Set(matchingVariants.map((v) => v.coffeeShop.toString())),
+    ]
+
+    filter._id = { $in: matchingShopIds }
+  }
+
+  return await CoffeeShop.find(filter)
 }
 
 export default CoffeeShopService

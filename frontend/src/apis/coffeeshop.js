@@ -107,3 +107,21 @@ export function getAllDistricts() {
 export function getAllCoffeeShopsGroupedByDistrict() {
   return API.get('/coffeeshop/districts').then(res => res.data)
 }
+
+export const getFilteredCoffeeShops = async ({
+  offers,
+  coffeeVariants,
+} = {}) => {
+  try {
+    const params = {}
+
+    if (offers) params.offers = offers
+    if (coffeeVariants) params.coffeeVariants = coffeeVariants
+
+    const response = await API.get('/coffeshop/filter', { params })
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+

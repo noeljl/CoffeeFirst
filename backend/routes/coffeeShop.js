@@ -197,6 +197,17 @@ coffeeShopRouter.delete('/:id/variants/:variantId', async (req, res, next) => {
   }
 })
 
+coffeeShopRouter.get('/filter', async (req, res, next) => {
+  try {
+    const filteredCoffeeShops = await coffeeShopService.getFilteredCoffeeShops(
+      req.query
+    )
+    res.status(200).json(filteredCoffeeShops)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // Note: updateCoffeeShopRating is typically called internally by review-related operations
 // rather than being exposed as a direct API endpoint. If you still want to expose it,
 // you might do so as a PUT request without a body, or with specific trigger logic.

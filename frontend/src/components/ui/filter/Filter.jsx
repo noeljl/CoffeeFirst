@@ -3,7 +3,7 @@ import { useState } from 'react'
 import './Filter.css'
 import Button from '../buttons/Button'
 import Icons from '../../../assets/Icons'
-import { getFilteredCoffeeShops } from '../../../apis/filter.js'
+import { getFilteredCoffeeShops } from '../../../apis/coffeeshop.js'
 
 const offers = [
   { label: 'Indoor Sitting', icon: Icons.couch },
@@ -21,6 +21,14 @@ const coffeeVariants = [
   { label: 'Cold Brew', icon: Icons.coffeeBean },
   { label: 'Cappuccino', icon: Icons.coffeeBean },
 ]
+
+function toggleSelection(label, selected, setSelected) {
+  setSelected((prev) =>
+    prev.includes(label)
+      ? prev.filter((item) => item !== label)
+      : [...prev, label]
+  )
+}
 
 function FilterButton() {
   const [isFilterOpen, setFilterOpen] = useState(false)

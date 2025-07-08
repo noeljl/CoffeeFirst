@@ -37,6 +37,7 @@ function App() {
         <Route path="/signup/regform" element={<RegForm />} />
         <Route path="/signup/planform" element={<PlanForm />} />
         <Route path="/signup/payment" element={<Payment />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/testing" element={<TempBlankPage />} />
 
         {/* Geschützte Bereiche */}
