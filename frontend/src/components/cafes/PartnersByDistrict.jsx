@@ -108,7 +108,9 @@ export default PartnersByDistrict;*/
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import CafeGallery from "../cafes/CafeGallery";
 import { getAllCoffeeShopsGroupedByDistrict } from "../../apis/coffeeshop";
-import SearchBar from "../../../components/ui/search-bar/SearchBar";
+//import SearchBar from "../../../components/ui/search-bar/SearchBar";
+import SearchBar from "../ui/search-bar/SearchBar";
+
 
 function PartnersByDistrict() {
   // existing state

@@ -74,7 +74,7 @@ export default function SearchBar({ onSelect }) {
         <ul className="search-dropdown">
           {/* District suggestions */}
           {matchingDistricts.map(district => (
-            <li key={district} onMouseDown={() => setQuery(district)}>
+            <li key={district} onMouseDown={() => handleSelect({ type: 'district', name: district})}>
               <img src={placeIcon} className="item-icon" alt="District" />
               <div className="item-text">
                 <span className="name">{district}</span>
@@ -84,11 +84,11 @@ export default function SearchBar({ onSelect }) {
           ))}
           {/* Cafe suggestions */}
           {suggestions.map((item) => (
-            <li key={item._id} onMouseDown={() => handleSelect(item)}>
+            <li key={item._id} onMouseDown={() => handleSelect({ type: 'cafe', name: item.name })}>
               <img src={cafeIcon} className="item-icon" alt="Cafe" />
               <div className="item-text">
                 <span className="name">{item.name}</span>
-                <span className="type">{item.district ? item.district : "Café"}</span>
+                <span className="type">{item.district || "Café"}</span>
               </div>
             </li>
           ))}
