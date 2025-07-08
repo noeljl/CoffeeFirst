@@ -3,7 +3,7 @@ import { useState } from 'react'
 import './Filter.css'
 import Button from '../buttons/Button'
 import Icons from '../../../assets/Icons'
-import { getFilteredCoffeeShops } from '../../../apis/filter.js' 
+import { getFilteredCoffeeShops } from '../../../apis/filter.js'
 
 const offers = [
   { label: 'Indoor Sitting', icon: Icons.couch },
@@ -45,7 +45,7 @@ function FilterButton() {
 function FilterModal({ onClose }) {
   const [selectedOffers, setSelectedOffers] = useState([])
   const [selectedVariants, setSelectedVariants] = useState([])
-     const handleSave = async () => {
+  const handleSave = async () => {
     try {
       const result = await getFilteredCoffeeShops({
         offers: selectedOffers,
