@@ -1,17 +1,43 @@
 import Button from "../ui/buttons/Button";
 import Icons from "../../assets/Icons";
 import "./CafeHeaderSection.css";
+import { useEffect } from "react";
+import { addCoffeeShopToMemberList } from "../../apis/member";
+import { useSelector } from "react-redux";
 
 function CafeHeaderSection({ cafe }) {
   // Use backend URL for images
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
-  
   // Construct full image URLs
   const mainImageUrl = cafe.images?.[0] ? `${backendUrl}${cafe.images[0]}` : '';
   const secondaryImage1Url = cafe.images?.[1] ? `${backendUrl}${cafe.images[1]}` : '';
   const secondaryImage2Url = cafe.images?.[2] ? `${backendUrl}${cafe.images[2]}` : '';
 
-  // Handler for 'Get direction' button
+  const member = useSelector(state => state.auth.member);
+  const memberId = member?.member.id; // or member?._id if your backend uses _id
+
+  // Handler for 'Add to Wishlist' button
+  const handleAddToWishlist = async (memberId, cafeId, listType) => {
+    try {
+      await addCoffeeShopToMemberList(memberId, cafeId, listType);
+      alert("Added to wishlist!");
+    } catch (err) {
+      // console.log('The member is:', member.member._id);  
+      alert("Failed to add to wishlist.");
+    }
+  };
+
+  // Handler for 'Add to Favorites' button
+  const handleAddToFavorites = async (memberId, cafeId, listType) => {
+    try {
+      await addCoffeeShopToMemberList(memberId, cafeId, listType);
+      alert("Added to favorites!");
+    } catch (err) {
+      alert("Failed to add to favorites.");
+    }
+  };
+
+  // Handler for 'Get direction' bdutton
   const handleGetDirection = () => {
     if (!navigator.geolocation) {
       alert("Geolocation is not supported by your browser.");
@@ -46,8 +72,8 @@ function CafeHeaderSection({ cafe }) {
         </div>
       </div>
       <div className="buttonContainer">
-        <Button icon={Icons.heart} radius="small" fw="bold" fs="medium" bg="white" padding="medium">Add to Wishlist</Button>
-        <Button icon={Icons.favorite} radius="small" fw="bold" bg="white" padding="medium">Add to Favorites</Button>
+        <Button icon={Icons.heart} radius="small" fw="bold" fs="medium" bg="white" padding="medium" onClick={() => handleAddToWishlist(memberId, cafe._id, "wishlistCoffeeShops")}>Add to Wishlist</Button>
+        <Button icon={Icons.favorite} radius="small" fw="bold" bg="white" padding="medium" onClick={() => handleAddToFavorites(memberId, cafe._id, "favoriteCoffeeShops")}>Add to Favorites</Button>
         <Button icon={Icons.map} radius="small" fw="bold" bg="white" padding="medium" onClick={handleGetDirection}>Get direction</Button>
       </div>
     </section>

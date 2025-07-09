@@ -8,15 +8,13 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true # fallback für macOS/Windows
-      - MONGO_URI=mongodb://mongodb:27017/admin
+      - MONGO_URI=mongodb+srv://noellinder:w5WiwxRaVhD0TL4k@coffeefirst.vbrlytg.mongodb.net/coffeefirst?authMechanism=SCRAM-SHA-1
     volumes:
       - ./backend:/app # Live-Code
       - /app/node_modules # keeps container’s node_modules
     ports:
       - '3001:3001'
-    depends_on:
-      mongodb:
-        condition: service_healthy
+ 
   frontend:
     image: node:18
     container_name: frontend
@@ -29,19 +27,3 @@ services:
     command: sh -c "npm install && npm start"
     ports:
       - '3000:3000'
-
-  mongodb:
-    image: mongo:5
-    container_name: mongodb
-    ports:
-      - '27017:27017'
-    volumes:
-      - mongodb_data:/data/db
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/admin --quiet
-      interval: 5s
-      timeout: 2s
-      retries: 5
-
-volumes:
-  mongodb_data:

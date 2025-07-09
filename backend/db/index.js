@@ -4,9 +4,9 @@ dotenv.config() // will load ./app/.env
 
 // process.env.MONGO_URI access the .env file
 // If MONGO_URI is not set, it will default to 'mongodb://mongodb:27017/admin'
-const mongoURI = process.env.MONGO_URI || 'mongodb://mongodb:27017/admin'
+const mongoURI = process.env.MONGO_URI
 
-mongoose.connect(mongoURI, {
+await mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

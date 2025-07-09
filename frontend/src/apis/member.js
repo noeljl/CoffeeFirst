@@ -82,3 +82,13 @@ export const removeCoffeeShopFromMemberList = async (
     throw err.response?.data || err.message
   }
 }
+
+// Get all cafe objects from a user's wishlist or favorite list
+export const getMemberCafeList = async (memberId, listType) => {
+  try {
+    const response = await API.get(`member/${memberId}/${listType}`);
+    return response.data;
+  } catch (err) {
+    throw err.response?.data || err.message;
+  }
+};

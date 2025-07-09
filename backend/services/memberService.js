@@ -122,6 +122,22 @@ class MemberService {
     }
   }
 
+  async getList(memberId, listType) {
+    try {
+      const member = await this.membersModel.findOneById(memberId)
+      if (listType === 'wishlist') {
+        return member.wishlistCoffeeShops // <== already populated café documents
+      } else if (listType === 'favorites') {
+        return member.favoriteCoffeeShops // <== already populated café documents
+      } else {
+        throw createError(400, 'Invalid list type')
+      }
+    } catch (error) {
+      console.error(`Error in getWishlist: ${error.message}`)
+      throw createError(500, `Failed to fetch wishlist: ${error.message}`)
+    }
+  }
+
   // You can add more member-specific methods here if needed,
   // e.g., handling password changes (which might involve the AuthService),
   // managing payment status, etc.
