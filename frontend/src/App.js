@@ -47,7 +47,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route
               index
-              element={<Navigate to="/dashboard/partners" replace />}
+              element={<Navigate to="/home" replace />}
             />
             <Route path=":section" element={<Dashboard />} />
             <Route path=":section/:cafeSlug" element={<CafePage />} />

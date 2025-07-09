@@ -5,6 +5,7 @@ import CoffeeShopService from '../services/coffeeShopService.js'
 const coffeeShopRouter = express.Router()
 const coffeeShopService = new CoffeeShopService()
 import createError from 'http-errors'
+import { getFilteredCoffeeShops } from '../services/coffeeShopService.js'
 
 // Middleware to handle async errors (optional, but good practice)
 // If you have a global error handler for express, you can remove individual try/catch blocks
@@ -37,6 +38,15 @@ coffeeShopRouter.get('/', async (req, res, next) => {
   try {
     let coffeeShops = await coffeeShopService.getAllCoffeeShops()
     res.status(200).json(coffeeShops)
+  } catch (error) {
+    next(error)
+  }
+})
+
+coffeeShopRouter.get('/filter', async (req, res, next) => {
+  try {
+    const filteredCoffeeShops = await getFilteredCoffeeShops(req.query)
+    res.status(200).json(filteredCoffeeShops)
   } catch (error) {
     next(error)
   }
@@ -192,17 +202,6 @@ coffeeShopRouter.delete('/:id/variants/:variantId', async (req, res, next) => {
         req.params.variantId
       )
     res.status(200).json(updatedCoffeeShop)
-  } catch (error) {
-    next(error)
-  }
-})
-
-coffeeShopRouter.get('/filter', async (req, res, next) => {
-  try {
-    const filteredCoffeeShops = await coffeeShopService.getFilteredCoffeeShops(
-      req.query
-    )
-    res.status(200).json(filteredCoffeeShops)
   } catch (error) {
     next(error)
   }

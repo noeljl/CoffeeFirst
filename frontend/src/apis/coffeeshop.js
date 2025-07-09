@@ -118,7 +118,7 @@ export const getFilteredCoffeeShops = async ({
     if (offers) params.offers = offers
     if (coffeeVariants) params.coffeeVariants = coffeeVariants
 
-    const response = await API.get('/coffeshop/filter', { params })
+    const response = await API.get('/coffeeshop/filter', { params })
     return response.data
   } catch (err) {
     throw err.response?.data || err.message

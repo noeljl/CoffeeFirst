@@ -122,7 +122,7 @@ class CoffeeVariantModel {
    * @returns {Promise<Array<Document>>} An array of coffee variant documents.
    * @throws {Error} If there's a database error.
    */
-  async findByCoffeeType(coffeeType) {
+  async  findByCoffeeType(coffeeType) {
     try {
       return await CoffeeVariant.find({ coffeeType })
         .populate('contents')

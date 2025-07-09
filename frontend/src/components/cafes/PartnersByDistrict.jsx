@@ -1,8 +1,11 @@
+import { useLocation } from "react-router-dom"; // ← Add this at top
 import { useEffect, useState, useRef, useCallback } from "react";
 import CafeGallery from "../cafes/CafeGallery";
 import { getAllCoffeeShopsGroupedByDistrict } from "../../apis/coffeeshop";
 
 function PartnersByDistrict() {
+  const location = useLocation(); // ← To access passed state
+  const filteredShops = location.state?.filteredShops;
   const [groupedDistricts, setGroupedDistricts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,6 +14,38 @@ function PartnersByDistrict() {
   const [hasMore, setHasMore] = useState(true);
   const observerRef = useRef();
 
+  useEffect(() => {
+    // If filtered data is passed, group it by district directly
+    if (filteredShops) {
+      const grouped = groupByDistrict(filteredShops);
+      setGroupedDistricts(grouped);
+      setLoading(false);
+    } else {
+      // Otherwise fetch all
+      getAllCoffeeShopsGroupedByDistrict()
+        .then((data) => {
+          setGroupedDistricts(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err);
+          setLoading(false);
+        });
+    }
+  }, []);
+
+   const groupByDistrict = (shops) => {
+    const districtMap = {};
+    for (const shop of shops) {
+      const district = shop.district || 'Unknown';
+      if (!districtMap[district]) districtMap[district] = [];
+      districtMap[district].push(shop);
+    }
+    return Object.entries(districtMap).map(([district, shops]) => ({
+      _id: district,
+      coffeeShops: shops,
+    }));
+  };
   // Intersection Observer for infinite scrolling
   const lastDistrictRef = useCallback(node => {
     if (loading) return;

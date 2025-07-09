@@ -1,4 +1,5 @@
 // Filter.jsx
+import { useNavigate } from 'react-router-dom'; // ← Add this
 import { useState } from 'react'
 import './Filter.css'
 import Button from '../buttons/Button'
@@ -51,22 +52,33 @@ function FilterButton() {
 }
 
 function FilterModal({ onClose }) {
-  const [selectedOffers, setSelectedOffers] = useState([])
-  const [selectedVariants, setSelectedVariants] = useState([])
+  const [selectedOffers, setSelectedOffers] = useState([]);
+  const [selectedVariants, setSelectedVariants] = useState([]);
+  const navigate = useNavigate(); // ← For navigation
+
+  const toggleSelection = (value, list, setList) => {
+    setList(
+      list.includes(value)
+        ? list.filter((item) => item !== value)
+        : [...list, value]
+    );
+  };
+
   const handleSave = async () => {
+    console.log("Save clicked!"); // ← this should appear
     try {
       const result = await getFilteredCoffeeShops({
         offers: selectedOffers,
         coffeeVariants: selectedVariants,
-      })
-      // 🔔 TODO: Send `result` to parent/shop list view
-      console.log('Filtered shops:', result)
+      });
 
-      onClose()
+      // Send the result to /dashboard/partners as state
+      navigate('/dashboard/partners', { state: { filteredShops: result } });
+      onClose();
     } catch (err) {
-      console.error('Filter fetch error:', err)
+      console.error('Filter fetch error:', err);
     }
-  }
+  };
 
   return (
     <div className="filter-overlay">
@@ -122,10 +134,10 @@ function FilterModal({ onClose }) {
           </div>
         </div>
         <div className="filter-footer">
-          <button className="save-button" onClick={onClose}>
-            Save
-          </button>
-        </div>
+      <button className="save-button" onClick={handleSave}>
+        Save
+      </button>
+    </div>
       </div>
     </div>
   )

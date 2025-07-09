@@ -6,10 +6,10 @@ import CoffeeShop from '../models/coffeeShop.js'
 
 // Mapping of frontend coffee variant labels to enum values used in the DB
 const frontendLabelToCoffeeType = {
-  Espresso: 'Espresso',
+  'Espresso': 'Espresso',
   'Flat White': 'Flat White',
   'Cold Brew': 'Cold Brew',
-  Cappuccino: 'Cappuccino',
+  'Cappuccino': 'Cappuccino',
 }
 
 class CoffeeShopService {
@@ -340,10 +340,9 @@ class CoffeeShopService {
   }
 }
 
-export async function getFilteredCoffeeShops({
-  offers = [],
-  coffeeVariants = [],
-}) {
+export const getFilteredCoffeeShops = async (query) => {
+  const { offers = [], coffeeVariants = [] } = query
+ 
   const filter = {}
 
   // Normalize offers into an array
@@ -357,28 +356,29 @@ export async function getFilteredCoffeeShops({
     : [coffeeVariants]
   if (variantsArray.length > 0) {
     const frontendLabelToCoffeeType = {
-      Espresso: 'Espresso',
+      'Espresso': 'Espresso',
       'Flat White': 'Flat White',
       'Cold Brew': 'Cold Brew',
-      Cappuccino: 'Cappuccino',
+      'Cappuccino': 'Cappuccino',
     }
 
     const coffeeTypes = variantsArray
       .map((label) => frontendLabelToCoffeeType[label])
       .filter(Boolean)
 
-    const matchingVariants = await CoffeeVariant.find({
-      coffeeType: { $in: coffeeTypes },
-    }).select('coffeeShop')
+    const matchingVariants = await Promise.all(
+  coffeeTypes.map((type) => CoffeeVariant.findByCoffeeType(type))
+);
 
     const matchingShopIds = [
+      
       ...new Set(matchingVariants.map((v) => v.coffeeShop.toString())),
     ]
 
     filter._id = { $in: matchingShopIds }
   }
 
-  return await CoffeeShop.find(filter)
+  return await CoffeeShop.find(filter).populate('coffeeVariants')
 }
 
 export default CoffeeShopService

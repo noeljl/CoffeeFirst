@@ -41,7 +41,8 @@ const authSlice = createSlice({
 
       // Login Member success
       .addCase(loginMemberAction.fulfilled, (state, action) => {
-        const { isAuthenticated, member } = action.payload // Assuming member is returned
+        console.log("Login success payload:", action.payload)
+        const { isAuthenticated, member } = action.payload || {}  // Assuming member is returned
         state.isFetching = false
         state.isAuthenticated = isAuthenticated
         state.member = member
