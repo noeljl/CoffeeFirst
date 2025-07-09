@@ -10,8 +10,8 @@ function Dashboard() {
 
   const sectionMap = {
     partners: <PartnersByDistrict />,
-    favorites: <FavoriteWishlist listType="favoriteCoffeeShops" />,
-    wishlist: <FavoriteWishlist listType="wishlistCoffeeShops" />,
+    favorites: <FavoriteWishlist listType="favorites" />,
+    wishlist: <FavoriteWishlist listType="wishlist" />,
     visited: <CafeGallery variant="visited" />, // replace with your own component if needed
   };
 

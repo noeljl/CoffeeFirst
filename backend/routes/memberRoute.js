@@ -148,4 +148,14 @@ memberRouter.get('/:id/coffeeshops/:listType', async (req, res, next) => {
   }
 });
 
+// Add auth middleware if necessary
+memberRouter.get('/:id/:listType', async (req, res, next) => {
+  try {
+    const list = await memberService.getList(req.params.id, req.params.listType)
+    res.json(list)
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default memberRouter

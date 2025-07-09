@@ -122,19 +122,20 @@ class MemberService {
     }
   }
 
-  async findMemberByIDWithPopulatedList(id, listType) {
-    // Validate listType
-    const validLists = [
-      'wishlistCoffeeShops',
-      'favoriteCoffeeShops',
-      'visitedCoffeeShops',
-      'reviewedCoffeeShops',
-    ];
-    if (!validLists.includes(listType)) {
-      throw new Error(`Invalid list type: ${listType}`);
+  async getList(memberId, listType) {
+    try {
+      const member = await this.membersModel.findOneById(memberId)
+      if (listType === 'wishlist') {
+        return member.wishlistCoffeeShops // <== already populated café documents
+      } else if (listType === 'favorites') {
+        return member.favoriteCoffeeShops // <== already populated café documents
+      } else {
+        throw createError(400, 'Invalid list type')
+      }
+    } catch (error) {
+      console.error(`Error in getWishlist: ${error.message}`)
+      throw createError(500, `Failed to fetch wishlist: ${error.message}`)
     }
-    // Find member and populate the requested list
-    return await this.membersModel.findOne({ id }).populate(listType).exec();
   }
 
   // You can add more member-specific methods here if needed,
