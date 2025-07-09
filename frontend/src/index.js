@@ -11,6 +11,8 @@ import reportWebVitals from './reportWebVitals.js'
 import authReducer from './store/auth/Auth.reducers.js'
 import accountSettingsReducer from './store/accountSettings/AccountSettings.reducers.js' // Besserer Name
 import signupReducer from './store/auth/signupSlice.js'
+// Importiere neuen Provider
+import { SearchProvider } from './contexts/SearchContext.jsx'
 
 // Konfiguriere den Redux Store
 const store = configureStore({
@@ -24,9 +26,12 @@ const store = configureStore({
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    {/* Wrap your entire app in SearchProvider */}
+    <SearchProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </SearchProvider>
   </React.StrictMode>
 )
 

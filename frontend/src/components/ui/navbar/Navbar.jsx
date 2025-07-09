@@ -1,29 +1,31 @@
-import { useState } from 'react'
-import './Navbar.css'
-import Button from '../../ui/buttons/Button'
-import { useNavigate } from 'react-router-dom'
-import BurgerMenuButton from '../../ui/burger-menu/BurgerMenu'
-import Avatar from '../../ui/avatar/Avatar'
-import FilterButton from '../../ui/filter/Filter'
-import SearchBar from '../../ui/search-bar/SearchBar'
-import CheckInButton from '../../ui/check-in/CheckIn'
-import '../../../App.css'
-import Icons from '../../../assets/Icons'
-import { useSelector } from 'react-redux'
+import React, { useState, useContext } from "react";
+import "./Navbar.css";
+import Button from "../../ui/buttons/Button";
+import { useNavigate } from "react-router-dom";
+import BurgerMenuButton from "../../ui/burger-menu/BurgerMenu";
+import Avatar from "../../ui/avatar/Avatar";
+import FilterButton from "../../ui/filter/Filter";
+import SearchBar from "../../ui/search-bar/SearchBar";
+import CheckInButton from "../../ui/check-in/CheckIn";
+import "../../../App.css";
 
-// Handles both navbar types: logged in and out.
+import Icons from "../../../assets/Icons";
+
+// Import your SearchContext
+import { SearchContext } from "../../../contexts/SearchContext";
+
 function NavBar() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+  const [isLoggedIn] = useState(true);
   return (
     <div className="page-frame">
-      {isAuthenticated ? <SignedIn /> : <SignedOut />}
+      {isLoggedIn ? <SignedIn /> : <SignedOut />}
     </div>
-  )
+  );
 }
 
 // Logged out navbar.
 function SignedOut() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="navbar-container">
       <img
@@ -32,17 +34,43 @@ function SignedOut() {
         className="logo"
         draggable={false}
         onClick={() => {
-          navigate('/home')
+          navigate("/");
         }}
       />
+      <div className="gap">
+        <Button
+          bg="white"
+          fs="medium"
+          radius="small"
+          padding="small"
+          onClick={() => navigate("/login")}
+        >
+          Sign-In
+        </Button>
+        <Button
+          bg="red"
+          fs="medium"
+          radius="small"
+          padding="small"
+          onClick={() => {
+            navigate("/signup/regform");
+          }}
+        >
+          Sign-Up
+        </Button>
+      </div>
     </div>
-  )
+  );
 }
 
 // Logged in navbar
 function SignedIn() {
-  const navigate = useNavigate()
-  const menuState = useState(false)
+  const navigate = useNavigate();
+  const [, setMenuOpen] = useState(false);
+
+  // Get the context setter
+  const { setSearchFilter } = useContext(SearchContext);
+
   return (
     <div className="navbar-container">
       <img
@@ -51,21 +79,23 @@ function SignedIn() {
         className="logo"
         draggable={false}
         onClick={() => {
-          navigate('/home')
+          navigate("/");
         }}
       />
 
       <div className="gap">
-        <SearchBar />
+        {/* Pass the context setter into SearchBar */}
+        <SearchBar onSelect={setSearchFilter} />
         <FilterButton />
       </div>
+
       <div className="gap">
         <CheckInButton />
         <Avatar />
-        <BurgerMenuButton />
+        <BurgerMenuButton onClick={() => setMenuOpen(open => !open)} />
       </div>
     </div>
-  )
+  );
 }
 
-export default NavBar
+export default NavBar;
