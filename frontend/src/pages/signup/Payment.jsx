@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { registerMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 // Angepasster Importpfad für clearSignupForm vom signupSlice
 import { clearSignupForm } from '../../store/auth/signupSlice.js'
+import StripeCheckout from '../../components/stripe/StripeCheckout.jsx'
 
 function Payment() {
   const navigate = useNavigate()
@@ -62,6 +63,7 @@ function Payment() {
           </p>
           <h2>Set up your credit or debit card</h2>
           <h1>-- insert stripe --</h1>
+          <StripeCheckout />
           {/* Implementiere hier deine Stripe-Integration */}
           {/* z.B. <StripeElementsProvider><CheckoutForm /></StripeElementsProvider> */}
           <Button

@@ -4,6 +4,7 @@ import coffeeShopRouter from './coffeeShop.js' // Make sure this path points to 
 import memberCardRouter from './memberCardRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import memberRouter from './memberRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import reviewRouter from './reviewRoute.js' // Make sure this path points to coffeeShopRoutes.js
+import stripeRouter from './stripeRoute.js' // Make sure this path points to coffeeShopRoutes.js
 
 export default (app) => {
   app.use('/api/auth', authRouter)
@@ -11,4 +12,5 @@ export default (app) => {
   app.use('/api/memberCard', memberCardRouter)
   app.use('/api/member', memberRouter)
   app.use('/api/review', reviewRouter)
+  app.use('/api/stripe', stripeRouter)
 }
