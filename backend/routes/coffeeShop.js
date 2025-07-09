@@ -30,6 +30,7 @@ coffeeShopRouter.post('/', async (req, res, next) => {
  * @desc Get all coffee shops
  * @access Public
  */
+// calls the service layer
 coffeeShopRouter.get('/', async (req, res, next) => {
   try {
     let coffeeShops  = await coffeeShopService.getAllCoffeeShops();
@@ -191,5 +192,22 @@ router.put('/:id/rating', async (req, res, next) => {
   }
 })
 */
+
+/**
+ * @route GET /api/coffeeshop/search?query=...&district=...
+ * @desc Search for coffee shops by name or district
+ * @param {string} query - Search query
+ * @param {string} district - District for filtering
+ * @access Public
+ */
+coffeeShopRouter.get('/search', async (req, res, next) => {
+  try {
+    const { query, district } = req.query;
+    const results = await coffeeShopService.searchCafes({ query, district });
+    res.json(results);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default coffeeShopRouter
