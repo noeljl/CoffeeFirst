@@ -21,20 +21,16 @@ export const getMemberByMail = async (mail) => {
 }
 
 // Update a member's profile by ID
-export const updateMemberProfile = async (id, data) => {
-  try {
-    const response = await API.put(`member/${id}`, data)
-    return response.data
-  } catch (err) {
-    throw err.response?.data || err.message
-  }
+export const updateMember = async (id, payload) => {
+  const { data } = await API.put(`member/${id}`, payload) // payload kann JSON ODER FormData sein
+  return data // z. B. { id, profilePicture, ... }
 }
 
 // Update a member's profile by ID
 export const updateMemberByID = async (id, data) => {
   try {
-    const response = await API.put(`member/${id}`, data)
-    return response.data
+    const res = await API.put(`member/${id}`, data) // <-- 'data' statt 'formData'
+    return res.data // <-- 'res' statt 'response'
   } catch (err) {
     throw err.response?.data || err.message
   }

@@ -1,6 +1,6 @@
 // npm install @reduxjs/toolkit
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getMemberById, updateMemberByID} from '../../apis/member.js' 
+import { getMemberById, updateMember } from '../../apis/member.js'
 
 // Prüfe Login-Status für Member
 export const getMemberByIdAction = createAsyncThunk(
@@ -20,13 +20,16 @@ export const getMemberByIdAction = createAsyncThunk(
 
 // Prüfe Login-Status für Member
 export const updateMemberByIDAction = createAsyncThunk(
-  'member/updateMemberByID',
-  async ({ id, updatedFields }, thunkAPI) => {
+  'member/update',
+  // PayloadCreator bekommt genau EIN Objekt
+  async (
+    /** @type {{ id: string, updatedFields: FormData | Record<string, any> }} */
+    { id, updatedFields },
+    thunkAPI
+  ) => {
     try {
-      console.log('updateMemberByIDAction called with', { id, updatedFields })
-      const response = await updateMemberByID(id, updatedFields)
-      console.log('Response in updateMemberByIDAction ist ', response)
-      return response
+      const result = await updateMember(id, updatedFields)
+      return result
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message)
     }

@@ -33,8 +33,11 @@ class MemberService {
   }
 
   async update({ id, ...data }) {
+    console.log(
+      'updateMemberProfile called with id ' + id + ' and data ' + data
+    )
     try {
-      return await this.membersModel.update(id, data)
+      return await this.membersModel.updateMemberByID(id, data)
     } catch (error) {
       console.error(`Error in updateMemberProfile: ${error.message}`)
       if (error.message.includes('not found')) {
@@ -55,7 +58,7 @@ class MemberService {
 
   async updateMemberByID(id, data) {
     try {
-      return await this.membersModel.update(id, data)
+      return await this.membersModel.updateMemberByID(id, data)
     } catch (error) {
       console.error(`Error in updateMemberByID: ${error.message}`)
     }

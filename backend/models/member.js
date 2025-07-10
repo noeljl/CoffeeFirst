@@ -110,10 +110,11 @@ export class MembersModel {
   async updateByMail(mail, updateData) {
     try {
       // Use findOneAndUpdate to find by email and update
-      const member = await Member.findOneAndUpdate({ id }, updateData, {
-        new: true,
-        runValidators: true,
-      })
+      const member = await Member.findOneAndUpdate(
+        { email: mail },
+        updateData,
+        { new: true, runValidators: true }
+      )
 
       if (!member) throw new Error(`Member with email ${mail} not found.`) // Changed ID to email for clarity
       return member
