@@ -94,6 +94,17 @@
   background: #F5F5F5;
 }
 
+/* selected state for keyboard navigation - red background with white text */
+.search-dropdown li.selected {
+  background: #DA0000;
+  color: white;
+}
+
+/* make subtitle text lighter when selected */
+.search-dropdown li.selected .item-text .type {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* the little icon at left of each row */
 .item-icon {
   flex-shrink: 0;
