@@ -6,6 +6,7 @@ import { initialState as accountInitialState } from '../../store/accountSettings
 import {
   getMemberByIdAction,
   updateMemberByIDAction,
+  changeMemberPasswordAction,
 } from '../../store/accountSettings/AccountSettings.actions.js'
 import FormData from 'form-data'
 
@@ -28,7 +29,7 @@ function PersonalInfo() {
   const {
     firstName: reduxFirstName,
     lastName: reduxLastName,
-    profilePicture: reduxProfilePicture, // Korrektur: Großschreibung für Konsistenz
+    profilePicture: reduxProfilePicture,
     email: reduxEmail,
     isLoading,
     error,
@@ -50,7 +51,7 @@ function PersonalInfo() {
   const [localProfilePicUrl, setLocalProfilePicUrl] = useState('') // Speichert die URL des aktuellen/neuen Bildes
   const [imagePreview, setImagePreview] = useState(null) // Vorschau-URL für ausgewähltes Bild
   const [isDragOver, setIsDragOver] = useState(false)
-  const [showUploadZone, setShowUploadZone] = useState(false)
+  const [showUploadZone, setShowUploadZone] = useState(false) // Steuert die Sichtbarkeit der Upload-Zone
 
   // Daten bei Authentifizierung und MemberId laden
   useEffect(() => {
@@ -127,7 +128,7 @@ function PersonalInfo() {
     }
 
     setLocalProfilePicFile(file) // File-Objekt speichern
-    setShowUploadZone(true) // Upload-Zone anzeigen, wenn ein Bild ausgewählt wurde (oder offen lassen)
+    // setShowUploadZone(true); // Optional: Upload-Zone anzeigen, wenn ein Bild ausgewählt wurde
 
     // Vorschau erstellen
     const reader = new FileReader()
@@ -160,72 +161,94 @@ function PersonalInfo() {
 
   const handleSave = async () => {
     let updatedData = {}
-    let isFormData = false
-
-    switch (editingField) {
-      case 'legalName':
-        updatedData = {
-          firstName: localFirstName,
-          lastName: localLastName,
-        }
-        break
-
-      case 'profilePicture': {
-        // Nur senden, wenn ein neues Bild ausgewählt wurde
-        if (!localProfilePicFile) {
-          setEditingField(null)
-          return
-        }
-
-        const formData = new FormData()
-        formData.append('profilePicture', localProfilePicFile)
-        updatedData = formData
-        isFormData = true
-        break
-      }
-
-      case 'email':
-        updatedData = { email: localEmail }
-        break
-
-      case 'password':
-        if (localPassword.new !== localPassword.confirm) {
-          alert('Neues Passwort und Bestätigung stimmen nicht überein!')
-          return
-        }
-        if (
-          !localPassword.current ||
-          !localPassword.new ||
-          !localPassword.confirm
-        ) {
-          alert('Bitte füllen Sie alle Passwortfelder aus.')
-          return
-        }
-        updatedData = {
-          currentPassword: localPassword.current,
-          newPassword: localPassword.new,
-        }
-        break
-
-      default:
-        setEditingField(null)
-        return
-    }
+    let isFormData = false // Flag, um anzugeben, ob FormData verwendet wird
 
     try {
-      await dispatch(
-        updateMemberByIDAction({
-          id: memberId,
-          updatedFields: updatedData,
-          isFormData,
-        })
-      ).unwrap() // .unwrap() ermöglicht das Abfangen von Fehlern hier
+      switch (editingField) {
+        case 'legalName':
+          updatedData = {
+            firstName: localFirstName,
+            lastName: localLastName,
+          }
+          break
+
+        case 'profilePicture': {
+          // Nur senden, wenn ein neues Bild ausgewählt wurde
+          if (!localProfilePicFile) {
+            setEditingField(null)
+            return
+          }
+
+          const formData = new FormData()
+          formData.append('profilePicture', localProfilePicFile)
+          updatedData = formData
+          isFormData = true
+          break
+        }
+
+        case 'email':
+          updatedData = { email: localEmail }
+          break
+
+        case 'password': {
+          // 1) Plausibilitätsprüfungen im Browser
+          if (
+            !localPassword.current ||
+            !localPassword.new ||
+            !localPassword.confirm
+          ) {
+            alert('Bitte alle Passwort-Felder ausfüllen.')
+            return
+          }
+          if (localPassword.new !== localPassword.confirm) {
+            alert('Neue Passwörter stimmen nicht überein.')
+            return
+          }
+          if (localPassword.new.length < 8) {
+            alert('Das neue Passwort muss mindestens 8 Zeichen lang sein.')
+            return
+          }
+
+          await dispatch(
+            changeMemberPasswordAction({
+              id: memberId,
+              currentPassword: localPassword.current,
+              newPassword: localPassword.new,
+            })
+          ).unwrap()
+
+          alert('Passwort erfolgreich geändert!')
+          break
+        }
+
+        default:
+          return // Wenn editingField nicht erkannt wird, nichts tun
+      }
+
+      // Führen Sie den Dispatch nur aus, wenn updatedData nicht leer ist (außer bei FormData)
+      if (Object.keys(updatedData).length > 0 || isFormData) {
+        await dispatch(
+          updateMemberByIDAction({
+            id: memberId,
+            updatedFields: updatedData,
+            isFormData,
+          })
+        ).unwrap() // .unwrap() ermöglicht das Abfangen von Fehlern hier
+      }
+
+      // Erfolgsmeldung für Passwortänderung, da sie keine direkte Datenaktualisierung im Redux-Store verursacht
+      if (editingField === 'password') {
+        alert('Passwort erfolgreich geändert!')
+      } else {
+        alert('Änderungen erfolgreich gespeichert!')
+      }
 
       setEditingField(null)
       setLocalProfilePicFile(null)
       setImagePreview(null)
-      setShowUploadZone(false)
-      // Beim erfolgreichen Speichern des Bildes, die lokale URL aktualisieren, falls noch nicht geschehen
+      setShowUploadZone(false) // Upload-Zone nach Speichern schließen
+
+      // Beim erfolgreichen Speichern des Bildes, die lokale URL aktualisieren, falls ein neues Bild hochgeladen wurde
       if (editingField === 'profilePicture' && imagePreview) {
         setLocalProfilePicUrl(imagePreview)
       }
@@ -276,7 +299,7 @@ function PersonalInfo() {
       // Wenn localProfilePicUrl eine relative Pfad ist (von Backend), dann vollständige URL erstellen
       return localProfilePicUrl.startsWith('http')
         ? localProfilePicUrl
-        : `http://localhost:3001${localProfilePicUrl}`
+        : `http://localhost:3001${localProfilePicUrl}` // Annahme: Ihre Backend-URL
     }
     // Standard-Profilbild, wenn keins vorhanden ist
     return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'

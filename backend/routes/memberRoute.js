@@ -42,6 +42,27 @@ memberRouter.get('/:id', async (req, res, next) => {
   }
 })
 
+memberRouter.put('/:id/password', async (req, res, next) => {
+  if (!req.isAuthenticated()) return next(createError(401, 'Unauthorized'))
+
+  const { currentPassword, newPassword } = req.body
+  if (!currentPassword || !newPassword)
+    return next(
+      createError(400, 'currentPassword und newPassword erforderlich')
+    )
+
+  try {
+    const updatedMember = await memberService.changePassword(
+      req.params.id,
+      currentPassword,
+      newPassword
+    )
+    res.json({ message: 'Password updated', updatedMember })
+  } catch (err) {
+    next(err)
+  }
+})
+
 memberRouter.get('/mail/:mail', async (req, res, next) => {
   if (!req.isAuthenticated()) {
     throw createError(401, 'Unauthorized')

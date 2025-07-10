@@ -1,6 +1,14 @@
 // npm install @reduxjs/toolkit
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getMemberById, updateMember } from '../../apis/member.js'
+import {
+  getMemberById,
+  updateMember,
+  changeMemberPassword,
+} from '../../apis/member.js'
+
+export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST'
+export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'
+export const CHANGE_PASSWORD_FAIL = 'CHANGE_PASSWORD_FAIL'
 
 // Prüfe Login-Status für Member
 export const getMemberByIdAction = createAsyncThunk(
@@ -32,6 +40,27 @@ export const updateMemberByIDAction = createAsyncThunk(
       return result
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message)
+    }
+  }
+)
+
+export const changeMemberPasswordAction = createAsyncThunk(
+  'accountSettings/changeMemberPassword',
+  async ({ id, currentPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      // Rufen Sie hier Ihre API-Funktion auf, die bereits axios verwendet
+      await changeMemberPassword(id, {
+        currentPassword,
+        newPassword,
+      })
+      return {} // Nichts in den Redux-State schreiben, nur Erfolg signalisieren
+    } catch (err) {
+      // Die API-Fehlermeldung bevorzugen, sonst allgemeine Fehlermeldung
+      return rejectWithValue(
+        err.response?.data?.message ||
+          err.message ||
+          'Fehler beim Passwort ändern.'
+      )
     }
   }
 )

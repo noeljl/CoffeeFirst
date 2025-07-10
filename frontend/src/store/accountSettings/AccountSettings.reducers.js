@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import {
   getMemberByIdAction, // Bestehende Action
   updateMemberByIDAction, // Deine neue Action
+  changeMemberPasswordAction,
 } from './AccountSettings.actions.js' // der Async‑Thunk, der die Mitgliederdaten lädt
 
 // Export, damit andere Dateien (z. B. die Komponente) ihn als Fallback nutzen können
@@ -119,6 +120,20 @@ const accountSettingsSlice = createSlice({
         // Handle errors if the update request fails
         state.isLoading = false
         state.error = action.error.message || 'Failed to update profile.'
+      })
+      /* ---------- NEU: Passwörter ---------- */
+      .addCase(changeMemberPasswordAction.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(changeMemberPasswordAction.fulfilled, (state) => {
+        state.isLoading = false
+        // hier nichts im State ändern, weil nur Server-Side-Action
+      })
+      .addCase(changeMemberPasswordAction.rejected, (state, action) => {
+        state.isLoading = false
+        state.error =
+          action.payload || action.error.message || 'Failed to change password.'
       })
   },
 })
