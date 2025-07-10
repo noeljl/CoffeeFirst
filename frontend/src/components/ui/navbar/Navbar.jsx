@@ -14,8 +14,17 @@ import Icons from "../../../assets/Icons";
 // Import your SearchContext
 import { SearchContext } from "../../../contexts/SearchContext";
 
-// Handles both navbar types: logged in and out.
 function NavBar() {
+  const [isLoggedIn] = useState(true);
+  const location = useLocation();
+  // Get both searchFilter and setSearchFilter from context
+  const { searchFilter, setSearchFilter } = useContext(SearchContext);
+
+  useEffect(() => {
+    // Clear the search filter whenever the route changes
+    setSearchFilter(null);
+  }, [location.pathname, setSearchFilter]);
+
   const [isLoggedIn] = useState(true);
   const location = useLocation();
   // Get both searchFilter and setSearchFilter from context
@@ -28,6 +37,7 @@ function NavBar() {
 
   return (
     <div className="page-frame">
+      {isLoggedIn ? <SignedIn searchFilter={searchFilter} setSearchFilter={setSearchFilter} /> : <SignedOut />}
       {isLoggedIn ? <SignedIn searchFilter={searchFilter} setSearchFilter={setSearchFilter} /> : <SignedOut />}
     </div>
   )
@@ -76,6 +86,7 @@ function SignedIn({ searchFilter, setSearchFilter }) {
       // setSelectedIndex(-1); // This line was removed from the new_code, so it's removed here.
     }
   }, [searchFilter]);
+
   return (
     <div className="navbar-container">
       <img
@@ -89,6 +100,8 @@ function SignedIn({ searchFilter, setSearchFilter }) {
       />
 
       <div className="gap">
+        {/* Pass searchFilter to SearchBar */}
+        <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
         {/* Pass searchFilter to SearchBar */}
         <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
         <FilterButton />
