@@ -7,6 +7,11 @@ export const getProducts = async () => {
 }
 
 export const getSubscribeSession = async (plan) => {
-    const response = await API.get(`/stripe/subscribe?plan=${plan}`);
+    const response = await API.get(`/stripe/checkout/subscribe?plan=${plan}`);
+    return response.data;
+}
+
+export const getCompleteSession = async (sessionId) => {
+    const response = await API.get(`/stripe/checkout/complete?session_id=${sessionId}`);
     return response.data;
 }

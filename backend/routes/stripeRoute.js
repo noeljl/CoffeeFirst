@@ -30,7 +30,7 @@ stripeRouter.get("/products", async (req, res) => {
       }
 });
 
-stripeRouter.get('/subscribe', async (req, res) => {
+stripeRouter.get('/checkout/subscribe', async (req, res) => {
     try {
         const plan = req.query.plan;
 
@@ -58,15 +58,23 @@ stripeRouter.get('/subscribe', async (req, res) => {
             // payment_method_types: ['card'],
             line_items: [{ price: priceId, quantity: 1 }],
             mode: 'subscription',
-            success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/signup/completed?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/cancel`,
         });
 
-        console.log("The session is", session.url);
         res.json({ sessionId: session.id, url: session.url });
         
     } catch (error) {
         console.error('Stripe error:', error);
+        res.status(500).json({ error: error.message });
+    }
+})
+
+stripeRouter.get('/checkout/complete', async (req, res) => {
+    try {
+        const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+        res.json(session);
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 })

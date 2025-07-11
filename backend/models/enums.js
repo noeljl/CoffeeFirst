@@ -51,6 +51,8 @@ export const MembershipPrice = Object.freeze({
 
 export const PaymentStatus = Object.freeze({
   SUCCESS: 'Success',
+  CANCELLED: 'Cancelled',
+  ACTIVE: 'Active',
   FAILED: 'Failed',
   PENDING: 'Pending',
 })

@@ -16,13 +16,16 @@ function PlanForm() {
 
   const handlePlanSelection = (selectedPlan) => {
     dispatch(setPlanDetails({ plan: selectedPlan }))
+    const signupData = JSON.parse(localStorage.getItem('signupData') || '{}')
+    signupData.plan = selectedPlan
+    localStorage.setItem('signupData', JSON.stringify(signupData))
   }
 
   const handleNext = () => {
     if (stripeSession && stripeSession.url) {
       window.location.href = stripeSession.url; // Redirect to Stripe checkout
     } else {
-      navigate('/signup/payment');
+      navigate('/signup/payment'); // Error Page implementierten
     }
   }
 
