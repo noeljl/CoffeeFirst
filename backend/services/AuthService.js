@@ -13,6 +13,9 @@ class AuthService {
   }
 
   async register(input) {
+
+    console.log("input", input)
+
     const {
       password,
       firstName,
@@ -76,6 +79,10 @@ class AuthService {
         subscribe,
         membership: membership._id,
         memberCard: memberCard._id,
+        stripeCustomerId: input.customerId,
+        stripeSubscriptionId: input.subscriptionId,
+        paymentStatus: "Success",
+        subscriptionPeriodEnd: input.subscriptionPeriodEnd
       })
 
       return this.membersModel.findOneById(member.id)

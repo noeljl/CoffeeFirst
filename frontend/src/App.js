@@ -15,7 +15,7 @@ import SettingsLayout from './components/layout/SettingsLayout.jsx'
 import HomePage from './pages/HomePage.jsx'
 import RegForm from './pages/signup/RegForm.jsx'
 import PlanForm from './pages/signup/PlanForm.jsx'
-import Payment from './pages/signup/Payment.jsx'
+import PaymentSuccessful from './pages/signup/PaymentSuccessful.jsx'
 import Login from './pages/signin/SignIn.jsx'
 
 // Dynamic Views
@@ -37,7 +37,7 @@ function App() {
         {/* Öffentliche Routen */}
         <Route path="/signup/regform" element={<RegForm />} />
         <Route path="/signup/planform" element={<PlanForm />} />
-        <Route path="/signup/payment" element={<Payment />} />
+        <Route path="/signup/completed" element={<PaymentSuccessful />} />
         <Route path="/login" element={<Login />} />
         <Route path="/testing" element={<TempBlankPage />} />
 

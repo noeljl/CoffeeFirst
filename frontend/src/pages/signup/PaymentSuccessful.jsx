@@ -1,22 +1,31 @@
 // src/pages/Payment.js
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Footer from '../../components/footer/Footer'
+import Footer from '../../components/footer/Footer.jsx'
 // import './SignUp.css'
 import NavBar from '../../components/ui/navbar/Navbar.jsx'
 import Button from '../../components/ui/buttons/Button.jsx'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { registerMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 // Angepasster Importpfad für clearSignupForm vom signupSlice
 import { clearSignupForm } from '../../store/auth/signupSlice.js'
+import { getCompleteSession } from '../../apis/stripe.js'
 
-function Payment() {
+function PaymentSuccessful() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const params = new URLSearchParams(location.search)
+  const sessionId = params.get('session_id')
   const dispatch = useDispatch()
+  const [customerId, setCustomerId] = useState(null)
+  const [subscriptionId, setSubscriptionId] = useState(null)
+  const [paymentStatus, setPaymentStatus] = useState(null)
+  const [subscriptionPeriodEnd, setSubscriptionPeriodEnd] = useState(null)
 
   // Hole Registrierungsdetails und Plan aus dem Redux Store
   // Die 'loading' und 'error' States für den Registrierungsprozess kommen ebenfalls vom signupSlice
-  const {
+  const signupData = useSelector((state) => state.signup)
+  let {
     firstName,
     lastName,
     subscribe,
@@ -24,11 +33,21 @@ function Payment() {
     password,
     plan,
     loading,
-    error,
-  } = useSelector((state) => state.signup)
+    error
+  } = signupData
+
+  // If Redux state is empty, try to load from localStorage
+  if (!email || !plan) {
+    const local = JSON.parse(localStorage.getItem('signupData') || '{}')
+    firstName = firstName || local.firstName
+    lastName = lastName || local.lastName
+    subscribe = subscribe || local.subscribe
+    email = email || local.email
+    password = password || local.password
+    plan = plan || local.plan
+  }
 
   const handleStartPaidMembership = async () => {
-    const paymentMethodId = 'pm_card_visa' // Diese käme von Stripe nach der Tokenisierung
 
     // Bereite Anmeldedaten für die Registrierung vor
     const credentials = {
@@ -38,18 +57,35 @@ function Payment() {
       email,
       password,
       plan, // Füge den ausgewählten Plan hinzu
-      paymentMethodId, // Füge die Payment Method ID von Stripe hinzu
+      customerId,
+      subscriptionId,
+      paymentStatus,
+      subscriptionPeriodEnd
     }
-
+    console.log("Here are the credentials", credentials)
     try {
       await dispatch(registerMemberAction(credentials)).unwrap()
 
       dispatch(clearSignupForm())
+      localStorage.removeItem('signupData')
       navigate('/dashboard')
     } catch (err) {
       console.error('Failed to register member:', err)
     }
   }
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getCompleteSession(sessionId)
+      console.log("Here is the session", session.payment_status)
+      setCustomerId(session.customer)
+      setSubscriptionId(session.subscription)
+      setPaymentStatus(session.status)
+      setSubscriptionPeriodEnd(session.expires_at)
+    }
+    fetchSession()
+  }, [sessionId])
+
 
   return (
     <div>
@@ -74,14 +110,8 @@ function Payment() {
             onClick={handleStartPaidMembership}
             disabled={loading} // Deaktiviere den Button während des Ladevorgangs
           >
-            {loading ? 'Registering...' : 'Start Paid Membership'}
+            Go to Dashboard
           </Button>
-          {/* Zeige Fehlermeldung an, falls vorhanden */}
-          {error && (
-            <p style={{ color: 'red' }}>
-              Error: {error.message || 'Something went wrong.'}
-            </p>
-          )}
         </div>
       </div>
       <Footer />
@@ -89,4 +119,4 @@ function Payment() {
   )
 }
 
-export default Payment
+export default PaymentSuccessful

@@ -21,9 +21,10 @@ export default function SignupForm() {
   const handleSubmit = (e) => {
     e.preventDefault() // Verhindert das Neuladen der Seite beim Absenden des Formulars
     console.log(email, password)
-    dispatch(
-      setRegistrationDetails({ firstName, lastName, subscribe, email, password })
-    )
+    const registrationData = { firstName, lastName, subscribe, email, password }
+    dispatch(setRegistrationDetails(registrationData))
+    // Save to localStorage
+    localStorage.setItem('signupData', JSON.stringify(registrationData))
     navigate('/signup/planform')
   }
 
@@ -79,9 +80,9 @@ export default function SignupForm() {
           bg="red"
           radius="small"
           width="full"
-          // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
-          // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
-          // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
+        // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
+        // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
+        // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
         >
           NEXT
         </Button>

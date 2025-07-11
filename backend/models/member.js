@@ -22,6 +22,13 @@ const MemberSchema = new mongoose.Schema(
     },
     subscribe: { type: Boolean, default: false },
     stripeCustomerId: { type: String, unique: true, sparse: true, trim: true },
+    stripeSubscriptionId: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+    },
+    subscriptionPeriodEnd: { type: Date },
     paymentStatus: {
       type: String,
       enum: Object.values(PaymentStatus),
@@ -31,14 +38,12 @@ const MemberSchema = new mongoose.Schema(
     membership: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Membership',
-      required: true,
-      unique: true,
+      required: true
     },
     memberCard: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'MemberCard',
-      required: true,
-      unique: true,
+      required: true
     },
     wishlistCoffeeShops: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'CoffeeShop' },
