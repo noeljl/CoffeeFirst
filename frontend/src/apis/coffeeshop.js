@@ -111,17 +111,17 @@ export function getAllCoffeeShopsGroupedByDistrict() {
 export const getFilteredCoffeeShops = async ({
   offers,
   coffeeVariants,
+  sustainability,
 } = {}) => {
   try {
-    const params = {}
-
-    if (offers) params.offers = offers
-    if (coffeeVariants) params.coffeeVariants = coffeeVariants
-
-    const response = await API.get('/coffeeshop/filter', { params })
-    return response.data
+    const params = {};
+    if (offers) params.offers = offers;
+    if (coffeeVariants) params.coffeeVariants = coffeeVariants;
+    if (sustainability) params.sustainability = sustainability;
+    const response = await API.get('/coffeeshop/filter', { params });
+    return response.data;
   } catch (err) {
-    throw err.response?.data || err.message
+    throw err.response?.data || err.message;
   }
-}
+};
 

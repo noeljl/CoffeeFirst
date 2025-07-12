@@ -12,6 +12,7 @@ import { getFilteredCoffeeShops } from '../services/coffeeShopService.js'
 // and just let async functions throw errors, which will be caught by the global handler.
 // For now, I'll include try/catch for explicit handling within each route.
 
+
 /**
  * @route POST /api/coffeeshops
  * @desc Create a new coffee shop
@@ -42,7 +43,6 @@ coffeeShopRouter.get('/', async (req, res, next) => {
     next(error)
   }
 })
-
 coffeeShopRouter.get('/filter', async (req, res, next) => {
   try {
     const filteredCoffeeShops = await getFilteredCoffeeShops(req.query)
@@ -51,7 +51,6 @@ coffeeShopRouter.get('/filter', async (req, res, next) => {
     next(error)
   }
 })
-
 /**
  * @route GET /api/coffeeshops/by-name/:name
  * @desc Get a coffee shop by name

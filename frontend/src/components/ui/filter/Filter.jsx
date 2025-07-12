@@ -1,15 +1,23 @@
 // Filter.jsx
-import { useNavigate } from 'react-router-dom'; // ← Add this
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react'
 import './Filter.css'
 import Button from '../buttons/Button'
 import Icons from '../../../assets/Icons'
 import { getFilteredCoffeeShops } from '../../../apis/coffeeshop.js'
+import { CoffeeTypeMap, OfferMap, SustainabilityFeatureMap } from '../../../constants/filterMappings';
+
+const sustainabilityOptions = [
+  { label: 'Small-Batch Roasting', icon: Icons.tree },
+  { label: 'Eco-Friendly Packaging', icon: Icons.tree },
+  { label: 'Ethical Sourcing', icon: Icons.tree },
+  { label: '100% Arabica Only', icon: Icons.tree },
+];
 
 const offers = [
   { label: 'Indoor Sitting', icon: Icons.couch },
   { label: 'Outdoor Sitting', icon: Icons.sun },
-  { label: 'Free Wifi', icon: Icons.wifi },
+  { label: 'Wifi', icon: Icons.wifi },
   { label: 'Free Water', icon: Icons.water },
   { label: 'Free Charging', icon: Icons.charging },
   { label: 'Pet Friendly', icon: Icons.pet },
@@ -19,17 +27,10 @@ const offers = [
 const coffeeVariants = [
   { label: 'Espresso', icon: Icons.coffeeBean },
   { label: 'Flat White', icon: Icons.coffeeBean },
-  { label: 'Cold Brew', icon: Icons.coffeeBean },
+  { label: 'Latte Macchiato', icon: Icons.coffeeBean },
   { label: 'Cappuccino', icon: Icons.coffeeBean },
+  { label: 'Americano', icon: Icons.coffeeBean },
 ]
-
-function toggleSelection(label, selected, setSelected) {
-  setSelected((prev) =>
-    prev.includes(label)
-      ? prev.filter((item) => item !== label)
-      : [...prev, label]
-  )
-}
 
 function FilterButton() {
   const [isFilterOpen, setFilterOpen] = useState(false)
@@ -54,7 +55,8 @@ function FilterButton() {
 function FilterModal({ onClose }) {
   const [selectedOffers, setSelectedOffers] = useState([]);
   const [selectedVariants, setSelectedVariants] = useState([]);
-  const navigate = useNavigate(); // ← For navigation
+  const [selectedSustainability, setSelectedSustainability] = useState([]);
+  const navigate = useNavigate();
 
   const toggleSelection = (value, list, setList) => {
     setList(
@@ -65,14 +67,21 @@ function FilterModal({ onClose }) {
   };
 
   const handleSave = async () => {
-    console.log("Save clicked!"); // ← this should appear
+    // Map selected labels to backend enum values
+    const mappedOffers = selectedOffers.map(label => OfferMap[label]).filter(Boolean);
+    const mappedVariants = selectedVariants.map(label => CoffeeTypeMap[label]).filter(Boolean);
+    const mappedSustainability = selectedSustainability.map(label => SustainabilityFeatureMap[label]).filter(Boolean);
+    
+    const filterParams = {
+      offers: mappedOffers,
+      coffeeVariants: mappedVariants,
+      sustainability: mappedSustainability,
+    };
+    
+    console.log('Submitting filter params:', filterParams);
     try {
-      const result = await getFilteredCoffeeShops({
-        offers: selectedOffers,
-        coffeeVariants: selectedVariants,
-      });
-
-      // Send the result to /dashboard/partners as state
+      const result = await getFilteredCoffeeShops(filterParams);
+      console.log('Filter API result:', result);
       navigate('/dashboard/partners', { state: { filteredShops: result } });
       onClose();
     } catch (err) {
@@ -89,6 +98,7 @@ function FilterModal({ onClose }) {
             <img src={Icons.cancel} alt="close" />
           </button>
         </div>
+        
         <div className="filter-section">
           <h3>Offers</h3>
           <div className="filter-options">
@@ -111,6 +121,30 @@ function FilterModal({ onClose }) {
             ))}
           </div>
         </div>
+        
+        <div className="filter-section">
+          <h3>Sustainability</h3>
+          <div className="filter-options">
+            {sustainabilityOptions.map((option) => (
+              <button
+                key={option.label}
+                className={`filter-option ${
+                  selectedSustainability.includes(option.label) ? 'active' : ''
+                }`}
+                onClick={() =>
+                  toggleSelection(
+                    option.label,
+                    selectedSustainability,
+                    setSelectedSustainability
+                  )
+                }
+              >
+                <img src={option.icon} alt={option.label} /> {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        
         <div className="filter-section">
           <h3>Coffee variants</h3>
           <div className="filter-options">
@@ -133,11 +167,12 @@ function FilterModal({ onClose }) {
             ))}
           </div>
         </div>
+        
         <div className="filter-footer">
-      <button className="save-button" onClick={handleSave}>
-        Save
-      </button>
-    </div>
+          <button className="save-button" onClick={handleSave}>
+            Save
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -14,27 +14,7 @@ function PartnersByDistrict() {
   const [hasMore, setHasMore] = useState(true);
   const observerRef = useRef();
 
-  useEffect(() => {
-    // If filtered data is passed, group it by district directly
-    if (filteredShops) {
-      const grouped = groupByDistrict(filteredShops);
-      setGroupedDistricts(grouped);
-      setLoading(false);
-    } else {
-      // Otherwise fetch all
-      getAllCoffeeShopsGroupedByDistrict()
-        .then((data) => {
-          setGroupedDistricts(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError(err);
-          setLoading(false);
-        });
-    }
-  }, []);
-
-   const groupByDistrict = (shops) => {
+  const groupByDistrict = (shops) => {
     const districtMap = {};
     for (const shop of shops) {
       const district = shop.district || 'Unknown';
@@ -46,6 +26,31 @@ function PartnersByDistrict() {
       coffeeShops: shops,
     }));
   };
+
+  useEffect(() => {
+    // If filtered data is passed, group it by district directly
+    if (filteredShops) {
+      const grouped = groupByDistrict(filteredShops);
+      setGroupedDistricts(grouped);
+      setAllDistricts(grouped);
+      setHasMore(false); // No pagination for filtered results
+      setLoading(false);
+    } else {
+      // Otherwise fetch all with pagination
+      getAllCoffeeShopsGroupedByDistrict()
+        .then((data) => {
+          setAllDistricts(data);
+          setGroupedDistricts(data.slice(0, visibleCount));
+          setHasMore(data.length > visibleCount);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err);
+          setLoading(false);
+        });
+    }
+  }, [filteredShops, visibleCount]);
+
   // Intersection Observer for infinite scrolling
   const lastDistrictRef = useCallback(node => {
     if (loading) return;
@@ -60,27 +65,7 @@ function PartnersByDistrict() {
     if (node) observerRef.current.observe(node);
   }, [loading, hasMore]);
 
-  useEffect(() => {
-    getAllCoffeeShopsGroupedByDistrict()
-      .then((data) => {
-        setAllDistricts(data);
-        setGroupedDistricts(data.slice(0, visibleCount));
-        setHasMore(data.length > visibleCount);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setLoading(false);
-      });
-  }, []);
 
-  // Update visible districts when visibleCount changes
-  useEffect(() => {
-    if (allDistricts.length > 0) {
-      setGroupedDistricts(allDistricts.slice(0, visibleCount));
-      setHasMore(visibleCount < allDistricts.length);
-    }
-  }, [visibleCount, allDistricts]);
 
   if (loading) return <div>Loading districts...</div>;
   if (error) return <div>Error loading districts: {error.toString()}</div>;
