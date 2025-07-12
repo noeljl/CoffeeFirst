@@ -1,5 +1,5 @@
 .coffee-card {
-  width: 214px;
+  width: 220px;
   border-radius: 16px;
   background-color: white;
   display: flex;
@@ -8,36 +8,65 @@
   text-align: left;
   gap: 0px;
   padding: 0px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s;
+}
+.coffee-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
 }
 
 .text-block {
-  padding-top: 10px;
+  padding: 16px 16px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .text-block p {
   padding: 0px;
-  margin: 10px 0px;
+  margin: 8px 0px 0px 0px;
 }
 
 .coffee-card img {
-  width: 214px;
-  height: 214px;
+  width: 220px;
+  height: 160px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
 }
 
 .shop-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
+  color: #181818;
+  line-height: 1.2;
 }
 
-.coffee-card .rating {
-  font-size: 14px;
-  color: #ff9900;
+.rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 2px 0 0 0;
+  font-size: 18px;
 }
 
-.coffee-card .address {
+.star {
+  font-size: 18px;
+  color: #ffb400;
+  margin-right: 1px;
+  line-height: 1;
+}
+.star.empty {
+  color: #e0e0e0;
+}
+.star.half {
+  color: #ffb400;
+  /* visually same as filled for now */
+}
+
+.address {
   font-size: 13px;
   color: #555;
+  margin-top: 4px;
+  line-height: 1.3;
 }
