@@ -13,8 +13,7 @@ class AuthService {
   }
 
   async register(input) {
-
-    console.log("input", input)
+    console.log('input', input)
 
     const {
       password,
@@ -43,15 +42,14 @@ class AuthService {
     const passwordHash = await bcrypt.hash(password, 10)
 
     // 4) IDs erzeugen
-    const memberId = new mongoose.Types.ObjectId()
     const membershipId = new mongoose.Types.ObjectId()
     const memberCardId = new mongoose.Types.ObjectId()
 
     try {
-      // a) Membership anlegen
+      // a) Membership anlegen (zuerst mit temporärem Member-Wert)
       const membership = await MembershipModel.create({
         _id: membershipId,
-        member: memberId,
+        member: 'temp', // Temporärer Wert, wird später aktualisiert
         chosenMembership: membershipType._id,
         startDate: now,
         endDate: end,
@@ -69,9 +67,8 @@ class AuthService {
         membership: membership._id,
       })
 
-      // c) Member anlegen
+      // c) Member anlegen (mit allen erforderlichen Referenzen)
       const member = await this.membersModel.create({
-        _id: memberId,
         firstName,
         lastName,
         email,
@@ -81,11 +78,16 @@ class AuthService {
         memberCard: memberCard._id,
         stripeCustomerId: input.customerId,
         stripeSubscriptionId: input.subscriptionId,
-        paymentStatus: "Success",
-        subscriptionPeriodEnd: input.subscriptionPeriodEnd
+        paymentStatus: 'Success',
+        subscriptionPeriodEnd: input.subscriptionPeriodEnd,
       })
 
-      return this.membersModel.findOneById(member.id)
+      // d) Membership mit der korrekten Member UUID aktualisieren
+      await MembershipModel.update(membership._id, {
+        member: member.id,
+      })
+
+      return member
     } catch (err) {
       // Im Fehlerfall: optional Cleanup
       console.error('Registration failed, cleaning up:', err)

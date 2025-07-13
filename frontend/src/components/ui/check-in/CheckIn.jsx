@@ -26,7 +26,7 @@ function CheckInButton() {
   // Use accountSettings member if available, otherwise fall back to auth member
   const member = accountSettingsMember || authMember
   const firstNameVar = member?.firstName
-  const memberId = member?.id || member?._id // Try both id and _id
+  const memberId = member?.id // Use UUID instead of MongoDB ObjectId
   const lastNameVar = member?.lastName
   const profilePicture = member?.profilePicture
 
@@ -34,10 +34,10 @@ function CheckInButton() {
 
   useEffect(() => {
     if (isAuthenticated && isInitialized) {
+      console.log('membership in useEffect:', membership)
       // Try to get memberId from either accountSettings or auth member
-      const currentMemberId = memberId || authMember?.id
+      const currentMemberId = authMember?.id // Use UUID instead of MongoDB ObjectId
       if (currentMemberId) {
-        dispatch(getMembershipByMemberIDAction(currentMemberId))
         dispatch(getMemberByIdAction(currentMemberId))
       } else {
         console.log('No memberId available, cannot dispatch actions')
@@ -58,7 +58,7 @@ function CheckInButton() {
 
       const content = JSON.stringify({
         cardCode: membership?.chosenMembership?.cardCode,
-        memberId: member._id ? member._id.toString() : null, // Use Mongoose's _id here
+        memberId: member.id ? member.id.toString() : null, // Use UUID instead of MongoDB ObjectId
         firstName: member.firstName,
         lastName: member.lastName,
         email: member.email,
@@ -78,9 +78,9 @@ function CheckInButton() {
   const handleCheckInClick = () => {
     setCheckInOpen(true)
     // Dispatch to get full membership details if needed for the modal
-    // This action should use the Mongoose _id for the member
-    if (member?._id) {
-      // Use member._id here, which is Mongoose's ObjectId
+    // This action should use the UUID for the member
+    if (member?.id) {
+      // Use member.id here, which is the UUID
       dispatch(getMembershipByMemberIDAction(member.id))
     }
   }
@@ -91,19 +91,32 @@ function CheckInButton() {
 
   // This function stays here as it requires 'profilePicture' from this component's scope
   const getCurrentImageSrc = () => {
+    console.log(
+      'getCurrentImageSrc called with profilePicture:',
+      profilePicture
+    )
+    console.log('member object:', member)
+
     if (
       profilePicture &&
       profilePicture !== 'https://example.com/default-profile.png' &&
       profilePicture !== ''
     ) {
-      // Check if it's already a full URL
-      if (profilePicture.startsWith('http')) {
+      // Check if it's already a full URL (http or https)
+      if (
+        profilePicture.startsWith('http://') ||
+        profilePicture.startsWith('https://')
+      ) {
+        console.log('Using full URL:', profilePicture)
         return profilePicture
       }
       // Construct the URL for local images
-      return `http://localhost:3001/profileImages/${profilePicture}`
+      const localUrl = `http://localhost:3001/profileImages/${profilePicture}`
+      console.log('Using local URL:', localUrl)
+      return localUrl
     }
     // Return the example picture as default if no profile picture is available
+    console.log('Using default image')
     return 'http://localhost:3001/profileImages/example_picture.jpeg'
   }
 

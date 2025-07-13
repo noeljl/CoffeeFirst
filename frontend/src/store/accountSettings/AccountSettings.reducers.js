@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   getMemberByIdAction, // Bestehende Action
+  getMembershipByMemberIDAction, // Membership Action
   updateMemberByIDAction, // Deine neue Action
   changeMemberPasswordAction,
 } from './AccountSettings.actions.js' // der Async‑Thunk, der die Mitgliederdaten lädt
@@ -17,6 +18,8 @@ export const initialState = {
     new: '',
     confirm: '',
   },
+  member: null, // Member data
+  membership: null, // Membership data
   error: null,
   isLoading: false,
 }
@@ -83,6 +86,7 @@ const accountSettingsSlice = createSlice({
           state.lastName = memberData.lastName
           state.profilePicture = memberData.profilePicture
           state.email = memberData.email
+          state.member = memberData // Member-Objekt komplett speichern
           // Passwort und andere sensible/spezifische Felder würden hier normalerweise nicht direkt übernommen,
           // es sei denn, der Anwendungsfall erfordert es und die API gibt sie sicher zurück.
           // Nur Beispielhaft:
@@ -101,6 +105,23 @@ const accountSettingsSlice = createSlice({
       .addCase(getMemberByIdAction.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || 'Fehler beim Laden der Mitgliederdaten.'
+      })
+
+      // Reducer für getMembershipByMemberIDAction
+      .addCase(getMembershipByMemberIDAction.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(getMembershipByMemberIDAction.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.error = null
+        state.membership = action.payload
+        console.log('Membership data loaded:', action.payload)
+      })
+      .addCase(getMembershipByMemberIDAction.rejected, (state, action) => {
+        state.isLoading = false
+        state.error =
+          action.payload || 'Fehler beim Laden der Membership-Daten.'
       })
 
     builder

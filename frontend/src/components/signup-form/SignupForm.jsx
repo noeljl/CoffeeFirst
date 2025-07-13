@@ -24,6 +24,7 @@ export default function SignupForm() {
     const registrationData = { firstName, lastName, subscribe, email, password }
     dispatch(setRegistrationDetails(registrationData))
     // Save to localStorage
+    console.log('registrationData in SignupForm', registrationData)
     localStorage.setItem('signupData', JSON.stringify(registrationData))
     navigate('/signup/planform')
   }

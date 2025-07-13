@@ -18,14 +18,15 @@ function PlanForm() {
     dispatch(setPlanDetails({ plan: selectedPlan }))
     const signupData = JSON.parse(localStorage.getItem('signupData') || '{}')
     signupData.plan = selectedPlan
+    console.log('signupData', signupData)
     localStorage.setItem('signupData', JSON.stringify(signupData))
   }
 
   const handleNext = () => {
     if (stripeSession && stripeSession.url) {
-      window.location.href = stripeSession.url; // Redirect to Stripe checkout
+      window.location.href = stripeSession.url // Redirect to Stripe checkout
     } else {
-      navigate('/signup/payment'); // Error Page implementierten
+      navigate('/signup/payment') // Error Page implementierten
     }
   }
 
@@ -41,7 +42,10 @@ function PlanForm() {
           <h2>Choose your membership</h2>
           {/* Ensure your PricingTable component has an 'onSelectPlan' prop
               that it calls when a plan is chosen. */}
-          <PricingTable onSelectPlan={handlePlanSelection} onSessionCreated={setStripeSession} />
+          <PricingTable
+            onSelectPlan={handlePlanSelection}
+            onSessionCreated={setStripeSession}
+          />
           <Button
             type="button" // Changed to "button" since it's not submitting a form directly
             fs="medium"

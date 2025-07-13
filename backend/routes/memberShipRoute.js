@@ -1,7 +1,7 @@
 // membershipRoutes.js
 import express from 'express'
 import createError from 'http-errors' // Make sure to import http-errors
-import MembershipService from './MembershipService.js' // Adjust the path as necessary
+import MembershipService from '../services/memberShipService.js' // Adjust the path as necessary
 
 const membershipRouter = express.Router()
 const membershipService = new MembershipService()
@@ -31,9 +31,6 @@ membershipRouter.get('/:id', async (req, res, next) => {
  * @access Public (adjust based on your authentication/authorization needs)
  */
 membershipRouter.get('/by-member/:memberId', async (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    throw createError(401, 'Unauthorized')
-  }
   try {
     const membership = await membershipService.getMembershipByMemberId(
       req.params.memberId

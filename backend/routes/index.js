@@ -5,11 +5,13 @@ import memberCardRouter from './memberCardRoute.js' // Make sure this path point
 import memberRouter from './memberRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import reviewRouter from './reviewRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import stripeRouter from './stripeRoute.js' // Make sure this path points to coffeeShopRoutes.js
+import membershipRouter from './memberShipRoute.js' // Make sure this path points to coffeeShopRoutes.js2
 
-export default (app, passport) => {
+export default (app) => {
   app.use('/api/auth', authRouter)
   app.use('/api/coffeeshop', coffeeShopRouter)
   app.use('/api/memberCard', memberCardRouter)
+  app.use('/api/memberships', membershipRouter)
   app.use('/api/member', memberRouter)
   app.use('/api/review', reviewRouter)
   app.use('/api/stripe', stripeRouter)

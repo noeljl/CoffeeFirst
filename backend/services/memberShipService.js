@@ -1,52 +1,35 @@
 // MembershipService.js
 import createError from 'http-errors'
-import MembershipModel from '../models/membershipModel.js' // Assuming MembershipModel is in a file named membershipModel.js
+import MembershipModel from '../models/membership.js'
+import MembersModel from '../models/member.js'
 
 class MembershipService {
   constructor() {
-    this.membershipModel = MembershipModel // MembershipModel is already an instance
+    this.membershipModel = MembershipModel
+    this.membersModel = new MembersModel()
   }
 
   /**
-   * Retrieves a membership by its ID.
-   * @param {string} membershipId - The ID of the membership.
-   * @returns {Promise<Document>} The membership document.
-   * @throws {HttpError} If the membership is not found or a server error occurs.
-   */
-  async getMembershipById(membershipId) {
-    try {
-      const membership = await this.membershipModel.findById(membershipId)
-      if (!membership) {
-        throw createError(404, 'Membership not found')
-      }
-      return membership
-    } catch (error) {
-      console.error(`Error in getMembershipById: ${error.message}`)
-      if (error.statusCode) throw error // Re-throw http-errors
-      throw createError(500, `Failed to retrieve membership: ${error.message}`)
-    }
-  }
-
-  /**
-   * Retrieves a membership by the associated member's ID.
-   * @param {string} memberId - The ID of the member.
+   * Retrieves a membership by the associated member's UUID.
+   * @param {string} memberUuid - The UUID of the member.
    * @returns {Promise<Document>} The membership document.
    * @throws {HttpError} If the membership is not found for the member or a server error occurs.
    */
-  async getMembershipByMemberId(memberId) {
+  async getMembershipByMemberId(memberUuid) {
     try {
-      const membership = await this.membershipModel.findByMemberId(memberId)
-      if (!membership) {
+      // 1) Verify member exists
+      const member = await this.membersModel.findOneById(memberUuid)
+      if (!member) throw createError(404, 'Member not found')
+
+      // 2) Use the UUID directly to fetch the membership
+      const membership = await this.membershipModel.findByMemberId(memberUuid)
+      if (!membership)
         throw createError(404, 'Membership not found for this member')
-      }
       return membership
     } catch (error) {
       console.error(`Error in getMembershipByMemberId: ${error.message}`)
       if (error.statusCode) throw error // Re-throw http-errors
-      throw createError(
-        500,
-        `Failed to retrieve membership by member ID: ${error.message}`
-      )
+      throw createError(500, `Failed to retrieve membership: ${error.message}`)
     }
   }
 

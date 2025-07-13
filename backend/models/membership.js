@@ -6,8 +6,7 @@ const MembershipSchema = new mongoose.Schema(
   {
     // Relation to the user who owns this membership
     member: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Member',
+      type: String, // Changed from ObjectId to String for UUID
       required: true,
       unique: true, // Ensures a 1-to-1 relationship with Member
     },
