@@ -17,12 +17,14 @@ class MembershipService {
    */
   async getMembershipByMemberId(memberUuid) {
     try {
-      // 1) Verify member exists
+      // 1) Verify member exists and get the ObjectId
       const member = await this.membersModel.findOneById(memberUuid)
       if (!member) throw createError(404, 'Member not found')
 
-      // 2) Use the UUID directly to fetch the membership
-      const membership = await this.membershipModel.findByMemberId(memberUuid)
+      // 2) Use the ObjectId (_id) of the member to fetch the membership
+      console.log('memberUuid', memberUuid)
+      console.log('member._id', member._id)
+      const membership = await this.membershipModel.findByMemberId(member._id.toString())
       if (!membership)
         throw createError(404, 'Membership not found for this member')
       return membership
