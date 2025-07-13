@@ -1,0 +1,32 @@
+.snackbar {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0a9636;
+  color: #fff;
+  padding: 15px 32px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 9999;
+  animation: fadeIn 0.4s;
+}
+.snackbar-icon {
+  margin-right: 12px;
+  font-size: 1.5rem;
+}
+.snackbar-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  margin-left: 20px;
+  cursor: pointer;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px) translateX(-50%);}
+  to { opacity: 1; transform: translateY(0) translateX(-50%);}
+}

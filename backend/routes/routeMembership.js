@@ -130,4 +130,28 @@ membershipRouter.put('/:id/increment-coffee-quota', async (req, res, next) => {
   }
 })
 
+membershipRouter.patch('/cancel', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
+  try {
+    const updatedMembership = await membershipService.cancelMembership(req.query.membershipId, req.query.subscriptionId)
+    res.status(200).json(updatedMembership)
+  } catch (error) {
+    next(error)
+  }
+})
+
+membershipRouter.patch('/resume', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
+  try {
+    const updatedMembership = await membershipService.resumeMembership(req.query.membershipId, req.query.subscriptionId)
+    res.status(200).json(updatedMembership)
+  } catch (error) {
+    next(error)
+  }
+})
+
 export default membershipRouter

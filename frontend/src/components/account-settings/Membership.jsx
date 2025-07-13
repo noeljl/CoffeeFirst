@@ -6,6 +6,8 @@ import Button from '../../components/ui/buttons/Button.jsx'
 import { useSelector } from 'react-redux' // Import useSelector
 import { getBillingPortal } from '../../apis/stripe.js' // Import the billing portal API
 import { getMembershipByMemberId } from '../../apis/membership'
+import { resumeMembership } from '../../apis/membership'
+import Snackbar from '../ui/snackbar/Snackbar';
 
 const advantages = [
   'Large plan advantage 1',
@@ -19,22 +21,35 @@ export default function Membership() {
   const [isModalOpen, setIsModalOpen] = useState(false) // State to control modal visibility
   const [isLoading, setIsLoading] = useState(false) // State for loading during API call
   const [membership, setMembership] = useState(null)
+  const [isCanceled, setIsCanceled] = useState(false)
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState('');
   
   // Get current user data from Redux state
   const currentUser = useSelector((state) => state.auth.member)
   const memberId = currentUser?._id
+  const membershipId = currentUser?.membership
+  const subscriptionId = currentUser?.stripeSubscriptionId
+
+  const fetchMembership = async () => {
+    try {
+      const response = await getMembershipByMemberId(memberId)
+      setMembership(response)
+    } catch (error) {
+      console.error('Error fetching membership:', error)
+    }
+  }
 
   useEffect(() => {
-    const fetchMembership = async () => {
-      try {
-        const response = await getMembershipByMemberId(memberId)
-        setMembership(response)
-      } catch (error) {
-        console.error('Error fetching membership:', error)
-      }
-    }
-    fetchMembership()
+    if (memberId) fetchMembership()
   }, [memberId])
+
+  // Update isCanceled whenever membership changes
+  useEffect(() => {
+    if (membership) {
+      setIsCanceled(membership.renewalAfterExpiration === false)
+    }
+  }, [membership])
 
   const getRenewalText = () => {
    
@@ -54,9 +69,15 @@ export default function Membership() {
     }
   }
 
-  const handleCancelMembershipClick = () => {
-    setIsModalOpen(true) // Open the modal when the button is clicked
-  }
+  const handleMembershipClick = async () => {
+    if (!isCanceled) {
+      setIsModalOpen(true) // Show the modal for cancellation
+    } else {
+      // Logic to update the membership collection to resume/reactivate subscription
+      // Example: call a function to update MongoDB and Stripe
+      await handleResumeMembership()
+    }
+  } 
 
   const handleCloseModal = () => {
     setIsModalOpen(false) // Close the modal
@@ -97,6 +118,22 @@ export default function Membership() {
     }
   }
 
+  const handleResumeMembership = async () => {
+    try {
+      await resumeMembership(membershipId, subscriptionId)
+      await fetchMembership();
+      setIsCanceled(false);
+      showSnackbar('Your subscription has been successfully renewed.');
+    } catch (error) {
+      console.error('Error resuming membership:', error)
+    }
+  }
+
+  const showSnackbar = (msg) => {
+    setSnackbarMsg(msg);
+    setSnackbarOpen(true);
+  };
+
   return (
     <div className="membership-settings-page">
       <main className="membership-info-container">
@@ -105,9 +142,15 @@ export default function Membership() {
           <h2 className="ms-heading">CoffeeFirst Silver</h2>
           <div className="two-col-container">
           <p className="ms-text">{membership ? getRenewalText() : 'Loading...'}</p>
-          <Button bg="red" radius="small" padding="small" fw="bold">
-            Manage Plan
-          </Button>
+          {isCanceled ? (
+            <Button bg="black" radius="small" padding="small" fw="bold" onClick={handleMembershipClick}>
+              Continue Subscription
+            </Button>
+          ) : (
+            <Button bg="red" radius="small" padding="small" fw="bold" onClick={handleMembershipClick}>
+              Cancel Subscription
+            </Button>
+          )}
         </div>
         </section>
         <hr className="ms-divider" />
@@ -151,12 +194,7 @@ export default function Membership() {
             {isLoading ? 'Loading...' : 'Manage'}
           </Button>
         </div>
-        <div className="two-col-container">
-          <p className="ms-text">Cancel Plan</p>
-          <Button bg="red" radius="small" padding="small" fw="bold" onClick={handleCancelMembershipClick}>
-            Cancel
-          </Button>
-        </div>
+       
 
       </main>
 
@@ -165,7 +203,13 @@ export default function Membership() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onContinue={handleContinueFromModal}
+        onCancelSuccess={async () => {
+          await fetchMembership();
+          setIsCanceled(true);
+          showSnackbar('Your subscription has been successfully canceled.');
+        }}
       />
+      <Snackbar open={snackbarOpen} message={snackbarMsg} onClose={() => setSnackbarOpen(false)} />
     </div>
   )
 }

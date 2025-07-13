@@ -92,4 +92,5 @@ stripeRouter.get('/billing-portal/:customerId', async (req, res) => {
     }
 })
 
+
 export default stripeRouter;
