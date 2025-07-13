@@ -99,6 +99,13 @@
   background-color: #c53030;
 }
 
+.two-col-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .membership-container {
@@ -118,3 +125,4 @@
     text-align: center;
   }
 }
+
