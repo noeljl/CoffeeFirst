@@ -7,7 +7,7 @@ import SignInForm from '../../components/signin-form/SignInForm.jsx'
 function SignIn() {
   return (
     <div>
-      <NavBar />
+      <NavBar minimal />
       <div className="signup-form-section">
         <div className="signup-form-text">
           <h2

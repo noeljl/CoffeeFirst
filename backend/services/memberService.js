@@ -1,6 +1,7 @@
 // MemberService.js
 import createError from 'http-errors'
 import { MembersModel } from '../models/member.js' // Assuming MembersModel is in a file named membersModel.js
+import bcrypt from 'bcrypt'
 
 class MemberService {
   constructor() {
@@ -33,8 +34,11 @@ class MemberService {
   }
 
   async update({ id, ...data }) {
+    console.log(
+      'updateMemberProfile called with id ' + id + ' and data ' + data
+    )
     try {
-      return await this.membersModel.update(id, data)
+      return await this.membersModel.updateMemberByID(id, data)
     } catch (error) {
       console.error(`Error in updateMemberProfile: ${error.message}`)
       if (error.message.includes('not found')) {
@@ -55,7 +59,7 @@ class MemberService {
 
   async updateMemberByID(id, data) {
     try {
-      return await this.membersModel.update(id, data)
+      return await this.membersModel.updateMemberByID(id, data)
     } catch (error) {
       console.error(`Error in updateMemberByID: ${error.message}`)
     }
@@ -120,6 +124,21 @@ class MemberService {
         `Failed to remove coffee shop from ${listType}: ${error.message}`
       )
     }
+  }
+
+  async changePassword(memberId, currentPlain, newPlain) {
+    const member = await this.membersModel.findOneById(memberId)
+    if (!member) throw createError(404, 'Member not found')
+
+    // a) altes Passwort prüfen
+    const ok = await bcrypt.compare(currentPlain, member.passwordHash)
+    if (!ok) throw createError(403, 'Aktuelles Passwort ist falsch')
+
+    // b) neues Passwort hashen (gleiche Kosten wie beim Register)
+    const newHash = await bcrypt.hash(newPlain, 10) // vgl. AuthService.register :contentReference[oaicite:1]{index=1}
+    member.passwordHash = newHash
+    await member.save()
+    return { id: member.id }
   }
 
   async getList(memberId, listType) {

@@ -21,20 +21,16 @@ export const getMemberByMail = async (mail) => {
 }
 
 // Update a member's profile by ID
-export const updateMemberProfile = async (id, data) => {
-  try {
-    const response = await API.put(`member/${id}`, data)
-    return response.data
-  } catch (err) {
-    throw err.response?.data || err.message
-  }
+export const updateMember = async (id, payload) => {
+  const { data } = await API.put(`member/${id}`, payload) // payload kann JSON ODER FormData sein
+  return data // z. B. { id, profilePicture, ... }
 }
 
 // Update a member's profile by ID
 export const updateMemberByID = async (id, data) => {
   try {
-    const response = await API.put(`member/${id}`, data)
-    return response.data
+    const res = await API.put(`member/${id}`, data) // <-- 'data' statt 'formData'
+    return res.data // <-- 'res' statt 'response'
   } catch (err) {
     throw err.response?.data || err.message
   }
@@ -86,9 +82,14 @@ export const removeCoffeeShopFromMemberList = async (
 // Get all cafe objects from a user's wishlist or favorite list
 export const getMemberCafeList = async (memberId, listType) => {
   try {
-    const response = await API.get(`member/${memberId}/${listType}`);
-    return response.data;
+    const response = await API.get(`member/${memberId}/${listType}`)
+    return response.data
   } catch (err) {
-    throw err.response?.data || err.message;
+    throw err.response?.data || err.message
   }
-};
+}
+
+export const changeMemberPassword = (id, data) => {
+  // baseURL ist bereits "/api", Router heißt "/member"
+  return API.put(`member/${id}/password`, data).then((res) => res.data)
+}

@@ -1,183 +1,278 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './PersonalInfo.css'
 import Button from '../../components/ui/buttons/Button.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialState as accountInitialState } from '../../store/accountSettings/AccountSettings.reducers.js'
 import {
   getMemberByIdAction,
-  updateMemberByIDAction, // Korrekter Import der Update-Action
+  updateMemberByIDAction,
+  changeMemberPasswordAction,
 } from '../../store/accountSettings/AccountSettings.actions.js'
+import FormData from 'form-data'
 
+/**
+ * PersonalInfo
+ *
+ * Diese Komponente ermöglicht es Benutzern, ihre persönlichen Informationen anzuzeigen und zu bearbeiten,
+ * einschließlich Name, Profilbild, E-Mail und Passwort.
+ */
 function PersonalInfo() {
   const dispatch = useDispatch()
+  const fileInputRef = useRef(null)
 
   // Redux-State
   const accountSettings =
     useSelector((state) => state.accountSettings) || accountInitialState
-
   const memberId = useSelector((state) => state.auth.member?.id)
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
-  useEffect(() => {
-    if (!isAuthenticated || !memberId) return
-    dispatch(getMemberByIdAction(memberId))
-  }, [isAuthenticated, memberId, dispatch])
-
   const {
-    firstName: reduxFirstName, // Umbenennen, um Konflikt mit lokalem State zu vermeiden
-    lastName: reduxLastName, // Umbenennen
-    profilePic: reduxProfilePic, // Umbenennen
-    email: reduxEmail, // Umbenennen
-    password: reduxPassword, // Umbenennen
+    firstName: reduxFirstName,
+    lastName: reduxLastName,
+    profilePicture: reduxProfilePicture,
+    email: reduxEmail,
     isLoading,
     error,
   } = accountSettings
 
-  // Lokaler UI-State: Welches Feld wird gerade editiert?
+  // Lokaler UI-State
   const [editingField, setEditingField] = useState(null)
-
-  // Lokaler State für die bearbeitbaren Feldwerte
-  // Wir initialisieren diese Werte, sobald die Daten aus Redux kommen.
-  const [localFirstName, setLocalFirstName] = useState(reduxFirstName)
-  const [localLastName, setLocalLastName] = useState(reduxLastName)
-  const [localEmail, setLocalEmail] = useState(reduxEmail)
+  const [localFirstName, setLocalFirstName] = useState('')
+  const [localLastName, setLocalLastName] = useState('')
+  const [localEmail, setLocalEmail] = useState('')
   const [localPassword, setLocalPassword] = useState({
     current: '',
     new: '',
     confirm: '',
   })
-  const [localProfilePic, setLocalProfilePic] = useState(null) // Für Datei-Uploads
 
-  // --- useEffect zum Initialisieren des lokalen States bei Redux-Datenänderungen ---
-  // Dieser Effekt stellt sicher, dass der lokale State aktualisiert wird,
-  // wenn die Daten aus dem Redux Store (nach dem getMemberByMail) geladen werden.
+  // State für Profilbild-Upload
+  const [localProfilePicFile, setLocalProfilePicFile] = useState(null) // Speichert das File-Objekt
+  const [localProfilePicUrl, setLocalProfilePicUrl] = useState('') // Speichert die URL des aktuellen/neuen Bildes
+  const [imagePreview, setImagePreview] = useState(null) // Vorschau-URL für ausgewähltes Bild
+  const [isDragOver, setIsDragOver] = useState(false)
+  const [showUploadZone, setShowUploadZone] = useState(false) // Steuert die Sichtbarkeit der Upload-Zone
+
+  // Daten bei Authentifizierung und MemberId laden
   useEffect(() => {
-    setLocalFirstName(reduxFirstName)
-    setLocalLastName(reduxLastName)
-    setLocalEmail(reduxEmail)
-    // Beachte: Passwörter werden aus Sicherheitsgründen nicht aus dem Redux-Store in den lokalen State geladen.
-    // Sie werden beim Bearbeiten neu eingegeben.
-    setLocalProfilePic(reduxProfilePic) // Setze hier die URL, nicht das File-Objekt
-  }, [reduxFirstName, reduxLastName, reduxEmail, reduxProfilePic])
+    if (isAuthenticated && memberId) {
+      dispatch(getMemberByIdAction(memberId))
+    }
+  }, [isAuthenticated, memberId, dispatch])
 
-  // --- Debug useEffect um Redux State Changes zu verfolgen (optional) ---
+  // Redux-Daten in lokale States synchronisieren, wenn sie sich ändern
   useEffect(() => {
-    console.log('Redux State Update:', {
-      reduxFirstName,
-      reduxLastName,
-      reduxEmail,
-      isLoading,
-      error,
-    })
-  }, [reduxFirstName, reduxLastName, reduxEmail, isLoading, error])
+    setLocalFirstName(reduxFirstName || '')
+    setLocalLastName(reduxLastName || '')
+    setLocalEmail(reduxEmail || '')
+    setLocalProfilePicUrl(reduxProfilePicture || '') // Lokale URL mit Redux-Wert initialisieren
+    setImagePreview(null) // Vorschau beim Synchronisieren zurücksetzen
+    setShowUploadZone(false) // Upload-Zone beim Synchronisieren schließen
+  }, [reduxFirstName, reduxLastName, reduxEmail, reduxProfilePicture])
 
-  // Öffnet den Edit-Modus und initialisiert den lokalen State mit den aktuellen Redux-Werten
+  // Event-Handler
   const handleEdit = (field) => {
     setEditingField(field)
-    // Setze lokale Werte auf die aktuellen Redux-Werte, wenn der Bearbeitungsmodus beginnt
-    setLocalFirstName(reduxFirstName)
-    setLocalLastName(reduxLastName)
-    setLocalEmail(reduxEmail)
-    // Passwörter werden beim Editieren nicht vorab gefüllt, nur zurückgesetzt
+    // Lokale States beim Bearbeiten mit Redux-Werten initialisieren
+    setLocalFirstName(reduxFirstName || '')
+    setLocalLastName(reduxLastName || '')
+    setLocalEmail(reduxEmail || '')
     setLocalPassword({ current: '', new: '', confirm: '' })
-    setLocalProfilePic(reduxProfilePic)
+    setLocalProfilePicFile(null) // Bestehendes File-Objekt zurücksetzen
+    setLocalProfilePicUrl(reduxProfilePicture || '') // URL auf Redux-Wert zurücksetzen
+    setImagePreview(null)
+    setShowUploadZone(false)
   }
 
   const handleCancel = () => {
     setEditingField(null)
-    // Lokale Änderungen verwerfen und auf Redux-Werte zurücksetzen
-    setLocalFirstName(reduxFirstName)
-    setLocalLastName(reduxLastName)
-    setLocalEmail(reduxEmail)
+    // Lokale States auf ursprüngliche Redux-Werte zurücksetzen
+    setLocalFirstName(reduxFirstName || '')
+    setLocalLastName(reduxLastName || '')
+    setLocalEmail(reduxEmail || '')
     setLocalPassword({ current: '', new: '', confirm: '' })
-    setLocalProfilePic(reduxProfilePic)
+    setLocalProfilePicFile(null)
+    setLocalProfilePicUrl(reduxProfilePicture || '')
+    setImagePreview(null)
+    setShowUploadZone(false)
   }
 
-  // --- handleSave Funktion: Hier wird die Update-Action dispatchet ---
-  const handleSave = async () => {
-    console.log('Saving field:', editingField)
+  // Datei-Validierung
+  const validateFile = (file) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    const maxSize = 5 * 1024 * 1024 // 5MB
 
-    let updatedData = {} // Objekt für die zu sendenden Daten
-    let emailToUpdate = reduxEmail // Die E-Mail des Benutzers als Identifier
-
-    switch (editingField) {
-      case 'legalName':
-        updatedData = {
-          firstName: localFirstName,
-          lastName: localLastName,
-        }
-        break
-      case 'profilePic':
-        // Hier wäre die Logik für den Bild-Upload (z.B. FormData)
-        // Nehmen wir an, `localProfilePic` ist ein File-Objekt, das hochgeladen werden muss.
-        // Die API würde wahrscheinlich die URL des hochgeladenen Bildes zurückgeben.
-        updatedData = {
-          profilePic: localProfilePic, // Dies müsste an deine API-Erwartung angepasst werden
-        }
-        break
-      case 'email':
-        updatedData = {
-          email: localEmail,
-        }
-        // ACHTUNG: Wenn die E-Mail geändert wird, ist die `emailToUpdate`
-        // für den *aktuellen* Benutzer immer noch die alte E-Mail,
-        // da sie erst nach erfolgreichem Update im Redux-Store aktualisiert wird.
-        // Die API braucht die alte E-Mail, um den richtigen Benutzer zu finden,
-        // und die neue E-Mail in `updatedData`.
-        break
-      case 'password':
-        // Für Passwörter benötigt die API oft das aktuelle und die neuen Passwörter
-        updatedData = {
-          currentPassword: localPassword.current,
-          newPassword: localPassword.new,
-          confirmNewPassword: localPassword.confirm,
-        }
-        // Hier sollte eine serverseitige Validierung erfolgen
-        if (localPassword.new !== localPassword.confirm) {
-          alert('New password and confirmation do not match!')
-          return // Abbruch
-        }
-        break
-      default:
-        console.warn('Unknown field to save:', editingField)
-        setEditingField(null)
-        return
+    if (!file) {
+      return false // Keine Datei ausgewählt
     }
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('Bitte wählen Sie ein gültiges Bildformat (JPEG, PNG, GIF, WebP).')
+      return false
+    }
+
+    if (file.size > maxSize) {
+      alert('Die Datei ist zu groß. Maximale Größe: 5MB.')
+      return false
+    }
+
+    return true
+  }
+
+  // Bild-Upload Handler (für Datei-Input und Drag & Drop)
+  const handleImageSelect = (file) => {
+    if (!validateFile(file)) {
+      setLocalProfilePicFile(null)
+      setImagePreview(null)
+      return
+    }
+
+    setLocalProfilePicFile(file) // File-Objekt speichern
+    // setShowUploadZone(true); // Optional: Upload-Zone anzeigen, wenn ein Bild ausgewählt wurde
+
+    // Vorschau erstellen
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      setImagePreview(e.target.result)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  // Drag & Drop Handler
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    setIsDragOver(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    setIsDragOver(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setIsDragOver(false)
+
+    const files = e.dataTransfer.files
+    if (files.length > 0) {
+      handleImageSelect(files[0])
+    }
+  }
+
+  const handleSave = async () => {
+    let updatedData = {}
+    let isFormData = false // Flag, um anzugeben, ob FormData verwendet wird
 
     try {
-      // Dispatche die Update-Action
-      // updateMemberProfileByMailAction erwartet die E-Mail des zu aktualisierenden Members
-      // und die aktualisierten Felder als zweites Argument (Payload).
-      // Deine Action muss entsprechend angepasst werden, um ein Objekt mit den Daten zu akzeptieren:
-      // updateMemberProfileByMailAction({ email: emailToUpdate, updatedFields: updatedData })
-      await dispatch(
-        updateMemberByIDAction({
-          id: memberId, // Identifiziert den Benutzer
-          updatedFields: updatedData, // Die zu aktualisierenden Daten
-        })
-      ).unwrap() // .unwrap() wirft einen Fehler, wenn die Action rejected wird
+      switch (editingField) {
+        case 'legalName':
+          updatedData = {
+            firstName: localFirstName,
+            lastName: localLastName,
+          }
+          break
 
-      setEditingField(null) // Bearbeitungsmodus beenden bei Erfolg
+        case 'profilePicture': {
+          // Nur senden, wenn ein neues Bild ausgewählt wurde
+          if (!localProfilePicFile) {
+            setEditingField(null)
+            return
+          }
+
+          const formData = new FormData()
+          formData.append('profilePicture', localProfilePicFile)
+          updatedData = formData
+          isFormData = true
+          break
+        }
+
+        case 'email':
+          updatedData = { email: localEmail }
+          break
+
+        case 'password': {
+          // 1) Plausibilitätsprüfungen im Browser
+          if (
+            !localPassword.current ||
+            !localPassword.new ||
+            !localPassword.confirm
+          ) {
+            alert('Bitte alle Passwort-Felder ausfüllen.')
+            return
+          }
+          if (localPassword.new !== localPassword.confirm) {
+            alert('Neue Passwörter stimmen nicht überein.')
+            return
+          }
+          if (localPassword.new.length < 8) {
+            alert('Das neue Passwort muss mindestens 8 Zeichen lang sein.')
+            return
+          }
+
+          await dispatch(
+            changeMemberPasswordAction({
+              id: memberId,
+              currentPassword: localPassword.current,
+              newPassword: localPassword.new,
+            })
+          ).unwrap()
+
+          alert('Passwort erfolgreich geändert!')
+          break
+        }
+
+        default:
+          return // Wenn editingField nicht erkannt wird, nichts tun
+      }
+
+      // Führen Sie den Dispatch nur aus, wenn updatedData nicht leer ist (außer bei FormData)
+      if (Object.keys(updatedData).length > 0 || isFormData) {
+        await dispatch(
+          updateMemberByIDAction({
+            id: memberId,
+            updatedFields: updatedData,
+            isFormData,
+          })
+        ).unwrap() // .unwrap() ermöglicht das Abfangen von Fehlern hier
+      }
+
+      // Erfolgsmeldung für Passwortänderung, da sie keine direkte Datenaktualisierung im Redux-Store verursacht
+      if (editingField === 'password') {
+        alert('Passwort erfolgreich geändert!')
+      } else {
+        alert('Änderungen erfolgreich gespeichert!')
+      }
+
+      setEditingField(null)
+      setLocalProfilePicFile(null)
+      setImagePreview(null)
+      setShowUploadZone(false) // Upload-Zone nach Speichern schließen
+
+      // Beim erfolgreichen Speichern des Bildes, die lokale URL aktualisieren, falls ein neues Bild hochgeladen wurde
+      if (editingField === 'profilePicture' && imagePreview) {
+        setLocalProfilePicUrl(imagePreview)
+      }
     } catch (err) {
-      console.error('Failed to update profile:', err)
-      // Redux Toolkit Thunks handhaben Fehler automatisch im rejected-Reducer.
-      // Hier könntest du zusätzlichen UI-Feedback geben.
+      console.error('Fehler beim Aktualisieren des Profils:', err)
+      // Verbesserte Fehlermeldung basierend auf dem Fehlerobjekt
+      const errorMessage =
+        err.message || 'Fehler beim Speichern. Bitte versuchen Sie es erneut.'
+      alert(errorMessage)
     }
   }
 
-  // --- Universeller Change-Handler für lokalen State ---
+  // Universeller Change-Handler
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
 
     if (name.startsWith('password.')) {
       const subField = name.split('.')[1]
-      setLocalPassword((prev) => ({
-        ...prev,
-        [subField]: value,
-      }))
+      setLocalPassword((prev) => ({ ...prev, [subField]: value }))
     } else if (type === 'file') {
-      // Speichern des File-Objekts für den Upload
-      setLocalProfilePic(files[0])
+      const file = files?.[0]
+      if (file) {
+        handleImageSelect(file)
+      }
     } else {
       switch (name) {
         case 'firstName':
@@ -195,49 +290,26 @@ function PersonalInfo() {
     }
   }
 
-  // Debug render
-  console.log(
-    'PersonalInfo render - firstName:',
-    reduxFirstName, // Zeigt den Wert aus Redux
-    'lastName:',
-    reduxLastName
-  )
+  // Aktuelles Bild für Anzeige ermitteln
+  const getCurrentImageSrc = () => {
+    if (imagePreview) {
+      return imagePreview // Wenn eine neue Datei ausgewählt wurde und eine Vorschau existiert
+    }
+    if (localProfilePicUrl) {
+      // Wenn localProfilePicUrl eine relative Pfad ist (von Backend), dann vollständige URL erstellen
+      return localProfilePicUrl.startsWith('http')
+        ? localProfilePicUrl
+        : `http://localhost:3001${localProfilePicUrl}` // Annahme: Ihre Backend-URL
+    }
+    // Standard-Profilbild, wenn keins vorhanden ist
+    return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'
+  }
 
   return (
     <div className="personal-info-page">
       <main className="personal-info-container">
         <h1 className="personal-info-title">Personal information</h1>
 
-        {/* Debug Information - kann später entfernt werden */}
-        {/* <div
-          style={{
-            padding: '10px',
-            backgroundColor: '#f0f0f0',
-            margin: '10px 0',
-          }}
-        >
-          <strong>Debug Info:</strong>
-          <br />
-          Loading: {isLoading ? 'Yes' : 'No'}
-          <br />
-          Error: {error || 'None'}
-          <br />
-          FirstName (Redux): {reduxFirstName}
-          <br />
-          LastName (Redux): {reduxLastName}
-          <br />
-          Email (Redux): {reduxEmail}
-          <br />
-          FirstName (Local): {localFirstName}
-          <br />
-          LastName (Local): {localLastName}
-          <br />
-          Email (Local): {localEmail}
-          <br />
-          Editing Field: {editingField || 'None'}
-        </div> */}
-
-        {/* Anzeige von Lade‑/Fehlerzuständen */}
         {isLoading && <p>Loading…</p>}
         {error && <p className="error-text">{error}</p>}
 
@@ -268,7 +340,7 @@ function PersonalInfo() {
                       type="text"
                       id="firstName"
                       name="firstName"
-                      value={localFirstName || ''} // Nutze lokalen State
+                      value={localFirstName}
                       onChange={handleChange}
                     />
                   </div>
@@ -278,7 +350,7 @@ function PersonalInfo() {
                       type="text"
                       id="lastName"
                       name="lastName"
-                      value={localLastName || ''} // Nutze lokalen State
+                      value={localLastName}
                       onChange={handleChange}
                     />
                   </div>
@@ -310,7 +382,7 @@ function PersonalInfo() {
 
           {/* PROFILE PICTURE */}
           <div className="info-item">
-            {editingField === 'profilePic' ? (
+            {editingField === 'profilePicture' ? (
               <>
                 <div className="info-header">
                   <div>
@@ -326,44 +398,95 @@ function PersonalInfo() {
                 </div>
 
                 <div className="profile-pic-content">
-                  <div className="profile-image-round-wrapper">
+                  {/* Aktuelle Bildvorschau */}
+                  <div
+                    className="profile-image-round-wrapper"
+                    style={{ textAlign: 'center', marginBottom: '20px' }}
+                  >
                     <img
-                      src={
-                        localProfilePic // Nutze lokalen State für Vorschau
-                          ? typeof localProfilePic === 'string'
-                            ? localProfilePic
-                            : URL.createObjectURL(localProfilePic)
-                          : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'
-                      }
-                      alt="Profile"
-                      className="profile-pic-large"
+                      src={getCurrentImageSrc()}
+                      alt="Profilbild"
+                      style={{
+                        width: '150px',
+                        height: '150px',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                      }}
                     />
                   </div>
-                </div>
 
-                <div className="button-group">
-                  <Button onClick={handleSave} bg="black" radius="small">
-                    Save
-                  </Button>
-
-                  <label
+                  {/* Drag & Drop Zone */}
+                  <div
+                    className={`image-upload-zone ${
+                      isDragOver ? 'drag-over' : ''
+                    }`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()} // Öffnet Dateiauswahl bei Klick
                     style={{
-                      display: 'flex',
+                      border: '2px dashed #ccc',
+                      borderRadius: '8px',
+                      padding: '20px',
+                      textAlign: 'center',
+                      marginBottom: '20px',
+                      backgroundColor: isDragOver ? '#f0f8ff' : '#fafafa',
+                      borderColor: isDragOver ? '#007bff' : '#ccc',
                       cursor: 'pointer',
-                      marginLeft: '0.5rem',
                     }}
                   >
                     <input
                       type="file"
-                      name="profilePic"
-                      accept="image/*"
+                      ref={fileInputRef}
+                      accept="image/jpeg,image/png,image/gif,image/webp"
                       onChange={handleChange}
                       style={{ display: 'none' }}
                     />
-                    <Button as="span" bg="black" radius="small">
-                      Upload new picture
+                    <p style={{ margin: '0', color: '#666' }}>
+                      {isDragOver
+                        ? 'Bild hier ablegen...'
+                        : 'Ziehen Sie ein Bild hierher oder klicken Sie zum Auswählen'}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: '12px',
+                        color: '#999',
+                        margin: '10px 0 0 0',
+                      }}
+                    >
+                      Unterstützte Formate: JPEG, PNG, GIF, WebP (max. 5MB)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="button-group">
+                  {/* "Remove picture" nur anzeigen, wenn ein Bild vorhanden ist */}
+                  {(localProfilePicFile || localProfilePicUrl) && (
+                    <Button
+                      onClick={() => {
+                        setLocalProfilePicFile(null)
+                        setLocalProfilePicUrl('')
+                        setImagePreview(null)
+                        if (fileInputRef.current)
+                          fileInputRef.current.value = '' // Dateiauswahlfeld zurücksetzen
+                      }}
+                      bg="red"
+                      radius="small"
+                    >
+                      Remove picture
                     </Button>
-                  </label>
+                  )}
+
+                  {/* Save-Button nur anzeigen, wenn ein neues File ausgewählt wurde */}
+                  {localProfilePicFile && (
+                    <Button
+                      bg="black"
+                      onClick={handleSave}
+                      style={{ marginLeft: '0.5rem' }}
+                    >
+                      Save
+                    </Button>
+                  )}
                 </div>
               </>
             ) : (
@@ -374,7 +497,7 @@ function PersonalInfo() {
                 </div>
                 <button
                   className="edit-button"
-                  onClick={() => handleEdit('profilePic')}
+                  onClick={() => handleEdit('profilePicture')}
                 >
                   Edit
                 </button>
@@ -403,10 +526,10 @@ function PersonalInfo() {
                   <div className="floating-input">
                     <label htmlFor="email">Email</label>
                     <input
-                      type="text"
+                      type="email"
                       id="email"
                       name="email"
-                      value={localEmail || ''} // Nutze lokalen State
+                      value={localEmail}
                       onChange={handleChange}
                     />
                   </div>
@@ -453,13 +576,13 @@ function PersonalInfo() {
 
                 <div className="info-form">
                   <div className="floating-input">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="currentPassword">Current Password</label>
                     <input
                       type="password"
-                      id="password"
+                      id="currentPassword"
                       name="password.current"
                       placeholder="Current Password"
-                      value={localPassword.current || ''}
+                      value={localPassword.current}
                       onChange={handleChange}
                     />
                   </div>
@@ -470,7 +593,7 @@ function PersonalInfo() {
                       id="newPassword"
                       name="password.new"
                       placeholder="New Password"
-                      value={localPassword.new || ''}
+                      value={localPassword.new}
                       onChange={handleChange}
                     />
                   </div>
@@ -481,7 +604,7 @@ function PersonalInfo() {
                       id="confirmNewPassword"
                       name="password.confirm"
                       placeholder="Confirm new Password"
-                      value={localPassword.confirm || ''}
+                      value={localPassword.confirm}
                       onChange={handleChange}
                     />
                   </div>

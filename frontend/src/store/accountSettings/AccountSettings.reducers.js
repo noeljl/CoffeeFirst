@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import {
   getMemberByIdAction, // Bestehende Action
   updateMemberByIDAction, // Deine neue Action
+  changeMemberPasswordAction,
 } from './AccountSettings.actions.js' // der Async‑Thunk, der die Mitgliederdaten lädt
 
 // Export, damit andere Dateien (z. B. die Komponente) ihn als Fallback nutzen können
@@ -9,7 +10,7 @@ export const initialState = {
   editingField: null,
   firstName: 'Maximilian',
   lastName: 'Müller',
-  profilePic: null, // URL oder File‑Objekt
+  profilePicture: null, // URL oder File‑Objekt
   email: 'maximilian.mueller@web.de',
   password: {
     current: '',
@@ -80,7 +81,7 @@ const accountSettingsSlice = createSlice({
           )
           state.firstName = memberData.firstName
           state.lastName = memberData.lastName
-          state.profilePic = memberData.profilePic
+          state.profilePicture = memberData.profilePicture
           state.email = memberData.email
           // Passwort und andere sensible/spezifische Felder würden hier normalerweise nicht direkt übernommen,
           // es sei denn, der Anwendungsfall erfordert es und die API gibt sie sicher zurück.
@@ -102,50 +103,37 @@ const accountSettingsSlice = createSlice({
         state.error = action.payload || 'Fehler beim Laden der Mitgliederdaten.'
       })
 
-      // --- NEU: Reducer für updateMemberProfileByMailAction ---
+    builder
       .addCase(updateMemberByIDAction.pending, (state) => {
-        state.isLoading = true // Zeigt an, dass ein Update läuft
-        state.error = null // Fehler zurücksetzen
+        // Set loading state when the update request starts
+        state.isLoading = true
+        state.error = null // Clear any previous errors
       })
-      .addCase(updateMemberByIDAction.fulfilled, (state, action) => {
+      .addCase(updateMemberByIDAction.fulfilled, (state, { payload }) => {
         state.isLoading = false
-        state.error = null
-
-        // Die Payload sollte hier das aktualisierte Member-Objekt vom Server sein
-        // Wieder: Überprüfe, ob es in 'action.payload.data' liegt, falls du Axios nutzt
-        const updatedMemberData = action.payload // Annahme: API gibt das aktualisierte Objekt direkt zurück
-
-        console.log(
-          'COMPLETE ACTION PAYLOAD (updateMemberProfileByMail):',
-          action.payload
-        )
-
-        if (updatedMemberData && updatedMemberData.firstName) {
-          console.log(
-            'Updating Redux state with (updateMemberProfileByMail):',
-            updatedMemberData
-          )
-          state.firstName = updatedMemberData.firstName
-          state.lastName = updatedMemberData.lastName
-          state.profilePic = updatedMemberData.profilePic
-          state.email = updatedMemberData.email
-          // Wenn das Passwort geändert wurde, müsstest du es hier im State zurücksetzen oder anpassen
-          // state.password = { current: '', new: '', confirm: '' };
-          console.log(
-            'State after update (updateMemberProfileByMail):',
-            JSON.stringify(state)
-          )
-        } else {
-          console.error(
-            'Updated member data is invalid for updateMemberProfileByMail:',
-            updatedMemberData
-          )
-        }
+        state.profilePicture = payload.profilePicture ?? state.profilePicture
+        state.firstName = payload.firstName ?? state.firstName
+        state.lastName = payload.lastName ?? state.lastName
+        state.email = payload.email ?? state.email
       })
       .addCase(updateMemberByIDAction.rejected, (state, action) => {
+        // Handle errors if the update request fails
         state.isLoading = false
-        // Fehlermeldung aus der Rejected-Payload oder Standardmeldung
-        state.error = action.payload || 'Fehler beim Aktualisieren des Profils.'
+        state.error = action.error.message || 'Failed to update profile.'
+      })
+      /* ---------- NEU: Passwörter ---------- */
+      .addCase(changeMemberPasswordAction.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(changeMemberPasswordAction.fulfilled, (state) => {
+        state.isLoading = false
+        // hier nichts im State ändern, weil nur Server-Side-Action
+      })
+      .addCase(changeMemberPasswordAction.rejected, (state, action) => {
+        state.isLoading = false
+        state.error =
+          action.payload || action.error.message || 'Failed to change password.'
       })
   },
 })

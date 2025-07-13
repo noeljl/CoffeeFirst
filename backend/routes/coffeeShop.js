@@ -83,9 +83,6 @@ coffeeShopRouter.get('/by-slug/:slug', async (req, res, next) => {
  * @access Public
  */
 coffeeShopRouter.get('/districts', async (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    throw createError(401, 'Unauthorized')
-  }
   try {
     const districts =
       await coffeeShopService.getAllCoffeeShopsGroupedByDistrict()

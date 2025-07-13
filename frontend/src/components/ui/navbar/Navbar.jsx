@@ -14,6 +14,7 @@ import Icons from "../../../assets/Icons";
 // Import your SearchContext
 import { SearchContext } from "../../../contexts/SearchContext";
 
+// Handles both navbar types: logged in and out.
 function NavBar() {
   const [isLoggedIn] = useState(true);
   const location = useLocation();
@@ -29,12 +30,12 @@ function NavBar() {
     <div className="page-frame">
       {isLoggedIn ? <SignedIn searchFilter={searchFilter} setSearchFilter={setSearchFilter} /> : <SignedOut />}
     </div>
-  );
+  )
 }
 
 // Logged out navbar.
 function SignedOut() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div className="navbar-container">
       <img
@@ -43,33 +44,11 @@ function SignedOut() {
         className="logo"
         draggable={false}
         onClick={() => {
-          navigate("/");
+          navigate('/home')
         }}
       />
-      <div className="gap">
-        <Button
-          bg="white"
-          fs="medium"
-          radius="small"
-          padding="small"
-          onClick={() => navigate("/login")}
-        >
-          Sign-In
-        </Button>
-        <Button
-          bg="red"
-          fs="medium"
-          radius="small"
-          padding="small"
-          onClick={() => {
-            navigate("/signup/regform");
-          }}
-        >
-          Sign-Up
-        </Button>
-      </div>
     </div>
-  );
+  )
 }
 
 // Pass searchFilter and setSearchFilter as props to SignedIn
@@ -97,7 +76,6 @@ function SignedIn({ searchFilter, setSearchFilter }) {
       // setSelectedIndex(-1); // This line was removed from the new_code, so it's removed here.
     }
   }, [searchFilter]);
-
   return (
     <div className="navbar-container">
       <img
@@ -106,7 +84,7 @@ function SignedIn({ searchFilter, setSearchFilter }) {
         className="logo"
         draggable={false}
         onClick={() => {
-          navigate("/");
+          navigate('/home')
         }}
       />
 
@@ -115,14 +93,13 @@ function SignedIn({ searchFilter, setSearchFilter }) {
         <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
         <FilterButton />
       </div>
-
       <div className="gap">
         <CheckInButton />
         <Avatar />
-        <BurgerMenuButton onClick={() => setMenuOpen(open => !open)} />
+        <BurgerMenuButton />
       </div>
     </div>
-  );
+  )
 }
 
-export default NavBar;
+export default NavBar

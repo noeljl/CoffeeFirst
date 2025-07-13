@@ -115,9 +115,9 @@
 
 /* New style for the round container around the image */
 .profile-image-round-wrapper {
-  width: 200px; /* Breite des gesamten runden Bereichs wurde auf 50px reduziert */
-  height: 200px; /* Höhe des gesamten runden Bereichs wurde auf 50px reduziert */
-  border-radius: 50%; /* Macht den Container kreisförmig */
+  width: 200px; /* Defines the size of the circular container */
+  height: 200px; /* Defines the size of the circular container */
+  border-radius: 50%; /* Makes the container circular */
   overflow: hidden; /* **Wichtig:** Schneidet das Bild auf die runde Form zu */
   display: flex; /* Für die Zentrierung des Bildes im Container */
   justify-content: center; /* Zentriert horizontal */
@@ -133,8 +133,8 @@
 .profile-pic-large, /* Das Bild im Bearbeitungsmodus */
 .preview-img {
   /* Das Bild im Ansichtsmodus */
-  width: 100%; /* Das Bild füllt die Breite des Wrappers */
-  height: 100%; /* Das Bild füllt die Höhe des Wrappers */
+  width: 80%; /* Das Bild füllt die Breite des Wrappers */
+  height: 80%; /* Das Bild füllt die Höhe des Wrappers */
   object-fit: cover; /* **Wichtig:** Skaliert das Bild so, dass es den Container füllt und dabei sein Seitenverhältnis beibehält. Teile können abgeschnitten werden. */
   border-radius: 50%; /* Stellt sicher, dass das Bild selbst ebenfalls rund ist */
   border: none; /* Entfernt jegliche Standardränder am Bild selbst */

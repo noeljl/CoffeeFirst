@@ -2,9 +2,27 @@
 import express from 'express'
 import createError from 'http-errors' // Importiere createError
 import MemberService from '../services/memberService.js' // Passe den Pfad bei Bedarf an
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
 
 const memberRouter = express.Router()
 const memberService = new MemberService()
+
+// 1. Upload-Pfad definieren und sicherstellen, dass er existiert
+const UPLOAD_DIR = path.join(process.cwd(), 'public', 'profileImages')
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true })
+}
+
+// 2. Multer-Storage anlegen
+const storage = multer.diskStorage({
+  destination: UPLOAD_DIR,
+  filename: (_, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname)),
+})
+
+const upload = multer({ storage: storage })
 
 /**
  * @route GET /api/members/:id
@@ -24,6 +42,27 @@ memberRouter.get('/:id', async (req, res, next) => {
   }
 })
 
+memberRouter.put('/:id/password', async (req, res, next) => {
+  if (!req.isAuthenticated()) return next(createError(401, 'Unauthorized'))
+
+  const { currentPassword, newPassword } = req.body
+  if (!currentPassword || !newPassword)
+    return next(
+      createError(400, 'currentPassword und newPassword erforderlich')
+    )
+
+  try {
+    const updatedMember = await memberService.changePassword(
+      req.params.id,
+      currentPassword,
+      newPassword
+    )
+    res.json({ message: 'Password updated', updatedMember })
+  } catch (err) {
+    next(err)
+  }
+})
+
 memberRouter.get('/mail/:mail', async (req, res, next) => {
   if (!req.isAuthenticated()) {
     throw createError(401, 'Unauthorized')
@@ -37,17 +76,31 @@ memberRouter.get('/mail/:mail', async (req, res, next) => {
   }
 })
 
-memberRouter.put('/:id', async (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    throw createError(401, 'Unauthorized')
+memberRouter.put(
+  '/:id',
+  upload.single('profilePic'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params
+
+      // File-Pfad ermitteln (nutzt dein UPLOAD_DIR!)
+      const profilePicture = req.file
+        ? `/profileImages/${req.file.filename}` // öffentlich abrufbar
+        : undefined
+
+      // Alle anderen Textfelder aus dem Request ebenfalls übernehmen
+      const updateData = { ...req.body }
+      if (profilePicture) updateData.profilePicture = profilePicture
+
+      const updatedMember = await memberService.updateMemberByID(id, updateData)
+
+      // Immer ein JSON zurückgeben
+      res.json(updatedMember) // { id, profilePicture, ... }
+    } catch (err) {
+      next(err)
+    }
   }
-  try {
-    const member = await memberService.updateMemberByID(req.params.id, req.body)
-    res.status(200).json(member)
-  } catch (error) {
-    next(error)
-  }
-})
+)
 
 /**
  * @route DELETE /api/members/:id

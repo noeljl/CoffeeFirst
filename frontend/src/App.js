@@ -33,6 +33,7 @@ function App() {
       <Routes>
         {/* Standard-Redirect auf /login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/home" element={<HomePage />} />
         {/* Öffentliche Routen */}
         <Route path="/signup/regform" element={<RegForm />} />
         <Route path="/signup/planform" element={<PlanForm />} />
@@ -43,7 +44,6 @@ function App() {
         {/* Geschützte Bereiche */}
         <Route element={<PrivateRoute />}>
           {/* Dashboard */}
-          <Route path="/home" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route
               index

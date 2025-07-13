@@ -44,7 +44,7 @@ const authSlice = createSlice({
         const { isAuthenticated, member } = action.payload // Assuming member is returned
         state.isFetching = false
         state.isAuthenticated = isAuthenticated
-        state.member = member
+        state.member = member.member
         state.error = null
         console.log(
           'Member ist jetzt gesetzt auf ' + JSON.stringify(state.member)
