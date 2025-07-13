@@ -3,7 +3,7 @@ import passportLocal from 'passport-local'
 import bcrypt from 'bcrypt'
 
 import MembersModel from '../models/member.js'
-import MemberService from '../services/MemberService.js'
+import MemberService from '../services/memberService.js'
 
 const LocalStrategy = passportLocal.Strategy
 const MembersModelInstance = new MembersModel()

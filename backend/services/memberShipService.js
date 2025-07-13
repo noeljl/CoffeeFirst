@@ -1,6 +1,6 @@
 // MembershipService.js
 import createError from 'http-errors'
-import MembershipModel from '../models/membershipModel.js' // Assuming MembershipModel is in a file named membershipModel.js
+import MembershipModel from '../models/membership.js'
 
 class MembershipService {
   constructor() {

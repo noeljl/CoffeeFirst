@@ -1,10 +1,11 @@
 // src/pages/membership/Membership.jsx
-import React, { useState } from 'react' // Import useState
+import React, { useEffect, useState } from 'react' // Import useState
 import CancellationModal from '../cancellationModal/CancellationModal' // Import the modal
 import './Membership.css'
 import Button from '../../components/ui/buttons/Button.jsx'
 import { useSelector } from 'react-redux' // Import useSelector
 import { getBillingPortal } from '../../apis/stripe.js' // Import the billing portal API
+import { getMembershipByMemberId } from '../../apis/membership'
 
 const advantages = [
   'Large plan advantage 1',
@@ -17,9 +18,41 @@ const advantages = [
 export default function Membership() {
   const [isModalOpen, setIsModalOpen] = useState(false) // State to control modal visibility
   const [isLoading, setIsLoading] = useState(false) // State for loading during API call
+  const [membership, setMembership] = useState(null)
   
   // Get current user data from Redux state
   const currentUser = useSelector((state) => state.auth.member)
+  const memberId = currentUser?._id
+
+  useEffect(() => {
+    const fetchMembership = async () => {
+      try {
+        const response = await getMembershipByMemberId(memberId)
+        setMembership(response)
+      } catch (error) {
+        console.error('Error fetching membership:', error)
+      }
+    }
+    fetchMembership()
+  }, [memberId])
+
+  const getRenewalText = () => {
+   
+    if (!membership) return ''
+    const endDate = new Date(membership.endDate)
+    let displayDate
+
+    if (membership.renewalAfterExpiration) {
+      // Add one day to endDate
+      const nextDay = new Date(endDate)
+      nextDay.setDate(endDate.getDate() + 1)
+      displayDate = nextDay.toLocaleDateString('de-DE', { month: 'short', day: 'numeric', year: 'numeric' })
+      return `Your plan auto-renews on ${displayDate}`
+    } else {
+      displayDate = endDate.toLocaleDateString('de-DE', { month: 'long', day: 'numeric', year: 'numeric' })
+      return `Your plan will be canceled on ${displayDate}`
+    }
+  }
 
   const handleCancelMembershipClick = () => {
     setIsModalOpen(true) // Open the modal when the button is clicked
@@ -71,7 +104,7 @@ export default function Membership() {
         <section className="ms-section auto-renew">
           <h2 className="ms-heading">CoffeeFirst Silver</h2>
           <div className="two-col-container">
-          <p className="ms-text">Your plan will be canceled on July 18, 2025/ Your plan auto-renews on Jul 18, 2025</p>
+          <p className="ms-text">{membership ? getRenewalText() : 'Loading...'}</p>
           <Button bg="red" radius="small" padding="small" fw="bold">
             Manage Plan
           </Button>
@@ -80,7 +113,8 @@ export default function Membership() {
         <hr className="ms-divider" />
         <section className="ms-section plan-details">
           <p className="ms-text" style={{ fontWeight: 'bold' }}>
-            Thank you for subscribing to CoffeeFirst Silver! Your Silver subscription includes the following:
+            Thank you for subscribing to CoffeeFirst Silver! <br /> 
+            Your Silver subscription includes the following:
           </p>
           <ul className="plan-advantages">
             {advantages.map((item, i) => (
@@ -118,9 +152,9 @@ export default function Membership() {
           </Button>
         </div>
         <div className="two-col-container">
-          <p className="ms-text">Delete account</p>
-          <Button bg="red" radius="small" padding="small" fw="bold">
-            Delete
+          <p className="ms-text">Cancel Plan</p>
+          <Button bg="red" radius="small" padding="small" fw="bold" onClick={handleCancelMembershipClick}>
+            Cancel
           </Button>
         </div>
 

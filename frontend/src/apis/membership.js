@@ -13,7 +13,7 @@ export const getMembershipById = async (id) => {
 // Get a membership by the associated member's ID
 export const getMembershipByMemberId = async (memberId) => {
   try {
-    const response = await API.get(`memberships/by-member/${memberId}`)
+    const response = await API.get(`membership/by-member/${memberId}`)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message

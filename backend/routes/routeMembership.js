@@ -1,10 +1,3 @@
-// WE CAN DELETE THIS FILE => NEW VERSION IS IN routeMembership.js
-
-
-
-
-
-
 // membershipRoutes.js
 import express from 'express'
 import createError from 'http-errors' // Make sure to import http-errors
