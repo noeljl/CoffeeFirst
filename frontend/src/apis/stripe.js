@@ -15,3 +15,8 @@ export const getCompleteSession = async (sessionId) => {
     const response = await API.get(`/stripe/checkout/complete?session_id=${sessionId}`);
     return response.data;
 }
+
+export const getBillingPortal = async (customerId) => {
+    const response = await API.get(`/stripe/billing-portal/${customerId}`);
+    return response.data;
+}

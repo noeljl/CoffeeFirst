@@ -1,12 +1,35 @@
 // MembershipService.js
 import createError from 'http-errors'
 import MembershipModel from '../models/membership.js'
-import MembersModel from '../models/member.js'
+import MemberModel from '../models/member.js'
+import Stripe from "stripe";
+import { STRIPE_SECRET_KEY } from "../config.js";
+const stripe = new Stripe(STRIPE_SECRET_KEY);
 
 class MembershipService {
   constructor() {
-    this.membershipModel = MembershipModel
-    this.membersModel = new MembersModel()
+    this.membershipModel = MembershipModel // MembershipModel is already an instance
+    this.memberModel = MemberModel // MemberModel is already an instance
+  }
+
+  /**
+   * Retrieves a membership by its ID.
+   * @param {string} membershipId - The ID of the membership.
+   * @returns {Promise<Document>} The membership document.
+   * @throws {HttpError} If the membership is not found or a server error occurs.
+   */
+  async getMembershipById(membershipId) {
+    try {
+      const membership = await this.membershipModel.findById(membershipId)
+      if (!membership) {
+        throw createError(404, 'Membership not found')
+      }
+      return membership
+    } catch (error) {
+      console.error(`Error in getMembershipById: ${error.message}`)
+      if (error.statusCode) throw error // Re-throw http-errors
+      throw createError(500, `Failed to retrieve membership: ${error.message}`)
+    }
   }
 
   /**
@@ -143,6 +166,48 @@ class MembershipService {
         500,
         `Failed to increment coffee quota: ${error.message}`
       )
+    }
+  }
+
+  async cancelMembership(membershipId, subscriptionId) {
+    try {
+      // 1. Update MongoDB
+      const membership = await this.membershipModel.update(membershipId, {
+        renewalAfterExpiration: false,
+      });
+
+      // 2. Update Stripe subscription
+      if (subscriptionId) {
+        await stripe.subscriptions.update(subscriptionId, {
+          cancel_at_period_end: true,
+        });
+      }
+
+      return membership;
+    } catch (error) {
+      console.error(`Error in cancelMembership: ${error.message}`);
+      throw createError(500, `Failed to cancel membership: ${error.message}`);
+    }
+  }
+
+  async resumeMembership(membershipId, subscriptionId) {
+    try {
+      // 1. Update MongoDB
+      const membership = await this.membershipModel.update(membershipId, {
+        renewalAfterExpiration: true,
+      });
+
+      // 2. Update Stripe subscription
+      if (subscriptionId) {
+        await stripe.subscriptions.update(subscriptionId, {
+          cancel_at_period_end: false,
+        });
+      }
+
+      return membership;
+    } catch (error) {
+      console.error(`Error in resumeMembership: ${error.message}`);
+      throw createError(500, `Failed to resume membership: ${error.message}`);
     }
   }
 }

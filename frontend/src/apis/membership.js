@@ -13,7 +13,7 @@ export const getMembershipById = async (id) => {
 // Get a membership by the associated member's ID
 export const getMembershipByMemberId = async (memberId) => {
   try {
-    const response = await API.get(`memberships/by-member/${memberId}`)
+    const response = await API.get(`membership/by-member/${memberId}`)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message
@@ -30,10 +30,20 @@ export const updateMembership = async (id, data) => {
   }
 }
 
-// Delete a membership by its ID
-export const deleteMembership = async (id) => {
+// Cancel a membership by its ID
+export const cancelMembership = async (membershipId, subscriptionId) => {
   try {
-    const response = await API.delete(`memberships/${id}`)
+    const response = await API.patch(`membership/cancel?membershipId=${membershipId}&subscriptionId=${subscriptionId}`)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
+// Resume a membership by its ID
+export const resumeMembership = async (membershipId, subscriptionId) => {
+  try {
+    const response = await API.patch(`membership/resume?membershipId=${membershipId}&subscriptionId=${subscriptionId}`)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message

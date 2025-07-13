@@ -30,7 +30,7 @@ export default function SignInForm() {
       if (loginMemberAction.fulfilled.match(resultAction)) {
         // Hier prüfen wir auf 'isAuthenticated', da deine Action das zurückgibt
         if (resultAction.payload.isAuthenticated) {
-          alert('Login erfolgreich für Email: ' + email)
+          // alert('Login erfolgreich für Email: ' + email)
           navigate('/dashboard') // Navigiere nur bei Erfolg
         } else {
           console.error(

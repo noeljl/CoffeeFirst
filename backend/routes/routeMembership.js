@@ -1,7 +1,7 @@
 // membershipRoutes.js
 import express from 'express'
 import createError from 'http-errors' // Make sure to import http-errors
-import MembershipService from '../services/memberShipService.js' // Adjust the path as necessary
+import MembershipService from '../services/membershipService.js'
 
 const membershipRouter = express.Router()
 const membershipService = new MembershipService()
@@ -121,6 +121,30 @@ membershipRouter.put('/:id/increment-coffee-quota', async (req, res, next) => {
       req.params.id,
       amount
     )
+    res.status(200).json(updatedMembership)
+  } catch (error) {
+    next(error)
+  }
+})
+
+membershipRouter.patch('/cancel', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
+  try {
+    const updatedMembership = await membershipService.cancelMembership(req.query.membershipId, req.query.subscriptionId)
+    res.status(200).json(updatedMembership)
+  } catch (error) {
+    next(error)
+  }
+})
+
+membershipRouter.patch('/resume', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    throw createError(401, 'Unauthorized')
+  }
+  try {
+    const updatedMembership = await membershipService.resumeMembership(req.query.membershipId, req.query.subscriptionId)
     res.status(200).json(updatedMembership)
   } catch (error) {
     next(error)

@@ -79,4 +79,18 @@ stripeRouter.get('/checkout/complete', async (req, res) => {
     }
 })
 
+stripeRouter.get('/billing-portal/:customerId', async (req, res) => {
+    try {
+        const session = await stripe.billingPortal.sessions.create({
+            customer: req.params.customerId,
+            return_url: 'http://localhost:3000/account-settings/membership',
+        });
+        res.json({ url: session.url });
+        console.log('The billing url is: ', session.url);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+
 export default stripeRouter;

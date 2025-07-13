@@ -1,9 +1,24 @@
 import React from 'react'
 import './CancellationModal.css' // You'll need to create this CSS file
 import Button from '../../components/ui/buttons/Button.jsx'
+import { cancelMembership } from '../../apis/membership.js'
+import { useSelector } from 'react-redux'
 
-export default function CancellationModal({ isOpen, onClose, onContinue }) {
+export default function CancellationModal({ isOpen, onClose, onContinue, onCancelSuccess }) {
+  const membeshipId = useSelector((state) => state.auth.member.membership)
+  const subscriptionId = useSelector((state) => state.auth.member.stripeSubscriptionId)
+ 
   if (!isOpen) return null
+
+  const handleCancelMembership = async () => {
+    try {
+      await cancelMembership(membeshipId, subscriptionId)
+      if (onCancelSuccess) onCancelSuccess() // <-- refetch membership
+      onClose()
+    } catch (error) {
+      console.error('Error canceling membership:', error)
+    }
+  }
 
   return (
     <div className="modal-overlay">
@@ -31,7 +46,7 @@ export default function CancellationModal({ isOpen, onClose, onContinue }) {
           <Button className="continue-button" bg="black" onClick={onContinue}>
             Continue
           </Button>
-          <Button className="cancel-button" bg="red" onClick={onClose}>
+          <Button className="cancel-button" bg="red" onClick={handleCancelMembership}>
             Cancel
           </Button>
         </div>

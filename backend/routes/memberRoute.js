@@ -76,6 +76,7 @@ memberRouter.get('/mail/:mail', async (req, res, next) => {
   }
 })
 
+
 memberRouter.put(
   '/:id',
   upload.single('profilePic'),
