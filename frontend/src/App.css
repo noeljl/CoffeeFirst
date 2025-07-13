@@ -14,3 +14,6 @@ body {
   padding-right: 32px;
   box-sizing: border-box;
 }
+.favorite-wishlist-title {
+  margin-bottom: 32px; /* a bit space between heading and cafes */
+}
