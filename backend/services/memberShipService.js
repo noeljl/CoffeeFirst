@@ -44,12 +44,26 @@ class MembershipService {
       const member = await this.membersModel.findOneById(memberUuid)
       if (!member) throw createError(404, 'Member not found')
 
-      // 2) Use the ObjectId (_id) of the member to fetch the membership
+      // 2) Check if member has a membership reference
+      if (!member.membership) {
+        throw createError(404, 'Member has no membership assigned')
+      }
+
+      // 3) Try to find membership by the member's ObjectId first
       console.log('memberUuid', memberUuid)
       console.log('member._id', member._id)
-      const membership = await this.membershipModel.findByMemberId(member._id.toString())
-      if (!membership)
+      let membership = await this.membershipModel.findByMemberId(member._id.toString())
+      
+      // 4) If not found by ObjectId, try to find by the membership ID from member document
+      if (!membership) {
+        console.log('Trying to find membership by ID:', member.membership)
+        membership = await this.membershipModel.findById(member.membership)
+      }
+      
+      if (!membership) {
         throw createError(404, 'Membership not found for this member')
+      }
+      
       return membership
     } catch (error) {
       console.error(`Error in getMembershipByMemberId: ${error.message}`)

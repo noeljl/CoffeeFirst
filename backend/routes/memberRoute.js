@@ -31,9 +31,6 @@ const upload = multer({ storage: storage })
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberRouter.get('/:id', async (req, res, next) => {
-  if (!req.isAuthenticated()) {
-    throw createError(401, 'Unauthorized')
-  }
   try {
     const member = await memberService.findMemberByID(req.params.id)
     res.status(200).json(member)
@@ -189,18 +186,21 @@ memberRouter.delete(
  */
 memberRouter.get('/:id/coffeeshops/:listType', async (req, res, next) => {
   try {
-    const { id, listType } = req.params;
+    const { id, listType } = req.params
     // Find the member and populate the requested list
-    const member = await memberService.findMemberByIDWithPopulatedList(id, listType);
+    const member = await memberService.findMemberByIDWithPopulatedList(
+      id,
+      listType
+    )
     if (!member) {
-      return res.status(404).json({ error: "Member not found" });
+      return res.status(404).json({ error: 'Member not found' })
     }
     // Return the populated list (array of cafe objects)
-    res.status(200).json(member[listType] || []);
+    res.status(200).json(member[listType] || [])
   } catch (error) {
-    next(error);
+    next(error)
   }
-});
+})
 
 // Add auth middleware if necessary
 memberRouter.get('/:id/:listType', async (req, res, next) => {
