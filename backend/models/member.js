@@ -17,7 +17,7 @@ const MemberSchema = new mongoose.Schema(
     passwordHash: { type: String, required: true },
     profilePicture: {
       type: String,
-      default: 'https://example.com/default-profile.png',
+      default: '/profileImages/default-profile.png',
       trim: true,
     },
     subscribe: { type: Boolean, default: false },

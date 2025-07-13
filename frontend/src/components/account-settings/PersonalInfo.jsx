@@ -299,7 +299,7 @@ function PersonalInfo() {
       // Wenn localProfilePicUrl eine relative Pfad ist (von Backend), dann vollständige URL erstellen
       return localProfilePicUrl.startsWith('http')
         ? localProfilePicUrl
-        : `http://localhost:3001${localProfilePicUrl}` // Annahme: Ihre Backend-URL
+        : `http://localhost:3001/profileImages/${localProfilePicUrl}` // Annahme: Ihre Backend-URL
     }
     // Standard-Profilbild, wenn keins vorhanden ist
     return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'
