@@ -1,10 +1,10 @@
 // MembershipService.js
 import createError from 'http-errors'
 import MembershipModel from '../models/membership.js'
-import MembersModel from '../models/member.js'
-import Stripe from 'stripe'
-import { STRIPE_SECRET_KEY } from '../config.js'
-const stripe = new Stripe(STRIPE_SECRET_KEY)
+import MemberModel from '../models/member.js'
+import Stripe from "stripe";
+import { STRIPE_SECRET_KEY } from "../config.js";
+const stripe = new Stripe(STRIPE_SECRET_KEY);
 
 class MembershipService {
   constructor() {
@@ -206,19 +206,19 @@ class MembershipService {
       // 1. Update MongoDB
       const membership = await this.membershipModel.update(membershipId, {
         renewalAfterExpiration: false,
-      })
+      });
 
       // 2. Update Stripe subscription
       if (subscriptionId) {
         await stripe.subscriptions.update(subscriptionId, {
           cancel_at_period_end: true,
-        })
+        });
       }
 
-      return membership
+      return membership;
     } catch (error) {
-      console.error(`Error in cancelMembership: ${error.message}`)
-      throw createError(500, `Failed to cancel membership: ${error.message}`)
+      console.error(`Error in cancelMembership: ${error.message}`);
+      throw createError(500, `Failed to cancel membership: ${error.message}`);
     }
   }
 
@@ -227,19 +227,19 @@ class MembershipService {
       // 1. Update MongoDB
       const membership = await this.membershipModel.update(membershipId, {
         renewalAfterExpiration: true,
-      })
+      });
 
       // 2. Update Stripe subscription
       if (subscriptionId) {
         await stripe.subscriptions.update(subscriptionId, {
           cancel_at_period_end: false,
-        })
+        });
       }
 
-      return membership
+      return membership;
     } catch (error) {
-      console.error(`Error in resumeMembership: ${error.message}`)
-      throw createError(500, `Failed to resume membership: ${error.message}`)
+      console.error(`Error in resumeMembership: ${error.message}`);
+      throw createError(500, `Failed to resume membership: ${error.message}`);
     }
   }
 }
