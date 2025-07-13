@@ -14,6 +14,20 @@ router.post('/register', async (req, res, next) => {
   }
 })
 
+router.get('/check-session', (req, res) => {
+  res.json({
+    isAuthenticated: req.isAuthenticated?.() ?? false,
+    member: req.user ?? null,
+  })
+})
+
+router.post('/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err)
+    res.json({ isAuthenticated: false })
+  })
+})
+
 // To be completed
 router.post('/login', (req, res, next) =>
   passport.authenticate('local-member', (err, member, info) => {

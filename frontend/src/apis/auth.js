@@ -7,7 +7,10 @@ export const loginMember = async (credentials) => {
 
     const response = await API.post('auth/login', credentials)
 
-    console.log('Response in auth.js/loginMember', JSON.stringify(credentials))
+    console.log(
+      'Response in auth.js/loginMember',
+      JSON.stringify(response.data)
+    )
 
     return response.data
   } catch (err) {
@@ -27,11 +30,20 @@ export const registerMember = async (data) => {
   }
 }
 
-// Status prüfen
 export const isMemberLoggedIn = async () => {
   try {
-    const response = await API.get('auth/logged_in')
+    const response = await API.get('auth/check-session')
+    console.log('isMemberLoggedIn response:', response.data)
+    return response.data
+  } catch (err) {
+    console.error('isMemberLoggedIn error:', err)
+    throw err.response?.data || err.message
+  }
+}
 
+export const logoutMember = async () => {
+  try {
+    const response = await API.post('auth/logout')
     return response.data
   } catch (err) {
     throw err.response?.data || err.message

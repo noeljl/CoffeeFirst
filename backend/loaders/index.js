@@ -2,19 +2,29 @@ import expressLoader from './express.js'
 import passportLoader from './passport.js'
 import routeLoader from '../routes/index.js'
 
-// Exportiere die Funktion als Standardexport
 export default async function loaders(app) {
-  // Loads the Express-Middleware. Assigns express configurations to our server. Go to express.js!
   const expressApp = await expressLoader(app)
 
-  // Lädt Passport-Middleware, 
+  // 2. Passport-Middleware
   const passport = await passportLoader(expressApp)
 
-  // Lädt Routen-Handler. Ruft in routes die index.js auf, die die Routen initialisiert.
-  // Ohne das laufen die Routen nicht
-  await routeLoader(app, passport)
+  // 2.1 Dein Test-Logger jetzt direkt HIER einhängen:
+  expressApp.use((req, res, next) => {
+    console.log('=== DAS IST EIN TEST ===')
+    console.log('Session ID:', req.sessionID)
+    console.log('Session:', req.session)
+    console.log('User:', req.user)
+    console.log(
+      'Is Authenticated:',
+      req.isAuthenticated ? req.isAuthenticated() : 'passport not initialized'
+    )
+    next()
+  })
 
-  // Error Handler
+  // 3. Routen
+  await routeLoader(expressApp, passport)
+
+  // 4. Error Handler
   app.use((err, req, res, next) => {
     console.log(`Received ${req.method} request for ${req.url}`)
     console.error(err.stack)

@@ -1,43 +1,53 @@
+import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import session from 'express-session' // npm install express-session
-import { SESSION_SECRET } from '../config.js'
-import express from 'express'
+import session from 'express-session'
+import mongoose from 'mongoose'
+import MongoStore from 'connect-mongo'
+import { SESSION_SECRET, MONGO_URI } from '../config.js'
 
 const expressLoader = (app) => {
   // CORS for local development.
-  // cors enables Cross-Origin Resource Sharing, so your frontend (on a different port) can talk to your backend.
-  // Cors is to prevent malicious websites from accessing sensitive data from other websites without your permission.
   app.use(
     cors({
-      origin: 'http://localhost:3000', // Where you can access from ?
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], //With which methods?
-      allowedHeaders: ['Authorization', 'Content-Type'], //The browser first sends a "preflight" request (an OPTIONS request) to ask the backend: "Am I allowed to send the Authorization and Content-Type headers?"
-      credentials: true, // "It's okay to include credentials like cookies, authorization headers, or TLS client certificates with this request."
+      origin: [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:3002',
+      ],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Authorization', 'Content-Type'],
+      credentials: true,
+      exposedHeaders: ['set-cookie'],
     })
   )
 
-  // Serve static files from the public directory
+  // Static file serving
   app.use(express.static('public'))
+  app.use('/profileImages', express.static('public/profileImages'))
 
-  // Body-Parsing- These lines enable Express to handle: JSON bodies (e.g. from fetch or Axios) URL-encoded data (e.g. from HTML forms)
+  // Body parsing
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  // Session-Handling
-  app.set('trust proxy', 1) // This tells Express to trust headers set by a reverse proxy (e.g. if you're using Nginx or Heroku). Required if your app sits behind a proxy and uses cookies or secure sessions.
+  const isProduction = process.env.NODE_ENV === 'production'
+
+  // Session handling
+  app.set('trust proxy', 1) // if behind a proxy (Heroku, Nginx, etc)
   app.use(
-    //This enables session handling in your Express app using express-session. It keeps track of users (e.g. login sessions) using a session ID stored in a cookie.
     session({
-      secret: SESSION_SECRET, //This secret is used to sign the session ID cookie so it can't be tampered with. You should store this value in your .env file and never expose it.
-      resave: false, //This prevents sessions from being saved back to the store if they haven't changed. It's a performance optimization and a best practice.
-      saveUninitialized: false, //This avoids storing sessions that are empty (no data in them). Useful to avoid creating sessions for unauthenticated users or bots.
+      secret: SESSION_SECRET,
+      store: MongoStore.create({
+        mongoUrl: MONGO_URI,
+        collectionName: 'sessions',
+      }),
+      resave: false,
+      saveUninitialized: false,
       cookie: {
-        //This object contains configuration for the cookie that stores the session ID in the user's browser.
-        secure: false, // If true, the cookie is only sent over HTTPS. Since we are in development on localhost, it's set to false.
-        httpOnly: true, //Prevents JavaScript on the frontend (e.g. in the browser) from accessing the cookie. This protects against XSS (Cross-Site Scripting) attacks.
-        sameSite: 'lax', //This helps prevent CSRF (Cross-Site Request Forgery) by restricting when cookies are sent across sites.
-        maxAge: 24 * 60 * 60 * 1000, //This sets the cookie's expiration time to 24 hours (in milliseconds).
+        secure: false, // Set to false for development (HTTP)
+        httpOnly: false, // Allow JavaScript access
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000,
       },
     })
   )

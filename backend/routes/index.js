@@ -6,7 +6,7 @@ import memberRouter from './memberRoute.js' // Make sure this path points to cof
 import reviewRouter from './reviewRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import stripeRouter from './stripeRoute.js' // Make sure this path points to coffeeShopRoutes.js
 
-export default (app) => {
+export default (app, passport) => {
   app.use('/api/auth', authRouter)
   app.use('/api/coffeeshop', coffeeShopRouter)
   app.use('/api/memberCard', memberCardRouter)

@@ -5,6 +5,7 @@ import {
   updateMember,
   changeMemberPassword,
 } from '../../apis/member.js'
+import { getMembershipByMemberId } from '../../apis/membership.js'
 
 export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST'
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS'
@@ -19,6 +20,18 @@ export const getMemberByIdAction = createAsyncThunk(
       const response = await getMemberById(id)
       console.log('Response in getMemberByIdAction ist ', response)
 
+      return response
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data || err.message)
+    }
+  }
+)
+
+export const getMembershipByMemberIDAction = createAsyncThunk(
+  'member/getMembershipByMemberID',
+  async (id, thunkAPI) => {
+    try {
+      const response = await getMembershipByMemberId(id)
       return response
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message)

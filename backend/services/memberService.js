@@ -1,7 +1,7 @@
-// MemberService.js
 import createError from 'http-errors'
 import { MembersModel } from '../models/member.js' // Assuming MembersModel is in a file named membersModel.js
 import bcrypt from 'bcrypt'
+import { json } from 'stream/consumers'
 
 class MemberService {
   constructor() {
@@ -10,7 +10,13 @@ class MemberService {
 
   async findMemberByID(id) {
     try {
+      console.log(`findMemberByID called with id: ${id}`)
       const member = await this.membersModel.findOneById(id)
+      if (!member) {
+        console.log(`Member with id ${id} not found`)
+        return null
+      }
+      console.log(`Member found: ${member.email}`)
       return member
     } catch (error) {
       console.error(`Error in findMemberByID: ${error.message}`)
@@ -59,9 +65,26 @@ class MemberService {
 
   async updateMemberByID(id, data) {
     try {
+      // Besseres Logging für FormData
+      if (data instanceof FormData) {
+        console.log(
+          'updateMemberByID called with id',
+          id,
+          'and FormData object'
+        )
+      } else {
+        console.log(
+          'updateMemberByID called with id',
+          id,
+          'and data',
+          JSON.stringify(data)
+        )
+      }
+
       return await this.membersModel.updateMemberByID(id, data)
     } catch (error) {
       console.error(`Error in updateMemberByID: ${error.message}`)
+      throw error // Wichtig: Fehler weiterwerfen
     }
   }
 

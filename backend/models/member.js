@@ -38,12 +38,12 @@ const MemberSchema = new mongoose.Schema(
     membership: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Membership',
-      required: true
+      required: true,
     },
     memberCard: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'MemberCard',
-      required: true
+      required: true,
     },
     wishlistCoffeeShops: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'CoffeeShop' },
@@ -100,6 +100,15 @@ export class MembersModel {
 
   async updateMemberByID(id, updateData) {
     try {
+      if (Object.keys(updateData).length === 0) {
+        console.log('updateData is an empty object, no fields to update.')
+        // You might want to throw an error, return null, or return the existing member
+        // depending on your application's logic.
+        // For now, let's just return the existing member if nothing needs updating.
+        const existingMember = await Member.findOne({ id })
+        if (!existingMember) throw new Error(`Member with ID ${id} not found.`)
+        return existingMember
+      }
       const member = await Member.findOneAndUpdate({ id }, updateData, {
         new: true,
         runValidators: true,
@@ -143,8 +152,7 @@ export class MembersModel {
   async delete(id) {
     try {
       const member = await Member.findOneAndDelete({ id })
-      if (!member)
-        throw new Error(`Member with ID ${id} not found for deletion.`)
+      if (!member) throw new Error(`Member with ID ${id} not found.`)
       return member
     } catch (err) {
       throw new Error(`Error deleting member: ${err.message}`)
@@ -159,20 +167,14 @@ export class MembersModel {
     }
   }
 
-  async findOneById(uuid) {
+  async findOneById(id) {
     try {
-      const member = await Member.findOne({ id: uuid })
-        .populate('membership')
-        .populate('memberCard')
-        .populate('wishlistCoffeeShops')
-        .populate('favoriteCoffeeShops')
-        .populate('visitedCoffeeShops')
-        .populate('reviewedCoffeeShops')
-        .exec()
-      if (!member) throw new Error(`Member with id ${uuid} not found.`)
+      const member = await Member.findOne({ id }).populate('memberCard').exec()
+
+      if (!member) throw new Error(`Member with id ${id} not found.`)
       return member
     } catch (err) {
-      throw new Error(`Error finding member by UUID: ${err.message}`)
+      throw new Error(`Error finding member by id: ${err.message}`)
     }
   }
 

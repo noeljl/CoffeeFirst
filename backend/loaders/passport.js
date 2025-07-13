@@ -3,14 +3,14 @@ import passportLocal from 'passport-local'
 import bcrypt from 'bcrypt'
 
 import MembersModel from '../models/member.js'
-import MemberService from '../services/MemberService.js'
+import MemberService from '../services/memberService.js'
 
 const LocalStrategy = passportLocal.Strategy
 const MembersModelInstance = new MembersModel()
 const MemberServiceInstance = new MemberService()
 
 // STILL NEEDS IMPLEMENTATION. WILL DO WHEN I GET TO LOGGIN IN USERS
-// 'Passport lets your app know who the user is, how to log them in, how to log them out, and optionally how to remember them across requests.'
+// 'Passport lets your app knowa who the user is, how to log them in, how to log them out, and optionally how to remember them across requests.'
 // So this can basically check who the current user is. If you look into the auth.js in routes, you will see, that the login route has
 // passport.authenticate('local-user') to authenticate the user opon calling the route
 
@@ -32,10 +32,24 @@ const passportLoader = (app) => {
 
   passport.deserializeUser(async (serialized, done) => {
     try {
+      console.log('DeserializeUser called with:', serialized)
       const member = await MemberServiceInstance.findMemberByID(serialized.id)
+      console.log(
+        'DeserializeUser found member:',
+        member ? member.email : 'null'
+      )
+      if (!member) {
+        // If member not found, clear the session
+        console.log(
+          `Member with id ${serialized.id} not found, clearing session`
+        )
+        return done(null, false)
+      }
       done(null, member)
     } catch (err) {
-      done(err)
+      console.error('Error in deserializeUser:', err.message)
+      // If there's an error, also clear the session
+      return done(null, false)
     }
   })
 
