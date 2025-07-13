@@ -40,7 +40,7 @@ function FavoriteWishlist({ listType }) {
 
   return (
     <div>
-      <h2>{listName}</h2>
+      <h2 className="favorite-wishlist-title">{listName}</h2>
       <CafeOverview cafes={cafes} />
     </div>
   )
