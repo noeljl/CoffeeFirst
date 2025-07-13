@@ -3,25 +3,28 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: #fff;
 }
 
 .personal-info-container {
   flex: 1;
-  width: 95%;
-  max-width: none;
-  margin: 2rem auto;
-  padding: 3rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 40px 40px 40px;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: none;
+  border-left: 1px solid #eee;
+  min-height: 80vh;
 }
 
 .personal-info-title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
-  margin-bottom: 2rem;
-  color: #1a1a1a;
+  margin-bottom: 2.5rem;
+  color: #181818;
+  text-align: left;
 }
 
 .info-list {
@@ -33,259 +36,473 @@
 .info-item {
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
-  border-bottom: 1px solid #e5e7eb;
-  position: relative;
+  align-items: flex-start;
+  padding: 32px 0 24px 0;
+  border-bottom: none;
+  margin-bottom: 0;
+  width: 100%;
 }
 
-.info-item:last-child {
-  border-bottom: none;
+.section-divider {
+  width: 100%;
+  border: none;
+  border-top: 2px solid #f0f0f0;
+  margin: 24px 0 0 0;
 }
 
 .info-header {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
+  justify-content: space-between;
+  margin-bottom: 18px;
 }
 
-.info-text {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.info-label {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 0.5rem;
-}
-
-.info-description {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
+.edit-section-title, .info-label {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #181818;
+  margin-bottom: 0.2rem;
 }
 
 .info-value {
-  margin: 0;
-  color: #9ca3af;
+  font-size: 1.05rem;
+  color: #888;
+  font-weight: 400;
   margin-bottom: 0.5rem;
+}
+
+.edit-link {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #181818;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  margin-left: 32px;
+  min-width: 60px;
+  text-align: right;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+.edit-link:hover {
+  color: #b30000;
 }
 
 .info-form {
+  width: 100%;
   display: flex;
-  gap: 1rem;
+  flex-direction: row;
+  gap: 18px;
   margin-bottom: 1.5rem;
 }
 
-.info-form input {
+.floating-input {
   flex: 1;
-  padding: 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #fff;
-  transition: border-color 0.2s ease;
-  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-input label {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 6px;
   font-weight: 500;
 }
 
-.info-form input::placeholder {
-  color: #9ca3af;
+.floating-input input {
+  width: 100%;
+  padding: 14px 12px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #181818;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.floating-input input::placeholder {
+  color: #bdbdbd;
   font-weight: 400;
 }
 
-.info-form input:focus {
+.floating-input input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.08);
 }
 
-.password-form {
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.info-item.password-section {
-  padding-bottom: 1rem;
-}
-
-/* New style for the round container around the image */
-.profile-image-round-wrapper {
-  width: 200px; /* Breite des gesamten runden Bereichs wurde auf 50px reduziert */
-  height: 200px; /* Höhe des gesamten runden Bereichs wurde auf 50px reduziert */
-  border-radius: 50%; /* Macht den Container kreisförmig */
-  overflow: hidden; /* **Wichtig:** Schneidet das Bild auf die runde Form zu */
-  display: flex; /* Für die Zentrierung des Bildes im Container */
-  justify-content: center; /* Zentriert horizontal */
-  align-items: center; /* Zentriert vertikal */
-  background-color: #f0f0f0; /* Hintergrundfarbe des "runden Ausschnitts" selbst */
-  border: 3px solid #ddd; /* Rand um den runden Ausschnitt */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Ein leichter Schatten für Tiefe */
-  margin-top: 1rem; /* Abstand nach oben, falls nötig */
-  margin-bottom: 1.5rem; /* Abstand nach unten, falls nötig */
-}
-
-/* Stile für die Bilder innerhalb des runden Wrappers */
-.profile-pic-large, /* Das Bild im Bearbeitungsmodus */
-.preview-img {
-  /* Das Bild im Ansichtsmodus */
-  width: 100%; /* Das Bild füllt die Breite des Wrappers */
-  height: 100%; /* Das Bild füllt die Höhe des Wrappers */
-  object-fit: cover; /* **Wichtig:** Skaliert das Bild so, dass es den Container füllt und dabei sein Seitenverhältnis beibehält. Teile können abgeschnitten werden. */
-  border-radius: 50%; /* Stellt sicher, dass das Bild selbst ebenfalls rund ist */
-  border: none; /* Entfernt jegliche Standardränder am Bild selbst */
-  box-shadow: none; /* Entfernt vorherige Schatten vom Bild, da der Wrapper diese nun hat */
-}
-
-.preview-img {
-  width: 100%; /* Image fills the wrapper */
-  height: 100%; /* Image fills the wrapper */
-  border-radius: 50%; /* Ensures the image itself is round */
-  object-fit: cover;
-  /* Removed original border and vignette box-shadow from here */
-  border: none; /* No border directly on the image */
-  box-shadow: none; /* No vignette directly on the image */
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 0.5rem;
 }
 
 .edit-button {
   background: none;
   border: none;
-  font-size: 0.9rem;
-  color: #6b7280;
+  font-size: 1rem;
+  color: #181818;
   cursor: pointer;
-  padding: 0;
-  transition: color 0.2s ease;
   text-decoration: underline;
   text-underline-offset: 2px;
-  white-space: nowrap;
-  position: absolute;
-  top: 2rem;
-  right: 0;
+  padding: 0;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  transition: color 0.2s;
+  margin-left: auto;
+  min-width: 60px;
+  text-align: right;
+  align-self: flex-start;
+}
+.edit-button:hover {
+  color: #b30000;
 }
 
-.floating-input {
-  position: relative;
-  width: 100%;
+.cancel-link {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+.edit-button:hover, .cancel-link:hover {
+  color: #222;
 }
 
-/* Input: oben extra Padding für das Label */
-.floating-input input {
+.cancel-link-right, .edit-button.cancel-link {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #181818;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  margin-left: 32px;
+  min-width: 60px;
+  text-align: right;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+.cancel-link-right:hover, .edit-button.cancel-link:hover {
+  color: #b30000;
+}
+
+.profile-image-round-wrapper {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 3px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin: 0 auto 1.5rem auto;
+}
+
+.profile-pic-large, .preview-img {
   width: 100%;
-  padding: 2rem 1.2rem 1.2rem; /* Increased top, side, and bottom padding */
-  font-size: 1.1rem; /* Slightly larger font size */
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+}
+
+.delete-account-container {
+  margin-top: 48px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.delete-account-container button {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  padding: 16px 38px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.delete-account-container button:hover {
+  background-color: #c62828;
+}
+
+.info-item.password-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px 0 24px 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0;
+}
+
+.password-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.password-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 0.25rem;
+}
+
+.password-cancel {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #181818;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  margin: 0;
+}
+.password-cancel:hover {
+  color: #000;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
+  margin-left: 0;
+}
+
+.password-form input {
+  width: 100%;
+  min-width: 260px;
+  max-width: 400px;
+  padding: 18px 16px;
+  font-size: 1rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   background: #fff;
+  color: #181818;
+  font-weight: 500;
+  margin-bottom: 0;
   box-sizing: border-box;
 }
 
-/* Label: absolut oben auf der Border */
-.floating-input label {
-  position: absolute;
-  top: 0.6rem; /* Adjusted top position to match new padding */
-  left: 1.2rem; /* Adjusted left position to match new padding */
-  background: #fff; /* überdeckt die Border */
-  padding: 0 0.25rem; /* Luft um den Text */
-  font-size: 0.8rem; /* Slightly larger label font size */
-  color: #9ca3af; /* graues Label */
-  pointer-events: none; /* Klick geht ins Input */
-  z-index: 1;
+.password-form input::placeholder {
+  color: #bdbdbd;
+  font-weight: 400;
 }
 
-.edit-button:hover {
-  color: #374151;
+.password-form input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.08);
 }
 
-.button-group {
+.update-password-btn {
+  width: 100%;
+  max-width: 260px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 14px 0;
+  margin-top: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-align: center;
+}
+.update-password-btn:hover {
+  background: #222;
+}
+
+.profile-pic-section {
+  padding: 32px 0 24px 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0;
+}
+
+.profile-header-row {
+  width: 100%;
   display: flex;
-  gap: 0.5rem;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.profile-header-texts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-label {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #181818;
+  margin-bottom: 0.2rem;
+}
+
+.profile-desc {
+  font-size: 1.05rem;
+  color: #999;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.profile-cancel {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #181818;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  margin-left: 32px;
+  min-width: 60px;
+  text-align: right;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+.profile-cancel:hover {
+  color: #b30000;
+}
+
+.profile-pic-content-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.profile-image-round-wrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 3px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin: 0 0 24px 0;
+}
+
+.profile-pic-btns {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
   align-items: center;
 }
 
-.button-group .edit-button {
-  position: static;
-  text-decoration: none;
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-/* Save button styling */
-.button-group button:first-child,
-.personal-info-container button[class*='Button'] {
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
+.profile-save-btn, .profile-upload-btn {
+  background: #000;
+  color: #fff;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   font-weight: 500;
+  padding: 10px 18px;
+  margin-left: 0;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-/* Delete account button styling */
-.personal-info-container > button:last-child {
-  background-color: #ef4444;
-  color: white;
+  transition: background 0.2s;
+  display: inline-block;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-top: 0.5rem;
+}
+.profile-save-btn:hover, .profile-upload-btn:hover {
+  background: #222;
 }
 
-.personal-info-container > button:last-child:hover {
-  background-color: #dc2626;
+.profile-upload-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.profile-upload-btn {
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  padding: 10px 18px;
+  margin-left: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-block;
+}
+.profile-upload-btn:hover {
+  background: #222;
+}
+
+.info-item .info-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .personal-info-container {
-    margin: 1rem;
-    padding: 1.5rem;
+    padding: 32px 10px 32px 10px;
   }
-
-  .personal-info-title {
-    font-size: 1.75rem;
+  .profile-image-round-wrapper {
+    width: 80px;
+    height: 80px;
   }
-
-  .info-item {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 1.5rem 0;
-  }
-
-  .button-group {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
-  .edit-button {
-    align-self: flex-start;
+  .profile-save-btn, .profile-upload-btn {
+    font-size: 0.95rem;
+    padding: 8px 12px;
   }
 }
-
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .personal-info-container {
-    margin: 0.5rem;
-    padding: 1rem;
+    padding: 16px 2vw;
   }
-
-  .info-item {
-    padding: 1rem 0;
-  }
-
-  .button-group {
+  .info-form {
     flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
+    gap: 10px;
+  }
+  .profile-pic-content-row {
+    align-items: center;
+  }
+  .profile-image-round-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+  .update-password-btn {
+    width: 100%;
+  }
+  .profile-save-btn, .profile-upload-btn {
+    font-size: 0.85rem;
+    padding: 6px 8px;
   }
 }

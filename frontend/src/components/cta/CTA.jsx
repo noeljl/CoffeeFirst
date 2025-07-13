@@ -9,7 +9,7 @@ function CTA() {
         <div className="cta-container" style={{ backgroundImage: `url(/images/cta-background.jpg)` }}>
             <div className="overlay">
                 <div className="cta-content">
-                    <h2 id="cta-title">Join Munich’s coffee community todayd</h2>
+                    <h2 id="cta-title">Join Munich’s coffee community today</h2>
                     <div className="cta-text-container">
                         <p id="cta-text" style={{ fontWeight: "bold" }}>Drink better coffee. Spend less.</p>
                         <p id="cta-text">Access premium drinks at your favorite local cafés </p>

@@ -248,10 +248,8 @@ function PersonalInfo() {
               <>
                 <div className="info-header">
                   <div>
-                    <h2 className="info-label">Legal Name</h2>
-                    <p className="info-value">
-                      We will need to verify your legal name before reservation.
-                    </p>
+                    <span className="edit-section-title">Legal Name</span>
+                    <div className="info-value">We’ll need to verify your new legal name before you book your next reservation.</div>
                   </div>
                   <button
                     className="edit-button cancel-link"
@@ -260,7 +258,6 @@ function PersonalInfo() {
                     Cancel
                   </button>
                 </div>
-
                 <div className="info-form">
                   <div className="floating-input">
                     <label htmlFor="firstName">First name on ID</label>
@@ -268,7 +265,7 @@ function PersonalInfo() {
                       type="text"
                       id="firstName"
                       name="firstName"
-                      value={localFirstName || ''} // Nutze lokalen State
+                      value={localFirstName || ''}
                       onChange={handleChange}
                     />
                   </div>
@@ -278,12 +275,11 @@ function PersonalInfo() {
                       type="text"
                       id="lastName"
                       name="lastName"
-                      value={localLastName || ''} // Nutze lokalen State
+                      value={localLastName || ''}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-
                 <div className="button-group">
                   <Button onClick={handleSave} bg="black">
                     Save
@@ -292,12 +288,8 @@ function PersonalInfo() {
               </>
             ) : (
               <>
-                <div className="info-text">
-                  <span className="info-label">Legal Name</span>
-                  <span className="info-value">{`${reduxFirstName || ''} ${
-                    reduxLastName || ''
-                  }`}</span>
-                </div>
+                <span className="info-label">Legal Name</span>
+                <span className="info-value">{`${reduxFirstName || ''} ${reduxLastName || ''}`}</span>
                 <button
                   className="edit-button"
                   onClick={() => handleEdit('legalName')}
@@ -307,29 +299,29 @@ function PersonalInfo() {
               </>
             )}
           </div>
+          <hr className="section-divider" />
 
           {/* PROFILE PICTURE */}
           <div className="info-item">
             {editingField === 'profilePic' ? (
               <>
-                <div className="info-header">
-                  <div>
-                    <h2 className="info-label">Profile Picture</h2>
-                    <p className="info-value">Keep your smile up to date</p>
+                <div className="profile-header-row">
+                  <div className="profile-header-texts">
+                    <span className="edit-section-title">Profil picture</span>
+                    <span className="profile-desc">Keep your smile up-to-date.</span>
                   </div>
                   <button
-                    className="edit-button cancel-link"
+                    className="profile-cancel"
                     onClick={handleCancel}
                   >
                     Cancel
                   </button>
                 </div>
-
-                <div className="profile-pic-content">
+                <div className="profile-pic-content-row">
                   <div className="profile-image-round-wrapper">
                     <img
                       src={
-                        localProfilePic // Nutze lokalen State für Vorschau
+                        localProfilePic
                           ? typeof localProfilePic === 'string'
                             ? localProfilePic
                             : URL.createObjectURL(localProfilePic)
@@ -339,39 +331,25 @@ function PersonalInfo() {
                       className="profile-pic-large"
                     />
                   </div>
-                </div>
-
-                <div className="button-group">
-                  <Button onClick={handleSave} bg="black" radius="small">
-                    Save
-                  </Button>
-
-                  <label
-                    style={{
-                      display: 'flex',
-                      cursor: 'pointer',
-                      marginLeft: '0.5rem',
-                    }}
-                  >
-                    <input
-                      type="file"
-                      name="profilePic"
-                      accept="image/*"
-                      onChange={handleChange}
-                      style={{ display: 'none' }}
-                    />
-                    <Button as="span" bg="black" radius="small">
-                      Upload new picture
-                    </Button>
-                  </label>
+                  <div className="profile-pic-btns">
+                    <button className="profile-save-btn" onClick={handleSave}>Save</button>
+                    <label className="profile-upload-label">
+                      <input
+                        type="file"
+                        name="profilePic"
+                        accept="image/*"
+                        onChange={handleChange}
+                        style={{ display: 'none' }}
+                      />
+                      <span className="profile-upload-btn">Upload new picture</span>
+                    </label>
+                  </div>
                 </div>
               </>
             ) : (
               <>
-                <div className="info-text">
-                  <span className="info-label">Profile Picture</span>
-                  <span className="info-value">Keep your smile up to date</span>
-                </div>
+                <span className="info-label">Profile Picture</span>
+                <span className="info-value">Keep your smile up to date</span>
                 <button
                   className="edit-button"
                   onClick={() => handleEdit('profilePic')}
@@ -381,6 +359,7 @@ function PersonalInfo() {
               </>
             )}
           </div>
+          <hr className="section-divider" />
 
           {/* EMAIL */}
           <div className="info-item">
@@ -388,8 +367,8 @@ function PersonalInfo() {
               <>
                 <div className="info-header">
                   <div>
-                    <h2 className="info-label">Email</h2>
-                    <p className="info-value">How can we contact you?</p>
+                    <span className="edit-section-title">Email address</span>
+                    <div className="info-value">Use an address you’ll always have access to.</div>
                   </div>
                   <button
                     className="edit-button cancel-link"
@@ -398,20 +377,18 @@ function PersonalInfo() {
                     Cancel
                   </button>
                 </div>
-
                 <div className="info-form">
                   <div className="floating-input">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">Email address</label>
                     <input
                       type="text"
                       id="email"
                       name="email"
-                      value={localEmail || ''} // Nutze lokalen State
+                      value={localEmail || ''}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-
                 <div className="button-group">
                   <Button bg="black" onClick={handleSave}>
                     Save
@@ -420,10 +397,8 @@ function PersonalInfo() {
               </>
             ) : (
               <>
-                <div className="info-text">
-                  <span className="info-label">Email</span>
-                  <span className="info-value">{reduxEmail || ''}</span>
-                </div>
+                <span className="info-label">Email</span>
+                <span className="info-value">{reduxEmail || ''}</span>
                 <button
                   className="edit-button"
                   onClick={() => handleEdit('email')}
@@ -433,16 +408,14 @@ function PersonalInfo() {
               </>
             )}
           </div>
+          <hr className="section-divider" />
 
           {/* PASSWORD */}
-          <div className="info-item">
+          <div className="info-item password-section">
             {editingField === 'password' ? (
               <>
                 <div className="info-header">
-                  <div>
-                    <h2 className="info-label">Password</h2>
-                    <p className="info-value">Please choose a safe password</p>
-                  </div>
+                  <span className="edit-section-title">Password</span>
                   <button
                     className="edit-button cancel-link"
                     onClick={handleCancel}
@@ -450,55 +423,35 @@ function PersonalInfo() {
                     Cancel
                   </button>
                 </div>
-
-                <div className="info-form">
-                  <div className="floating-input">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password.current"
-                      placeholder="Current Password"
-                      value={localPassword.current || ''}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="floating-input">
-                    <label htmlFor="newPassword">New Password</label>
-                    <input
-                      type="password"
-                      id="newPassword"
-                      name="password.new"
-                      placeholder="New Password"
-                      value={localPassword.new || ''}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="floating-input">
-                    <label htmlFor="confirmNewPassword">Confirm Password</label>
-                    <input
-                      type="password"
-                      id="confirmNewPassword"
-                      name="password.confirm"
-                      placeholder="Confirm new Password"
-                      value={localPassword.confirm || ''}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="button-group">
-                  <Button bg="black" onClick={handleSave}>
-                    Save
-                  </Button>
-                </div>
+                <form className="password-form" onSubmit={e => { e.preventDefault(); handleSave(); }}>
+                  <input
+                    type="password"
+                    name="password.current"
+                    placeholder="Current password"
+                    value={localPassword.current || ''}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="password"
+                    name="password.new"
+                    placeholder="New password"
+                    value={localPassword.new || ''}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="password"
+                    name="password.confirm"
+                    placeholder="Confirm password"
+                    value={localPassword.confirm || ''}
+                    onChange={handleChange}
+                  />
+                  <button type="submit" className="update-password-btn">Update password</button>
+                </form>
               </>
             ) : (
               <>
-                <div className="info-text">
-                  <span className="info-label">Password</span>
-                  <span className="info-value">••••••••••</span>
-                </div>
+                <span className="info-label">Password</span>
+                <span className="info-value">••••••••••</span>
                 <button
                   className="edit-button"
                   onClick={() => handleEdit('password')}

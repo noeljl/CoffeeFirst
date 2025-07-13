@@ -4,49 +4,44 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: #fff;
 }
 
 .membership-info-container {
   flex: 1;
-  width: 95%;
-  max-width: none;
-  margin: 2rem auto;
-  padding: 3rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 40px 40px 40px;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: none;
+  border-left: 1px solid #eee;
+  min-height: 80vh;
 }
 
 .membership-info-title {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 2rem;
-  color: #1a1a1a;
-}
-
-.ms-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  color: #181818;
 }
 
 .ms-section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .ms-heading {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 0.5rem;
+  color: #181818;
+  margin-bottom: 0.25rem;
 }
 
 .ms-text {
-  font-size: 0.95rem;
-  color: #4a5568;
-  margin: 0;
+  font-size: 0.98rem;
+  color: #888;
+  margin: 0 0 0.5rem 0;
   line-height: 1.5;
 }
 
@@ -59,61 +54,55 @@
 .plan-advantages {
   list-style: none;
   padding: 0;
-  margin: 1rem 0 0;
+  margin: 1.5rem 0 0 0;
 }
 
 .plan-advantages li {
   display: flex;
   align-items: center;
-  font-size: 1rem;
-  color: #2d3748;
-  margin-bottom: 0.75rem;
+  font-size: 1.08rem;
+  color: #222;
+  margin-bottom: 1.1rem;
+  font-weight: 500;
 }
 
 .check-icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   stroke: #e53e3e;
-  margin-right: 0.75rem;
+  margin-right: 0.9rem;
 }
 
-.button-group {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.cancel-button {
-  background-color: #e53e3e;
+.cancel-button, .membership-info-container button[bg="red"] {
+  background-color: #e53935;
   color: #fff;
   border: none;
-  padding: 0.8rem 1.6rem;
+  padding: 14px 32px;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s;
+  margin-top: 24px;
 }
-
-.cancel-button:hover {
-  background-color: #c53030;
+.cancel-button:hover, .membership-info-container button[bg="red"]:hover {
+  background-color: #c62828;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .membership-container {
-    padding: 1.5rem;
-  }
-  .ms-title {
-    font-size: 1.75rem;
+@media (max-width: 900px) {
+  .membership-info-container {
+    padding: 32px 10px 32px 10px;
   }
 }
-
-@media (max-width: 480px) {
-  .plan-advantages li {
-    font-size: 0.9rem;
+@media (max-width: 600px) {
+  .membership-info-container {
+    padding: 16px 2vw;
   }
-  .cancel-button {
+  .plan-advantages li {
+    font-size: 0.98rem;
+  }
+  .cancel-button, .membership-info-container button[bg="red"] {
     width: 100%;
     text-align: center;
   }
