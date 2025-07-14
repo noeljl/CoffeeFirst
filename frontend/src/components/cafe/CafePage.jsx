@@ -38,7 +38,7 @@ function CafePage() {
   return (
     <>
       <CafeHeaderSection cafe={cafe} />
-      <VisitStatusCardSection lastVisit="2025-04-24" />
+      <VisitStatusCardSection lastVisit="2025-04-24" cafe={cafe} />
       <AboutSection title="About the café" description={cafe.aboutCafe} />
       <AboutSection title="About the coffee" description={cafe.aboutCoffee} />
       <SustainabilitySection list={cafe.sustainabilityFeatures} />
