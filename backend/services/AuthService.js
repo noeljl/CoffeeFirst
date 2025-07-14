@@ -14,7 +14,6 @@ class AuthService {
 
   async register(input) {
     console.log('input', input)
-
     const {
       password,
       firstName,
@@ -45,19 +44,41 @@ class AuthService {
     const membershipId = new mongoose.Types.ObjectId()
     const memberCardId = new mongoose.Types.ObjectId()
 
+    // Variablen für Cleanup
+    let createdMembership = null
+    let createdMemberCard = null
+    let createdMember = null
+
     try {
-      // a) Membership anlegen (zuerst mit temporärem Member-Wert)
+      // a) Member zuerst anlegen (mit temporären Referenzen)
+      const member = await this.membersModel.create({
+        firstName,
+        lastName,
+        email,
+        passwordHash,
+        subscribe,
+        membership: membershipId, // Verwende die vorbereitete ID
+        memberCard: memberCardId, // Verwende die vorbereitete ID
+        stripeCustomerId: input.customerId,
+        stripeSubscriptionId: input.subscriptionId,
+        paymentStatus: 'Success',
+        subscriptionPeriodEnd: input.subscriptionPeriodEnd,
+      })
+      createdMember = member
+
+      // b) Membership anlegen (mit der echten Member UUID)
       const membership = await MembershipModel.create({
         _id: membershipId,
-        member: 'temp', // Temporärer Wert, wird später aktualisiert
+        member: member.id, // Verwende die echte Member UUID
         chosenMembership: membershipType._id,
         startDate: now,
         endDate: end,
         payDate: now,
         coffeeQuotaLeft: membershipType.coffeeQuota ?? 0,
       })
+      createdMembership = membership
 
-      // b) MemberCard anlegen
+      // c) MemberCard anlegen
       const memberCard = await MemberCardModel.create({
         _id: memberCardId,
         name: `${firstName} ${lastName}`,
@@ -66,32 +87,29 @@ class AuthService {
         membershipTier: membershipType.membershipTier,
         membership: membership._id,
       })
-
-      // c) Member anlegen (mit allen erforderlichen Referenzen)
-      const member = await this.membersModel.create({
-        firstName,
-        lastName,
-        email,
-        passwordHash,
-        subscribe,
-        membership: membership._id,
-        memberCard: memberCard._id,
-        stripeCustomerId: input.customerId,
-        stripeSubscriptionId: input.subscriptionId,
-        paymentStatus: 'Success',
-        subscriptionPeriodEnd: input.subscriptionPeriodEnd,
-      })
-
-      // d) Membership mit der korrekten Member UUID aktualisieren
-      await MembershipModel.update(membership._id, {
-        member: member.id,
-      })
+      createdMemberCard = memberCard
 
       return member
     } catch (err) {
-      // Im Fehlerfall: optional Cleanup
+      // Im Fehlerfall: Cleanup der bereits erstellten Dokumente
       console.error('Registration failed, cleaning up:', err)
-      // z.B. Membership.deleteOne({ _id: membershipId }), usw.
+
+      try {
+        // Cleanup in umgekehrter Reihenfolge
+        if (createdMemberCard) {
+          await MemberCardModel.delete(createdMemberCard._id)
+        }
+        if (createdMembership) {
+          await MembershipModel.delete(createdMembership._id)
+        }
+        if (createdMember) {
+          await this.membersModel.delete(createdMember.id)
+        }
+      } catch (cleanupErr) {
+        console.error('Cleanup failed:', cleanupErr)
+        // Cleanup-Fehler sollten nicht den ursprünglichen Fehler überlagern
+      }
+
       throw createError(
         500,
         `Registration could not be completed: ${err.message}`

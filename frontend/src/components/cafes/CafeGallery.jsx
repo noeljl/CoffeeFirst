@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 import SingleCafeCard from './SingleCafeCard'
 import './CafeGallery.css'
-import { getAllCoffeeShops, getCoffeeShopsByDistrict } from '../../apis/coffeeshop'
+import {
+  getAllCoffeeShops,
+  getCoffeeShopsByDistrict,
+} from '../../apis/coffeeshop'
 
 function CafeGallery({ district, coffeeShops: providedCoffeeShops }) {
   const [coffeeShops, setCoffeeShops] = useState(providedCoffeeShops || [])
@@ -74,10 +77,15 @@ function CafeGallery({ district, coffeeShops: providedCoffeeShops }) {
         onMouseMove={handleMouseMove}
       >
         {coffeeShops.map((coffeeShop) => {
-          console.log('Coffee shop:', coffeeShop.name, 'Images:', coffeeShop.images)
+          console.log(
+            'Coffee shop:',
+            coffeeShop.name,
+            'Images:',
+            coffeeShop.images
+          )
           // Use environment variable for backend URL
           const backendUrl = 'http://localhost:3001'
-          const imageUrl = coffeeShop.images?.[0] 
+          const imageUrl = coffeeShop.images?.[0]
             ? `${backendUrl}${coffeeShop.images[0]}`
             : ''
           return (

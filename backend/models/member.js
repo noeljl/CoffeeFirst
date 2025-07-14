@@ -84,9 +84,8 @@ export class MembersModel {
       return await member.save()
     } catch (err) {
       if (err.code === 11000) {
-        throw new Error(
-          'A member with this email, Stripe ID, membership, or member card already exists.'
-        )
+        console.error('Duplicate key:', err.keyPattern, err.keyValue)
+        throw err // oder: throw createError(409, err.message);
       }
       if (err.name === 'ValidationError') {
         const errors = Object.values(err.errors).map((e) => e.message)
@@ -238,7 +237,7 @@ export class MembersModel {
     try {
       const member = await Member.findOneAndUpdate(
         { id: memberId },
-        { $addToSet: { [listType]: coffeeShopId } },
+        { $pull: { [listType]: coffeeShopId } }, // $pull statt $addToSet
         { new: true }
       ).exec()
       if (!member) throw new Error(`Member with ID ${memberId} not found.`)

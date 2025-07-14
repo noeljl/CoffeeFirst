@@ -46,7 +46,7 @@ function PaymentResult() {
     plan = plan || local.plan
   }
 
-  const performRegistration = async () => {
+  const performRegistration = async (sessionData) => {
     try {
       // Bereite Anmeldedaten für die Registrierung vor
       const credentials = {
@@ -56,10 +56,10 @@ function PaymentResult() {
         email,
         password,
         plan,
-        customerId,
-        subscriptionId,
-        paymentStatus,
-        subscriptionPeriodEnd,
+        customerId: sessionData.customer,
+        subscriptionId: sessionData.subscription,
+        paymentStatus: sessionData.status,
+        subscriptionPeriodEnd: sessionData.expires_at,
       }
 
       console.log('Here are the credentials', credentials)
@@ -99,16 +99,19 @@ function PaymentResult() {
       try {
         const session = await getCompleteSession(sessionId)
         console.log('Here is the session', session.payment_status)
+        console.log('sessionCustomer', session.customer)
+        console.log('sessionSubscription', session.subscription)
+        console.log('sessionStatus', session.status)
+        console.log('sessionExpiresAt', session.expires_at)
 
+        // State für UI-Anzeige setzen
         setCustomerId(session.customer)
         setSubscriptionId(session.subscription)
         setPaymentStatus(session.status)
         setSubscriptionPeriodEnd(session.expires_at)
 
-        // Warten bis Session-Daten gesetzt sind, dann registrieren
-        setTimeout(() => {
-          performRegistration()
-        }, 100)
+        // Registrierung mit Session-Daten direkt durchführen
+        await performRegistration(session)
       } catch (err) {
         console.error('Failed to fetch session:', err)
         setErrorMessage('Failed to fetch payment session')
