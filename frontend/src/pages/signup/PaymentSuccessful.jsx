@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Footer from '../../components/footer/Footer.jsx'
 import NavBar from '../../components/ui/navbar/Navbar.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { registerMemberAction } from '../../store/auth/Auth.actions.js'
+import { registerMemberAction, loginMemberAction } from '../../store/auth/Auth.actions.js'
 import { clearSignupForm } from '../../store/auth/signupSlice.js'
 import { getCompleteSession } from '../../apis/stripe.js'
 
@@ -65,6 +65,8 @@ function PaymentResult() {
       console.log('Here are the credentials', credentials)
 
       await dispatch(registerMemberAction(credentials)).unwrap()
+      // Automatischer Login nach erfolgreicher Registrierung
+      await dispatch(loginMemberAction({ email, password })).unwrap()
       dispatch(clearSignupForm())
       localStorage.removeItem('signupData')
       setRegistrationStatus('success')

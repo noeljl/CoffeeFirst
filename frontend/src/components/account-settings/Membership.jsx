@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import CancellationModal from '../cancellationModal/CancellationModal'
 import './Membership.css'
 import Button from '../../components/ui/buttons/Button.jsx'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getBillingPortal } from '../../apis/stripe.js'
 import { getMembershipByMemberId } from '../../apis/membership'
 import { resumeMembership } from '../../apis/membership'
 import Snackbar from '../ui/snackbar/Snackbar'
+import { getMembershipByMemberIDAction } from '../../store/accountSettings/AccountSettings.actions.js'
 
 const advantages = [
   'Large plan advantage 1',
@@ -25,10 +26,21 @@ export default function Membership() {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMsg, setSnackbarMsg] = useState('')
 
+  const dispatch = useDispatch()
   const currentUser = useSelector((state) => state.auth.member)
   const memberId = currentUser?._id
+  const membershipName = useSelector(
+    (state) => state.accountSettings.membership?.chosenMembership?.name
+  )
   const membershipId = currentUser?.membership
   const subscriptionId = currentUser?.stripeSubscriptionId
+
+  // Membership-Daten beim Mounten laden
+  useEffect(() => {
+    if (memberId) {
+      dispatch(getMembershipByMemberIDAction(memberId))
+    }
+  }, [memberId, dispatch])
 
   const fetchMembership = async () => {
     try {
@@ -126,12 +138,18 @@ export default function Membership() {
     setSnackbarOpen(true)
   }
 
+  const features = useSelector(
+    (state) => state.accountSettings.membership?.chosenMembership?.features
+  )
+
   return (
     <div className="membership-container">
       <h1 className="membership-title">Membership</h1>
 
       <section className="membership-section auto-renew">
-        <h2 className="membership-heading">CoffeeFirst Silver</h2>
+        <h2 className="membership-heading">
+          CoffeeFirst {membershipName || '...'}
+        </h2>
         <div className="membership-two-col">
           <p className="membership-text">
             {membership ? getRenewalText() : 'Loading...'}
@@ -164,28 +182,32 @@ export default function Membership() {
 
       <section className="membership-section plan-details">
         <p className="membership-text" style={{ fontWeight: 'bold' }}>
-          Thank you for subscribing to CoffeeFirst Silver! <br />
-          Your Silver subscription includes the following:
+          Thank you for subscribing to CoffeeFirst {membershipName}! <br />
+          Your {membershipName} subscription includes the following:
         </p>
         <ul className="plan-advantages">
-          {advantages.map((item, i) => (
-            <li key={i}>
-              <svg
-                className="check-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <polyline
-                  points="20 6 9 17 4 12"
-                  fill="none"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              {item}
-            </li>
-          ))}
+          {features && features.length > 0 ? (
+            features.map((feature, i) => (
+              <li key={i}>
+                <svg
+                  className="check-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                {feature}
+              </li>
+            ))
+          ) : (
+            <li>No features found.</li>
+          )}
         </ul>
       </section>
 
