@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import BurgerMenuButton from '../../ui/burger-menu/BurgerMenu'
 import Avatar from '../../ui/avatar/Avatar'
 import FilterButton from '../../ui/filter/Filter'
-import SearchBar from '../../ui/search-bar/SearchBar'
+import SearchBar from '../search-bar/SearchBar'
 import CheckInButton from '../../ui/check-in/CheckIn'
 import '../../../App.css'
 
@@ -96,7 +96,7 @@ function SignedIn({ searchFilter, setSearchFilter }) {
         }}
       />
 
-      <div className="gap">
+      <div className="gap-nav-middle">
         {/* Pass searchFilter to SearchBar */}
         <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
         <FilterButton />

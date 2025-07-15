@@ -62,7 +62,7 @@ function PartnersByDistrict() {
     }
     if (searchFilter.type === 'district') {
       // district clicked → show that district’s group
-      return groupedDistricts.filter(
+      return allDistricts.filter(
         group => group._id === searchFilter.name
       );
     }

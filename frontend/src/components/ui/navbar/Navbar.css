@@ -18,3 +18,8 @@
     display: flex;
     gap: 10px;
 }
+
+.gap-nav-middle {
+    display: flex;
+    gap: 43px;
+}
