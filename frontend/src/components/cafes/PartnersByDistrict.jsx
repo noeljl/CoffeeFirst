@@ -5,39 +5,31 @@ import { getAllCoffeeShopsGroupedByDistrict } from "../../apis/coffeeshop";
 //import SearchBar from "../../../components/ui/search-bar/SearchBar";
 //import SearchBar from "../ui/search-bar/SearchBar";
 import { SearchContext } from "../../contexts/SearchContext";
+import { useParams, useLocation } from "react-router-dom";
 
 function PartnersByDistrict() {
   // existing state
-  const [groupedDistricts, setGroupedDistricts] = useState([]);
-  const [loading, setLoading]                   = useState(true);
-  const [error, setError]                       = useState(null);
-  const [allDistricts, setAllDistricts]         = useState([]);
-  const [visibleCount, setVisibleCount]         = useState(3);
-  const [hasMore, setHasMore]                   = useState(true);
-  const observerRef                             = useRef();
+  const [allDistricts, setAllDistricts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef();
+  const location = useLocation();
+  const { searchFilter, setSearchFilter } = useContext(SearchContext);
 
-  // ─── NEW: track search-bar clicks ───
-  //const [searchFilter, setSearchFilter] = useState(null);
-  const { searchFilter } = useContext(SearchContext);
-  // infinite-scroll intersection observer
-  const lastDistrictRef = useCallback(node => {
-    if (loading) return;
-    if (observerRef.current) observerRef.current.disconnect();
-    observerRef.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setVisibleCount(prev => prev + 2);
-      }
-    }, { rootMargin: '200px' });
-    if (node) observerRef.current.observe(node);
-  }, [loading, hasMore]);
+  // On mount, sync filter from navigation state if present
+  useEffect(() => {
+    if (location.state && location.state.searchFilter) {
+      setSearchFilter(location.state.searchFilter);
+    }
+  }, [location.state, setSearchFilter]);
 
   // initial fetch
   useEffect(() => {
     getAllCoffeeShopsGroupedByDistrict()
       .then(data => {
         setAllDistricts(data);
-        setGroupedDistricts(data.slice(0, visibleCount));
-        setHasMore(data.length > visibleCount);
         setLoading(false);
       })
       .catch(err => {
@@ -46,19 +38,18 @@ function PartnersByDistrict() {
       });
   }, []);
 
-  // load more on visibleCount change
+  // load more on visibleCount change (for infinite scroll)
   useEffect(() => {
     if (allDistricts.length > 0) {
-      setGroupedDistricts(allDistricts.slice(0, visibleCount));
       setHasMore(visibleCount < allDistricts.length);
     }
   }, [visibleCount, allDistricts]);
 
-  // ─── NEW: derive what to render ───
+  // ─── Always compute what to render based on latest searchFilter and allDistricts ───
   const displayGroups = (() => {
     if (!searchFilter) {
       // no search → show paged/infinite groups
-      return groupedDistricts;
+      return allDistricts.slice(0, visibleCount);
     }
     if (searchFilter.type === 'district') {
       // district clicked → show that district’s group
@@ -67,23 +58,16 @@ function PartnersByDistrict() {
       );
     }
     // café clicked → find the shop and wrap as a single-group
-    /*const match = groupedDistricts
+    const matched = allDistricts
       .flatMap(group => group.coffeeShops)
-      .find(shop => shop.title === searchFilter.name);
-
-    return match
-      ? [{ _id: match.title, coffeeShops: [match] }]
-      : [];*/
-      const matched = groupedDistricts
-        .flatMap(group => group.coffeeShops)
-        .filter(shop =>
-            shop.name.toLowerCase().includes(
-                searchFilter.name.toLowerCase()
-            )
-        );
-      return matched.length > 0
-        ? [{ _id: `Results for "${searchFilter.name}"`, coffeeShops: matched }]
-        : [];
+      .filter(shop =>
+        shop.name.toLowerCase().includes(
+          searchFilter.name.toLowerCase()
+        )
+      );
+    return matched.length > 0
+      ? [{ _id: `Results for "${searchFilter.name}"`, coffeeShops: matched }]
+      : [];
   })();
 
   // loading / error states
@@ -98,7 +82,7 @@ function PartnersByDistrict() {
           key={districtGroup._id}
           // only attach infinite-scroll when NOT filtering
           ref={!searchFilter && idx === displayGroups.length - 1
-            ? lastDistrictRef
+            ? observerRef
             : null}
           style={{
             marginBottom: 48,

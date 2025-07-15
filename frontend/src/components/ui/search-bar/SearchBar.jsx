@@ -54,7 +54,7 @@ function SearchBar2() {
   const handleDistrictSelect = (districtName) => {
     setSearchFilter({ type: 'district', name: districtName });
     if (location.pathname !== '/dashboard/partners') {
-      navigate('/dashboard/partners');
+      navigate('/dashboard/partners', { state: { searchFilter: { type: 'district', name: districtName } } });
     }
     setModalOpen(false);
   };
