@@ -8,13 +8,13 @@
 
 .personal-info-container {
   flex: 1;
-  width: 95%;
+  width: 100%;
   max-width: none;
-  margin: 2rem auto;
-  padding: 3rem;
+  margin: 0; /* Removed margins to eliminate gaps */
+  padding: 0; /* Removed padding to eliminate gaps */
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0; /* Removed border radius since it's full width now */
+  box-shadow: none; /* Removed box shadow since it's integrated into layout */
 }
 
 .personal-info-title {
@@ -22,6 +22,7 @@
   font-weight: 700;
   margin-bottom: 2rem;
   color: #1a1a1a;
+  padding: 2rem 0 0 0; /* Add top padding only for title */
 }
 
 .info-list {
@@ -115,40 +116,37 @@
 
 /* New style for the round container around the image */
 .profile-image-round-wrapper {
-  width: 200px; /* Defines the size of the circular container */
-  height: 200px; /* Defines the size of the circular container */
-  border-radius: 50%; /* Makes the container circular */
-  overflow: hidden; /* **Wichtig:** Schneidet das Bild auf die runde Form zu */
-  display: flex; /* Für die Zentrierung des Bildes im Container */
-  justify-content: center; /* Zentriert horizontal */
-  align-items: center; /* Zentriert vertikal */
-  background-color: #f0f0f0; /* Hintergrundfarbe des "runden Ausschnitts" selbst */
-  border: 3px solid #ddd; /* Rand um den runden Ausschnitt */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Ein leichter Schatten für Tiefe */
-  margin-top: 1rem; /* Abstand nach oben, falls nötig */
-  margin-bottom: 1.5rem; /* Abstand nach unten, falls nötig */
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 3px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Stile für die Bilder innerhalb des runden Wrappers */
-.profile-pic-large, /* Das Bild im Bearbeitungsmodus */
+.profile-pic-large,
 .preview-img {
-  /* Das Bild im Ansichtsmodus */
-  width: 80%; /* Das Bild füllt die Breite des Wrappers */
-  height: 80%; /* Das Bild füllt die Höhe des Wrappers */
-  object-fit: cover; /* **Wichtig:** Skaliert das Bild so, dass es den Container füllt und dabei sein Seitenverhältnis beibehält. Teile können abgeschnitten werden. */
-  border-radius: 50%; /* Stellt sicher, dass das Bild selbst ebenfalls rund ist */
-  border: none; /* Entfernt jegliche Standardränder am Bild selbst */
-  box-shadow: none; /* Entfernt vorherige Schatten vom Bild, da der Wrapper diese nun hat */
-}
-
-.preview-img {
-  width: 100%; /* Image fills the wrapper */
-  height: 100%; /* Image fills the wrapper */
-  border-radius: 50%; /* Ensures the image itself is round */
+  width: 80%;
+  height: 80%;
   object-fit: cover;
-  /* Removed original border and vignette box-shadow from here */
-  border: none; /* No border directly on the image */
-  box-shadow: none; /* No vignette directly on the image */
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: none;
+  box-shadow: none;
 }
 
 .edit-button {
@@ -172,27 +170,25 @@
   width: 100%;
 }
 
-/* Input: oben extra Padding für das Label */
 .floating-input input {
   width: 100%;
-  padding: 2rem 1.2rem 1.2rem; /* Increased top, side, and bottom padding */
-  font-size: 1.1rem; /* Slightly larger font size */
+  padding: 2rem 1.2rem 1.2rem;
+  font-size: 1.1rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   background: #fff;
   box-sizing: border-box;
 }
 
-/* Label: absolut oben auf der Border */
 .floating-input label {
   position: absolute;
-  top: 0.6rem; /* Adjusted top position to match new padding */
-  left: 1.2rem; /* Adjusted left position to match new padding */
-  background: #fff; /* überdeckt die Border */
-  padding: 0 0.25rem; /* Luft um den Text */
-  font-size: 0.8rem; /* Slightly larger label font size */
-  color: #9ca3af; /* graues Label */
-  pointer-events: none; /* Klick geht ins Input */
+  top: 0.6rem;
+  left: 1.2rem;
+  background: #fff;
+  padding: 0 0.25rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  pointer-events: none;
   z-index: 1;
 }
 
@@ -213,7 +209,6 @@
   font-size: 0.9rem;
 }
 
-/* Save button styling */
 .button-group button:first-child,
 .personal-info-container button[class*='Button'] {
   color: white;
@@ -226,8 +221,14 @@
   transition: background-color 0.2s ease;
 }
 
-/* Delete account button styling */
-.personal-info-container > button:last-child {
+/* Delete account section styling */
+.delete-account-container {
+  padding: 2rem 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 2rem;
+}
+
+.delete-account-container button {
   background-color: #ef4444;
   color: white;
   border: none;
@@ -237,22 +238,21 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-top: 0.5rem;
 }
 
-.personal-info-container > button:last-child:hover {
+.delete-account-container button:hover {
   background-color: #dc2626;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .personal-info-container {
-    margin: 1rem;
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .personal-info-title {
     font-size: 1.75rem;
+    padding: 1rem 0 0 0;
   }
 
   .info-item {
@@ -275,8 +275,11 @@
 
 @media (max-width: 480px) {
   .personal-info-container {
-    margin: 0.5rem;
-    padding: 1rem;
+    padding: 0.5rem;
+  }
+
+  .personal-info-title {
+    padding: 0.5rem 0 0 0;
   }
 
   .info-item {

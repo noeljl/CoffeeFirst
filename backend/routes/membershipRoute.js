@@ -1,7 +1,7 @@
 // membershipRoutes.js
 import express from 'express'
 import createError from 'http-errors' // Make sure to import http-errors
-import MembershipService from '../services/membershipService.js'
+import MembershipService from '../services/memberShipService.js'
 
 const membershipRouter = express.Router()
 const membershipService = new MembershipService()

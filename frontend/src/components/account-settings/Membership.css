@@ -1,59 +1,52 @@
 /* src/pages/membership/Membership.css */
 
-.membership-settings-page {
+.membership-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #f8f9fa;
-}
-
-.membership-info-container {
-  flex: 1;
-  width: 95%;
+  width: 100%;
   max-width: none;
-  margin: 2rem auto;
-  padding: 3rem;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
 }
 
-.membership-info-title {
+.membership-title {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2rem;
   color: #1a1a1a;
 }
 
-.ms-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1a1a1a;
+.membership-section {
   margin-bottom: 2rem;
 }
 
-.ms-section {
-  margin-bottom: 2rem;
-}
-
-.ms-heading {
+.membership-heading {
   font-size: 1.25rem;
   font-weight: 600;
   color: #1a1a1a;
   margin-bottom: 0.5rem;
 }
 
-.ms-text {
+.membership-text {
   font-size: 0.95rem;
   color: #4a5568;
   margin: 0;
   line-height: 1.5;
 }
 
-.ms-divider {
+.membership-divider {
   border: none;
   border-top: 1px solid #e2e8f0;
   margin: 2rem 0;
+}
+
+.membership-two-col {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .plan-advantages {
@@ -77,42 +70,20 @@
   margin-right: 0.75rem;
 }
 
-.button-group {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.cancel-button {
-  background-color: #e53e3e;
-  color: #fff;
-  border: none;
-  padding: 0.8rem 1.6rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.cancel-button:hover {
-  background-color: #c53030;
-}
-
-.two-col-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .membership-container {
-    padding: 1.5rem;
+    padding: 0;
   }
-  .ms-title {
+
+  .membership-title {
     font-size: 1.75rem;
+  }
+
+  .membership-two-col {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }
 
@@ -120,9 +91,10 @@
   .plan-advantages li {
     font-size: 0.9rem;
   }
-  .cancel-button {
-    width: 100%;
-    text-align: center;
+
+  .membership-two-col {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 }
-

@@ -1,18 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './CancellationModal.css' // You'll need to create this CSS file
 import Button from '../../components/ui/buttons/Button.jsx'
 import { cancelMembership } from '../../apis/membership.js'
 import { useSelector } from 'react-redux'
+import { getMembershipByMemberIDAction } from '../../store/accountSettings/AccountSettings.actions.js'
+import { useDispatch } from 'react-redux'
 
-export default function CancellationModal({ isOpen, onClose, onContinue, onCancelSuccess }) {
-  const membeshipId = useSelector((state) => state.auth.member.membership)
-  const subscriptionId = useSelector((state) => state.auth.member.stripeSubscriptionId)
- 
+export default function CancellationModal({
+  isOpen,
+  onClose,
+  onContinue,
+  onCancelSuccess,
+}) {
+  const dispatch = useDispatch()
+  const membershipId = useSelector((state) => state.accountSettings.membership)
+  const member = useSelector((state) => state.auth.member)
+  const subscriptionId = member?.stripeSubscriptionId
+  const memberId = member?._id
+
+  // Add useEffect to fetch membership data when modal opens
+  useEffect(() => {
+    if (isOpen && memberId) {
+      console.log('Fetching membership for memberId:', memberId)
+      dispatch(getMembershipByMemberIDAction(memberId))
+    }
+  }, [isOpen, memberId, dispatch])
+
   if (!isOpen) return null
 
   const handleCancelMembership = async () => {
     try {
-      await cancelMembership(membeshipId, subscriptionId)
+      console.log('Ausgeführt CancellationModal')
+      console.log('member', member)
+      console.log('memberId', memberId)
+      console.log('subscriptionId', subscriptionId)
+      console.log('membershipId', membershipId)
+      
+      // Check if membership data is available
+      if (!membershipId) {
+        console.error('Membership data not available')
+        return
+      }
+
+      await cancelMembership(membershipId._id, subscriptionId)
       if (onCancelSuccess) onCancelSuccess() // <-- refetch membership
       onClose()
     } catch (error) {
@@ -41,12 +71,17 @@ export default function CancellationModal({ isOpen, onClose, onContinue, onCance
           </svg>
         </div>
         <h2>We're sorry to see you go!</h2>
-        <p>Your coffee journey doesn't have to end here."</p>
+        <p>Your coffee journey doesn't have to end here.</p>
         <div className="modal-buttons">
           <Button className="continue-button" bg="black" onClick={onContinue}>
             Continue
           </Button>
-          <Button className="cancel-button" bg="red" onClick={handleCancelMembership}>
+          <Button
+            className="cancel-button"
+            bg="red"
+            onClick={handleCancelMembership}
+            disabled={!membershipId?._id} // Disable button if membership data not loaded
+          >
             Cancel
           </Button>
         </div>

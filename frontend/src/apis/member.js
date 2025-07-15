@@ -22,10 +22,22 @@ export const getMemberByMail = async (mail) => {
 
 // Update a member's profile by ID
 export const updateMember = async (id, payload) => {
-  const { data } = await API.put(`member/${id}`, payload) // payload kann JSON ODER FormData sein
-  return data // z. B. { id, profilePicture, ... }
+  // Prüfen, ob der Payload ein FormData-Objekt ist
+  if (payload instanceof FormData) {
+    // Bei FormData den Content-Type explizit auf 'multipart/form-data' setzen.
+    // Axios (oder der Browser) fügt dann den notwendigen 'boundary'-Parameter hinzu.
+    const { data } = await API.put(`member/${id}`, payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return data
+  } else {
+    // Für normale JSON-Daten die Standard-Header verwenden
+    const { data } = await API.put(`member/${id}`, payload)
+    return data
+  }
 }
-
 // Update a member's profile by ID
 export const updateMemberByID = async (id, data) => {
   try {

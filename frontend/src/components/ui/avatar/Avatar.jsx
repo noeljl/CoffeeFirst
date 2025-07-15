@@ -27,7 +27,7 @@ function Avatar() {
         return profilePicture
       }
       // Construct the URL for local images
-      return `http://localhost:3001${profilePicture}`
+      return `http://localhost:3001/profileImages/${profilePicture}`
     }
     // Return default image if no profile picture is available
     return 'http://localhost:3001/profileImages/example_picture.jpeg'

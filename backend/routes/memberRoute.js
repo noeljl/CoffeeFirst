@@ -73,22 +73,24 @@ memberRouter.get('/mail/:mail', async (req, res, next) => {
   }
 })
 
-
 memberRouter.put(
   '/:id',
-  upload.single('profilePic'),
+  upload.single('profilePicture'),
   async (req, res, next) => {
     try {
       const { id } = req.params
 
       // File-Pfad ermitteln (nutzt dein UPLOAD_DIR!)
       const profilePicture = req.file
-        ? `/profileImages/${req.file.filename}` // öffentlich abrufbar
+        ? `/${req.file.filename}` // öffentlich abrufbar
         : undefined
 
       // Alle anderen Textfelder aus dem Request ebenfalls übernehmen
       const updateData = { ...req.body }
       if (profilePicture) updateData.profilePicture = profilePicture
+
+      console.log('req.file:', req.file)
+      console.log('req.body.profilePicture:', req.body.profilePicture)
 
       const updatedMember = await memberService.updateMemberByID(id, updateData)
 

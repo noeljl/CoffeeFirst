@@ -47,11 +47,11 @@ function PersonalInfo() {
   })
 
   // State für Profilbild-Upload
-  const [localProfilePicFile, setLocalProfilePicFile] = useState(null) // Speichert das File-Objekt
-  const [localProfilePicUrl, setLocalProfilePicUrl] = useState('') // Speichert die URL des aktuellen/neuen Bildes
-  const [imagePreview, setImagePreview] = useState(null) // Vorschau-URL für ausgewähltes Bild
+  const [localProfilePicFile, setLocalProfilePicFile] = useState(null)
+  const [localProfilePicUrl, setLocalProfilePicUrl] = useState('')
+  const [imagePreview, setImagePreview] = useState(null)
   const [isDragOver, setIsDragOver] = useState(false)
-  const [showUploadZone, setShowUploadZone] = useState(false) // Steuert die Sichtbarkeit der Upload-Zone
+  const [showUploadZone, setShowUploadZone] = useState(false)
 
   // Daten bei Authentifizierung und MemberId laden
   useEffect(() => {
@@ -60,33 +60,31 @@ function PersonalInfo() {
     }
   }, [isAuthenticated, memberId, dispatch])
 
-  // Redux-Daten in lokale States synchronisieren, wenn sie sich ändern
+  // Redux-Daten in lokale States synchronisieren
   useEffect(() => {
     setLocalFirstName(reduxFirstName || '')
     setLocalLastName(reduxLastName || '')
     setLocalEmail(reduxEmail || '')
-    setLocalProfilePicUrl(reduxProfilePicture || '') // Lokale URL mit Redux-Wert initialisieren
-    setImagePreview(null) // Vorschau beim Synchronisieren zurücksetzen
-    setShowUploadZone(false) // Upload-Zone beim Synchronisieren schließen
+    setLocalProfilePicUrl(reduxProfilePicture || '')
+    setImagePreview(null)
+    setShowUploadZone(false)
   }, [reduxFirstName, reduxLastName, reduxEmail, reduxProfilePicture])
 
   // Event-Handler
   const handleEdit = (field) => {
     setEditingField(field)
-    // Lokale States beim Bearbeiten mit Redux-Werten initialisieren
     setLocalFirstName(reduxFirstName || '')
     setLocalLastName(reduxLastName || '')
     setLocalEmail(reduxEmail || '')
     setLocalPassword({ current: '', new: '', confirm: '' })
-    setLocalProfilePicFile(null) // Bestehendes File-Objekt zurücksetzen
-    setLocalProfilePicUrl(reduxProfilePicture || '') // URL auf Redux-Wert zurücksetzen
+    setLocalProfilePicFile(null)
+    setLocalProfilePicUrl(reduxProfilePicture || '')
     setImagePreview(null)
     setShowUploadZone(false)
   }
 
   const handleCancel = () => {
     setEditingField(null)
-    // Lokale States auf ursprüngliche Redux-Werte zurücksetzen
     setLocalFirstName(reduxFirstName || '')
     setLocalLastName(reduxLastName || '')
     setLocalEmail(reduxEmail || '')
@@ -102,9 +100,7 @@ function PersonalInfo() {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
     const maxSize = 5 * 1024 * 1024 // 5MB
 
-    if (!file) {
-      return false // Keine Datei ausgewählt
-    }
+    if (!file) return false
 
     if (!allowedTypes.includes(file.type)) {
       alert('Bitte wählen Sie ein gültiges Bildformat (JPEG, PNG, GIF, WebP).')
@@ -119,7 +115,7 @@ function PersonalInfo() {
     return true
   }
 
-  // Bild-Upload Handler (für Datei-Input und Drag & Drop)
+  // Bild-Upload Handler
   const handleImageSelect = (file) => {
     if (!validateFile(file)) {
       setLocalProfilePicFile(null)
@@ -127,10 +123,7 @@ function PersonalInfo() {
       return
     }
 
-    setLocalProfilePicFile(file) // File-Objekt speichern
-    // setShowUploadZone(true); // Optional: Upload-Zone anzeigen, wenn ein Bild ausgewählt wurde
-
-    // Vorschau erstellen
+    setLocalProfilePicFile(file)
     const reader = new FileReader()
     reader.onload = (e) => {
       setImagePreview(e.target.result)
@@ -152,7 +145,6 @@ function PersonalInfo() {
   const handleDrop = (e) => {
     e.preventDefault()
     setIsDragOver(false)
-
     const files = e.dataTransfer.files
     if (files.length > 0) {
       handleImageSelect(files[0])
@@ -161,7 +153,7 @@ function PersonalInfo() {
 
   const handleSave = async () => {
     let updatedData = {}
-    let isFormData = false // Flag, um anzugeben, ob FormData verwendet wird
+    let isFormData = false
 
     try {
       switch (editingField) {
@@ -173,12 +165,10 @@ function PersonalInfo() {
           break
 
         case 'profilePicture': {
-          // Nur senden, wenn ein neues Bild ausgewählt wurde
           if (!localProfilePicFile) {
             setEditingField(null)
             return
           }
-
           const formData = new FormData()
           formData.append('profilePicture', localProfilePicFile)
           updatedData = formData
@@ -191,7 +181,6 @@ function PersonalInfo() {
           break
 
         case 'password': {
-          // 1) Plausibilitätsprüfungen im Browser
           if (
             !localPassword.current ||
             !localPassword.new ||
@@ -217,15 +206,14 @@ function PersonalInfo() {
             })
           ).unwrap()
 
-          alert('Passwort erfolgreich geändert!')
+          // alert('Passwort erfolgreich geändert!')
           break
         }
 
         default:
-          return // Wenn editingField nicht erkannt wird, nichts tun
+          return
       }
 
-      // Führen Sie den Dispatch nur aus, wenn updatedData nicht leer ist (außer bei FormData)
       if (Object.keys(updatedData).length > 0 || isFormData) {
         await dispatch(
           updateMemberByIDAction({
@@ -233,28 +221,25 @@ function PersonalInfo() {
             updatedFields: updatedData,
             isFormData,
           })
-        ).unwrap() // .unwrap() ermöglicht das Abfangen von Fehlern hier
+        ).unwrap()
       }
 
-      // Erfolgsmeldung für Passwortänderung, da sie keine direkte Datenaktualisierung im Redux-Store verursacht
-      if (editingField === 'password') {
-        alert('Passwort erfolgreich geändert!')
-      } else {
-        alert('Änderungen erfolgreich gespeichert!')
-      }
+      // if (editingField === 'password') {
+      //   alert('Passwort erfolgreich geändert!')
+      // } else {
+      //   alert('Änderungen erfolgreich gespeichert!')
+      // }
 
       setEditingField(null)
       setLocalProfilePicFile(null)
       setImagePreview(null)
-      setShowUploadZone(false) // Upload-Zone nach Speichern schließen
+      setShowUploadZone(false)
 
-      // Beim erfolgreichen Speichern des Bildes, die lokale URL aktualisieren, falls ein neues Bild hochgeladen wurde
       if (editingField === 'profilePicture' && imagePreview) {
         setLocalProfilePicUrl(imagePreview)
       }
     } catch (err) {
       console.error('Fehler beim Aktualisieren des Profils:', err)
-      // Verbesserte Fehlermeldung basierend auf dem Fehlerobjekt
       const errorMessage =
         err.message || 'Fehler beim Speichern. Bitte versuchen Sie es erneut.'
       alert(errorMessage)
@@ -293,352 +278,343 @@ function PersonalInfo() {
   // Aktuelles Bild für Anzeige ermitteln
   const getCurrentImageSrc = () => {
     if (imagePreview) {
-      return imagePreview // Wenn eine neue Datei ausgewählt wurde und eine Vorschau existiert
+      return imagePreview
     }
     if (localProfilePicUrl) {
-      // Wenn localProfilePicUrl eine relative Pfad ist (von Backend), dann vollständige URL erstellen
       return localProfilePicUrl.startsWith('http')
         ? localProfilePicUrl
-        : `http://localhost:3001/profileImages/${localProfilePicUrl}` // Annahme: Ihre Backend-URL
+        : `http://localhost:3001/profileImages${localProfilePicUrl}`
     }
-    // Standard-Profilbild, wenn keins vorhanden ist
     return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'
   }
 
   return (
-    <div className="personal-info-page">
-      <main className="personal-info-container">
-        <h1 className="personal-info-title">Personal information</h1>
+    <div className="personal-info-container">
+      <h1 className="personal-info-title">Personal information</h1>
 
-        {isLoading && <p>Loading…</p>}
-        {error && <p className="error-text">{error}</p>}
+      {isLoading && <p>Loading…</p>}
+      {error && <p className="error-text">{error}</p>}
 
-        <div className="info-list">
-          {/* LEGAL NAME */}
-          <div className="info-item">
-            {editingField === 'legalName' ? (
-              <>
-                <div className="info-header">
-                  <div>
-                    <h2 className="info-label">Legal Name</h2>
-                    <p className="info-value">
-                      We will need to verify your legal name before reservation.
-                    </p>
-                  </div>
-                  <button
-                    className="edit-button cancel-link"
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </button>
-                </div>
-
-                <div className="info-form">
-                  <div className="floating-input">
-                    <label htmlFor="firstName">First name on ID</label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={localFirstName}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="floating-input">
-                    <label htmlFor="lastName">Last name on ID</label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={localLastName}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="button-group">
-                  <Button onClick={handleSave} bg="black">
-                    Save
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="info-text">
-                  <span className="info-label">Legal Name</span>
-                  <span className="info-value">{`${reduxFirstName || ''} ${
-                    reduxLastName || ''
-                  }`}</span>
+      <div className="info-list">
+        {/* LEGAL NAME */}
+        <div className="info-item">
+          {editingField === 'legalName' ? (
+            <>
+              <div className="info-header">
+                <div>
+                  <h2 className="info-label">Legal Name</h2>
+                  <p className="info-value">
+                    We will need to verify your legal name before reservation.
+                  </p>
                 </div>
                 <button
-                  className="edit-button"
-                  onClick={() => handleEdit('legalName')}
+                  className="edit-button cancel-link"
+                  onClick={handleCancel}
                 >
-                  Edit
+                  Cancel
                 </button>
-              </>
-            )}
-          </div>
+              </div>
 
-          {/* PROFILE PICTURE */}
-          <div className="info-item">
-            {editingField === 'profilePicture' ? (
-              <>
-                <div className="info-header">
-                  <div>
-                    <h2 className="info-label">Profile Picture</h2>
-                    <p className="info-value">Keep your smile up to date</p>
-                  </div>
-                  <button
-                    className="edit-button cancel-link"
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </button>
+              <div className="info-form">
+                <div className="floating-input">
+                  <label htmlFor="firstName">First name on ID</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={localFirstName}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="floating-input">
+                  <label htmlFor="lastName">Last name on ID</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={localLastName}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="button-group">
+                <Button onClick={handleSave} bg="black">
+                  Save
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="info-text">
+                <span className="info-label">Legal Name</span>
+                <span className="info-value">{`${reduxFirstName || ''} ${
+                  reduxLastName || ''
+                }`}</span>
+              </div>
+              <button
+                className="edit-button"
+                onClick={() => handleEdit('legalName')}
+              >
+                Edit
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* PROFILE PICTURE */}
+        <div className="info-item">
+          {editingField === 'profilePicture' ? (
+            <>
+              <div className="info-header">
+                <div>
+                  <h2 className="info-label">Profile Picture</h2>
+                  <p className="info-value">Keep your smile up to date</p>
+                </div>
+                <button
+                  className="edit-button cancel-link"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              </div>
+
+              <div className="profile-pic-content">
+                <div
+                  className="profile-image-round-wrapper"
+                  style={{ textAlign: 'center', marginBottom: '20px' }}
+                >
+                  <img
+                    src={getCurrentImageSrc()}
+                    alt="Profilbild"
+                    style={{
+                      width: '150px',
+                      height: '150px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                    }}
+                  />
                 </div>
 
-                <div className="profile-pic-content">
-                  {/* Aktuelle Bildvorschau */}
-                  <div
-                    className="profile-image-round-wrapper"
-                    style={{ textAlign: 'center', marginBottom: '20px' }}
-                  >
-                    <img
-                      src={getCurrentImageSrc()}
-                      alt="Profilbild"
-                      style={{
-                        width: '150px',
-                        height: '150px',
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                  </div>
-
-                  {/* Drag & Drop Zone */}
-                  <div
-                    className={`image-upload-zone ${
-                      isDragOver ? 'drag-over' : ''
-                    }`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()} // Öffnet Dateiauswahl bei Klick
+                <div
+                  className={`image-upload-zone ${
+                    isDragOver ? 'drag-over' : ''
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    border: '2px dashed #ccc',
+                    borderRadius: '8px',
+                    padding: '20px',
+                    textAlign: 'center',
+                    marginBottom: '20px',
+                    backgroundColor: isDragOver ? '#f0f8ff' : '#fafafa',
+                    borderColor: isDragOver ? '#007bff' : '#ccc',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept="image/jpeg,image/png,image/gif,image/webp"
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                  />
+                  <p style={{ margin: '0', color: '#666' }}>
+                    {isDragOver
+                      ? 'Bild hier ablegen...'
+                      : 'Ziehen Sie ein Bild hierher oder klicken Sie zum Auswählen'}
+                  </p>
+                  <p
                     style={{
-                      border: '2px dashed #ccc',
-                      borderRadius: '8px',
-                      padding: '20px',
-                      textAlign: 'center',
-                      marginBottom: '20px',
-                      backgroundColor: isDragOver ? '#f0f8ff' : '#fafafa',
-                      borderColor: isDragOver ? '#007bff' : '#ccc',
-                      cursor: 'pointer',
+                      fontSize: '12px',
+                      color: '#999',
+                      margin: '10px 0 0 0',
                     }}
                   >
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      accept="image/jpeg,image/png,image/gif,image/webp"
-                      onChange={handleChange}
-                      style={{ display: 'none' }}
-                    />
-                    <p style={{ margin: '0', color: '#666' }}>
-                      {isDragOver
-                        ? 'Bild hier ablegen...'
-                        : 'Ziehen Sie ein Bild hierher oder klicken Sie zum Auswählen'}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: '12px',
-                        color: '#999',
-                        margin: '10px 0 0 0',
-                      }}
-                    >
-                      Unterstützte Formate: JPEG, PNG, GIF, WebP (max. 5MB)
-                    </p>
-                  </div>
+                    Unterstützte Formate: JPEG, PNG, GIF, WebP (max. 5MB)
+                  </p>
                 </div>
+              </div>
 
-                <div className="button-group">
-                  {/* "Remove picture" nur anzeigen, wenn ein Bild vorhanden ist */}
-                  {(localProfilePicFile || localProfilePicUrl) && (
-                    <Button
-                      onClick={() => {
-                        setLocalProfilePicFile(null)
-                        setLocalProfilePicUrl('')
-                        setImagePreview(null)
-                        if (fileInputRef.current)
-                          fileInputRef.current.value = '' // Dateiauswahlfeld zurücksetzen
-                      }}
-                      bg="red"
-                      radius="small"
-                    >
-                      Remove picture
-                    </Button>
-                  )}
-
-                  {/* Save-Button nur anzeigen, wenn ein neues File ausgewählt wurde */}
-                  {localProfilePicFile && (
-                    <Button
-                      bg="black"
-                      onClick={handleSave}
-                      style={{ marginLeft: '0.5rem' }}
-                    >
-                      Save
-                    </Button>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="info-text">
-                  <span className="info-label">Profile Picture</span>
-                  <span className="info-value">Keep your smile up to date</span>
-                </div>
-                <button
-                  className="edit-button"
-                  onClick={() => handleEdit('profilePicture')}
-                >
-                  Edit
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* EMAIL */}
-          <div className="info-item">
-            {editingField === 'email' ? (
-              <>
-                <div className="info-header">
-                  <div>
-                    <h2 className="info-label">Email</h2>
-                    <p className="info-value">How can we contact you?</p>
-                  </div>
-                  <button
-                    className="edit-button cancel-link"
-                    onClick={handleCancel}
+              <div className="button-group">
+                {(localProfilePicFile || localProfilePicUrl) && (
+                  <Button
+                    onClick={() => {
+                      setLocalProfilePicFile(null)
+                      setLocalProfilePicUrl('')
+                      setImagePreview(null)
+                      if (fileInputRef.current) fileInputRef.current.value = ''
+                    }}
+                    bg="red"
+                    radius="small"
                   >
-                    Cancel
-                  </button>
-                </div>
+                    Remove picture
+                  </Button>
+                )}
 
-                <div className="info-form">
-                  <div className="floating-input">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={localEmail}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="button-group">
-                  <Button bg="black" onClick={handleSave}>
+                {localProfilePicFile && (
+                  <Button
+                    bg="black"
+                    onClick={handleSave}
+                    style={{ marginLeft: '0.5rem' }}
+                  >
                     Save
                   </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="info-text">
-                  <span className="info-label">Email</span>
-                  <span className="info-value">{reduxEmail || ''}</span>
-                </div>
-                <button
-                  className="edit-button"
-                  onClick={() => handleEdit('email')}
-                >
-                  Edit
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* PASSWORD */}
-          <div className="info-item">
-            {editingField === 'password' ? (
-              <>
-                <div className="info-header">
-                  <div>
-                    <h2 className="info-label">Password</h2>
-                    <p className="info-value">Please choose a safe password</p>
-                  </div>
-                  <button
-                    className="edit-button cancel-link"
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </button>
-                </div>
-
-                <div className="info-form">
-                  <div className="floating-input">
-                    <label htmlFor="currentPassword">Current Password</label>
-                    <input
-                      type="password"
-                      id="currentPassword"
-                      name="password.current"
-                      placeholder="Current Password"
-                      value={localPassword.current}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="floating-input">
-                    <label htmlFor="newPassword">New Password</label>
-                    <input
-                      type="password"
-                      id="newPassword"
-                      name="password.new"
-                      placeholder="New Password"
-                      value={localPassword.new}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="floating-input">
-                    <label htmlFor="confirmNewPassword">Confirm Password</label>
-                    <input
-                      type="password"
-                      id="confirmNewPassword"
-                      name="password.confirm"
-                      placeholder="Confirm new Password"
-                      value={localPassword.confirm}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="button-group">
-                  <Button bg="black" onClick={handleSave}>
-                    Save
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="info-text">
-                  <span className="info-label">Password</span>
-                  <span className="info-value">••••••••••</span>
-                </div>
-                <button
-                  className="edit-button"
-                  onClick={() => handleEdit('password')}
-                >
-                  Edit
-                </button>
-              </>
-            )}
-          </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="info-text">
+                <span className="info-label">Profile Picture</span>
+                <span className="info-value">Keep your smile up to date</span>
+              </div>
+              <button
+                className="edit-button"
+                onClick={() => handleEdit('profilePicture')}
+              >
+                Edit
+              </button>
+            </>
+          )}
         </div>
 
-        <div className="delete-account-container">
-          <Button bg="red" radius="small" padding="medium" fw="bold">
-            Delete account
-          </Button>
+        {/* EMAIL */}
+        <div className="info-item">
+          {editingField === 'email' ? (
+            <>
+              <div className="info-header">
+                <div>
+                  <h2 className="info-label">Email</h2>
+                  <p className="info-value">How can we contact you?</p>
+                </div>
+                <button
+                  className="edit-button cancel-link"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              </div>
+
+              <div className="info-form">
+                <div className="floating-input">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={localEmail}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="button-group">
+                <Button bg="black" onClick={handleSave}>
+                  Save
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="info-text">
+                <span className="info-label">Email</span>
+                <span className="info-value">{reduxEmail || ''}</span>
+              </div>
+              <button
+                className="edit-button"
+                onClick={() => handleEdit('email')}
+              >
+                Edit
+              </button>
+            </>
+          )}
         </div>
-      </main>
+
+        {/* PASSWORD */}
+        <div className="info-item">
+          {editingField === 'password' ? (
+            <>
+              <div className="info-header">
+                <div>
+                  <h2 className="info-label">Password</h2>
+                  <p className="info-value">Please choose a safe password</p>
+                </div>
+                <button
+                  className="edit-button cancel-link"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              </div>
+
+              <div className="info-form">
+                <div className="floating-input">
+                  <label htmlFor="currentPassword">Current Password</label>
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    name="password.current"
+                    placeholder="Current Password"
+                    value={localPassword.current}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="floating-input">
+                  <label htmlFor="newPassword">New Password</label>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    name="password.new"
+                    placeholder="New Password"
+                    value={localPassword.new}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="floating-input">
+                  <label htmlFor="confirmNewPassword">Confirm Password</label>
+                  <input
+                    type="password"
+                    id="confirmNewPassword"
+                    name="password.confirm"
+                    placeholder="Confirm new Password"
+                    value={localPassword.confirm}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="button-group">
+                <Button bg="black" onClick={handleSave}>
+                  Save
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="info-text">
+                <span className="info-label">Password</span>
+                <span className="info-value">••••••••••</span>
+              </div>
+              <button
+                className="edit-button"
+                onClick={() => handleEdit('password')}
+              >
+                Edit
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="delete-account-container">
+        <Button bg="red" radius="small" padding="medium" fw="bold">
+          Delete account
+        </Button>
+      </div>
     </div>
   )
 }
