@@ -80,6 +80,10 @@ function ReviewSummarySection({ ratings }) {
             <p className="ratingLabel">Date Spot</p>
             <p className="ratingValue">{ratings.tags.dateSpot}</p>
           </div>
+          <div className="ratingItem">
+            <p className="ratingLabel">Pet Friendly</p>
+            <p className="ratingValue">{ratings.tags.petFriendly}</p>
+          </div>
         </div>
       </div>
     </section >

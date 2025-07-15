@@ -10,6 +10,7 @@ import CoffeeVariantsSection from "./CoffeeVariantsSection.jsx";
 import CafeOffersSection from "./CafeOffersSection.jsx";
 import ReviewSummarySection from "./ReviewSummarySection.jsx";
 import MapEmbedSection from "./MapEmbedSection.jsx";
+import ReviewSummaryContainer from "./ReviewSummaryContainer";
 
 function CafePage() {
   const { cafeSlug } = useParams();
@@ -44,7 +45,8 @@ function CafePage() {
       <SustainabilitySection list={cafe.sustainabilityFeatures} />
       <CoffeeVariantsSection list={cafe.coffeeTypes} />
       <CafeOffersSection list={cafe.amenities} />
-      {/* <ReviewSummarySection ratings={cafe.averageRating} /> */}
+      {console.log("CafePage: cafe._id =", cafe._id)} {/* Debug log */}
+      <ReviewSummaryContainer coffeeShopId={cafe._id} />
       <MapEmbedSection coords={cafe.coords} />
     </>
   );

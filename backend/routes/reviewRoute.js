@@ -17,7 +17,12 @@ reviewRouter.post('/', async (req, res, next) => {
     throw createError(401, 'Unauthorized')
   }
   try {
-    const review = await reviewService.createReview(req.body)
+    // Add the member ID from the authenticated user
+    const reviewData = {
+      ...req.body,
+      member: req.user._id // Add the member ID from the authenticated user
+    };
+    const review = await reviewService.createReview(reviewData)
     res.status(201).json(review)
   } catch (error) {
     // Pass the error to the next middleware (error handler)
@@ -103,5 +108,67 @@ reviewRouter.delete('/:id', async (req, res, next) => {
     next(error)
   }
 })
+
+// Get review summary for a coffee shop
+reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) => {
+  try {
+    const reviews = await reviewService.getReviewsByCoffeeShopId(req.params.coffeeShopId);
+
+    if (!reviews.length) {
+      return res.json({ count: 0 });
+    }
+
+    // Helper to calculate mean
+    const mean = arr => arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1) : null;
+    // Helper to calculate mode
+    const mode = arr => {
+      if (!arr.length) return null;
+      const freq = {};
+      arr.forEach(val => { freq[val] = (freq[val] || 0) + 1; });
+      return Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0];
+    };
+
+    // Gather all numeric ratings for overall mean
+    const allNumericRatings = reviews
+      .map(r => [r.taste, r.presentation, r.serviceFriendliness])
+      .flat()
+      .filter(Number.isFinite);
+
+    // Gather all values for each field
+    const tasteArr = reviews.map(r => r.taste).filter(Number.isFinite);
+    const presentationArr = reviews.map(r => r.presentation).filter(Number.isFinite);
+    const temperatureArr = reviews.map(r => r.temperature);
+    const vibeArr = reviews.map(r => r.vibe);
+    const aestheticsArr = reviews.map(r => r.aesthetics);
+    const serviceFriendlinessArr = reviews.map(r => r.serviceFriendliness).filter(Number.isFinite);
+    const pricingArr = reviews.map(r => r.pricing);
+    const ecoFriendlyArr = reviews.map(r => r.ecoFriendly);
+    const veganFriendlyArr = reviews.map(r => r.veganFriendly);
+    const instagramArr = reviews.map(r => r.instagram);
+    const greatForStudyingArr = reviews.map(r => r.greatForStudying);
+    const dateSpotArr = reviews.map(r => r.dateSpot);
+    const petFriendlyArr = reviews.map(r => r.petFriendly);
+
+    res.json({
+      count: reviews.length,
+      overallRating: mean(allNumericRatings), // Overall mean of all numeric ratings
+      avgTaste: mean(tasteArr),
+      avgPresentation: mean(presentationArr),
+      temperature: mode(temperatureArr),
+      vibe: mode(vibeArr),
+      aesthetics: mode(aestheticsArr),
+      avgServiceFriendliness: mean(serviceFriendlinessArr),
+      pricing: mode(pricingArr),
+      ecoFriendly: mode(ecoFriendlyArr),
+      veganFriendly: mode(veganFriendlyArr),
+      instagram: mode(instagramArr),
+      greatForStudying: mode(greatForStudyingArr),
+      dateSpot: mode(dateSpotArr),
+      petFriendly: mode(petFriendlyArr),
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default reviewRouter

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import { ReviewTopic } from './enums.js'
 
+
 // --- Enums ---
 
 // NEW: ReviewTopic Enum as per UML diagram
@@ -31,9 +32,6 @@ const ReviewSchema = new mongoose.Schema(
       default: '',
       maxlength: [1000, 'Comment cannot exceed 1000 characters.'], // Added max length
     },
-    // REMOVED: 'createdDate' field. Relying on 'createdAt' from timestamps.
-    // The UML 'date' maps directly to 'createdAt'.
-
     // NEW: Subject uses ReviewTopic Enum as per UML
     subject: {
       type: String,
@@ -42,6 +40,20 @@ const ReviewSchema = new mongoose.Schema(
       default: ReviewTopic.OVERALL, // Set a default subject if desired
       required: true, // Assuming a review subject is always required
     },
+    // Additional review fields
+    taste: { type: Number, min: 1, max: 5 },
+    presentation: { type: Number, min: 1, max: 5 },
+    temperature: { type: Boolean }, // true = Yes, false = No
+    vibe: { type: String, enum: ['cozy', 'vibrant'] },
+    aesthetics: { type: Boolean }, // true = Yes, false = No
+    serviceFriendliness: { type: Number, min: 1, max: 5 },
+    pricing: { type: String, enum: ['€', '€€', '€€€'] },
+    ecoFriendly: { type: Boolean }, // true = Yes, false = No
+    veganFriendly: { type: Boolean }, // true = Yes, false = No
+    instagram: { type: Boolean }, // true = Yes, false = No
+    greatForStudying: { type: Boolean }, // true = Yes, false = No
+    dateSpot: { type: Boolean }, // true = Yes, false = No
+    petFriendly: { type: Boolean }, // true = Yes, false = No
   },
   {
     timestamps: true, // Adds createdAt and updatedAt automatically. 'createdAt' will serve as the 'date' from UML.

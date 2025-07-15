@@ -36,20 +36,39 @@
 .ratingsContainer {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     gap: 50px;
+    margin-top: 0.5rem;
 }
 
 .ratingItem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+    display: block;
+    text-align: center;
     border-right: 1px solid #D4D4D4;
     padding-right: 50px;
+    min-width: 120px;
+    width: 120px;
 }
 
 .ratingItem,p {
     margin: 0;
     padding: 0;
+    text-align: center;
+}
+
+.ratingLabel {
+    text-align: center;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+}
+
+.ratingValue {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 0.2rem;
+    display: block;
+    width: 100%;
 }

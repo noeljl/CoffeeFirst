@@ -59,3 +59,12 @@ export const deleteReview = async (id) => {
     throw err.response?.data || err.message
   }
 }
+
+export async function fetchReviewSummary(coffeeShopId) {
+  try {
+    const response = await API.get(`review/coffee-shop/${coffeeShopId}/summary`);
+    return response.data;
+  } catch (err) {
+    throw err.response?.data || err.message;
+  }
+}

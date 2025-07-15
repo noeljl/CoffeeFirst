@@ -1,11 +1,11 @@
 // RatingModal.jsx
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Review.css";
-import coffeeImage from "../../assets/png/hero-background.jpg"; // image for the review pop-up 
+import coffeeImage from "../../assets/png/coffee-cup.png"; // image for the review pop-up 
 import Icons from "../../assets/Icons";
 import axios from "axios"; // or use your API utility
 import Button from "../ui/buttons/Button"; // At the top if not already imported
-import { useEffect } from "react";
+import { createReview } from "../../apis/review"; // Import the API function
 
 function Review({ onClose, cafe }) {
   // State for all rating options
@@ -30,13 +30,28 @@ function Review({ onClose, cafe }) {
 
   const handleSave = async () => {
     try {
-      await axios.post("/api/reviews", {
-        coffeeShop: cafe._id, // or cafe.id
-        rating: ratings.taste, // or average, or send both
+      await createReview({
+        coffeeShop: cafe._id,
+        rating: ratings.taste || 1, // Use taste as the main rating
         comment,
-        subject: "TASTE", // or another subject
-        servedAtRightTemp, // send this value to backend if needed
-        // Add member info if needed (from auth context/store)
+        subject: "Coffee Quality",
+        // Coffee Quality
+        taste: ratings.taste,
+        presentation: ratings.presentation,
+        temperature: servedAtRightTemp,
+        // Café Experience
+        vibe: vibe,
+        aesthetics: aesthetics,
+        serviceFriendliness: ratings.serviceFriendliness,
+        pricing: ratings.pricing === 1 ? '€' : ratings.pricing === 2 ? '€€' : '€€€',
+        // Sustainability
+        ecoFriendly: ecoFriendly,
+        veganFriendly: veganFriendly,
+        // Community-Based Tags
+        instagram: instagram,
+        greatForStudying: greatForStudying,
+        dateSpot: dateSpot,
+        petFriendly: petFriendly,
       });
       onClose();
     } catch (err) {
