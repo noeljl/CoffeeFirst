@@ -39,7 +39,6 @@ export default function Membership() {
           <h2 className="ms-heading">Next auto-renew</h2>
           <p className="ms-text">Your plan auto-renews on Jun 18, 2025</p>
         </section>
-        <hr className="ms-divider" />
         <section className="ms-section plan-details">
           <h2 className="ms-heading">CoffeeFirst Silver</h2>
           <p className="ms-text">
@@ -67,7 +66,6 @@ export default function Membership() {
             ))}
           </ul>
         </section>
-        <hr className="ms-divider" />
         <Button bg="red" radius="small" padding="medium" fw="bold">
           Cancel membership
         </Button>

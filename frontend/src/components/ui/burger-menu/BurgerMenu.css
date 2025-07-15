@@ -19,15 +19,15 @@
 /* Menu styling*/
 .burger-menu {
   position: absolute;
-  top: 95px;
-  /* adjust depending on your header height */
-  right: 0px;
+  top: 70px;
+  right: 24px;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 323px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  width: 340px;
   z-index: 1000;
-  padding: 16px 0;
+  padding: 18px 0;
+  border: none;
 }
 
 .burger-menu ul {
@@ -39,10 +39,13 @@
 .burger-menu li {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
+  gap: 16px;
+  padding: 18px 28px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.18s;
+  font-size: 1.13rem;
+  font-weight: 500;
+  border-radius: 12px;
 }
 
 .burger-menu li:hover {
@@ -50,21 +53,32 @@
 }
 
 .burger-menu img {
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
 }
 
 .entries {
-  display: grid;
-  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  border-radius: 12px;
+  font-size: 1.13rem;
+  font-weight: 500;
 }
 
 #icon {
-  flex: 20%;
+  margin-right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #title {
-  flex: 80%;
+  font-size: 1.13rem;
+  font-weight: 500;
+  color: #222;
+  text-align: left;
 }
 
 #active {
@@ -72,5 +86,17 @@
 }
 
 .border {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1.5px solid #eee;
+  margin-bottom: 4px;
+}
+
+/* Add overlay for burger menu */
+.burger-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
 }

@@ -12,7 +12,12 @@ function BurgerMenuButton() {
       <button className="menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
         <img src={Icons.menu} alt="Menu" draggable={false}/>
       </button>
-      {isMenuOpen && <Menu onClose={() => setIsMenuOpen(false)} />}
+      {isMenuOpen && (
+        <>
+          <div className="burger-menu-overlay" onClick={() => setIsMenuOpen(false)} />
+          <Menu onClose={() => setIsMenuOpen(false)} />
+        </>
+      )}
     </div>
   );
 };
