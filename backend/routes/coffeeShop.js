@@ -5,11 +5,13 @@ import CoffeeShopService from '../services/coffeeShopService.js'
 const coffeeShopRouter = express.Router()
 const coffeeShopService = new CoffeeShopService()
 import createError from 'http-errors'
+import { getFilteredCoffeeShops } from '../services/coffeeShopService.js'
 
 // Middleware to handle async errors (optional, but good practice)
 // If you have a global error handler for express, you can remove individual try/catch blocks
 // and just let async functions throw errors, which will be caught by the global handler.
 // For now, I'll include try/catch for explicit handling within each route.
+
 
 /**
  * @route POST /api/coffeeshops
@@ -42,7 +44,14 @@ coffeeShopRouter.get('/', async (req, res, next) => {
     next(error)
   }
 })
-
+coffeeShopRouter.get('/filter', async (req, res, next) => {
+  try {
+    const filteredCoffeeShops = await getFilteredCoffeeShops(req.query)
+    res.status(200).json(filteredCoffeeShops)
+  } catch (error) {
+    next(error)
+  }
+})
 /**
  * @route GET /api/coffeeshops/by-name/:name
  * @desc Get a coffee shop by name
@@ -190,17 +199,6 @@ coffeeShopRouter.delete('/:id/variants/:variantId', async (req, res, next) => {
         req.params.variantId
       )
     res.status(200).json(updatedCoffeeShop)
-  } catch (error) {
-    next(error)
-  }
-})
-
-coffeeShopRouter.get('/filter', async (req, res, next) => {
-  try {
-    const filteredCoffeeShops = await coffeeShopService.getFilteredCoffeeShops(
-      req.query
-    )
-    res.status(200).json(filteredCoffeeShops)
   } catch (error) {
     next(error)
   }

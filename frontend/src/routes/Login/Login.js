@@ -8,26 +8,36 @@ import * as Yup from 'yup'
 
 import { loginMemberAction } from '../../store/auth/Auth.actions.js'
 
+
+
 const { Content } = Layout
 
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { error } = useSelector((state) => state.auth)
+  const { member } = useSelector((state) => state.auth)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (member) {
+      navigate('/home')  // or wherever you want
+    }
+  }, [member, navigate])
 
   // Login handler
   const handleLogin = async (credentials) => {
-    try {
-      console.log(credentials)
-      setIsLoading(true)
-      await dispatch(loginMemberAction(credentials))
-      setIsLoading(false)
-      navigate('/home')
-    } catch (err) {
-      setIsLoading(false)
-    }
+   setIsLoading(true)
+  const result = await dispatch(loginMemberAction(credentials))
+  setIsLoading(false)
+
+  if (loginMemberAction.fulfilled.match(result)) {
+    console.log("✅ Login successful. Navigating to /home")
+    navigate('/home')
+  } else {
+    console.warn("❌ Login failed:", result)
   }
+}
+
 
   const loginSchema = Yup.object().shape({
     email: Yup.string()

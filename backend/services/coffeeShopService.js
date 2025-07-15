@@ -1,15 +1,17 @@
 // CoffeeShopService.js
+import mongooseModel from '../models/coffeeShop.js'
 import createError from 'http-errors'
 import CoffeeShopModel from '../models/coffeeShop.js' // Assuming CoffeeShopModel is in a file named coffeeShopModel.js
 import CoffeeVariant from '../models/coffeeVariant.js'
-import CoffeeShop from '../models/coffeeShop.js'
+import { CoffeeShop } from '../models/coffeeShop.js'
+
 
 // Mapping of frontend coffee variant labels to enum values used in the DB
 const frontendLabelToCoffeeType = {
-  Espresso: 'Espresso',
+  'Espresso': 'Espresso',
   'Flat White': 'Flat White',
   'Cold Brew': 'Cold Brew',
-  Cappuccino: 'Cappuccino',
+  'Cappuccino': 'Cappuccino',
 }
 
 class CoffeeShopService {
@@ -340,45 +342,56 @@ class CoffeeShopService {
   }
 }
 
-export async function getFilteredCoffeeShops({
-  offers = [],
-  coffeeVariants = [],
-}) {
-  const filter = {}
+export const getFilteredCoffeeShops = async (query) => {
+  try {
+    // Normalize query parameters to arrays
+    const offers = query.offers
+      ? Array.isArray(query.offers)
+        ? query.offers
+        : [query.offers]
+      : [];
+    
+    const coffeeVariants = query.coffeeVariants
+      ? Array.isArray(query.coffeeVariants)
+        ? query.coffeeVariants
+        : [query.coffeeVariants]
+      : [];
+    
+    const sustainability = query.sustainability
+      ? Array.isArray(query.sustainability)
+        ? query.sustainability
+        : [query.sustainability]
+      : [];
 
-  // Normalize offers into an array
-  const offersArray = Array.isArray(offers) ? offers : [offers]
-  if (offersArray.length > 0) {
-    filter.features = { $all: offersArray } // ← Match all selected offers
-  }
+    // Build MongoDB filter object
+    const filter = {};
 
-  const variantsArray = Array.isArray(coffeeVariants)
-    ? coffeeVariants
-    : [coffeeVariants]
-  if (variantsArray.length > 0) {
-    const frontendLabelToCoffeeType = {
-      Espresso: 'Espresso',
-      'Flat White': 'Flat White',
-      'Cold Brew': 'Cold Brew',
-      Cappuccino: 'Cappuccino',
+    // Filter by amenities (offers)
+    if (offers.length > 0) {
+      filter.amenities = { $all: offers };
     }
 
-    const coffeeTypes = variantsArray
-      .map((label) => frontendLabelToCoffeeType[label])
-      .filter(Boolean)
+    // Filter by sustainability features
+    if (sustainability.length > 0) {
+      filter.sustainabilityFeatures = { $all: sustainability };
+    }
 
-    const matchingVariants = await CoffeeVariant.find({
-      coffeeType: { $in: coffeeTypes },
-    }).select('coffeeShop')
+    // Filter by coffee types
+    if (coffeeVariants.length > 0) {
+      filter.coffeeTypes = { $all: coffeeVariants };
+    }
 
-    const matchingShopIds = [
-      ...new Set(matchingVariants.map((v) => v.coffeeShop.toString())),
-    ]
-
-    filter._id = { $in: matchingShopIds }
+    // Use the CoffeeShopModel to find matching coffee shops
+    const coffeeShops = await CoffeeShopModel.find(filter);
+    
+    console.log('Filter query:', filter);
+    console.log('Found coffee shops:', coffeeShops.length);
+    
+    return coffeeShops;
+  } catch (error) {
+    console.error('Error in getFilteredCoffeeShops:', error);
+    throw error;
   }
-
-  return await CoffeeShop.find(filter)
-}
+};
 
 export default CoffeeShopService

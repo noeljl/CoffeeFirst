@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import CafeGallery from "../cafes/CafeGallery";
 import PartnersByDistrict from "../cafes/PartnersByDistrict";
 import FavoriteWishlist from "../favorite-wishlist/FavoriteWishlist";
@@ -6,6 +6,8 @@ import FavoriteWishlist from "../favorite-wishlist/FavoriteWishlist";
 // import EmptyState from "../states/EmptyState"; // Optional fallback
 
 function Dashboard() {
+  const location = useLocation();
+  const filteredShops = location.state?.filteredShops;
   const { section } = useParams();
 
   const sectionMap = {

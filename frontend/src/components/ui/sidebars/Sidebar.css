@@ -5,20 +5,25 @@ h2 {
   height: auto;
   width: 100%;
   padding: 0;
-  display: grid;
-  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: none;
 }
 
 .sidebarEntries {
   width: 100%;
-  height: 50px;
+  height: 48px;
   list-style-type: none;
   margin: 0;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 12px;
+  padding: 0 16px;
+  gap: 14px;
+  background: none;
+  transition: background 0.15s;
 }
 
 .sidebarEntries:hover {
@@ -26,11 +31,23 @@ h2 {
   cursor: pointer;
 }
 
+#active {
+  background-color: #F7F7F7;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
 #icon {
   height: 26px;
   width: 26px;
-  display: grid;
-  flex: 30%;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   object-fit: contain;
+  margin-right: 10px;
+}
+
+#title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
 }

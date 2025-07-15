@@ -30,16 +30,27 @@ function PricingTableColumn({
       </div>
       <ul className="advantages-list">
         {advantages.map((val, key) => {
+          // If the string contains line breaks, split and render as lines
+          const lines = val.split('\n');
           return (
             <li key={key}>
               <div>
                 <img src={Icons.check} className="list-icon" alt="Checkmark" />
               </div>
-              <div>{val}</div>
+              <div>
+                {lines.map((line, i) => (
+                  <div key={i}>{line}</div>
+                ))}
+              </div>
             </li>
           )
         })}
       </ul>
+      {isSelected && (
+        <div className="selected-label">
+          <span role="img" aria-label="star" className="selected-star">★</span> Selected
+        </div>
+      )}
     </div>
   )
 }

@@ -129,3 +129,14 @@
   color: #666;
   margin-top: 2px;
 }
+
+/* Overlay for search bar dropdown */
+.searchbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+}

@@ -116,22 +116,28 @@ class CoffeeVariantModel {
   }
 
   /**
-   * Finds coffee variants by their coffee type.
-   * Populates the 'contents' (ingredients) and 'coffeeShop' fields.
-   * @param {string} coffeeType - The type of coffee (e.g., 'FlatWhite').
-   * @returns {Promise<Array<Document>>} An array of coffee variant documents.
-   * @throws {Error} If there's a database error.
-   */
-  async findByCoffeeType(coffeeType) {
-    try {
-      return await CoffeeVariant.find({ coffeeType })
-        .populate('contents')
-        .populate('coffeeShop', 'name address')
-        .exec()
-    } catch (err) {
-      throw new Error(`Error finding coffee variants by type: ${err.message}`)
-    }
+ * Finds coffee variants by their coffee type.
+ * Supports both a single type (string) or an array of types.
+ * Populates the 'contents' and 'coffeeShop' fields.
+ * @param {string|string[]} coffeeType - A single type or an array of coffee types.
+ * @returns {Promise<Array<Document>>} Matching coffee variants.
+ * @throws {Error} If there's a database error.
+ */
+async findByCoffeeType(coffeeType) {
+  try {
+    const query = Array.isArray(coffeeType)
+      ? { coffeeType: { $in: coffeeType } }
+      : { coffeeType };
+
+    return await CoffeeVariant.find(query)
+      .populate('contents')
+      .populate('coffeeShop', 'name address')
+      .exec();
+  } catch (err) {
+    throw new Error(`Error finding coffee variants by type: ${err.message}`);
   }
+}
+
 
   /**
    * Finds coffee variants offered by a specific coffee shop.
