@@ -1,9 +1,7 @@
 import React from "react";
-import CafeData from "../../data/CafeData";
-import "./CafePage.css";
+import "../../styles/CafePage.css";
 
 const CafePage = () => {
-  const cafe = CafeData[0]; // later: use useParams() for dynamic routing
 
   return (
     <div className="cafe-container">

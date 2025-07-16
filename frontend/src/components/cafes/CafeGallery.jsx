@@ -8,7 +8,7 @@ import '../../styles/CafeGallery.css';
 // - coffeeShops: Array of café objects (from CafeGroupGallery component)
 // Returns:
 // - Array of café cards by using CafeCard component
-function CafeGallery({ coffeeShops, titleText }) {
+function CafeGallery({ coffeeShops = [], titleText, loading, error }) {
   return (
     <div className="cafe-gallery">
       {titleText && <h2>{`${titleText}`}</h2>}
@@ -16,7 +16,7 @@ function CafeGallery({ coffeeShops, titleText }) {
         className="cafe-gallery-list"
         style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}
       >
-        {coffeeShops.map((coffeeShop) => (
+        {coffeeShops.length > 0 ? coffeeShops.map((coffeeShop) => (
           <CafeCard
             key={coffeeShop._id}
             imgSrc={coffeeShop.images?.[0]}
@@ -25,7 +25,9 @@ function CafeGallery({ coffeeShops, titleText }) {
             address={coffeeShop.address}
             slug={coffeeShop.slug}
           />
-        ))}
+        )) : <p>No coffee shops found</p>}
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
       </div>
     </div>
   );
