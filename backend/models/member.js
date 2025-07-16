@@ -14,6 +14,7 @@ const MemberSchema = new mongoose.Schema(
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
     },
+    isShopOwner: { type: Boolean, default: false },
     passwordHash: { type: String, required: true },
     profilePicture: {
       type: String,

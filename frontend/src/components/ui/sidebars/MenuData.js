@@ -23,6 +23,11 @@ const dashboardMenu = [
     icon: Icons.map, 
     link: "/dashboard/visited" 
   },
+  {
+    title: "Checkout",
+    icon: Icons.checkout, // Stelle sicher, dass ein passendes Icon existiert
+    link: "/dashboard/checkOut"
+  },
 ];
 
 const settingsMenu = [

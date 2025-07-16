@@ -30,7 +30,7 @@ function HomePage() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar minimal />
       <div className="content">
         <Hero />
         <div className="page-frame">

@@ -10,13 +10,6 @@ import { resumeMembership } from '../../apis/membership'
 import Snackbar from '../ui/snackbar/Snackbar'
 import { getMembershipByMemberIDAction } from '../../store/accountSettings/AccountSettings.actions.js'
 
-const advantages = [
-  'Large plan advantage 1',
-  'Large plan advantage 2',
-  'Large plan advantage 3',
-  'Large plan advantage 4',
-  'Large plan advantage 5',
-]
 
 export default function Membership() {
   const [isModalOpen, setIsModalOpen] = useState(false)

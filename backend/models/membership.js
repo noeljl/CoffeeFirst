@@ -74,6 +74,7 @@ class MembershipModel {
   // Neue Signatur:
   async create(data, session = null) {
     try {
+      console.log('data membership model', data)
       const membership = new Membership(data)
       // session weiterreichen – oder {} wenn keine übergeben
       await membership.save(session ? { session } : undefined)

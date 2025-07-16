@@ -3,7 +3,7 @@ import API from './client.js'
 // Get a membership by its ID
 export const getMembershipById = async (id) => {
   try {
-    const response = await API.get(`memberships/${id}`)
+    const response = await API.get(`membership/${id}`)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message
@@ -23,7 +23,7 @@ export const getMembershipByMemberId = async (memberId) => {
 // Update a membership by its ID
 export const updateMembership = async (id, data) => {
   try {
-    const response = await API.put(`memberships/${id}`, data)
+    const response = await API.put(`membership/${id}`, data)
     return response.data
   } catch (err) {
     throw err.response?.data || err.message
@@ -53,7 +53,7 @@ export const resumeMembership = async (membershipId, subscriptionId) => {
 // Decrement the coffee quota for a membership
 export const decrementCoffeeQuota = async (id, amount = 1) => {
   try {
-    const response = await API.put(`memberships/${id}/decrement-coffee-quota`, {
+    const response = await API.put(`membership/${id}/decrement-coffee-quota`, {
       amount,
     })
     return response.data
@@ -65,7 +65,7 @@ export const decrementCoffeeQuota = async (id, amount = 1) => {
 // Increment the coffee quota for a membership
 export const incrementCoffeeQuota = async (id, amount = 1) => {
   try {
-    const response = await API.put(`memberships/${id}/increment-coffee-quota`, {
+    const response = await API.put(`membership/${id}/increment-coffee-quota`, {
       amount,
     })
     return response.data

@@ -34,6 +34,9 @@ class AuthService {
       throw createError(400, 'Unknown membership plan')
     }
 
+    console.log('membershipType service', membershipType)
+    console.log('membershipType.coffeeQuota', membershipType.coffeeQuota)
+
     // 3) Daten vorbereiten
     const now = new Date()
     const end = new Date(now)

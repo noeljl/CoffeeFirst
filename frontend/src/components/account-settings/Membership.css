@@ -3,44 +3,35 @@
 .membership-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #fff;
-}
-
-.membership-info-container {
-  flex: 1;
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 48px 40px 40px 40px;
-  background-color: #fff;
-  border-radius: 0;
-  box-shadow: none;
-  min-height: 80vh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
 }
 
 .membership-title {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 2.5rem;
-  color: #181818;
+  margin-bottom: 2rem;
+  color: #1a1a1a;
 }
 
-.ms-section {
-  margin-bottom: 2.5rem;
+.membership-section {
+  margin-bottom: 2rem;
 }
 
-.ms-heading {
-  font-size: 1.1rem;
+.membership-heading {
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #181818;
-  margin-bottom: 0.25rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
 }
 
-.ms-text {
-  font-size: 0.98rem;
-  color: #888;
-  margin: 0 0 0.5rem 0;
+.membership-text {
+  font-size: 0.95rem;
+  color: #4a5568;
+  margin: 0;
   line-height: 1.5;
 }
 
@@ -61,56 +52,49 @@
 .plan-advantages {
   list-style: none;
   padding: 0;
-  margin: 1.5rem 0 0 0;
+  margin: 1rem 0 0;
 }
 
 .plan-advantages li {
   display: flex;
   align-items: center;
-  font-size: 1.08rem;
-  color: #222;
-  margin-bottom: 1.1rem;
-  font-weight: 500;
+  font-size: 1rem;
+  color: #2d3748;
+  margin-bottom: 0.75rem;
 }
 
 .check-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   stroke: #e53e3e;
-  margin-right: 0.9rem;
-}
-
-.cancel-button, .membership-info-container button[bg="red"] {
-  background-color: #e53935;
-  color: #fff;
-  border: none;
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 24px;
-}
-.cancel-button:hover, .membership-info-container button[bg="red"]:hover {
-  background-color: #c62828;
+  margin-right: 0.75rem;
 }
 
 /* Responsive */
-@media (max-width: 900px) {
-  .membership-info-container {
-    padding: 32px 10px 32px 10px;
+@media (max-width: 768px) {
+  .membership-container {
+    padding: 0;
+  }
+
+  .membership-title {
+    font-size: 1.75rem;
+  }
+
+  .membership-two-col {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }
-@media (max-width: 600px) {
-  .membership-info-container {
-    padding: 16px 2vw;
-  }
+
+@media (max-width: 480px) {
   .plan-advantages li {
-    font-size: 0.98rem;
+    font-size: 0.9rem;
   }
-  .cancel-button, .membership-info-container button[bg="red"] {
-    width: 100%;
-    text-align: center;
+
+  .membership-two-col {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 }

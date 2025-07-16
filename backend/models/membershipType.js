@@ -7,12 +7,9 @@ const MembershipTypeSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      trim: true, // Added trim for cleaner data
-      minlength: [
-        3,
-        'Membership type name must be at least 3 characters long.',
-      ], // Added minlength
-      maxlength: [50, 'Membership type name cannot exceed 50 characters.'], // Added maxlength
+      trim: true,
+      minlength: 3,
+      maxlength: 50,
     },
     membershipTier: {
       type: String,
@@ -24,22 +21,22 @@ const MembershipTypeSchema = new mongoose.Schema(
       type: Number,
       enum: Object.values(MembershipPrice),
       required: true,
-      min: [0, 'Membership price cannot be negative.'], // Ensure price is non-negative
+      min: 0,
     },
     coffeeTypes: {
-      type: [String], // Array of strings
-      enum: Object.values(CoffeeType), // Restrict values to the CoffeeType enum
-      required: true, // A membership type must specify at least one coffee type
-      default: [], // Default to an empty array
+      type: [String],
+      enum: Object.values(CoffeeType),
+      required: true,
+      default: [],
       validate: {
-        validator: function (v) {
-          return v && v.length > 0
-        },
+        validator: (v) => v && v.length > 0,
         message: 'A membership type must include at least one coffee type.',
       },
     },
+    durationDays: { type: Number, default: 30, min: 1 },
+    coffeeQuota: { type: Number, required: true, min: 0 },
   },
-  { timestamps: true } // Adds createdAt and updatedAt automatically
+  { timestamps: true }
 )
 
 const MembershipType = mongoose.model('MembershipType', MembershipTypeSchema)

@@ -10,6 +10,7 @@ import { AuthProvider } from './contexts/AuthProvider.js'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
 import DashboardLayout from './components/layout/DashboardLayout.jsx'
 import SettingsLayout from './components/layout/SettingsLayout.jsx'
+import CheckOut from './components/check-out/CheckOut.jsx'
 
 // Public Pages
 import HomePage from './pages/HomePage.jsx'
@@ -51,6 +52,7 @@ function App() {
           <Route path="/signup/completed" element={<PaymentSuccessful />} />
           <Route path="/login" element={<Login />} />
           <Route path="/testing" element={<TempBlankPage />} />
+          <Route path="/check-out" element={<CheckOut />} />
 
           {/* Geschützte Bereiche */}
           <Route element={<PrivateRoute />}>

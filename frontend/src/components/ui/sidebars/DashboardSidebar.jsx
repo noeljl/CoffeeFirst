@@ -1,12 +1,19 @@
-import dashboardMenu from "./MenuData";
-import Sidebar from "./Sidebar";
+import dashboardMenu from './MenuData'
+import Sidebar from './Sidebar'
+import { useSelector } from 'react-redux'
 
 function DashboardSidebar() {
-  return (<div>
-    <h2>Dashboard</h2>
-    <Sidebar menu={dashboardMenu} />
-  </div>
+  const member = useSelector((state) => state.auth.member)
+  // Checkout nur anzeigen, wenn ShopOwner
+  const filteredMenu = member?.isShopOwner
+    ? dashboardMenu
+    : dashboardMenu.filter((item) => item.title !== 'Checkout')
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <Sidebar menu={filteredMenu} />
+    </div>
   )
 }
 
-export default DashboardSidebar;
+export default DashboardSidebar

@@ -16,14 +16,13 @@ import { SearchContext } from '../../../contexts/SearchContext'
 import { useSelector } from 'react-redux'
 
 // Handles both navbar types: logged in and out.
-function NavBar() {
+function NavBar({ minimal }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const location = useLocation()
   // Get both searchFilter and setSearchFilter from context
   const { searchFilter, setSearchFilter } = useContext(SearchContext)
 
   useEffect(() => {
-    // Clear the search filter whenever the route changes
     setSearchFilter(null)
   }, [location.pathname, setSearchFilter])
 
@@ -33,16 +32,17 @@ function NavBar() {
         <SignedIn
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
+          minimal={minimal}
         />
       ) : (
-        <SignedOut />
+        <SignedOut minimal={minimal} />
       )}
     </div>
   )
 }
 
 // Logged out navbar.
-function SignedOut() {
+function SignedOut({ minimal }) {
   const navigate = useNavigate()
   return (
     <div className="navbar-container">
@@ -55,12 +55,13 @@ function SignedOut() {
           navigate('/home')
         }}
       />
+      {/* Keine Buttons, wenn minimal */}
     </div>
   )
 }
 
 // Pass searchFilter and setSearchFilter as props to SignedIn
-function SignedIn({ searchFilter, setSearchFilter }) {
+function SignedIn({ searchFilter, setSearchFilter, minimal }) {
   const navigate = useNavigate()
   const location = useLocation()
   const [, setMenuOpen] = useState(false)
@@ -80,13 +81,29 @@ function SignedIn({ searchFilter, setSearchFilter }) {
 
   useEffect(() => {
     if (searchFilter === null) {
-      // setQuery(''); // This line was removed from the new_code, so it's removed here.
-      // setOpen(false); // This line was removed from the new_code, so it's removed here.
-      // setSelectedIndex(-1); // This line was removed from the new_code, so it's removed here.
+      // setQuery('');
+      // setOpen(false);
+      // setSelectedIndex(-1);
     }
   }, [searchFilter])
 
-  
+  // Wenn minimal, nur Logo anzeigen
+  if (minimal) {
+    return (
+      <div className="navbar-container">
+        <img
+          src={Icons.logo}
+          alt="CoffeeFirst Logo"
+          className="logo"
+          draggable={false}
+          onClick={() => {
+            navigate('/home')
+          }}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="navbar-container">
       <img
@@ -98,7 +115,6 @@ function SignedIn({ searchFilter, setSearchFilter }) {
           navigate('/home')
         }}
       />
-
       <div className="gap-nav-middle">
         {/* Pass searchFilter to SearchBar */}
         <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
@@ -122,6 +138,10 @@ function SignedIn({ searchFilter, setSearchFilter }) {
       </div>
     </div>
   )
+}
+
+NavBar.defaultProps = {
+  minimal: false,
 }
 
 export default NavBar
