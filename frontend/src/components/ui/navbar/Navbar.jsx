@@ -4,7 +4,7 @@ import Button from '../../ui/buttons/Button'
 import { useNavigate, useLocation } from 'react-router-dom'
 import BurgerMenuButton from '../../ui/burger-menu/BurgerMenu'
 import Avatar from '../../ui/avatar/Avatar'
-import FilterButton from '../../ui/filter/Filter'
+import FilterModal from '../filter/FilterModal'
 import SearchBar from '../search-bar/SearchBar'
 import CheckInButton from '../../ui/check-in/CheckIn'
 import '../../../App.css'
@@ -64,6 +64,7 @@ function SignedIn({ searchFilter, setSearchFilter }) {
   const navigate = useNavigate()
   const location = useLocation()
   const [, setMenuOpen] = useState(false)
+  const [isFilterOpen, setFilterOpen] = useState(false)
 
   // Handler for search selection
   const handleSearchSelect = (filter) => {
@@ -84,6 +85,8 @@ function SignedIn({ searchFilter, setSearchFilter }) {
       // setSelectedIndex(-1); // This line was removed from the new_code, so it's removed here.
     }
   }, [searchFilter])
+
+  
   return (
     <div className="navbar-container">
       <img
@@ -99,7 +102,18 @@ function SignedIn({ searchFilter, setSearchFilter }) {
       <div className="gap-nav-middle">
         {/* Pass searchFilter to SearchBar */}
         <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
-        <FilterButton />
+        <Button
+          bg="white"
+          fs="small"
+          radius="full"
+          icon={Icons.filter}
+          padding="medium"
+          fw="bold"
+          onClick={() => setFilterOpen(true)}
+        >
+          Filter
+        </Button>
+        {isFilterOpen && <FilterModal onClose={() => setFilterOpen(false)} />}
       </div>
       <div className="gap">
         <CheckInButton />

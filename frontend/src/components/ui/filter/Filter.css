@@ -90,6 +90,7 @@
 .filter-footer {
   display: flex;
   justify-content: center;
+  gap: 10px;
 }
 
 .save-button {
@@ -100,4 +101,34 @@
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+}
+
+/* FilterResult.css */
+.filter-result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 50px;
+}
+
+.filter-result-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  gap: 30px;
+}
+
+.cafe-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px;
 }
