@@ -11,7 +11,7 @@ export default function useGetFavorites(memberId) {
   useEffect(() => {
     const favoriteList = async () => {
         try {
-            const response = await getMemberCafeList(memberId, 'favorites')
+            const response = await getMemberCafeList(memberId, 'favoriteCoffeeShops')
             setData(response)
         } catch (err) {
             setError(err)

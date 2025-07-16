@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Snackbar from '../snackbar/Snackbar'
 import Button from '../ui/buttons/Button'
 import Icons from '../../assets/Icons'
 import './CafeHeaderSection.css'
 import { addCoffeeShopToMemberList, removeCoffeeShopFromMemberList } from '../../apis/member'
 import { useSelector } from 'react-redux'
+import useGetWishlist from '../../hooks/useGetWishlist'
+import useGetFavorites from '../../hooks/useGetFavorites'
 
 function CafeHeaderSection({ cafe }) {
   const member = useSelector((state) => state.auth.member)
@@ -14,23 +16,18 @@ function CafeHeaderSection({ cafe }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
 
-  // Local state for wishlist and favorites
-  const [wishlist, setWishlist] = useState(member?.wishlistCoffeeShops || [])
-  const [favorites, setFavorites] = useState(member?.favoriteCoffeeShops || [])
+  // Use hooks to get up-to-date wishlist and favorites
+  const { data: wishlist = [], loading: wishlistLoading } = useGetWishlist(memberId)
+  const { data: favorites = [], loading: favoritesLoading } = useGetFavorites(memberId)
 
-  // Keep local state in sync with Redux member (e.g. on login/logout)
-  useEffect(() => {
-    setWishlist(member?.wishlistCoffeeShops || [])
-    setFavorites(member?.favoriteCoffeeShops || [])
-  }, [member])
-
-  const isInWishlist = wishlist.includes(cafe._id)
-  const isInFavorites = favorites.includes(cafe._id)
+  // Check if the cafe is in the lists
+  const isInWishlist = wishlist.some(cafeObj => cafeObj._id === cafe._id)
+  const isInFavorites = favorites.some(cafeObj => cafeObj._id === cafe._id)
 
   // Handler for 'Add to Wishlist' button
-  const handleAddToWishlist = async (memberId, cafeId, listType) => {
+  const handleAddToWishlist = async (memberId, listType) => {
     try {
-      await addCoffeeShopToMemberList(memberId, cafeId, listType)
+      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
       setSnackbarMessage('Added to wishlist!')
       setSnackbarOpen(true)
     } catch (err) {
@@ -40,9 +37,9 @@ function CafeHeaderSection({ cafe }) {
   }
 
   // Handler for 'Add to Favorites' button
-  const handleAddToFavorites = async (memberId, cafeId, listType) => {
+  const handleAddToFavorites = async (memberId, listType) => {
     try {
-      await addCoffeeShopToMemberList(memberId, cafeId, listType)
+      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
       setSnackbarMessage('Added to favorites!')
       setSnackbarOpen(true)
     } catch (err) {
@@ -51,31 +48,31 @@ function CafeHeaderSection({ cafe }) {
     }
   }
 
-  const handleRemoveFromWishlist = async (memberId, cafeId, listType) => {
+  const handleRemoveFromWishlist = async (memberId, listType) => {
     try {
-      await removeCoffeeShopFromMemberList(memberId, cafeId, listType)
+      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
       setSnackbarMessage('Removed from wishlist!')
       setSnackbarOpen(true)
-      setWishlist((prev) => prev.filter((id) => id !== cafeId))
     } catch (err) {
       setSnackbarMessage('Failed to remove from wishlist.')
       setSnackbarOpen(true)
     }
   }
 
-  const handleRemoveFromFavorites = async (memberId, cafeId, listType) => {
+  const handleRemoveFromFavorites = async (memberId, listType) => {
     try {
-      await removeCoffeeShopFromMemberList(memberId, cafeId, listType)
+      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
       setSnackbarMessage('Removed from favorites!')
       setSnackbarOpen(true)
-      setFavorites((prev) => prev.filter((id) => id !== cafeId))
     } catch (err) {
       setSnackbarMessage('Failed to remove from favorites.')
       setSnackbarOpen(true)
     }
   }
 
-  // Handler for 'Get direction' bdutton
+  if (wishlistLoading || favoritesLoading) return <div>Loading...</div>
+
+  // Handler for 'Get direction' button
   const handleGetDirection = () => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.')
@@ -130,8 +127,8 @@ function CafeHeaderSection({ cafe }) {
             padding="medium"
             onClick={() =>
               isInWishlist
-                ? handleRemoveFromWishlist(memberId, cafe._id, 'wishlistCoffeeShops')
-                : handleAddToWishlist(memberId, cafe._id, 'wishlistCoffeeShops')
+                ? handleRemoveFromWishlist(memberId, 'wishlistCoffeeShops')
+                : handleAddToWishlist(memberId, 'wishlistCoffeeShops')
             }
           >
             {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
@@ -144,8 +141,8 @@ function CafeHeaderSection({ cafe }) {
             padding="medium"
             onClick={() =>
               isInFavorites
-                ? handleRemoveFromFavorites(memberId, cafe._id, 'favoriteCoffeeShops')
-                : handleAddToFavorites(memberId, cafe._id, 'favoriteCoffeeShops')
+                ? handleRemoveFromFavorites(memberId, 'favoriteCoffeeShops')
+                : handleAddToFavorites(memberId, 'favoriteCoffeeShops')
             }
           >
             {isInFavorites ? 'Remove from Favorites' : 'Add to Favorites'}

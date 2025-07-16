@@ -12,7 +12,7 @@ export default function useGetWishlist(memberId) {
     if (!memberId) return;
     setLoading(true);
     setError(null);
-    getMemberCafeList(memberId, 'wishlist')
+    getMemberCafeList(memberId, 'wishlistCoffeeShops')
       .then((res) => setData(res))
       .catch((err) => setError(err))
       .finally(() => setLoading(false));

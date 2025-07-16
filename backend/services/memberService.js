@@ -167,9 +167,9 @@ class MemberService {
   async getList(memberId, listType) {
     try {
       const member = await this.membersModel.findOneByIdWithPopulatedLists(memberId);
-      if (listType === 'wishlist') {
+      if (listType === 'wishlistCoffeeShops') {
         return member.wishlistCoffeeShops;
-      } else if (listType === 'favorites') {
+      } else if (listType === 'favoriteCoffeeShops') {
         return member.favoriteCoffeeShops;
       } else {
         throw createError(400, 'Invalid list type');
