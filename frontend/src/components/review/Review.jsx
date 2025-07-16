@@ -7,7 +7,7 @@ import axios from "axios"; // or use your API utility
 import Button from "../ui/buttons/Button"; // At the top if not already imported
 import { createReview } from "../../apis/review"; // Import the API function
 
-function Review({ onClose, cafe }) {
+function Review({ onClose, cafe, onReviewSubmitted }) {
   // State for all rating options
   const [ratings, setRatings] = useState({
     taste: null,
@@ -53,6 +53,12 @@ function Review({ onClose, cafe }) {
         dateSpot: dateSpot,
         petFriendly: petFriendly,
       });
+      
+      // Call the callback to notify parent components
+      if (onReviewSubmitted) {
+        onReviewSubmitted();
+      }
+      
       onClose();
     } catch (err) {
       alert("Failed to submit review");

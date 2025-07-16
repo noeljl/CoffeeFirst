@@ -17,6 +17,7 @@ function CafePage() {
   const [cafe, setCafe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false); // Track review submission
 
   useEffect(() => {
     getCoffeeShopBySlug(cafeSlug)
@@ -32,6 +33,11 @@ function CafePage() {
       });
   }, [cafeSlug]);
 
+  // Callback to handle review submission
+  const handleReviewSubmitted = () => {
+    setReviewSubmitted(prev => !prev); // Toggle to trigger refresh
+  };
+
   if (loading) return <div style={{ padding: "2rem" }}>Loading café...</div>;
   if (error) return <div style={{ padding: "2rem" }}>Error loading café: {error.toString()}</div>;
   if (!cafe) return <div style={{ padding: "2rem" }}>Café not found.</div>;
@@ -39,14 +45,21 @@ function CafePage() {
   return (
     <>
       <CafeHeaderSection cafe={cafe} />
-      <VisitStatusCardSection lastVisit="2025-04-24" cafe={cafe} />
+      <VisitStatusCardSection 
+        lastVisit="2025-04-24" 
+        cafe={cafe} 
+        onReviewSubmitted={handleReviewSubmitted} // Pass callback
+      />
       <AboutSection title="About the café" description={cafe.aboutCafe} />
       <AboutSection title="About the coffee" description={cafe.aboutCoffee} />
       <SustainabilitySection list={cafe.sustainabilityFeatures} />
       <CoffeeVariantsSection list={cafe.coffeeTypes} />
       <CafeOffersSection list={cafe.amenities} />
       {console.log("CafePage: cafe._id =", cafe._id)} {/* Debug log */}
-      <ReviewSummaryContainer coffeeShopId={cafe._id} />
+      <ReviewSummaryContainer 
+        coffeeShopId={cafe._id} 
+        refreshTrigger={reviewSubmitted} // Pass trigger to refresh
+      />
       <MapEmbedSection coords={cafe.coords} />
     </>
   );

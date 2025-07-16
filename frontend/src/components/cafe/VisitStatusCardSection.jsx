@@ -4,7 +4,7 @@ import Button from "../ui/buttons/Button";
 import Review from "../review/Review"; // 1) Import the Review modal
 import "./VisitStatusCardSection.css";
 
-function VisitStatusCardSection({ lastVisit, cafe }) {
+function VisitStatusCardSection({ lastVisit, cafe, onReviewSubmitted }) {
   const [showReviewModal, setShowReviewModal] = useState(false); // 2) State for modal
 
   // 3) Handler to open the modal
@@ -12,6 +12,14 @@ function VisitStatusCardSection({ lastVisit, cafe }) {
 
   // 5) Handler to close the modal
   const handleCloseReview = () => setShowReviewModal(false);
+
+  // Handler for when review is submitted
+  const handleReviewSubmitted = () => {
+    setShowReviewModal(false);
+    if (onReviewSubmitted) {
+      onReviewSubmitted(); // Notify parent component
+    }
+  };
 
   return (
     <section className="statusContainer">
@@ -36,7 +44,11 @@ function VisitStatusCardSection({ lastVisit, cafe }) {
       </Button>
       {/* 4)Conditionally render the modal */}
       {showReviewModal && (
-        <Review onClose={handleCloseReview} cafe={cafe} />
+        <Review 
+          onClose={handleCloseReview} 
+          cafe={cafe} 
+          onReviewSubmitted={handleReviewSubmitted} // Pass callback
+        />
       )}
     </section>
   );
