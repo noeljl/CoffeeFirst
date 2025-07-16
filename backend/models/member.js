@@ -178,21 +178,34 @@ export class MembersModel {
     }
   }
 
-  async findOneByGoogleId(id) {
+  async findOneByIdWithPopulatedLists(id) {
     try {
-      return await Member.findOne({ 'google.id': id }).exec()
+      const member = await Member.findOne({ id })
+        .populate('wishlistCoffeeShops')
+        .populate('favoriteCoffeeShops')
+        .exec();
+      if (!member) throw new Error(`Member with id ${id} not found.`);
+      return member;
     } catch (err) {
-      throw new Error(`Error finding member by Google ID: ${err.message}`)
+      throw new Error(`Error finding member by id with populated lists: ${err.message}`);
     }
   }
 
-  async findOneByFacebookId(id) {
-    try {
-      return await Member.findOne({ 'facebook.id': id }).exec()
-    } catch (err) {
-      throw new Error(`Error finding member by Facebook ID: ${err.message}`)
-    }
-  }
+  // async findOneByGoogleId(id) {
+  //   try {
+  //     return await Member.findOne({ 'google.id': id }).exec()
+  //   } catch (err) {
+  //     throw new Error(`Error finding member by Google ID: ${err.message}`)
+  //   }
+  // }
+
+  // async findOneByFacebookId(id) {
+  //   try {
+  //     return await Member.findOne({ 'facebook.id': id }).exec()
+  //   } catch (err) {
+  //     throw new Error(`Error finding member by Facebook ID: ${err.message}`)
+  //   }
+  // }
 
   async addCoffeeShopToList(memberId, coffeeShopId, listType) {
     const validLists = [

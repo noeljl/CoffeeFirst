@@ -1,48 +1,78 @@
+import React, { useState } from 'react'
+import Snackbar from '../snackbar/Snackbar'
 import Button from '../ui/buttons/Button'
 import Icons from '../../assets/Icons'
 import './CafeHeaderSection.css'
-import { useEffect } from 'react'
-import { addCoffeeShopToMemberList } from '../../apis/member'
+import { addCoffeeShopToMemberList, removeCoffeeShopFromMemberList } from '../../apis/member'
 import { useSelector } from 'react-redux'
+import useGetWishlist from '../../hooks/useGetWishlist'
+import useGetFavorites from '../../hooks/useGetFavorites'
 
 function CafeHeaderSection({ cafe }) {
-  // Use backend URL for images
-  const backendUrl =
-    process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
-  // Construct full image URLs
-  const mainImageUrl = cafe.images?.[0] ? `${backendUrl}${cafe.images[0]}` : ''
-  const secondaryImage1Url = cafe.images?.[1]
-    ? `${backendUrl}${cafe.images[1]}`
-    : ''
-  const secondaryImage2Url = cafe.images?.[2]
-    ? `${backendUrl}${cafe.images[2]}`
-    : ''
-
   const member = useSelector((state) => state.auth.member)
   const memberId = member?.id
 
+  // Snackbar state
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+
+  // Use hooks to get up-to-date wishlist and favorites
+  const { data: wishlist = [], loading: wishlistLoading } = useGetWishlist(memberId)
+  const { data: favorites = [], loading: favoritesLoading } = useGetFavorites(memberId)
+
+  // Check if the cafe is in the lists
+  const isInWishlist = wishlist.some(cafeObj => cafeObj._id === cafe._id)
+  const isInFavorites = favorites.some(cafeObj => cafeObj._id === cafe._id)
+
   // Handler for 'Add to Wishlist' button
-  const handleAddToWishlist = async (memberId, cafeId, listType) => {
+  const handleAddToWishlist = async (memberId, listType) => {
     try {
-      await addCoffeeShopToMemberList(memberId, cafeId, listType)
-      alert('Added to wishlist!')
+      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
+      setSnackbarMessage('Added to wishlist!')
+      setSnackbarOpen(true)
     } catch (err) {
-      // console.log('The member is:', member.member._id);
-      alert('Failed to add to wishlist.')
+      setSnackbarMessage('Failed to add to wishlist.')
+      setSnackbarOpen(true)
     }
   }
 
   // Handler for 'Add to Favorites' button
-  const handleAddToFavorites = async (memberId, cafeId, listType) => {
+  const handleAddToFavorites = async (memberId, listType) => {
     try {
-      await addCoffeeShopToMemberList(memberId, cafeId, listType)
-      alert('Added to favorites!')
+      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
+      setSnackbarMessage('Added to favorites!')
+      setSnackbarOpen(true)
     } catch (err) {
-      alert('Failed to add to favorites.')
+      setSnackbarMessage('Failed to add to favorites.')
+      setSnackbarOpen(true)
     }
   }
 
-  // Handler for 'Get direction' bdutton
+  const handleRemoveFromWishlist = async (memberId, listType) => {
+    try {
+      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
+      setSnackbarMessage('Removed from wishlist!')
+      setSnackbarOpen(true)
+    } catch (err) {
+      setSnackbarMessage('Failed to remove from wishlist.')
+      setSnackbarOpen(true)
+    }
+  }
+
+  const handleRemoveFromFavorites = async (memberId, listType) => {
+    try {
+      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
+      setSnackbarMessage('Removed from favorites!')
+      setSnackbarOpen(true)
+    } catch (err) {
+      setSnackbarMessage('Failed to remove from favorites.')
+      setSnackbarOpen(true)
+    }
+  }
+
+  if (wishlistLoading || favoritesLoading) return <div>Loading...</div>
+
+  // Handler for 'Get direction' button
   const handleGetDirection = () => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.')
@@ -64,61 +94,72 @@ function CafeHeaderSection({ cafe }) {
   }
 
   return (
-    <section>
-      <h1>{cafe.name}</h1>
-      <div className="imageContainer">
-        <img className="mainImage" src={mainImageUrl} alt={cafe.name} />
-        <div className="secondaryImages">
-          <img
-            className="secondaryImage upperImage"
-            src={secondaryImage1Url}
-            alt="Gallery 1"
-          />
-          <img
-            className="secondaryImage lowerImage"
-            src={secondaryImage2Url}
-            alt="Gallery 2"
-          />
+    <>
+      <Snackbar
+        open={snackbarOpen}
+        message={snackbarMessage}
+        onClose={() => setSnackbarOpen(false)}
+      />
+      <section>
+        <h1>{cafe.name}</h1>
+        <div className="imageContainer">
+          <img className="mainImage" src={cafe.images[0]} alt={cafe.name} />
+          <div className="secondaryImages">
+            <img
+              className="secondaryImage upperImage"
+              src={cafe.images[1]}
+              alt="Gallery 1"
+            />
+            <img
+              className="secondaryImage lowerImage"
+              src={cafe.images[2]}
+              alt="Gallery 2"
+            />
+          </div>
         </div>
-      </div>
-      <div className="buttonContainer">
-        <Button
-          icon={Icons.heart}
-          radius="small"
-          fw="bold"
-          fs="medium"
-          bg="white"
-          padding="medium"
-          onClick={() =>
-            handleAddToWishlist(memberId, cafe._id, 'wishlistCoffeeShops')
-          }
-        >
-          Add to Wishlist
-        </Button>
-        <Button
-          icon={Icons.favorite}
-          radius="small"
-          fw="bold"
-          bg="white"
-          padding="medium"
-          onClick={() =>
-            handleAddToFavorites(memberId, cafe._id, 'favoriteCoffeeShops')
-          }
-        >
-          Add to Favorites
-        </Button>
-        <Button
-          icon={Icons.map}
-          radius="small"
-          fw="bold"
-          bg="white"
-          padding="medium"
-          onClick={handleGetDirection}
-        >
-          Get direction
-        </Button>
-      </div>
-    </section>
+        <div className="buttonContainer">
+          <Button
+            icon={Icons.heart}
+            radius="small"
+            fw="bold"
+            fs="medium"
+            bg="white"
+            padding="medium"
+            onClick={() =>
+              isInWishlist
+                ? handleRemoveFromWishlist(memberId, 'wishlistCoffeeShops')
+                : handleAddToWishlist(memberId, 'wishlistCoffeeShops')
+            }
+          >
+            {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          </Button>
+          <Button
+            icon={Icons.favorite}
+            radius="small"
+            fw="bold"
+            bg="white"
+            padding="medium"
+            onClick={() =>
+              isInFavorites
+                ? handleRemoveFromFavorites(memberId, 'favoriteCoffeeShops')
+                : handleAddToFavorites(memberId, 'favoriteCoffeeShops')
+            }
+          >
+            {isInFavorites ? 'Remove from Favorites' : 'Add to Favorites'}
+          </Button>
+          <Button
+            icon={Icons.map}
+            radius="small"
+            fw="bold"
+            bg="white"
+            padding="medium"
+            onClick={handleGetDirection}
+          >
+            Get direction
+          </Button>
+        </div>
+      </section>
+    </>
   )
 }
 

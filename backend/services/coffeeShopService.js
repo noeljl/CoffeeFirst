@@ -340,6 +340,10 @@ class CoffeeShopService {
       )
     }
   }
+
+  async getFilterOptions() {
+    return this.coffeeShopModel.getFilterOptions();
+  }
 }
 
 export const getFilteredCoffeeShops = async (query) => {
@@ -350,13 +354,13 @@ export const getFilteredCoffeeShops = async (query) => {
         ? query.offers
         : [query.offers]
       : [];
-    
+
     const coffeeVariants = query.coffeeVariants
       ? Array.isArray(query.coffeeVariants)
         ? query.coffeeVariants
         : [query.coffeeVariants]
       : [];
-    
+
     const sustainability = query.sustainability
       ? Array.isArray(query.sustainability)
         ? query.sustainability
@@ -383,10 +387,10 @@ export const getFilteredCoffeeShops = async (query) => {
 
     // Use the CoffeeShopModel to find matching coffee shops
     const coffeeShops = await CoffeeShopModel.find(filter);
-    
+
     console.log('Filter query:', filter);
     console.log('Found coffee shops:', coffeeShops.length);
-    
+
     return coffeeShops;
   } catch (error) {
     console.error('Error in getFilteredCoffeeShops:', error);

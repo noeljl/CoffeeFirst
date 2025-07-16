@@ -166,17 +166,17 @@ class MemberService {
 
   async getList(memberId, listType) {
     try {
-      const member = await this.membersModel.findOneById(memberId)
-      if (listType === 'wishlist') {
-        return member.wishlistCoffeeShops // <== already populated café documents
-      } else if (listType === 'favorites') {
-        return member.favoriteCoffeeShops // <== already populated café documents
+      const member = await this.membersModel.findOneByIdWithPopulatedLists(memberId);
+      if (listType === 'wishlistCoffeeShops') {
+        return member.wishlistCoffeeShops;
+      } else if (listType === 'favoriteCoffeeShops') {
+        return member.favoriteCoffeeShops;
       } else {
-        throw createError(400, 'Invalid list type')
+        throw createError(400, 'Invalid list type');
       }
     } catch (error) {
-      console.error(`Error in getWishlist: ${error.message}`)
-      throw createError(500, `Failed to fetch wishlist: ${error.message}`)
+      console.error(`Error in getWishlist: ${error.message}`);
+      throw createError(500, `Failed to fetch wishlist: ${error.message}`);
     }
   }
 

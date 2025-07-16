@@ -1,21 +1,20 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SearchBarModal from './SearchBarModal';
 import { SearchContext } from '../../../contexts/SearchContext';
 import './SearchBar.css';
-import { getAllDistricts } from '../../../apis/coffeeshop';
-import { getAllCoffeeShops } from '../../../apis/coffeeshop';
 import searchIcon from '../../../assets/svg/searchFavorite.svg';
+import { useAllDistricts } from '../../../hooks/useAllDistricts';
+import { useAllCafes } from '../../../hooks/useAllCafes';
 
-function SearchBar2() {
+function SearchBar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchBarRef = useRef(null);
   const [searchBarRect, setSearchBarRect] = useState(null);
-  const [districts, setDistricts] = useState([]);
-  const [cafes, setCafes] = useState([]);
+  const [districts, districtsLoading, districtsError] = useAllDistricts();
+  const [cafes, cafesLoading, cafesError] = useAllCafes();
   const navigate = useNavigate();
-  const location = useLocation();
   const { setSearchFilter } = useContext(SearchContext);
 
   // When modal opens, measure the search bar position for fixed overlay
@@ -26,36 +25,16 @@ function SearchBar2() {
     }
   }, [modalOpen]);
 
-  useEffect(() => {
-    const getDistricts = async () => {
-      try {
-        const response = await getAllDistricts();
-        setDistricts(response.map(districtObj => ({ districtName: districtObj._id })));
-      } catch (error) {
-        console.error('Error fetching districts:', error);
-      }
-    }
-    getDistricts();
-  }, []);
-
-  useEffect(() => {
-    const getCafes = async () => {
-      try {
-        const response = await getAllCoffeeShops();
-        setCafes(response.map(cafeObj => ({ cafeSlug: cafeObj.slug, cafeName: cafeObj.name, cafeDistrict: cafeObj.district })));
-      } catch (error) {
-        console.error('Error fetching cafes:', error);
-      }
-    }
-    getCafes();
-  }, []);
-
   // Handler for district selection
   const handleDistrictSelect = (districtName) => {
     setSearchFilter({ type: 'district', name: districtName });
-    if (location.pathname !== '/dashboard/partners') {
-      navigate('/dashboard/partners', { state: { searchFilter: { type: 'district', name: districtName } } });
-    }
+    navigate('/dashboard/partners?district=' + encodeURIComponent(districtName));
+    setModalOpen(false);
+  };
+
+  const handleCafeSelect = (cafeSlug) => {
+    setSearchFilter({ type: 'cafe', name: cafeSlug });
+    navigate('/dashboard/partners?cafe=' + encodeURIComponent(cafeSlug));
     setModalOpen(false);
   };
 
@@ -92,15 +71,19 @@ function SearchBar2() {
         <SearchBarModal
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false);
+            setSearchQuery(''); // Reset input when modal closes
+          }}
           searchBarRect={searchBarRect}
           districts={districts}
           cafes={cafes}
           onDistrictSelect={handleDistrictSelect}
+          onCafeSelect={handleCafeSelect}
         />
       )}
     </div>
   );
 }
 
-export default SearchBar2;
+export default SearchBar;

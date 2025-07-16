@@ -99,6 +99,33 @@ const CoffeeShopSchema = new mongoose.Schema(
 
 const CoffeeShop = mongoose.model('CoffeeShop', CoffeeShopSchema)
 
+// Static amenities (offers) with label, value, and icon key
+// Important for the frontend filtering to work
+const amenities = [
+  { label: 'Indoor Sitting', value: 'Indoor Sitting', icon: 'couch' },
+  { label: 'Outdoor Sitting', value: 'Outdoor Sitting', icon: 'sun' },
+  { label: 'Wifi', value: 'WiFi', icon: 'wifi' },
+  { label: 'Free Water', value: 'Free Water', icon: 'water' },
+  { label: 'Free Charging', value: 'Free Charging', icon: 'charging' },
+  { label: 'Pet Friendly', value: 'Pet Friendly', icon: 'pet' },
+  { label: 'Wheelchair Friendly', value: 'Wheelchair Friendly', icon: 'wheelchair' },
+];
+
+const sustainability = [
+  { label: 'Small Batch Roasting', value: 'Small Batch Roasting', icon: 'tree'  },
+  { label: 'Ethical Sourcing', value: 'Ethical Sourcing', icon: 'tree' },
+  { label: 'EcoFriendly Packaging', value: 'EcoFriendly Packaging', icon: 'tree' },
+  { label: 'Arabica Only', value: 'Arabica Only', icon: 'tree' },
+];
+
+const coffeeVariants = [
+  { label: 'Flat White', value: 'Flat White', icon: 'coffeeBean' },
+  { label: 'Latte Macchiato', value: 'Latte Macchiato', icon: 'coffeeBean' },
+  { label: 'Espresso', value: 'Espresso', icon: 'coffeeBean' },
+  { label: 'Americano', value: 'Americano', icon: 'coffeeBean' },
+  { label: 'Cappuccino', value: 'Cappuccino', icon: 'coffeeBean' },
+];
+
 class CoffeeShopModel {
   /**
    * Creates a new coffee shop.
@@ -388,7 +415,17 @@ class CoffeeShopModel {
       throw new Error(`Error grouping coffee shops by district: ${err.message}`)
     }
   }
+
+  async getFilterOptions() {
+    return {
+      offers: amenities, // Now returns array of {label, value, icon}
+      sustainability: sustainability, // array of {label, value}
+      coffeeVariants: coffeeVariants, // array of {label, value}
+    };
+  }
+
 }
+
 
 export default new CoffeeShopModel()
 export { CoffeeShop }

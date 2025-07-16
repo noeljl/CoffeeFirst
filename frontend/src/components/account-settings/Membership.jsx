@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getBillingPortal } from '../../apis/stripe.js'
 import { getMembershipByMemberId } from '../../apis/membership'
 import { resumeMembership } from '../../apis/membership'
-import Snackbar from '../ui/snackbar/Snackbar'
+import Snackbar from '../snackbar/Snackbar'
 import { getMembershipByMemberIDAction } from '../../store/accountSettings/AccountSettings.actions.js'
 
 

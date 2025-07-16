@@ -179,30 +179,30 @@ memberRouter.delete(
   }
 )
 
-/**
- * @route GET /api/members/:id/coffeeshops/:listType
- * @desc Get all café objects from a member's specific list (wishlist, favorites)
- * @param {string} id - Member ID
- * @param {string} listType - Type of list ('wishlistCoffeeShops', 'favoriteCoffeeShops')
- * @access Public (or adjust for your auth)
- */
-memberRouter.get('/:id/coffeeshops/:listType', async (req, res, next) => {
-  try {
-    const { id, listType } = req.params
-    // Find the member and populate the requested list
-    const member = await memberService.findMemberByIDWithPopulatedList(
-      id,
-      listType
-    )
-    if (!member) {
-      return res.status(404).json({ error: 'Member not found' })
-    }
-    // Return the populated list (array of cafe objects)
-    res.status(200).json(member[listType] || [])
-  } catch (error) {
-    next(error)
-  }
-})
+// /**
+//  * @route GET /api/members/:id/coffeeshops/:listType
+//  * @desc Get all café objects from a member's specific list (wishlist, favorites)
+//  * @param {string} id - Member ID
+//  * @param {string} listType - Type of list ('wishlistCoffeeShops', 'favoriteCoffeeShops')
+//  * @access Public (or adjust for your auth)
+//  */
+// memberRouter.get('/:id/coffeeshops/:listType', async (req, res, next) => {
+//   try {
+//     const { id, listType } = req.params
+//     // Find the member and populate the requested list
+//     const member = await memberService.findMemberByIDWithPopulatedList(
+//       id,
+//       listType
+//     )
+//     if (!member) {
+//       return res.status(404).json({ error: 'Member not found' })
+//     }
+//     // Return the populated list (array of cafe objects)
+//     res.status(200).json(member[listType] || [])
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 // Add auth middleware if necessary
 memberRouter.get('/:id/:listType', async (req, res, next) => {

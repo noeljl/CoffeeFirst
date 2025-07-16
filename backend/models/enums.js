@@ -1,19 +1,19 @@
 export const Offer = Object.freeze({
-  FREE_WATER: 'FreeWater',
-  WHEELCHAIR_FRIENDLY: 'WheelchairFriendly',
-  INDOOR_SITTING: 'IndoorSitting',
-  OUTDOOR_SITTING: 'OutdoorSitting',
-  PET_FRIENDLY: 'PetFriendly',
-  FREE_CHARGING: 'FreeCharging',
-  STUDY_FRIENDLY: 'StudyFriendly',
-  WIFI: 'Wifi',
+  FREE_WATER: 'Free Water',
+  WHEELCHAIR_FRIENDLY: 'Wheelchair Friendly',
+  INDOOR_SITTING: 'Indoor Sitting',
+  OUTDOOR_SITTING: 'Outdoor Sitting',
+  PET_FRIENDLY: 'Pet Friendly',
+  FREE_CHARGING: 'Free Charging',
+  STUDY_FRIENDLY: 'Study Friendly',
+  WIFI: 'WiFi',
 })
 
 export const SustainabilityFeature = Object.freeze({
-  SMALL_BATCH_ROASTING: 'SmallBatchRoasting',
-  ETHICAL_SOURCING: 'EthicalSourcing',
-  ECO_FRIENDLY_PACKAGING: 'EcoFriendlyPackaging',
-  ARABICA_ONLY: 'ArabicaOnly',
+  SMALL_BATCH_ROASTING: 'Small Batch Roasting',
+  ETHICAL_SOURCING: 'Ethical Sourcing',
+  ECO_FRIENDLY_PACKAGING: 'EcoFriendly Packaging',
+  ARABICA_ONLY: 'Arabica Only',
 })
 
 export const Allergen = Object.freeze({
@@ -22,7 +22,7 @@ export const Allergen = Object.freeze({
   MILK: 'Milk', // Added common allergens as examples
   EGGS: 'Eggs',
   WHEAT: 'Wheat',
-  TREE_NUTS: 'TreeNuts',
+  TREE_NUTS: 'Tree Nuts',
   FISH: 'Fish',
   SHELLFISH: 'Shellfish',
   SESAME: 'Sesame',
@@ -30,7 +30,7 @@ export const Allergen = Object.freeze({
 })
 
 export const CoffeeType = Object.freeze({
-  FLAT_WHITE: 'FlatWhite',
+  FLAT_WHITE: 'Flat White',
   LATTE_MACCHIATO: 'Latte Macchiato',
   ESPRESSO: 'Espresso',
   AMERICANO: 'Americano',

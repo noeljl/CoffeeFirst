@@ -119,9 +119,19 @@ export const getFilteredCoffeeShops = async ({
     if (coffeeVariants) params.coffeeVariants = coffeeVariants;
     if (sustainability) params.sustainability = sustainability;
     const response = await API.get('/coffeeshop/filter', { params });
+    console.log('The params are:', params);
     return response.data;
   } catch (err) {
     throw err.response?.data || err.message;
   }
 };
 
+// Get filter options
+export const getFilterOptions = async () => {
+  try {
+    const response = await API.get('/coffeeshop/filters/options');
+    return response.data;
+  } catch (err) {
+    throw err.response?.data || err.message;
+  }
+};
