@@ -1,0 +1,39 @@
+/* CafeGallery styles */
+.cafe-gallery {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.cafe-gallery-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.group-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: left;
+}
+
+.view-all-btn {
+  background-color: transparent;
+  border: none;
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.view-all-btn:hover {
+  background-color: #f0f0f0;
+  padding: 8px 16px;
+  border-radius: 10px;
+}

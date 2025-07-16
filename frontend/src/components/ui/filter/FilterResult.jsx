@@ -1,11 +1,8 @@
-// FilterResult.jsx
-// This component displays a list of filtered cafés using the SingleCafeCard component.
-// It receives the filtered cafés as a prop or from location.state, and shows a message if no cafés match the filters.
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import SingleCafeCard from '../../cafes/SingleCafeCard'
+import CafeGallery from '../../cafes/CafeGallery'
 import Button from '../buttons/Button'
-import './Filter.css'
+import '../../../styles/Filter.css'
 
 // FilterResult component
 // Props:
@@ -52,31 +49,8 @@ function FilterResult({ cafes, filters }) {
                     Clear filters
                 </Button>
             </div>
-            <div className="cafe-list">
-                {filteredCafes.map((coffeeShop) => {
-                    console.log(
-                        'Coffee shop:',
-                        coffeeShop.name,
-                        'Images:',
-                        coffeeShop.images
-                    )
-                    // Use environment variable for backend URL
-                    const backendUrl = 'http://localhost:3001'
-                    const imageUrl = coffeeShop.images?.[0]
-                        ? `${backendUrl}${coffeeShop.images[0]}`
-                        : ''
-                    return (
-                        <SingleCafeCard
-                            key={coffeeShop._id}
-                            imgSrc={imageUrl}
-                            title={coffeeShop.name}
-                            rate={coffeeShop.averageRating}
-                            address={coffeeShop.address}
-                            slug={coffeeShop.slug}
-                        />
-                    )
-                })}
-            </div>
+            {/* Use CafeGallery to display the filtered cafes */}
+            <CafeGallery coffeeShops={filteredCafes} titleText={null} />
         </div>
     )
 }

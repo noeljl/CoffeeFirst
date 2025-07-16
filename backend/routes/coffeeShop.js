@@ -235,4 +235,13 @@ coffeeShopRouter.get('/search', async (req, res, next) => {
   }
 });
 
+coffeeShopRouter.get('/filters/options', async (req, res, next) => {
+  try {
+    const options = await coffeeShopService.getFilterOptions();
+    res.json(options);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default coffeeShopRouter

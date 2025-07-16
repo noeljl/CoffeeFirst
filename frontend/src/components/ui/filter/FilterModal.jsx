@@ -1,41 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Filter.css';
+import '../../../styles/Filter.css';
 import Icons from '../../../assets/Icons.js';
 import { getFilteredCoffeeShops } from '../../../apis/coffeeshop.js';
-import { CoffeeTypeMap, OfferMap, SustainabilityFeatureMap } from '../../../constants/filterMappings.js';
 import Button from '../buttons/Button';
-
-const sustainabilityOptions = [
-    { label: 'Small-Batch Roasting', icon: Icons.tree },
-    { label: 'Eco-Friendly Packaging', icon: Icons.tree },
-    { label: 'Ethical Sourcing', icon: Icons.tree },
-    { label: '100% Arabica Only', icon: Icons.tree },
-];
-
-const offers = [
-    { label: 'Indoor Sitting', icon: Icons.couch },
-    { label: 'Outdoor Sitting', icon: Icons.sun },
-    { label: 'Wifi', icon: Icons.wifi },
-    { label: 'Free Water', icon: Icons.water },
-    { label: 'Free Charging', icon: Icons.charging },
-    { label: 'Pet Friendly', icon: Icons.pet },
-    { label: 'Wheelchair Friendly', icon: Icons.wheelchair },
-];
-
-const coffeeVariants = [
-    { label: 'Espresso', icon: Icons.coffeeBean },
-    { label: 'Flat White', icon: Icons.coffeeBean },
-    { label: 'Latte Macchiato', icon: Icons.coffeeBean },
-    { label: 'Cappuccino', icon: Icons.coffeeBean },
-    { label: 'Americano', icon: Icons.coffeeBean },
-];
+import { useAllFilterOptions } from '../../../hooks/useAllFilterOptions';
 
 function FilterModal({ onClose }) {
     const [selectedOffers, setSelectedOffers] = useState([]);
     const [selectedVariants, setSelectedVariants] = useState([]);
     const [selectedSustainability, setSelectedSustainability] = useState([]);
     const navigate = useNavigate();
+    const [options, loading, error] = useAllFilterOptions();
 
     const toggleSelection = (value, list, setList) => {
         setList(
@@ -52,26 +28,22 @@ function FilterModal({ onClose }) {
     };
 
     const handleSave = async () => {
-        // Map selected labels to backend enum values
-        const mappedOffers = selectedOffers.map(label => OfferMap[label]).filter(Boolean);
-        const mappedVariants = selectedVariants.map(label => CoffeeTypeMap[label]).filter(Boolean);
-        const mappedSustainability = selectedSustainability.map(label => SustainabilityFeatureMap[label]).filter(Boolean);
+        // Use the value directly for filter submission
+        const filterParams = {
+            offers: selectedOffers,
+            coffeeVariants: selectedVariants,
+            sustainability: selectedSustainability,
+        };
 
         // If no filters are selected, just close the modal
         if (
-            mappedOffers.length === 0 &&
-            mappedVariants.length === 0 &&
-            mappedSustainability.length === 0
+            filterParams.offers.length === 0 &&
+            filterParams.coffeeVariants.length === 0 &&
+            filterParams.sustainability.length === 0
         ) {
             onClose();
             return;
         }
-
-        const filterParams = {
-            offers: mappedOffers,
-            coffeeVariants: mappedVariants,
-            sustainability: mappedSustainability,
-        };
 
         console.log('Submitting filter params:', filterParams);
         try {
@@ -83,6 +55,9 @@ function FilterModal({ onClose }) {
             console.error('Filter fetch error:', err);
         }
     };
+
+    if (loading) return <div className="filter-overlay"><div className="filter-modal"><div>Loading filter options…</div></div></div>;
+    if (error) return <div className="filter-overlay"><div className="filter-modal"><div>Error loading filter options: {error.toString()}</div></div></div>;
 
     return (
         <div className="filter-overlay">
@@ -97,20 +72,19 @@ function FilterModal({ onClose }) {
                 <div className="filter-section">
                     <h3>Offers</h3>
                     <div className="filter-options">
-                        {offers.map((offer) => (
+                        {options.offers.map((offer) => (
                             <button
-                                key={offer.label}
-                                className={`filter-option ${selectedOffers.includes(offer.label) ? 'active' : ''
-                                    }`}
+                                key={offer.value}
+                                className={`filter-option ${selectedOffers.includes(offer.value) ? 'active' : ''}`}
                                 onClick={() =>
                                     toggleSelection(
-                                        offer.label,
+                                        offer.value,
                                         selectedOffers,
                                         setSelectedOffers
                                     )
                                 }
                             >
-                                <img src={offer.icon} alt={offer.label} /> {offer.label}
+                                <img src={Icons[offer.icon]} alt={offer.label} /> {offer.label}
                             </button>
                         ))}
                     </div>
@@ -119,20 +93,19 @@ function FilterModal({ onClose }) {
                 <div className="filter-section">
                     <h3>Sustainability</h3>
                     <div className="filter-options">
-                        {sustainabilityOptions.map((option) => (
+                        {options.sustainability.map((option) => (
                             <button
-                                key={option.label}
-                                className={`filter-option ${selectedSustainability.includes(option.label) ? 'active' : ''
-                                    }`}
+                                key={option.value}
+                                className={`filter-option ${selectedSustainability.includes(option.value) ? 'active' : ''}`}
                                 onClick={() =>
                                     toggleSelection(
-                                        option.label,
+                                        option.value,
                                         selectedSustainability,
                                         setSelectedSustainability
                                     )
                                 }
                             >
-                                <img src={option.icon} alt={option.label} /> {option.label}
+                                <img src={Icons[option.icon]} alt={option.label} /> {option.label}
                             </button>
                         ))}
                     </div>
@@ -141,20 +114,19 @@ function FilterModal({ onClose }) {
                 <div className="filter-section">
                     <h3>Coffee variants</h3>
                     <div className="filter-options">
-                        {coffeeVariants.map((variant) => (
+                        {options.coffeeVariants.map((variant) => (
                             <button
-                                key={variant.label}
-                                className={`filter-option ${selectedVariants.includes(variant.label) ? 'active' : ''
-                                    }`}
+                                key={variant.value}
+                                className={`filter-option ${selectedVariants.includes(variant.value) ? 'active' : ''}`}
                                 onClick={() =>
                                     toggleSelection(
-                                        variant.label,
+                                        variant.value,
                                         selectedVariants,
                                         setSelectedVariants
                                     )
                                 }
                             >
-                                <img src={variant.icon} alt={variant.label} /> {variant.label}
+                                <img src={Icons[variant.icon]} alt={variant.label} /> {variant.label}
                             </button>
                         ))}
                     </div>

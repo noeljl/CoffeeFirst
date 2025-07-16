@@ -1,11 +1,15 @@
 import { useParams } from 'react-router-dom'
-import CafeGallery from '../cafes/CafeGallery'
-// import VisitedCafeTable from "../visited/VisitedCafeTable"; // Add if needed
-// import EmptyState from "../states/EmptyState"; // Optional fallback
 import Membership from '../account-settings/Membership.jsx'
 import Personal from '../account-settings/PersonalInfo.jsx'
 
-function AccountSettings() {
+// AccountSettings component
+// Renders the account settings with the current section (personal, membership)
+// Props:
+// - None
+// Returns:
+// - The current section
+// - A message if the section is not found
+export default function AccountSettings() {
   const { section } = useParams()
 
   const sectionMap = {
@@ -15,5 +19,3 @@ function AccountSettings() {
 
   return sectionMap[section] || <div>Section not found</div>
 }
-
-export default AccountSettings
