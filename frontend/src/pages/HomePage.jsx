@@ -39,12 +39,6 @@ function HomePage() {
             <CoffeeGallery />
           </div>
         </div>
-        <div className="page-frame">
-          <div className="section">
-            <h2 id="section-title">Partners by District</h2>
-            <CafeGallery />
-          </div>
-        </div>
         <div className="section-sustainability">
           <div className="left-col">
             <img

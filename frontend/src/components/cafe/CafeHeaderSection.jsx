@@ -19,7 +19,7 @@ function CafeHeaderSection({ cafe }) {
     : ''
 
   const member = useSelector((state) => state.auth.member)
-  const memberId = member?.member?.id
+  const memberId = member?.id
 
   // Handler for 'Add to Wishlist' button
   const handleAddToWishlist = async (memberId, cafeId, listType) => {
