@@ -124,7 +124,11 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
     const mode = arr => {
       if (!arr.length) return null;
       const freq = {};
-      arr.forEach(val => { freq[val] = (freq[val] || 0) + 1; });
+      arr.forEach(val => { 
+        if (val !== null && val !== undefined) {
+          freq[val] = (freq[val] || 0) + 1; 
+        }
+      });
       return Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0];
     };
 
@@ -137,19 +141,19 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
     // Gather all values for each field
     const tasteArr = reviews.map(r => r.taste).filter(Number.isFinite);
     const presentationArr = reviews.map(r => r.presentation).filter(Number.isFinite);
-    const temperatureArr = reviews.map(r => r.temperature);
-    const vibeArr = reviews.map(r => r.vibe);
-    const aestheticsArr = reviews.map(r => r.aesthetics);
+    const temperatureArr = reviews.map(r => r.temperature).filter(val => val !== null && val !== undefined);
+    const vibeArr = reviews.map(r => r.vibe).filter(val => val !== null && val !== undefined);
+    const aestheticsArr = reviews.map(r => r.aesthetics).filter(val => val !== null && val !== undefined);
     const serviceFriendlinessArr = reviews.map(r => r.serviceFriendliness).filter(Number.isFinite);
-    const pricingArr = reviews.map(r => r.pricing);
-    const ecoFriendlyArr = reviews.map(r => r.ecoFriendly);
-    const veganFriendlyArr = reviews.map(r => r.veganFriendly);
-    const instagramArr = reviews.map(r => r.instagram);
-    const greatForStudyingArr = reviews.map(r => r.greatForStudying);
-    const dateSpotArr = reviews.map(r => r.dateSpot);
-    const petFriendlyArr = reviews.map(r => r.petFriendly);
+    const pricingArr = reviews.map(r => r.pricing).filter(val => val !== null && val !== undefined);
+    const ecoFriendlyArr = reviews.map(r => r.ecoFriendly).filter(val => val !== null && val !== undefined);
+    const veganFriendlyArr = reviews.map(r => r.veganFriendly).filter(val => val !== null && val !== undefined);
+    const instagramArr = reviews.map(r => r.instagram).filter(val => val !== null && val !== undefined);
+    const greatForStudyingArr = reviews.map(r => r.greatForStudying).filter(val => val !== null && val !== undefined);
+    const dateSpotArr = reviews.map(r => r.dateSpot).filter(val => val !== null && val !== undefined);
+    const petFriendlyArr = reviews.map(r => r.petFriendly).filter(val => val !== null && val !== undefined);
 
-    res.json({
+    const summary = {
       count: reviews.length,
       overallRating: mean(allNumericRatings), // Overall mean of all numeric ratings
       avgTaste: mean(tasteArr),
@@ -165,7 +169,10 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
       greatForStudying: mode(greatForStudyingArr),
       dateSpot: mode(dateSpotArr),
       petFriendly: mode(petFriendlyArr),
-    });
+    };
+
+    console.log("Review summary being sent:", summary); // Debug log
+    res.json(summary);
   } catch (error) {
     next(error);
   }

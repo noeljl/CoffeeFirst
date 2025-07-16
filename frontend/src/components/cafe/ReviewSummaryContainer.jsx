@@ -3,10 +3,14 @@ import { fetchReviewSummary } from "../../apis/review";
 import ReviewSummarySection from "./ReviewSummarySection";
 
 const mapSummaryToRatings = (summary) => {
+  console.log("Raw summary data:", summary); // Debug log to see raw data
+  
   // Helper function to format boolean values
   const formatBoolean = (value) => {
-    if (value === true) return "Yes";
-    if (value === false) return "No";
+    console.log("formatBoolean called with:", value, "type:", typeof value); // Debug log
+    if (value === true || value === "true") return "Yes";
+    if (value === false || value === "false") return "No";
+    if (value === null || value === undefined) return "-";
     return value || "-";
   };
 
@@ -23,7 +27,7 @@ const mapSummaryToRatings = (summary) => {
     return value.toString();
   };
 
-  return {
+  const mappedData = {
     average: formatNumber(summary.overallRating),
     total: summary.count || 0,
     coffeeQuality: {
@@ -48,12 +52,15 @@ const mapSummaryToRatings = (summary) => {
       petFriendly: formatBoolean(summary.petFriendly),
     },
   };
+  
+  console.log("Mapped data:", mappedData); // Debug log to see formatted data
+  return mappedData;
 };
 
-const ReviewSummaryContainer = ({ coffeeShopId }) => {
+const ReviewSummaryContainer = ({ coffeeShopId, refreshTrigger }) => {
   const [ratings, setRatings] = useState(null);
 
-  useEffect(() => {
+  const fetchSummary = () => {
     console.log("ReviewSummaryContainer: coffeeShopId =", coffeeShopId); // Debug log
     if (coffeeShopId) {
       console.log("ReviewSummaryContainer: Fetching summary for", coffeeShopId); // Debug log
@@ -66,7 +73,19 @@ const ReviewSummaryContainer = ({ coffeeShopId }) => {
           console.error("ReviewSummaryContainer: Error fetching summary", error); // Debug log
         });
     }
+  };
+
+  useEffect(() => {
+    fetchSummary();
   }, [coffeeShopId]);
+
+  // Refresh when review is submitted
+  useEffect(() => {
+    if (refreshTrigger !== undefined) {
+      console.log("ReviewSummaryContainer: Refreshing summary due to review submission");
+      fetchSummary();
+    }
+  }, [refreshTrigger, coffeeShopId]);
 
   if (!ratings) return <div>Loading review summary...</div>;
 
