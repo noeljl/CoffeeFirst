@@ -45,7 +45,7 @@ function CafeGroupGallery() {
               View all
             </button>
           </div>
-          <CafeGallery coffeeShops={districtGroup.coffeeShops} />
+          <CafeGallery coffeeShops={districtGroup.coffeeShops} layoutSwitchVisible={false} galleryType="gallery"/>
         </div>
       ))}
     </div>

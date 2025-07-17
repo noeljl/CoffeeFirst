@@ -14,16 +14,18 @@ export function useAllCafes() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    getAllCoffeeShops()
-      .then(response => {
-        setCafes(response.map(cafeObj => ({ cafeSlug: cafeObj.slug, cafeName: cafeObj.name, cafeDistrict: cafeObj.district })));
+    const fetchCafes = async () => {
+      try {
+        const response = await getAllCoffeeShops();
+        setCafes(response);
         setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
         setError(err);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCafes();
   }, []);
 
   return [cafes, loading, error];

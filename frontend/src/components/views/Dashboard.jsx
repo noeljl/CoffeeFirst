@@ -4,8 +4,9 @@ import Partners from "./Partners";
 import FilterResult from "../ui/filter/FilterResult";
 import useGetFavorites from "../../hooks/useGetFavorites";
 import useGetWishlist from "../../hooks/useGetWishlist";
+import useGetVisitedList from "../../hooks/useGetVisitedList";
 import { useSelector } from "react-redux";
-import CheckOut from '../../components/check-out/CheckOut'
+import CheckOut from '../check-out/CheckOut'
 
 function Dashboard() {
   const location = useLocation();
@@ -16,19 +17,17 @@ function Dashboard() {
   const member = useSelector((state) => state.auth.member);
   const memberId = member?.id;
   // Get the favorites and wishlist of the member
-  const { data: favorites, loading: favoritesLoading, error: favoritesError } = useGetFavorites(memberId);
-  const { data: wishlist, loading: wishlistLoading, error: wishlistError } = useGetWishlist(memberId);
-
-  console.log('favorites', favorites);
-  console.log('wishlist', wishlist);
+  const [favorites, favoritesLoading, favoritesError] = useGetFavorites(memberId);
+  const [wishlist, wishlistLoading, wishlistError] = useGetWishlist(memberId);
+  const [visited, visitedLoading, visitedError] = useGetVisitedList(memberId);
 
   const sectionMap = {
     partners: filteredShops && filteredShops.length > 0
       ? <FilterResult cafes={filteredShops} filters={filters}/>
       : <Partners />, // Use Partners component here
-    favorites: <CafeGallery coffeeShops={favorites} loading={favoritesLoading} error={favoritesError} titleText="Your Favorites" />,
-    wishlist: <CafeGallery coffeeShops={wishlist} loading={wishlistLoading} error={wishlistError} titleText="Your Wishlist" />,
-    visited: <CafeGallery />,
+    favorites: <CafeGallery coffeeShops={favorites} loading={favoritesLoading} error={favoritesError} titleText="Your Favorites" galleryType="list"/>,
+    wishlist: <CafeGallery coffeeShops={wishlist} loading={wishlistLoading} error={wishlistError} titleText="Your Wishlist" galleryType="list"/>,
+    visited: <CafeGallery coffeeShops={visited} loading={visitedLoading} error={visitedError} titleText="Your Visits" galleryType="list" />,
     checkout: <CheckOut />,
   };
 

@@ -47,6 +47,7 @@ import coffeeShopColor from './svg/coffeeShopColor.svg'
 import starGold2 from './svg/starGold2.svg'
 import checkout from './png/checkout.png'
 
+
 const Icons = {
   logo: logo,
   arrowDown: arrowDown,

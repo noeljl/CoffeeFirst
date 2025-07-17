@@ -24,5 +24,5 @@ export default function useGetFavorites(memberId) {
 
   console.log('All favorites', data);
 
-  return { data, loading, error };
+  return [ data, loading, error ];
 }
