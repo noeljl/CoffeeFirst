@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import CancellationModal from '../cancellationModal/CancellationModal'
 import './Membership.css'
-import Button from '../../components/ui/buttons/Button.jsx'
+import Button from '../buttons/Button.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBillingPortal } from '../../apis/stripe.js'
 import { getMembershipByMemberId } from '../../apis/membership'

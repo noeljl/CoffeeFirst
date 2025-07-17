@@ -4,7 +4,7 @@ import "./Review.css";
 import coffeeImage from "../../assets/png/coffee-cup.png"; // image for the review pop-up 
 import Icons from "../../assets/Icons";
 import axios from "axios"; // or use your API utility
-import Button from "../ui/buttons/Button"; // At the top if not already imported
+import Button from "../buttons/Button"; // At the top if not already imported
 import { createReview } from "../../apis/review"; // Import the API function
 
 function Review({ onClose, cafe, onReviewSubmitted }) {

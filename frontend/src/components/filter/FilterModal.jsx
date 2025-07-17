@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../styles/Filter.css';
-import Icons from '../../../assets/Icons.js';
-import { getFilteredCoffeeShops } from '../../../apis/coffeeshop.js';
-import Button from '../buttons/Button';
-import { useAllFilterOptions } from '../../../hooks/useAllFilterOptions';
+import '../../styles/Filter.css';
+import Icons from '../../assets/Icons.js';
+import { getFilteredCoffeeShops } from '../../apis/coffeeshop.js';
+import Button from '../buttons/Button.jsx';
+import { useAllFilterOptions } from '../../hooks/useAllFilterOptions';
 
 function FilterModal({ onClose }) {
     const [selectedOffers, setSelectedOffers] = useState([]);

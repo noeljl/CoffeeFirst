@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import SearchResultModal from './SearchResultModal';
 import './SearchBar.css';
-import searchIcon from '../../../assets/svg/searchFavorite.svg';
+import Icons from '../../assets/Icons.js';
 
 function SearchBarModal({ searchQuery, setSearchQuery, onClose, searchBarRect, districts, cafes, onDistrictSelect }) {
   const wrapperRef = useRef(null);
@@ -88,7 +88,7 @@ function SearchBarModal({ searchQuery, setSearchQuery, onClose, searchBarRect, d
             tabIndex={-1}
             style={{ marginLeft: 8 }}
           >
-            <img src={searchIcon} alt="Search" style={{ width: 25, height: 25 }} />
+            <img src={Icons.searchFavorite} alt="Search" style={{ width: 25, height: 25 }} />
           </button>
         </div>
         <SearchResultModal

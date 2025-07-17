@@ -1,25 +1,19 @@
 
-import React, { useEffect, useState, useRef, useCallback, useContext } from "react";
+import React, { useState, useRef, useCallback, useContext, useEffect } from "react";
 import CafeGallery from "../cafes/CafeGallery";
-import { getAllCoffeeShopsGroupedByDistrict } from "../../apis/coffeeshop";
-//import SearchBar from "../../../components/ui/search-bar/SearchBar";
-//import SearchBar from "../ui/search-bar/SearchBar";
 import { SearchContext } from "../../contexts/SearchContext";
+import { useAllCafesGroupedByDistricts } from '../../hooks/useAllCafesGroupedByDistricts';
 
 function PartnersByDistrict() {
-  // existing state
+  // Use the custom hook to fetch all grouped cafes
+  const { groups: allDistricts, loading, error } = useAllCafesGroupedByDistricts();
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [hasMore, setHasMore] = useState(true);
   const [groupedDistricts, setGroupedDistricts] = useState([]);
-  const [loading, setLoading]                   = useState(true);
-  const [error, setError]                       = useState(null);
-  const [allDistricts, setAllDistricts]         = useState([]);
-  const [visibleCount, setVisibleCount]         = useState(3);
-  const [hasMore, setHasMore]                   = useState(true);
-  const observerRef                             = useRef();
-
-  // ─── NEW: track search-bar clicks ───
-  //const [searchFilter, setSearchFilter] = useState(null);
+  const observerRef = useRef();
   const { searchFilter } = useContext(SearchContext);
-  // infinite-scroll intersection observer
+
+  // Infinite scroll intersection observer
   const lastDistrictRef = useCallback(node => {
     if (loading) return;
     if (observerRef.current) observerRef.current.disconnect();
@@ -31,22 +25,7 @@ function PartnersByDistrict() {
     if (node) observerRef.current.observe(node);
   }, [loading, hasMore]);
 
-  // initial fetch
-  useEffect(() => {
-    getAllCoffeeShopsGroupedByDistrict()
-      .then(data => {
-        setAllDistricts(data);
-        setGroupedDistricts(data.slice(0, visibleCount));
-        setHasMore(data.length > visibleCount);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err);
-        setLoading(false);
-      });
-  }, []);
-
-  // load more on visibleCount change
+  // Update groupedDistricts and hasMore when allDistricts or visibleCount changes
   useEffect(() => {
     if (allDistricts.length > 0) {
       setGroupedDistricts(allDistricts.slice(0, visibleCount));
@@ -54,7 +33,7 @@ function PartnersByDistrict() {
     }
   }, [visibleCount, allDistricts]);
 
-  // ─── NEW: derive what to render ───
+  // Derive what to render based on searchFilter
   const displayGroups = (() => {
     if (!searchFilter) {
       // no search → show paged/infinite groups
@@ -67,23 +46,16 @@ function PartnersByDistrict() {
       );
     }
     // café clicked → find the shop and wrap as a single-group
-    /*const match = groupedDistricts
+    const matched = groupedDistricts
       .flatMap(group => group.coffeeShops)
-      .find(shop => shop.title === searchFilter.name);
-
-    return match
-      ? [{ _id: match.title, coffeeShops: [match] }]
-      : [];*/
-      const matched = groupedDistricts
-        .flatMap(group => group.coffeeShops)
-        .filter(shop =>
-            shop.name.toLowerCase().includes(
-                searchFilter.name.toLowerCase()
-            )
-        );
-      return matched.length > 0
-        ? [{ _id: `Results for "${searchFilter.name}"`, coffeeShops: matched }]
-        : [];
+      .filter(shop =>
+        shop.name.toLowerCase().includes(
+          searchFilter.name.toLowerCase()
+        )
+      );
+    return matched.length > 0
+      ? [{ _id: `Results for "${searchFilter.name}"`, coffeeShops: matched }]
+      : [];
   })();
 
   // loading / error states
@@ -92,7 +64,7 @@ function PartnersByDistrict() {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* 2) Render either grouped or flat filtered */}
+      {/* Render either grouped or flat filtered */}
       {displayGroups.map((districtGroup, idx) => (
         <div
           key={districtGroup._id}
@@ -114,7 +86,7 @@ function PartnersByDistrict() {
         </div>
       ))}
 
-      {/* 3) “Load more” indicator only when NOT filtering */}
+      {/* “Load more” indicator only when NOT filtering */}
       {!searchFilter && hasMore && (
         <div style={{ textAlign: 'center', padding: '20px' }}>
           <div>Loading more districts…</div>

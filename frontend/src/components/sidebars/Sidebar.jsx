@@ -1,7 +1,7 @@
 import "./Sidebar.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
-import { SearchContext } from "../../../contexts/SearchContext";
+import { SearchContext } from "../../contexts/SearchContext";
 
 function Sidebar({ menu }) {
   const navigate = useNavigate();

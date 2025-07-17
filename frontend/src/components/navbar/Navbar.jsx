@@ -1,19 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react'
 import './Navbar.css'
-import Button from '../../ui/buttons/Button'
+import Button from '../buttons/Button'
 import { useNavigate, useLocation } from 'react-router-dom'
-import BurgerMenuButton from '../../ui/burger-menu/BurgerMenu'
-import Avatar from '../../ui/avatar/Avatar'
+import BurgerMenuButton from '../burger-menu/BurgerMenu'
+import Avatar from '../avatar/Avatar'
 import FilterModal from '../filter/FilterModal'
 import SearchBar from '../search-bar/SearchBar'
 import SearchBarModal from '../search-bar/SearchBarModal'
-import CheckInButton from '../../ui/check-in/CheckIn'
-import '../../../App.css'
+import CheckInButton from '../check-in/CheckIn'
+import '../../App.css'
 
-import Icons from '../../../assets/Icons'
+import Icons from '../../assets/Icons'
 
 // Import your SearchContext
-import { SearchContext } from '../../../contexts/SearchContext'
+import { SearchContext } from '../../contexts/SearchContext'
 import { useSelector } from 'react-redux'
 
 // Handles both navbar types: logged in and out.

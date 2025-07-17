@@ -1,5 +1,5 @@
 import './PricingTableColumn.css'
-import Icons from '../../../assets/Icons'
+import Icons from '../../assets/Icons'
 
 function PricingTableColumn({
   name,

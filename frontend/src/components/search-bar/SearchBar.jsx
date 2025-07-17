@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBarModal from './SearchBarModal';
-import { SearchContext } from '../../../contexts/SearchContext';
+import { SearchContext } from '../../contexts/SearchContext';
 import './SearchBar.css';
-import searchIcon from '../../../assets/svg/searchFavorite.svg';
-import { useAllDistricts } from '../../../hooks/useAllDistricts';
-import { useAllCafes } from '../../../hooks/useAllCafes';
+import Icons from '../../assets/Icons.js';
+import { useAllDistricts } from '../../hooks/useAllDistricts.js';
+import { useAllCafes } from '../../hooks/useAllCafes.js';
 
 function SearchBar() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,6 +16,8 @@ function SearchBar() {
   const [cafes, cafesLoading, cafesError] = useAllCafes();
   const navigate = useNavigate();
   const { setSearchFilter } = useContext(SearchContext);
+
+  console.log('THE CAFES ARE', cafes)
 
   // When modal opens, measure the search bar position for fixed overlay
   useEffect(() => {
@@ -64,7 +66,7 @@ function SearchBar() {
           tabIndex={-1}
           style={{ marginLeft: 8 }}
         >
-          <img src={searchIcon} alt="Search" style={{ width: 25, height: 25 }} />
+          <img src={Icons.searchFavorite} alt="Search" style={{ width: 25, height: 25 }} />
         </button>
       </div>
       {modalOpen && searchBarRect && (

@@ -1,5 +1,5 @@
 // dashboardMenu.js
-import Icons from "../../../assets/Icons.js";
+import Icons from "../../assets/Icons.js";
 
 const dashboardMenu = [
   {

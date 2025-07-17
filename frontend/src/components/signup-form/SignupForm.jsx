@@ -1,7 +1,7 @@
 import React, { useState } from 'react' // Importiere useState
 import { useDispatch } from 'react-redux' // Importiere useDispatch
 import { useNavigate } from 'react-router-dom' // Importiere useNavigate
-import Button from '../ui/buttons/Button' // Dein Button-Component
+import Button from '../buttons/Button' // Dein Button-Component
 import { setRegistrationDetails } from '../../store/auth/signupSlice' // Importiere die Redux-Aktion
 import './SignupForm.css' // Dein CSS
 

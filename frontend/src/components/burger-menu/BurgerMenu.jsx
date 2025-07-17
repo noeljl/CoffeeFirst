@@ -2,10 +2,10 @@ import { useState, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import './BurgerMenu.css'
 import dashboardMenu from '../sidebars/MenuData'
-import Icons from '../../../assets/Icons'
-import { AuthContext } from '../../../contexts/AuthProvider'
+import Icons from '../../assets/Icons'
+import { AuthContext } from '../../contexts/AuthProvider'
 import { useDispatch } from 'react-redux'
-import { logoutMemberAction } from '../../../store/auth/Auth.actions.js'
+import { logoutMemberAction } from '../../store/auth/Auth.actions.js'
 
 /* The burger menu icon as a button. It triggers the open/close movement of the actual menu */
 function BurgerMenuButton() {

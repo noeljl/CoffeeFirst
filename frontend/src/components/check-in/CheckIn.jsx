@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './CheckIn.css'
 import Button from '../buttons/Button'
-import Icons from '../../../assets/Icons'
+import Icons from '../../assets/Icons'
 import {
   getMembershipByMemberIDAction,
   getMemberByIdAction,
-} from '../../../store/accountSettings/AccountSettings.actions'
+} from '../../store/accountSettings/AccountSettings.actions'
 // Corrected import: Use named export QRCodeCanvas
 import { QRCodeCanvas } from 'qrcode.react'
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react' // Import useState
 import PricingTableColumn from './PricingTableColumn'
 import './PricingTable.css'
 import membershipData from './MembershipData'
-import { getProducts, getSubscribeSession } from '../../../apis/stripe'
+import { getProducts, getSubscribeSession } from '../../apis/stripe'
 
 function PricingTable({ onSelectPlan, onSessionCreated }) {
   // Receive onSelectPlan prop

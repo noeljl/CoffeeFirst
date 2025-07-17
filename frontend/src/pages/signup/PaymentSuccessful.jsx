@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Footer from '../../components/footer/Footer.jsx'
-import NavBar from '../../components/ui/navbar/Navbar.jsx'
+import NavBar from '../../components/navbar/Navbar.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { registerMemberAction, loginMemberAction } from '../../store/auth/Auth.actions.js'
 import { clearSignupForm } from '../../store/auth/signupSlice.js'

@@ -1,7 +1,7 @@
 import { useParams, useLocation } from "react-router-dom";
 import CafeGallery from "../cafes/CafeGallery";
 import Partners from "./Partners";
-import FilterResult from "../ui/filter/FilterResult";
+import FilterResult from "../filter/FilterResult";
 import useGetFavorites from "../../hooks/useGetFavorites";
 import useGetWishlist from "../../hooks/useGetWishlist";
 import useGetVisitedList from "../../hooks/useGetVisitedList";

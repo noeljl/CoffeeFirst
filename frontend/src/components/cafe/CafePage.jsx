@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getCoffeeShopBySlug } from "../../apis/coffeeshop";
+import { useState } from "react";
+import { useCafeBySlug } from "../../hooks/useCafeBySlug.js";
 
 import CafeHeaderSection from "./CafeHeaderSection.jsx";
 import VisitStatusCardSection from "./VisitStatusCardSection.jsx";
@@ -14,24 +14,8 @@ import ReviewSummaryContainer from "./ReviewSummaryContainer";
 
 function CafePage() {
   const { cafeSlug } = useParams();
-  const [cafe, setCafe] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { cafe, loading, error } = useCafeBySlug(cafeSlug);
   const [reviewSubmitted, setReviewSubmitted] = useState(false); // Track review submission
-
-  useEffect(() => {
-    getCoffeeShopBySlug(cafeSlug)
-      .then(data => {
-        console.log('Cafe data:', data);
-        setCafe(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching cafe:', err);
-        setError(err);
-        setLoading(false);
-      });
-  }, [cafeSlug]);
 
   // Callback to handle review submission
   const handleReviewSubmitted = () => {
