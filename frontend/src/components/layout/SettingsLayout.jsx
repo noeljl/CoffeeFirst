@@ -1,6 +1,6 @@
 import React from "react";
 import TwoColumnLayout from "./TwoColumnLayout";
-import SettingsSidebar from "../ui/sidebars/SettingsSidebar";
+import SettingsSidebar from "../sidebars/SettingsSidebar";
 import { Outlet } from "react-router-dom";
 
 function SettingsLayout() {

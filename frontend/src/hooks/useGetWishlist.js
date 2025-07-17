@@ -19,5 +19,5 @@ export default function useGetWishlist(memberId) {
   }, [memberId]);
 
   console.log('All wishlist', data);
-  return { data, loading, error };
+  return [ data, loading, error ];
 }

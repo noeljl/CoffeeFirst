@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Hero from '../components/hero/Hero'
 import CoffeeGallery from '../components/cafes/CafeGallery'
 import Footer from '../components/footer/Footer'
-import PricingTable from '../components/ui/pricing/PricingTable'
-import NavBar from '../components/ui/navbar/Navbar'
+import PricingTable from '../components/pricing/PricingTable'
+import NavBar from '../components/navbar/Navbar'
 import './HomePage.css'
 import CTA from '../components/cta/CTA'
 import FAQAccordion from '../components/faq/FAQAccordion'
 import faqs from '../components/faq/DummyFAQ'
 import { getAllDistricts } from '../apis/coffeeshop'
-import CafeGallery from '../components/cafes/CafeGallery'
 
 function HomePage() {
   const [districts, setDistricts] = useState([])

@@ -5,9 +5,9 @@ import Footer from '../../components/footer/Footer'
 import { useNavigate } from 'react-router-dom'
 // Corrected import path for setPlanDetails from the signupSlice
 import { setPlanDetails } from '../../store/auth/signupSlice.js' // <-- IMPORTANT CHANGE HERE!
-import Button from '../../components/ui/buttons/Button.jsx'
-import NavBar from '../../components/ui/navbar/Navbar.jsx'
-import PricingTable from '../../components/ui/pricing/PricingTable.jsx'
+import Button from '../../components/buttons/Button.jsx'
+import NavBar from '../../components/navbar/Navbar.jsx'
+import PricingTable from '../../components/pricing/PricingTable.jsx'
 
 function PlanForm() {
   const navigate = useNavigate()

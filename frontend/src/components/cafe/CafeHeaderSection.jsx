@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Snackbar from '../snackbar/Snackbar'
-import Button from '../ui/buttons/Button'
+import Button from '../buttons/Button'
 import Icons from '../../assets/Icons'
 import './CafeHeaderSection.css'
 import { addCoffeeShopToMemberList, removeCoffeeShopFromMemberList } from '../../apis/member'

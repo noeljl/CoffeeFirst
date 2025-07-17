@@ -1,6 +1,6 @@
 import React from "react";
 import "./CTA.css";
-import Button from "../ui/buttons/Button";
+import Button from "../buttons/Button";
 import { useNavigate } from "react-router-dom";
 
 function CTA() {

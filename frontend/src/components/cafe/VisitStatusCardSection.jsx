@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Icons from "../../assets/Icons";
-import Button from "../ui/buttons/Button";
+import Button from "../buttons/Button";
 import Review from "../review/Review"; // 1) Import the Review modal
 import "./VisitStatusCardSection.css";
 
