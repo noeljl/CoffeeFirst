@@ -90,6 +90,18 @@ const CoffeeShopSchema = new mongoose.Schema(
       enum: Object.values(CoffeeType),
       default: [],
       // Optional: Add validation to ensure at least one coffee type is listed if required.
+    },
+    // Rating fields
+    averageRating: {
+      type: Number,
+      default: 0,
+      min: [0, 'Average rating cannot be negative.'],
+      max: [5, 'Average rating cannot exceed 5.'],
+    },
+    numberOfReviews: {
+      type: Number,
+      default: 0,
+      min: [0, 'Number of reviews cannot be negative.'],
     }
   },
   {

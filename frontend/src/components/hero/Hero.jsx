@@ -20,7 +20,7 @@ function Hero() {
                       fw="bold" 
                       radius="small" 
                       padding="medium" 
-                      onClick={() => {navigate("/signup")}} 
+                      onClick={() => {navigate("/signup/regform")}} 
                       style={{ marginTop: 20 }}
                     >
                       Become a coffee lover

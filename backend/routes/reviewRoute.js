@@ -120,7 +120,7 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
 
     // Helper to calculate mean
     const mean = arr => arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1) : null;
-    // Helper to calculate mode
+    // Helper to calculate mode with split detection for boolean fields
     const mode = arr => {
       if (!arr.length) return null;
       const freq = {};
@@ -129,6 +129,14 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
           freq[val] = (freq[val] || 0) + 1; 
         }
       });
+      
+      // For boolean fields, check if we have conflicting values
+      const uniqueValues = Object.keys(freq);
+      if (uniqueValues.length > 1 && uniqueValues.every(val => val === 'true' || val === 'false')) {
+        // We have both true and false values - return "Split"
+        return 'split';
+      }
+      
       return Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0];
     };
 

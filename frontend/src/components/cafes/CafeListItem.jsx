@@ -33,7 +33,7 @@ export default function CafeListItem(cafe) {
                 />
                 <div className="text-block">
                     <div className="shop-title">{cafe.title}</div>
-                    <div className="rating-stars">{renderStars(0)}</div>
+                    <div className="rating-stars">{renderStars(cafe.rate || 0)}</div>
                     <div className="address">
                         <div className="street">{cafe.address.streetNo}</div>
                         <div className="postCode">{cafe.address.PLZ} {cafe.address.Place}</div>

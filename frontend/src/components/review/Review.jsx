@@ -25,10 +25,14 @@ function Review({ onClose, cafe, onReviewSubmitted }) {
   const [dateSpot, setDateSpot] = useState(null);
   const [petFriendly, setPetFriendly] = useState(null);
   const [comment, setComment] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleRating = (category, value) => setRatings((prev) => ({ ...prev, [category]: value }));
 
   const handleSave = async () => {
+    // Clear any previous error messages
+    setErrorMessage("");
+    
     try {
       await createReview({
         coffeeShop: cafe._id,
@@ -61,7 +65,28 @@ function Review({ onClose, cafe, onReviewSubmitted }) {
       
       onClose();
     } catch (err) {
-      alert("Failed to submit review");
+      // Check if the error is due to a duplicate review
+      console.log('Review submission error:', err); // Debug log
+      
+      // Try to extract the error message from different possible locations
+      let errorMessage = '';
+      if (err.message) {
+        errorMessage = err.message;
+      } else if (err.error) {
+        errorMessage = err.error;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      } else {
+        errorMessage = err.toString();
+      }
+      
+      console.log('Error message:', errorMessage); // Debug log
+      
+      if (errorMessage.includes('already reviewed this coffee shop')) {
+        setErrorMessage("You have already left a review for this café.");
+      } else {
+        setErrorMessage("Failed to submit review. Please try again.");
+      }
     }
   };
 
@@ -81,6 +106,7 @@ function Review({ onClose, cafe, onReviewSubmitted }) {
     setGreatForStudying(null);
     setDateSpot(null);
     setPetFriendly(null);
+    setErrorMessage(""); // Clear error message when modal opens
   }, []);
 
   return (
@@ -405,6 +431,22 @@ function Review({ onClose, cafe, onReviewSubmitted }) {
               </div>
             </div>
           </div>
+          
+          {/* Error message display */}
+          {errorMessage && (
+            <div style={{
+              color: '#721c24',
+              backgroundColor: '#f8d7da',
+              border: '1px solid #f5c6cb',
+              borderRadius: '5px',
+              padding: '12px',
+              marginTop: '10px',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              {errorMessage}
+            </div>
+          )}
           
           {/* Experience prompt and textarea */}
           <button className="save-rating" onClick={handleSave}>

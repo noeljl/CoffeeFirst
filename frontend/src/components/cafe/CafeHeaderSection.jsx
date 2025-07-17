@@ -7,6 +7,7 @@ import { addCoffeeShopToMemberList, removeCoffeeShopFromMemberList } from '../..
 import { useSelector } from 'react-redux'
 import useGetWishlist from '../../hooks/useGetWishlist'
 import useGetFavorites from '../../hooks/useGetFavorites'
+import renderStars from '../../functions/renderStars'
 
 function CafeHeaderSection({ cafe }) {
   const member = useSelector((state) => state.auth.member)
@@ -101,7 +102,12 @@ function CafeHeaderSection({ cafe }) {
         onClose={() => setSnackbarOpen(false)}
       />
       <section>
-        <h1>{cafe.name}</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+          <h1>{cafe.name}</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '20px' }}>
+            {renderStars(cafe.averageRating || 0)}
+          </div>
+        </div>
         <div className="imageContainer">
           <img className="mainImage" src={cafe.images[0]} alt={cafe.name} />
           <div className="secondaryImages">

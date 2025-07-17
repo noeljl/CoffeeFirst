@@ -15,7 +15,7 @@ function CTA() {
                         <p id="cta-text">Access premium drinks at your favorite local cafés </p>
                         <p id="cta-text">— starting at just €29.99/month.</p>
                     </div>
-                    <Button bg="red" fs="large" padding="medium" fw="bold" radius="small" onClick={() => { navigate("/signup") }}>Become a coffee lover</Button>
+                    <Button bg="red" fs="large" padding="medium" fw="bold" radius="small" onClick={() => { navigate("/signup/regform") }}>Become a coffee lover</Button>
                 </div>
             </div>
         </div>

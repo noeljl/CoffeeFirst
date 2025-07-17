@@ -10,6 +10,7 @@ const mapSummaryToRatings = (summary) => {
     console.log("formatBoolean called with:", value, "type:", typeof value); // Debug log
     if (value === true || value === "true") return "Yes";
     if (value === false || value === "false") return "No";
+    if (value === "split") return "🌓 Split";
     if (value === null || value === undefined) return "-";
     return value || "-";
   };

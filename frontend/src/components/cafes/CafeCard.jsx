@@ -36,7 +36,7 @@ export default function CafeCard(cafe) {
       />
       <div className="text-block">
         <p className="shop-title">{cafe.title}</p>
-        <div className="rating-stars">{renderStars(cafe.rate)}</div>
+        <div className="rating-stars">{renderStars(cafe.rate || 0)}</div>
         <div className="address">
           <div className="street">{cafe.address.streetNo}</div>
           <div className="postCode">{cafe.address.PLZ} {cafe.address.Place}</div>

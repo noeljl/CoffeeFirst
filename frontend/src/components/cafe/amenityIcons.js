@@ -7,11 +7,11 @@ import wifi from '../../assets/svg/wifi.svg';
 import wheelchair from '../../assets/svg/wheelchair.svg';
 
 export const AMENITY_ICONS = {
-  FreeWater: freeWater,
-  OutdoorSitting: outdoorSitting,
-  PetFriendly: petFriendly,
-  IndoorSitting: indoorSitting,
-  FreeCharging: freeCharging,
-  Wifi: wifi,
-  WheelchairFriendly: wheelchair,
+  'Free Water': freeWater,
+  'Outdoor Sitting': outdoorSitting,
+  'Pet Friendly': petFriendly,
+  'Indoor Sitting': indoorSitting,
+  'Free Charging': freeCharging,
+  'WiFi': wifi,
+  'Wheelchair Friendly': wheelchair,
 }; 
