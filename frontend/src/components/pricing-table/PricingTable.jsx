@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react' // Import useState
-import PricingTableColumn from './PricingTableColumn'
+import PricingColumn from './PricingColumn'
 import './PricingTable.css'
 import membershipData from './MembershipData'
 import { getProducts, getSubscribeSession } from '../../apis/stripe'
 
-function PricingTable({ onSelectPlan, onSessionCreated }) {
+export default function PricingTable({ onSelectPlan, onSessionCreated }) {
   // Receive onSelectPlan prop
   const [selectedPlanId, setSelectedPlanId] = useState('gold') // State to store the ID of the selected plan
   const [products, setProducts] = useState([])
@@ -49,16 +49,16 @@ function PricingTable({ onSelectPlan, onSessionCreated }) {
   }
 
   return (
-    <div className="pricingTableContainer">
+    <div className="pricing-table">
       {membershipData.map((val) => {
         // Removed 'key' from map, it's not needed if 'val.id' is unique
         return (
-          <PricingTableColumn
+          <PricingColumn
             key={val.id} // Assuming each plan has a unique 'id'
             name={val.name}
             price={val.price}
             color={val.color}
-            // advantages={val.advantages}
+            advantages={val.advantages}
             id={val.id} // Pass the plan's ID
             isSelected={val.id === selectedPlanId} // Pass a boolean indicating if this column is selected
             onClick={() => handleColumnClick(val)} // Pass a click handler
@@ -68,5 +68,3 @@ function PricingTable({ onSelectPlan, onSessionCreated }) {
     </div>
   )
 }
-
-export default PricingTable

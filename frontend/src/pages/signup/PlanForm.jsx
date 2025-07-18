@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { setPlanDetails } from '../../store/auth/signupSlice.js' // <-- IMPORTANT CHANGE HERE!
 import Button from '../../components/buttons/Button.jsx'
 import NavBar from '../../components/navbar/Navbar.jsx'
-import PricingTable from '../../components/pricing/PricingTable.jsx'
+import PricingTable from '../../components/pricing-table/PricingTable'
 
 function PlanForm() {
   const navigate = useNavigate()

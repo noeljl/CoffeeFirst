@@ -44,7 +44,7 @@ div {
   width: 100%; 
   margin: 0 auto; /* Center horizontally */
   padding: 0; /* Spacious padding for desktop */
-  background-color: red;
+  /* background-color: red; */
 }
 
 /* =========================
