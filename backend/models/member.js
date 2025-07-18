@@ -183,6 +183,8 @@ export class MembersModel {
       const member = await Member.findOne({ id })
         .populate('wishlistCoffeeShops')
         .populate('favoriteCoffeeShops')
+        .populate('visitedCoffeeShops')
+        .populate('reviewedCoffeeShops')
         .exec();
       if (!member) throw new Error(`Member with id ${id} not found.`);
       return member;

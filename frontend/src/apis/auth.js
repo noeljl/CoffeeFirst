@@ -49,3 +49,12 @@ export const logoutMember = async () => {
     throw err.response?.data || err.message
   }
 }
+
+export const checkEmailExists = async (email) => {
+  try {
+    const response = await API.get('auth/check-email', { params: { email } })
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}

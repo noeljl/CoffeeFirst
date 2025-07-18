@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 import jsQR from 'jsqr'
-import { getMembershipByMemberId, updateMembership } from '../../apis/membership'
+import {
+  getMembershipByMemberId,
+  updateMembership,
+} from '../../apis/membership'
+import { addCoffeeShopToMemberList } from '../../apis/member'
+import { useSelector } from 'react-redux'
 
 const CheckOut = () => {
   const [qrData, setQrData] = useState(null)
   const [uploadedImage, setUploadedImage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  const member = useSelector((state) => state.auth.member)
+  const memberId = member?.id
 
   // Real QR Code Scanner using jsQR
   const scanQRCode = (imageFile) => {
@@ -110,6 +118,15 @@ const CheckOut = () => {
         ...prev,
         coffeeQuotaLeft: newQuota,
       }))
+
+      // Add the specific CoffeeShop to visitedCoffeeShops
+      await addCoffeeShopToMemberList(
+        qrData.memberId,
+        '6873781c930a2ec016d5a015',
+        'visitedCoffeeShops'
+      )
+      alert('CoffeeShop wurde zu deinen besuchten Cafés hinzugefügt!')
+
       alert('Checkout erfolgreich!')
     } catch (err) {
       setError('Checkout-Fehler: ' + (err.message || err))

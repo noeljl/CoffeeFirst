@@ -40,4 +40,15 @@ router.post('/login', (req, res, next) =>
   })(req, res, next)
 )
 
+router.get('/check-email', async (req, res, next) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ exists: false, error: 'No email provided' });
+    const exists = !!(await AuthServiceInstance.membersModel.findOneByEmail(email));
+    res.json({ exists });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router

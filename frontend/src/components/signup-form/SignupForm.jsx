@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux' // Importiere useDispatch
 import { useNavigate } from 'react-router-dom' // Importiere useNavigate
 import Button from '../buttons/Button' // Dein Button-Component
 import { setRegistrationDetails } from '../../store/auth/signupSlice' // Importiere die Redux-Aktion
+import { checkEmailExists } from '../../apis/auth'
 import './SignupForm.css' // Dein CSS
 
 export default function SignupForm() {
@@ -12,19 +13,43 @@ export default function SignupForm() {
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
   const [subscribe, setSubscribe] = useState(false) // Für die Checkbox
+  const [emailError, setEmailError] = useState('')
+  const [checkingEmail, setCheckingEmail] = useState(false)
 
   // Hooks initialisieren
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const checkEmailExistsClick = async (email) => {
+    setCheckingEmail(true)
+    try {
+      const { exists } = await checkEmailExists(email)
+      if (exists) {
+        setEmailError('Mail bereits vergeben')
+        return true
+      } else {
+        setEmailError('')
+        return false
+      }
+    } catch (err) {
+      setEmailError('Fehler bei der E-Mail-Prüfung.')
+      return true
+    } finally {
+      setCheckingEmail(false)
+    }
+  }
+
   // Handler für das Absenden des Formulars
-  const handleSubmit = (e) => {
-    e.preventDefault() // Verhindert das Neuladen der Seite beim Absenden des Formulars
-    console.log(email, password)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    // Prüfe, ob die E-Mail bereits vergeben ist
+    const emailTaken = await checkEmailExistsClick(email)
+    if (emailTaken) {
+      // Nicht weiterleiten, wenn die E-Mail vergeben ist
+      return
+    }
     const registrationData = { firstName, lastName, subscribe, email, password }
     dispatch(setRegistrationDetails(registrationData))
-    // Save to localStorage
-    console.log('registrationData in SignupForm', registrationData)
     localStorage.setItem('signupData', JSON.stringify(registrationData))
     navigate('/signup/planform')
   }
@@ -56,8 +81,10 @@ export default function SignupForm() {
           className="inputField"
           value={email} // Wert an den State binden
           onChange={(e) => setEmail(e.target.value)} // State bei Änderung aktualisieren
+          onBlur={() => checkEmailExistsClick(email)}
           required
         />
+        {emailError && <div style={{ color: 'red' }}>{emailError}</div>}
         <input
           type="password"
           placeholder="Add a password"
@@ -81,9 +108,9 @@ export default function SignupForm() {
           bg="red"
           radius="small"
           width="full"
-        // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
-        // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
-        // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
+          // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
+          // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
+          // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
         >
           NEXT
         </Button>

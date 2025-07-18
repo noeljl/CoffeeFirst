@@ -32,13 +32,17 @@ function BurgerMenuButton() {
 function Menu({ onClose }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { logout } = useContext(AuthContext)
+  const { logout, user } = useContext(AuthContext)
   const dispatch = useDispatch()
+  // Only show 'Checkout' if user is shop owner
+  const filteredMenu = user?.isShopOwner
+    ? dashboardMenu
+    : dashboardMenu.filter((item) => item.title !== 'Checkout')
   return (
     <div className="burger-menu">
       <ul>
         <div className="border">
-          {dashboardMenu.map((val, key) => (
+          {filteredMenu.map((val, key) => (
             <li
               key={key}
               className="entries"

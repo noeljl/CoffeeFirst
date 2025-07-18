@@ -458,6 +458,8 @@ function PersonalInfo() {
                 {localProfilePicFile && (
                   <Button
                     bg="black"
+                    type="submit"
+                    radius="small"
                     onClick={handleSave}
                     style={{ marginLeft: '0.5rem' }}
                   >
