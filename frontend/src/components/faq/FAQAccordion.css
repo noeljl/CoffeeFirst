@@ -1,14 +1,18 @@
+/* =========================
+   FAQ Accordion Styles
+   ========================= */
+
 .faq-accordion {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-  }
-  
-  .faq-item {
+}
+
+.faq-item {
     border-bottom: 1px solid #ddd;
-  }
-  
-  .faq-question {
+}
+
+.faq-question {
     width: 100%;
     background: none;
     border: none;
@@ -20,29 +24,65 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-  }
-  
-  .arrow {
+}
+
+.arrow {
     font-size: 1.5rem;
     transition: transform 0.3s;
-  }
-  
-  .arrow.open {
+}
+
+.arrow.open {
     transform: rotate(180deg);
-  }
-  
-  .faq-answer {
+}
+
+.faq-answer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-  }
-  
-  .faq-answer.open {
+}
+
+.faq-answer.open {
     max-height: 500px;
-  }
-  
-  .faq-answer-content {
+}
+
+.faq-answer-content {
     padding: 16px 0 24px 0;
     font-size: 1rem;
     color: #222;
-  }
+}
+
+/* =========================
+   Responsive Styles
+   ========================= */
+
+@media (max-width: 1024px) {
+    .faq-accordion {
+        max-width: 95vw;
+    }
+    .faq-question {
+        font-size: 1.1rem;
+        padding: 20px 0;
+    }
+    .faq-answer-content {
+        font-size: 0.95rem;
+        padding: 14px 0 20px 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .faq-accordion {
+        max-width: 100vw;
+        padding: 0 8px;
+    }
+    .faq-question {
+        font-size: 1rem;
+        padding: 16px 0;
+    }
+    .faq-answer-content {
+        font-size: 0.92rem;
+        padding: 10px 0 16px 0;
+    }
+    .arrow {
+        font-size: 1.2rem;
+    }
+}
