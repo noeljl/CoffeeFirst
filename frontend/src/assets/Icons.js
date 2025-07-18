@@ -5,7 +5,6 @@ import brokenHeart from './svg/brokenHeartHeartbreak.svg'
 import camera from './svg/camera.svg'
 import cancel from './svg/cancel.svg'
 import charging from './svg/charging.svg'
-import check from './svg/check.svg'
 import coffeeBean from './svg/coffee-bean-filled.svg'
 import coffeeCup from './png/coffee-cup.png'
 import coffeeShop from './svg/coffeeShop.svg'
@@ -40,9 +39,6 @@ import water from './svg/water.svg'
 import wheelchair from './svg/wheelchair.svg'
 import wifi from './svg/wifi.svg'
 import wishlist from './svg/wishlist.svg'
-import facebook from './svg/facebookIcon.svg'
-import x from './svg/xIcon.svg'
-import linkedin from './svg/linkedinIcon.svg'
 import coffeeShopColor from './svg/coffeeShopColor.svg'
 import starGold2 from './svg/starGold2.svg'
 import checkout from './png/checkout.png'
@@ -56,7 +52,6 @@ const Icons = {
   camera: camera,
   cancel: cancel,
   charging: charging,
-  check: check,
   coffeeBean: coffeeBean,
   coffeeCup: coffeeCup,
   coffeeShop: coffeeShop,
@@ -91,9 +86,6 @@ const Icons = {
   wheelchair: wheelchair,
   wifi: wifi,
   wishlist: wishlist,
-  x: x,
-  facebook: facebook,
-  linkedin: linkedin,
   coffeeShopColor: coffeeShopColor,
   starGold2: starGold2,
   checkout: checkout,

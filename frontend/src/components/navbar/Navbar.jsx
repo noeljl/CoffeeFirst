@@ -6,7 +6,6 @@ import BurgerMenuButton from '../burger-menu/BurgerMenu'
 import Avatar from '../avatar/Avatar'
 import FilterModal from '../filter/FilterModal'
 import SearchBar from '../search-bar/SearchBar'
-import SearchBarModal from '../search-bar/SearchBarModal'
 import CheckInButton from '../check-in/CheckIn'
 import '../../App.css'
 
@@ -65,9 +64,7 @@ function SignedOut({ minimal }) {
 function SignedIn({ searchFilter, setSearchFilter, minimal }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const [, setMenuOpen] = useState(false)
   const [isFilterOpen, setFilterOpen] = useState(false)
-  const [isSearchModalOpen, setSearchModalOpen] = useState(false)
 
   // Handler for search selection
   const handleSearchSelect = (filter) => {
