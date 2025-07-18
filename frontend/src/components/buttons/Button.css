@@ -31,6 +31,8 @@
 .bg-white { background-color: #ffffff; color: black; border: 1px solid #D4D4D4; }
 .bg-black { background-color: #222222; color: white;}
 
+.border-red { border: 1px solid #DA0000; }
+
 /* Hover effect */
 .bg-red:hover { background-color: #b30000; }
 .bg-white:hover { background-color: #F2F2F2; }

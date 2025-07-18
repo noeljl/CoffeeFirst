@@ -16,7 +16,7 @@ import { SearchContext } from '../../contexts/SearchContext'
 import { useSelector } from 'react-redux'
 
 // Handles both navbar types: logged in and out.
-function NavBar({ minimal }) {
+function NavBar() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const location = useLocation()
   // Get both searchFilter and setSearchFilter from context
@@ -32,20 +32,20 @@ function NavBar({ minimal }) {
         <SignedIn
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
-          minimal={minimal}
         />
       ) : (
-        <SignedOut minimal={minimal} />
+        <SignedOut />
       )}
     </div>
   )
 }
 
 // Logged out navbar.
-function SignedOut({ minimal }) {
+function SignedOut() {
   const navigate = useNavigate()
   return (
     <div className="navbar-container">
+      <div className="navbar-logo-container">
       <img
         src={Icons.logo}
         alt="CoffeeFirst Logo"
@@ -55,13 +55,36 @@ function SignedOut({ minimal }) {
           navigate('/home')
         }}
       />
-      {/* Keine Buttons, wenn minimal */}
+      </div>
+      <div className="navbar-buttons-container">
+        <Button
+          bg="white"
+          fs="medium"
+          radius="small"
+          padding="medium"
+          fw="bold"
+          onClick={() => navigate('/login')}
+          border="red"
+        >
+          Sign in
+        </Button>
+        <Button
+          bg="red"
+          fs="medium"
+          radius="small"
+          padding="medium"
+          fw="bold"
+          onClick={() => navigate('/signup/regform')}
+        >
+          Sign up
+        </Button>
+      </div>
     </div>
   )
 }
 
 // Pass searchFilter and setSearchFilter as props to SignedIn
-function SignedIn({ searchFilter, setSearchFilter, minimal }) {
+function SignedIn({ searchFilter, setSearchFilter }) {
   const navigate = useNavigate()
   const location = useLocation()
   const [isFilterOpen, setFilterOpen] = useState(false)
@@ -85,23 +108,6 @@ function SignedIn({ searchFilter, setSearchFilter, minimal }) {
       // setSelectedIndex(-1);
     }
   }, [searchFilter])
-
-  // Wenn minimal, nur Logo anzeigen
-  if (minimal) {
-    return (
-      <div className="navbar-container">
-        <img
-          src={Icons.logo}
-          alt="CoffeeFirst Logo"
-          className="logo"
-          draggable={false}
-          onClick={() => {
-            navigate('/home')
-          }}
-        />
-      </div>
-    )
-  }
 
   return (
     <div className="navbar-container">
@@ -137,10 +143,6 @@ function SignedIn({ searchFilter, setSearchFilter, minimal }) {
       </div>
     </div>
   )
-}
-
-NavBar.defaultProps = {
-  minimal: false,
 }
 
 export default NavBar

@@ -1,6 +1,4 @@
 import logo from './svg/Logo.svg'
-import arrowDown from './svg/arrowDown.svg'
-import arrowUp from './svg/arrowUp.svg'
 import brokenHeart from './svg/brokenHeartHeartbreak.svg'
 import camera from './svg/camera.svg'
 import cancel from './svg/cancel.svg'
@@ -46,8 +44,6 @@ import checkout from './png/checkout.png'
 
 const Icons = {
   logo: logo,
-  arrowDown: arrowDown,
-  arrowUp: arrowUp,
   brokenHeart: brokenHeart,
   camera: camera,
   cancel: cancel,

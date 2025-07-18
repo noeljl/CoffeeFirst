@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./FAQAccordion.css";
-import arrowDown from "../../assets/svg/arrowDown.svg";
-import arrowUp from "../../assets/svg/arrowUp.svg";
+import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 
 function FAQAccordion({ faqs }) {
   const [openIndex, setOpenIndex] = useState(null);
@@ -20,12 +19,7 @@ function FAQAccordion({ faqs }) {
             aria-expanded={openIndex === idx}
           >
             <span>{faq.question}</span>
-            <img
-              src={openIndex === idx ? arrowUp : arrowDown}
-              alt={openIndex === idx ? "Collapse" : "Expand"}
-              className="arrow"
-              style={{ width: 24, height: 24 }}
-            />
+            {openIndex === idx ? <FaAngleUp color="black" size={32}/> : <FaAngleDown color="black" size={32}/>}
           </button>
           <div
             className={`faq-answer ${openIndex === idx ? "open" : ""}`}
