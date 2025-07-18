@@ -60,7 +60,7 @@ function HomePage() {
         <div className="page-frame">
           <div className="section">
             <h2 id="section-title">Pricing</h2>
-            <PricingTable />
+            <PricingTable onSelectPlan={null} onSessionCreated={null} page="home" />
           </div>
         </div>
         <CTA />

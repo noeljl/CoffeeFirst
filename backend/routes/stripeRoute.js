@@ -59,7 +59,7 @@ stripeRouter.get('/checkout/subscribe', async (req, res) => {
             line_items: [{ price: priceId, quantity: 1 }],
             mode: 'subscription',
             success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/signup/completed?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/cancel`,
+            cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/signup/planform`,
         });
 
         res.json({ sessionId: session.id, url: session.url });

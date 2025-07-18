@@ -3,12 +3,13 @@ import PricingColumn from './PricingColumn'
 import './PricingTable.css'
 import membershipData from './MembershipData'
 import { getProducts, getSubscribeSession } from '../../apis/stripe'
+import { useNavigate } from 'react-router-dom'
 
-export default function PricingTable({ onSelectPlan, onSessionCreated }) {
+export default function PricingTable({ onSelectPlan, onSessionCreated, page }) {
   // Receive onSelectPlan prop
-  const [selectedPlanId, setSelectedPlanId] = useState('gold') // State to store the ID of the selected plan
+  const [selectedPlanId, setSelectedPlanId] = useState(null) // State to store the ID of the selected plan
   const [products, setProducts] = useState([])
-
+  const navigate = useNavigate()
   // Set default plan when component mounts
   useEffect(() => {
     const defaultPlan = membershipData.find((plan) => plan.id === 'gold')
@@ -44,8 +45,12 @@ export default function PricingTable({ onSelectPlan, onSessionCreated }) {
   }, [selectedPlanId, onSessionCreated])
 
   const handleColumnClick = (plan) => {
-    setSelectedPlanId(plan.id) // Set the selected plan's ID
-    onSelectPlan(plan) // Pass the entire plan object back to the parent (PlanForm)
+    if (page === 'home') {
+      navigate('/signup/regform')
+    } else {
+      setSelectedPlanId(plan.id) // Set the selected plan's ID
+      onSelectPlan(plan) // Pass the entire plan object back to the parent (PlanForm)
+    }
   }
 
   return (
