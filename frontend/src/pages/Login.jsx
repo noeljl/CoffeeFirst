@@ -1,19 +1,19 @@
 import React from 'react'
-import NavBar from '../../components/navbar/Navbar.jsx'
-import Footer from '../../components/footer/Footer'
-import SignInForm from '../../components/signin-form/SignInForm.jsx'
+import NavBar from '../components/navbar/Navbar.jsx'
+import Footer from '../components/footer/Footer.jsx'
+import SignInForm from '../components/signin-form/SignInForm.jsx'
 // import "./SignUp.css";
 
-function SignIn() {
+export default function Login() {
   return (
     <div>
-      <NavBar minimal />
+      <NavBar />
       <div className="signup-form-section">
         <div className="signup-form-text">
           <h2
             style={{
               textAlign: 'center',
-              fontSize: '2.5rem',
+              fontSize: 'clamp(2rem, 4vw, 2.5rem)',
               marginBottom: '1.5rem',
             }}
           >
@@ -28,5 +28,3 @@ function SignIn() {
     </div>
   )
 }
-
-export default SignIn

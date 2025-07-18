@@ -1,3 +1,4 @@
+
 /* General container for the sign-in form for better centering and presentation */
 .signin-container {
   max-width: 450px;
@@ -37,8 +38,8 @@
 /* Enhanced focus effect for input fields */
 .inputField:focus {
   outline: none;
-  border-color: #007bff; /* A nice blue for focus */
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  border-color: #222; /* A nice blue for focus */
+  box-shadow: 0 0 0 3px rgba(34, 34, 34, 0.2);
 }
 
 /* Container for the registration link for better spacing */
@@ -52,7 +53,7 @@
 /* The actual link you want to style */
 .register-link {
   font-weight: 600;
-  color: #007bff; /* A standout color for the link */
+  color: #DA0000; /* A standout color for the link */
   text-decoration: none; /* Remove default underline */
   cursor: pointer;
   transition: color 0.3s, text-decoration 0.3s;
@@ -60,6 +61,16 @@
 
 /* The requested hover effect: lighten and underline */
 .register-link:hover {
-  color: #409eff; /* A lighter shade of the link color */
+  color: #b30000; /* A lighter shade of the link color */
   text-decoration: underline;
+}
+
+.error-message {
+  color: #DA0000;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  text-align: left;
+  margin-top: 10px;
+  line-height: 1.5;
+  padding: 0 0 15px 0;
+  margin: 0;
 }

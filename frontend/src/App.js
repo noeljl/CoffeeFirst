@@ -18,7 +18,7 @@ import HomePage from './pages/HomePage.jsx'
 import RegForm from './pages/signup/RegForm.jsx'
 import PlanForm from './pages/signup/PlanForm.jsx'
 import PaymentSuccessful from './pages/signup/PaymentSuccessful.jsx'
-import Login from './pages/signin/SignIn.jsx'
+import Login from './pages/Login.jsx'
 
 // Dynamic Views
 import Dashboard from './components/views/Dashboard.jsx'
