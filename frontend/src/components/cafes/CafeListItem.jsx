@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import '../../styles/CafeListItem.css'
+import './CafeListItem.css'
 import renderStars from '../../functions/renderStars'
 import handleGetDirection from '../../functions/handleGetDirection'
 import { FaHeart, FaRegHeart, FaRegStar, FaStar, FaDirections } from 'react-icons/fa'

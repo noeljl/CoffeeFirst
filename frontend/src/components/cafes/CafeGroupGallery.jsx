@@ -1,6 +1,6 @@
 
 import React from "react";
-import '../../styles/CafeGallery.css';
+import './CafeGallery.css';
 import CafeGallery from "./CafeGallery";
 import { useAllCafesGroupedByDistricts } from "../../hooks/useAllCafesGroupedByDistricts";
 import { useNavigate } from 'react-router-dom';

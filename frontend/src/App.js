@@ -1,4 +1,5 @@
 import React from 'react'
+import './App.css'
 import {
   BrowserRouter as Router,
   Routes,
@@ -40,47 +41,49 @@ function App() {
   }, [dispatch])
 
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Standard-Redirect auf /login */}
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<HomePage />} />
-          {/* Öffentliche Routen */}
-          <Route path="/signup/regform" element={<RegForm />} />
-          <Route path="/signup/planform" element={<PlanForm />} />
-          <Route path="/signup/completed" element={<PaymentSuccessful />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/testing" element={<TempBlankPage />} />
-          <Route path="/check-out" element={<CheckOut />} />
+    <div className="AppWrapper">
+      <AuthProvider>
+        <Router>
+          <Routes>
+            {/* Standard-Redirect auf /login */}
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<HomePage />} />
+            {/* Öffentliche Routen */}
+            <Route path="/signup/regform" element={<RegForm />} />
+            <Route path="/signup/planform" element={<PlanForm />} />
+            <Route path="/signup/completed" element={<PaymentSuccessful />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/testing" element={<TempBlankPage />} />
+            <Route path="/check-out" element={<CheckOut />} />
 
-          {/* Geschützte Bereiche */}
-          <Route element={<PrivateRoute />}>
-            {/* Dashboard */}
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route
-                index
-                element={<Navigate to="/dashboard/partners" replace />}
-              />
-              <Route path=":section" element={<Dashboard />} />
-              <Route path=":section/:cafeSlug" element={<CafePage />} />
+            {/* Geschützte Bereiche */}
+            <Route element={<PrivateRoute />}>
+              {/* Dashboard */}
+              <Route path="/dashboard" element={<DashboardLayout />}>
+                <Route
+                  index
+                  element={<Navigate to="/dashboard/partners" replace />}
+                />
+                <Route path=":section" element={<Dashboard />} />
+                <Route path=":section/:cafeSlug" element={<CafePage />} />
+              </Route>
+
+              {/* Account Settings */}
+              <Route path="/account-settings" element={<SettingsLayout />}>
+                <Route
+                  index
+                  element={<Navigate to="/account-settings/personal" replace />}
+                />
+                <Route path=":section" element={<AccountSettings />} />
+              </Route>
             </Route>
 
-            {/* Account Settings */}
-            <Route path="/account-settings" element={<SettingsLayout />}>
-              <Route
-                index
-                element={<Navigate to="/account-settings/personal" replace />}
-              />
-              <Route path=":section" element={<AccountSettings />} />
-            </Route>
-          </Route>
-
-          {/* Fallback 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+            {/* Fallback 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </div>
   )
 }
 

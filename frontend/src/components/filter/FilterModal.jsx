@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/Filter.css';
+import './Filter.css';
 import Icons from '../../assets/Icons.js';
 import { getFilteredCoffeeShops } from '../../apis/coffeeshop.js';
 import Button from '../buttons/Button.jsx';

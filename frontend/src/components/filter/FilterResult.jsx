@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CafeGallery from '../cafes/CafeGallery'
 import Button from '../buttons/Button'
-import '../../styles/Filter.css'
+import './Filter.css'
 
 // FilterResult component
 // Props:

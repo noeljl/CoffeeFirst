@@ -1,70 +1,90 @@
-.footer {
-  background-color: #fff;
+/* =========================
+   Global Footer Styles
+   ========================= */
+
+/* Main footer wrapper: subtle top border, and vertical padding */
+footer {
   border-top: 1px solid #eee;
-  padding: 32px 0;
+  padding: 40px 0;
+  width: 100%;
+  margin: 0 auto;
+  /* Center footer horizontally */
+  /* center elements within the footer */
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.footer-container {
-  width: 1280px;
-  margin: 0 auto;
+.footer-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-icon-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.upper-row {
+  gap: 80px;
+}
+
+.lower-row {
+  align-items: flex-start;
+}
+
+.footer-icon {
+  font-size: 30px;
+}
+
+.footer-legal {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.footer-logo {
-  height: 40px;
-  cursor: pointer;
+#footer-copyright-text,
+.footer-legal-links {
+  font-size: 1rem;
 }
 
-.footer-center {
-  text-align: center;
-  font-size: 14px;
-  color: #111827;
-}
-
-.footer-links {
+.footer-legal-links {
   display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 4px;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
 
-.footer-links a {
-  text-decoration: none;
-  color: #111827;
-}
-
-.footer-links a:hover {
-  cursor: pointer;
+.footer-legal-links a:hover {
   text-decoration: underline;
 }
 
-.footer-links span {
-  color: #999;
+/* =========================
+   Responsive Styles
+   ========================= */
+
+/* For screens <= 1400px, make container width fluid */
+@media (max-width: 1024px) {
+  footer {
+    /* TODO: add responsive styles */
+  }
 }
 
-.footer-socials {
-  display: flex;
-  gap: 16px;
-}
+/* For tablets: stack vertically, center content, adjust padding */
+@media (max-width: 600px) {
+  footer {
+    padding: 30px 0;
+    gap: 20px;
+  }
 
-.footer-socials a {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.3s;
-}
-
-.footer-socials a:hover {
-  background-color: #f5f5f5;
-}
-
-.footer-socials img {
-  width: 16px;
-  height: 16px;
+  #footer-copyright-text,
+  .footer-legal-links {
+    font-size: 0.9rem;
+  }
 }
