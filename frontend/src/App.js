@@ -78,7 +78,8 @@ function App() {
             </Route>
 
             {/* Fallback 404 */}
-            <Route path="*" element={<Page404 />} />
+            <Route path="/not-found" element={<Page404 />} />
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
           </Routes>
         </Router>
       </AuthProvider>
