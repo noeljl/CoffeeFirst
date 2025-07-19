@@ -133,8 +133,15 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
       // For boolean fields, check if we have conflicting values
       const uniqueValues = Object.keys(freq);
       if (uniqueValues.length > 1 && uniqueValues.every(val => val === 'true' || val === 'false')) {
-        // We have both true and false values - return "Split"
-        return 'split';
+        // Check if we have a true tie (equal number of true/false)
+        const trueCount = freq['true'] || 0;
+        const falseCount = freq['false'] || 0;
+        if (trueCount === falseCount) {
+          // Only show "Split" when there's a true tie
+          return 'split';
+        }
+        // Otherwise return the majority result
+        return trueCount > falseCount ? 'true' : 'false';
       }
       
       return Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0];
@@ -146,20 +153,20 @@ reviewRouter.get('/coffee-shop/:coffeeShopId/summary', async (req, res, next) =>
       .flat()
       .filter(Number.isFinite);
 
-    // Gather all values for each field
+    // Gather all values for each field (exclude null/undefined for boolean fields)
     const tasteArr = reviews.map(r => r.taste).filter(Number.isFinite);
     const presentationArr = reviews.map(r => r.presentation).filter(Number.isFinite);
-    const temperatureArr = reviews.map(r => r.temperature).filter(val => val !== null && val !== undefined);
+    const temperatureArr = reviews.map(r => r.temperature).filter(val => val === true || val === false);
     const vibeArr = reviews.map(r => r.vibe).filter(val => val !== null && val !== undefined);
-    const aestheticsArr = reviews.map(r => r.aesthetics).filter(val => val !== null && val !== undefined);
+    const aestheticsArr = reviews.map(r => r.aesthetics).filter(val => val === true || val === false);
     const serviceFriendlinessArr = reviews.map(r => r.serviceFriendliness).filter(Number.isFinite);
     const pricingArr = reviews.map(r => r.pricing).filter(val => val !== null && val !== undefined);
-    const ecoFriendlyArr = reviews.map(r => r.ecoFriendly).filter(val => val !== null && val !== undefined);
-    const veganFriendlyArr = reviews.map(r => r.veganFriendly).filter(val => val !== null && val !== undefined);
-    const instagramArr = reviews.map(r => r.instagram).filter(val => val !== null && val !== undefined);
-    const greatForStudyingArr = reviews.map(r => r.greatForStudying).filter(val => val !== null && val !== undefined);
-    const dateSpotArr = reviews.map(r => r.dateSpot).filter(val => val !== null && val !== undefined);
-    const petFriendlyArr = reviews.map(r => r.petFriendly).filter(val => val !== null && val !== undefined);
+    const ecoFriendlyArr = reviews.map(r => r.ecoFriendly).filter(val => val === true || val === false);
+    const veganFriendlyArr = reviews.map(r => r.veganFriendly).filter(val => val === true || val === false);
+    const instagramArr = reviews.map(r => r.instagram).filter(val => val === true || val === false);
+    const greatForStudyingArr = reviews.map(r => r.greatForStudying).filter(val => val === true || val === false);
+    const dateSpotArr = reviews.map(r => r.dateSpot).filter(val => val === true || val === false);
+    const petFriendlyArr = reviews.map(r => r.petFriendly).filter(val => val === true || val === false);
 
     const summary = {
       count: reviews.length,

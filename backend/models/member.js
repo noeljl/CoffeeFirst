@@ -271,3 +271,5 @@ export class MembersModel {
 
 // Export the class to allow instantiation
 export default MembersModel
+
+export { Member };
