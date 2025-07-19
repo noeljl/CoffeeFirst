@@ -1,4 +1,3 @@
-import logo from './svg/Logo.svg'
 import brokenHeart from './svg/brokenHeartHeartbreak.svg'
 import camera from './svg/camera.svg'
 import cancel from './svg/cancel.svg'
@@ -15,7 +14,6 @@ import fairtradeLogo from './svg/fairtradeLogo.svg'
 import favorite from './png/favorite.png'
 import filter from './svg/filter.svg'
 import heart from './svg/heart.svg'
-import logo2 from './svg/Logo.svg'
 import logout from './svg/logout.svg'
 import map from './png/map.png'
 import menu from './svg/menu.svg'
@@ -36,7 +34,6 @@ import starGold2 from './svg/starGold2.svg'
 
 
 const Icons = {
-  logo: logo,
   brokenHeart: brokenHeart,
   camera: camera,
   cancel: cancel,
@@ -53,7 +50,6 @@ const Icons = {
   favorite: favorite,
   filter: filter,
   heart: heart,
-  logo2: logo2,
   logout: logout,
   map: map,
   menu: menu,

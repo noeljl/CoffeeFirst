@@ -20,7 +20,7 @@ function CafeGroupGallery() {
   const navigate = useNavigate();
 
   const handleViewAll = (districtName) => {
-    navigate(`/dashboard/partners?district=${encodeURIComponent(districtName)}`);
+    navigate(`/dashboard/discover?district=${encodeURIComponent(districtName)}`);
   };
 
   if (loading) return <div>Loading districts…</div>;

@@ -22,7 +22,7 @@ function Dashboard() {
   const [visited, visitedLoading, visitedError] = useGetVisitedList(memberId);
 
   const sectionMap = {
-    partners: filteredShops && filteredShops.length > 0
+    discover: filteredShops && filteredShops.length > 0
       ? <FilterResult cafes={filteredShops} filters={filters}/>
       : <Partners />, // Use Partners component here
     favorites: <CafeGallery coffeeShops={favorites} loading={favoritesLoading} error={favoritesError} titleText="Your Favorites" galleryType="list"/>,

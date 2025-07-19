@@ -1,12 +1,12 @@
 // dashboardMenu.js
-import { FaStoreAlt, FaHeart, FaStar, FaHistory, FaUser, FaMoneyCheck, FaUserCheck } from "react-icons/fa";
+import { FaHeart, FaStar, FaHistory, FaUser, FaMoneyCheck, FaUserCheck, FaSearch } from "react-icons/fa";
 
 
 const dashboardMenu = [
   {
-    title: 'Partners',
-    icon: <FaStoreAlt size={25} />,
-    link: '/dashboard/partners',
+    title: 'Discover',
+    icon: <FaSearch size={25} />,
+    link: '/dashboard/discover',
   },
   {
     title: 'Wishlist',

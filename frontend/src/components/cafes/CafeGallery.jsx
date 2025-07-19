@@ -16,7 +16,7 @@ export default function CafeGallery({ coffeeShops = [], titleText, loading, erro
   const [layout, setLayout] = useState(galleryType); // 'gallery' or 'list'
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate(`/dashboard/partners`);
+    navigate(`/dashboard/discover`);
   };
 
 

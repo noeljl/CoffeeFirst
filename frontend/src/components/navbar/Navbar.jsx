@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import './Navbar.css'
+import styles from './Navbar.module.css'
 import Button from '../buttons/Button'
 import { useNavigate, useLocation } from 'react-router-dom'
 import BurgerMenuButton from '../burger-menu/BurgerMenu'
@@ -7,13 +7,13 @@ import Avatar from '../avatar/Avatar'
 import FilterModal from '../filter/FilterModal'
 import SearchBar from '../search-bar/SearchBar'
 import CheckInButton from '../check-in/CheckIn'
-// import '../../App.css'
-
-import Icons from '../../assets/Icons'
-
-// Import your SearchContext
 import { SearchContext } from '../../contexts/SearchContext'
 import { useSelector } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
+import { FaBarcode, FaFilter } from 'react-icons/fa'
+import logo from '../../assets/Logo.svg'
+
+
 
 // Handles both navbar types: logged in and out.
 function NavBar() {
@@ -27,7 +27,7 @@ function NavBar() {
   }, [location.pathname, setSearchFilter])
 
   return (
-    <div className="page-frame">
+    <>
       {isAuthenticated ? (
         <SignedIn
           searchFilter={searchFilter}
@@ -36,7 +36,7 @@ function NavBar() {
       ) : (
         <SignedOut />
       )}
-    </div>
+    </>
   )
 }
 
@@ -46,15 +46,15 @@ function SignedOut() {
   return (
     <div className="navbar-container">
       <div className="navbar-logo-container">
-      <img
-        src={Icons.logo}
-        alt="CoffeeFirst Logo"
-        className="logo"
-        draggable={false}
-        onClick={() => {
-          navigate('/home')
-        }}
-      />
+        <img
+          src={logo}
+          alt="CoffeeFirst Logo"
+          className="logo"
+          draggable={false}
+          onClick={() => {
+            navigate('/home')
+          }}
+        />
       </div>
       <div className="navbar-buttons-container">
         <Button
@@ -89,6 +89,9 @@ function SignedIn({ searchFilter, setSearchFilter }) {
   const location = useLocation()
   const [isFilterOpen, setFilterOpen] = useState(false)
 
+  // Set media queries
+  const isDesktop = useMediaQuery({ minWidth: 1025 })
+
   // Handler for search selection
   const handleSearchSelect = (filter) => {
     setSearchFilter(filter)
@@ -110,9 +113,9 @@ function SignedIn({ searchFilter, setSearchFilter }) {
   }, [searchFilter])
 
   return (
-    <div className="navbar-container">
+    <div className={styles.navbarContainer}>
       <img
-        src={Icons.logo}
+        src={logo}
         alt="CoffeeFirst Logo"
         className="logo"
         draggable={false}
@@ -120,25 +123,26 @@ function SignedIn({ searchFilter, setSearchFilter }) {
           navigate('/home')
         }}
       />
-      <div className="gap-nav-middle">
+      <div className={styles.navbarMiddleContainer}>
         {/* Pass searchFilter to SearchBar */}
         <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
-        <Button
+        {isDesktop ? <Button
           bg="white"
           fs="small"
           radius="full"
-          icon={Icons.filter}
+          icon={<FaFilter size={20} />}
           padding="medium"
           fw="bold"
           onClick={() => setFilterOpen(true)}
-        >
-          Filter
-        </Button>
+          >
+            Filter
+          </Button> : <Button bg="white" fs="small" radius="full" icon={<FaFilter size={20} />} padding="small" fw="bold" onClick={() => setFilterOpen(true)} />}
         {isFilterOpen && <FilterModal onClose={() => setFilterOpen(false)} />}
       </div>
-      <div className="gap">
-        <CheckInButton />
-        <Avatar />
+      <div className={styles.navbarRightContainer}>
+        {/* <CheckInButton /> */}
+        {isDesktop ? <Button bg="red" fs="small" radius="full" icon={<FaBarcode size={20} />} padding="medium" fw="bold" onClick={() => setFilterOpen(true)}>Check in</Button> : <Button bg="red" fs="small" radius="full" icon={<FaBarcode size={20} />} padding="small" fw="bold" onClick={() => setFilterOpen(true)}></Button>}
+        {isDesktop ? <Avatar /> : undefined}
         <BurgerMenuButton />
       </div>
     </div>

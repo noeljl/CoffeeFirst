@@ -34,6 +34,12 @@
   Responsive Styles
    ========================= */
 
+@media (max-width: 1024px) {
+  .main {
+    padding-bottom: 20px; /* Reduced padding since footer has its own margin */
+  }
+}
+
 @media (max-width: 900px) {
   .layoutContainer {
     flex-direction: column;
@@ -44,5 +50,6 @@
   }
   .main {
     padding: 50px 0;
+    padding-bottom: 20px; /* Reduced padding since footer has its own margin */
   }
 }

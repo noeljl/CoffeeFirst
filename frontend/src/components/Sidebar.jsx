@@ -35,7 +35,7 @@ function DashboardSidebar({ navigate, location, setSearchFilter }) {
           id={location.pathname === item.link ? styles.active : ""}
           key={item.title}
           onClick={() => {
-            if (item.link === "/dashboard/partners") {
+            if (item.link === "/dashboard/discover") {
               setSearchFilter(null);
             }
             navigate(item.link);

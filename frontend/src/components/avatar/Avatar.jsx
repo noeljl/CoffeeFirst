@@ -30,7 +30,7 @@ function Avatar() {
       return `http://localhost:3001/profileImages/${profilePicture}`
     }
     // Return default image if no profile picture is available
-    return 'http://localhost:3001/profileImages/example_picture.jpeg'
+    return 'http://localhost:3001/profileImages/example_picture.png'
   }
 
   return (
@@ -43,7 +43,7 @@ function Avatar() {
         onError={(e) => {
           console.log('Avatar image failed to load:', e.target.src)
           e.target.src =
-            'http://localhost:3001/profileImages/example_picture.jpeg'
+            'http://localhost:3001/profileImages/example_picture.png'
         }}
       />
     </div>
