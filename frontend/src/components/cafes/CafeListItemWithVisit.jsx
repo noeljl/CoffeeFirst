@@ -18,27 +18,6 @@ export default function CafeListItemWithVisit({ cafe, lastVisit, visitStats }) {
     navigate(`/dashboard/partners/${cafe.slug}`)
   }
 
-  const formatLastVisit = (visitDate) => {
-    if (!visitDate) return null
-
-    const visit = new Date(visitDate)
-    const now = new Date()
-    const diffInMs = now - visit
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
-
-    if (diffInDays > 0) {
-      return `${diffInDays} Tag${diffInDays > 1 ? 'e' : ''} her`
-    } else if (diffInHours > 0) {
-      return `${diffInHours} Stunde${diffInHours > 1 ? 'n' : ''} her`
-    } else if (diffInMinutes > 0) {
-      return `${diffInMinutes} Minute${diffInMinutes > 1 ? 'n' : ''} her`
-    } else {
-      return 'Gerade eben'
-    }
-  }
-
   const formatVisitDate = (visitDate) => {
     if (!visitDate) return null
 
@@ -46,8 +25,6 @@ export default function CafeListItemWithVisit({ cafe, lastVisit, visitStats }) {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
     })
   }
 
@@ -79,30 +56,11 @@ export default function CafeListItemWithVisit({ cafe, lastVisit, visitStats }) {
         </div>
       </div>
       <div className="col-right">
-        {/* Last Visit Information */}
+        {/* Last Visit Information - Only Date */}
         {lastVisit && (
           <div className="last-visit-info">
-            <div className="last-visit-icon">
-              <FaClock
-                style={{ height: '16px', width: '16px', color: '#3b82f6' }}
-              />
-            </div>
-            <div className="last-visit-details">
-              <div className="last-visit-time">
-                {formatLastVisit(lastVisit.visitDate)}
-              </div>
-              <div className="last-visit-date">
-                {formatVisitDate(lastVisit.visitDate)}
-              </div>
-              {lastVisit.coffeeType && (
-                <div className="last-visit-coffee">{lastVisit.coffeeType}</div>
-              )}
-              {visitStats && visitStats.visitCount && (
-                <div className="visit-count">
-                  {visitStats.visitCount} Besuch
-                  {visitStats.visitCount > 1 ? 'e' : ''}
-                </div>
-              )}
+            <div className="last-visit-date-only">
+              {formatVisitDate(lastVisit.visitDate)}
             </div>
           </div>
         )}
@@ -118,4 +76,4 @@ export default function CafeListItemWithVisit({ cafe, lastVisit, visitStats }) {
       </div>
     </div>
   )
-}
+} 

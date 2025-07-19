@@ -1,104 +1,93 @@
-# CoffeeFirst
+Pitch
 
-1. You will need to install Docker and the Docker app https://www.docker.com/products/docker-desktop/
-2. Start the Docker app. You might have to complete some installation steps. Defaults should be fine.
-3. Clone the project/open it
-4. Go to the level, where the docker-compose.yml lies
-5. Type docker compose up --build to start the container. This might take a while. Give it some time. There might be some warnings, but it should be fine.
-6. Wait for the lines "MongoDB connected successfully" and "backend | Server listening on PORT 3001"
-7. Type into your browser localhost:3000. You should then see a register site or a login page
-8. If you are on the login page, change the path to localhost:3000/register
-9. Register with a mailadress and a password
-10. Change the browserpath to localhost:3000/login and login with the same credentials
-11. You should see a "welcome, !" sign.
-12. Done
+Coffee First ist eine Full‑Stack‑Plattform, die Kaffee‑Fans und Cafés zusammen­bringt.
+Die App bietet 
 
-## Getting started
+digitale Mitglieds­karten mit Kaffee‑Kontingent,
+eine nachhaltigkeits­orientierte Café‑Suche,
+Reviews & Ratings sowie
+ein schlankes Zahlungs‑ und Login‑System (lokal + OAuth).
+Technisch besteht das Projekt aus einem React‑Frontend und einem Node/Express‑Backend auf MongoDB – alles ready‑to‑run per Docker.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Projektaufbau
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+SEBA-Project/
+├── backend/               # Express + Mongoose API
+│   ├── models/            # DB‑Schemas (Member, CoffeeShop, …)
+│   ├── services/          # Business‑Logik (AuthService u.a.)
+│   ├── routes/            # REST‑Endpoints (/api/*)
+│   ├── loaders/           # Express/Passport/Middleware-Bootstrap
+│   └── index.js           # Server‑Entry‑Point
+├── frontend/              # React‑SPA (CRA)
+│   ├── src/               # React‑Code & Assets
+│   └── public/            # Static Files
+├── docker-compose.yml     # 3‑Service‑Setup (frontend, backend, MongoDB)
+└── README.md              # (dieses Dokument)
+Back‑End
 
-## Add your files
+Node 18‑Image, startet mit npm run server 
+Mongoose‑Models für Members, Memberships, CoffeeShops u.v.m.
+Front‑End
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+CRA + Redux Toolkit; Dev‑Server auf :3000 
+API‑Basispfad http://localhost:3001/api 
+Docker Compose – Schnellstart
 
-```
-cd existing_repo
-git remote add origin https://gitlab.lrz.de/seba-master-2025/team-11/coffeefirst.git
-git branch -M main
-git push -uf origin main
-```
+# 1. Images bauen & Container starten
+docker compose up --build
 
-## Integrate with your tools
+# 2. Logs ansehen
+docker compose logs -f frontend   # bzw. backend / mongodb
 
-- [ ] [Set up project integrations](https://gitlab.lrz.de/seba-master-2025/team-11/coffeefirst/-/settings/integrations)
+# 3. Alles stoppen & aufräumen
+docker compose down -v
+docker-compose.yml definiert drei Services:
 
-## Collaborate with your team
+Service	Port	Befehl im Container
+frontend	3000	npm install && npm start
+backend	3001	npm install && npm run server
+mongodb	27017	Offizielles mongo:5‑Image + Healthcheck
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
 
-## Test and Deploy
+Die Quell­ordner werden per Bind‑Mount eingebunden; Code‑Änderungen werden daher live neu­geladen (Hot‑Reload).
 
-Use the built-in continuous integration in GitLab.
+Lokal ohne Docker
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Voraus­setzung: Node ≥ 18 und eine laufende lokale MongoDB.
+# Backend
+cd backend
+npm install
+npm run server      # oder einfach: npm start
 
-***
+# Frontend (in neuem Terminal)
+cd ../frontend
+npm install
+npm start
+Der Back‑End‑Server lauscht auf http://localhost:3001, das Front‑End auf http://localhost:3000.
 
-# Editing this README
+Datenquellen & Assets
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Art	Speicherort	Herkunft / Lizenzhinweis
+Café‑Stammdaten	frontend/src/components/cafe/DummySingleCafeData.js – statisches Mock‑JSON für Dev‑Zwecke 
+Selbsterstellt (Demo)
+Listen‑Ansicht	frontend/src/components/cafes/CafesData.js 
+Selbsterstellt (Demo)
+Bilder	frontend/src/assets/dummyImages/* (PNG/JPG)	Platzhalter‑Fotos (Unsplash / Eigenaufnahmen). Nicht für Prod‑Use bestimmt.
+Icons & SVGs	frontend/src/assets/Icons.js – gebündelt aus Open‑Source‑Icon‑Sets 
+MIT / CC‑BY‑Lizenz gemäß jeweiligem Set
+Für produktive Deployments sollten echte Café‑Daten (z. B. aus Yelp API) und lizenzierte Bilder verwendet werden.
 
-## Suggestions for a good README
+Nützliche NPM‑Skripte
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Backend (backend/package.json):
 
-## Name
-Choose a self-explaining name for your project.
+Script	Zweck
+npm run server	Start mit Nodemon (Hot‑Reload) 
+npm test	Mocha + Chai Test‑Suite
+npm run create-db	Demo‑DB anlegen (Setup‑Skript)
+Frontend (frontend/package.json):
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Script	Zweck
+npm start	React Dev‑Server 
+npm run build	Produktions‑Build
+Viel Spaß beim Ausprobieren – und happy brewing! ☕
