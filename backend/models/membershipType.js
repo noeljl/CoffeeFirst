@@ -33,6 +33,15 @@ const MembershipTypeSchema = new mongoose.Schema(
         message: 'A membership type must include at least one coffee type.',
       },
     },
+    features: {
+      type: [String],
+      required: true,
+      default: [],
+      validate: {
+        validator: (v) => v && v.length > 0,
+        message: 'A membership type must include at least one feature.',
+      },
+    },
     durationDays: { type: Number, default: 30, min: 1 },
     coffeeQuota: { type: Number, required: true, min: 0 },
   },

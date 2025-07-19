@@ -63,8 +63,8 @@ export const registerMemberAction = createAsyncThunk(
   async (registrationData, thunkAPI) => {
     try {
       console.log('registrationData', registrationData)
-      const user = await registerMember(registrationData)
-      return { user, isAuthenticated: true }
+      const member = await registerMember(registrationData)
+      return { user: member, isAuthenticated: true }
     } catch (err) {
       return thunkAPI.rejectWithValue(err)
     }

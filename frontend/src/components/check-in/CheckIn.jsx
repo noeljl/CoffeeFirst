@@ -117,7 +117,7 @@ function CheckInButton() {
     }
     // Return the example picture as default if no profile picture is available
     console.log('Using default image')
-    return 'http://localhost:3001/profileImages/example_picture.jpeg'
+    return 'http://localhost:3001/profileImages/example_picture.png'
   }
 
   return (
@@ -175,7 +175,7 @@ function CheckInModal({
               onError={(e) => {
                 console.log('Image failed to load:', e.target.src)
                 e.target.src =
-                  'http://localhost:3001/profileImages/example_picture.jpeg'
+                  'http://localhost:3001/profileImages/example_picture.png'
               }}
             />
           </div>

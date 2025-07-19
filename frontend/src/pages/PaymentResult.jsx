@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Footer from '../components/footer/Footer.jsx'
 import NavBar from '../components/navbar/Navbar.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { registerMemberAction, loginMemberAction } from '../store/auth/Auth.actions.js'
+import { registerMemberAction } from '../store/auth/Auth.actions.js'
 import { clearSignupForm } from '../store/auth/signupSlice.js'
 import { getCompleteSession } from '../apis/stripe.js'
 import styles from './styles/LoginSignup.module.css'
 import Button from '../components/buttons/Button.jsx'
-
 
 export default function PaymentResult() {
   const navigate = useNavigate()
@@ -51,6 +50,14 @@ export default function PaymentResult() {
 
   const performRegistration = async (sessionData) => {
     try {
+      console.log('=== FRONTEND REGISTRATION START ===')
+      console.log('firstName:', firstName)
+      console.log('lastName:', lastName)
+      console.log('email:', email)
+      console.log('plan object:', plan)
+      console.log('plan.name:', plan?.name)
+      console.log('plan.id:', plan?.id)
+
       // Bereite Anmeldedaten für die Registrierung vor
       const credentials = {
         firstName,
@@ -65,14 +72,18 @@ export default function PaymentResult() {
         subscriptionPeriodEnd: sessionData.expires_at,
       }
 
+      console.log('=== SENDING TO BACKEND ===')
+      console.log('credentials:', credentials)
+      console.log('credentials.plan:', credentials.plan)
+
       await dispatch(registerMemberAction(credentials)).unwrap()
-      // Automatischer Login nach erfolgreicher Registrierung
-      await dispatch(loginMemberAction({ email, password })).unwrap()
+      // Registrierung setzt bereits den Auth-State, kein zusätzlicher Login nötig
       dispatch(clearSignupForm())
       localStorage.removeItem('signupData')
       setRegistrationStatus('success')
+      console.log('✅ Registration successful')
     } catch (err) {
-      console.error('Failed to register member:', err)
+      console.error('❌ Failed to register member:', err)
       setErrorMessage(err.message || 'Registration failed')
       setRegistrationStatus('failure')
     }
@@ -130,13 +141,16 @@ export default function PaymentResult() {
       <NavBar />
       <div className={styles.bodySection}>
         {registrationStatus === 'processing' && <PaymentProcessing />}
-        {registrationStatus === 'success' && <PaymentSuccess countdown={countdown} navigate={navigate} />}
-        {registrationStatus === 'failure' && <PaymentFailure navigate={navigate} />}
+        {registrationStatus === 'success' && (
+          <PaymentSuccess countdown={countdown} navigate={navigate} />
+        )}
+        {registrationStatus === 'failure' && (
+          <PaymentFailure navigate={navigate} />
+        )}
       </div>
       <Footer />
     </>
   )
-
 }
 
 function PaymentProcessing() {
@@ -160,7 +174,10 @@ function PaymentSuccess({ countdown, navigate }) {
     <div className={styles.contentContainer}>
       <div className={styles.textContainer}>
         <h2 className={styles.title}>Welcome to CoffeeFirst!</h2>
-        <p className={styles.subtitle}>Your registration is complete – grab your first coffee and enjoy exclusive perks in Munich’s best cafés.</p>
+        <p className={styles.subtitle}>
+          Your registration is complete – grab your first coffee and enjoy
+          exclusive perks in Munich’s best cafés.
+        </p>
       </div>
       <div className={styles.buttonContainer}>
         <Button
@@ -172,20 +189,27 @@ function PaymentSuccess({ countdown, navigate }) {
           width="full"
           onClick={() => navigate('/dashboard')}
         >
-          Redirection in <span style={{ fontWeight: 'bold', color: 'white' }}>{countdown}</span> seconds.
+          Redirection in{' '}
+          <span style={{ fontWeight: 'bold', color: 'white' }}>
+            {countdown}
+          </span>{' '}
+          seconds.
         </Button>
       </div>
     </div>
   )
 }
 
-
 function PaymentFailure({ navigate }) {
   return (
     <div className={styles.contentContainer}>
       <div className={styles.textContainer}>
-        <h2 className={styles.title}>Looks like we spilled some coffee on the server</h2>
-        <p className={styles.subtitle}>Please try again, or contact us if this keeps happening.</p>
+        <h2 className={styles.title}>
+          Looks like we spilled some coffee on the server
+        </h2>
+        <p className={styles.subtitle}>
+          Please try again, or contact us if this keeps happening.
+        </p>
       </div>
       <div className={styles.buttonContainer}>
         <Button

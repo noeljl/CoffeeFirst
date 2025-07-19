@@ -20,6 +20,16 @@ export const getMembershipByMemberId = async (memberId) => {
   }
 }
 
+// Get all membership types with their features
+export const getMembershipTypes = async () => {
+  try {
+    const response = await API.get(`membership/types`)
+    return response.data
+  } catch (err) {
+    throw err.response?.data || err.message
+  }
+}
+
 // Update a membership by its ID
 export const updateMembership = async (id, data) => {
   try {

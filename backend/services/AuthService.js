@@ -35,6 +35,7 @@ class AuthService {
     }
 
     console.log('membershipType service', membershipType)
+    console.log('membershipType name ', plan.name)
     console.log('membershipType.coffeeQuota', membershipType.coffeeQuota)
 
     // 3) Daten vorbereiten

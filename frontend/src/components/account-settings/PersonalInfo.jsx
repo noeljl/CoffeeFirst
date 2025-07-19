@@ -9,6 +9,7 @@ import {
   changeMemberPasswordAction,
 } from '../../store/accountSettings/AccountSettings.actions.js'
 import FormData from 'form-data'
+import DeleteAccountModal from '../deleteAccountModal/DeleteAccountModal.jsx'
 
 /**
  * PersonalInfo
@@ -53,11 +54,15 @@ function PersonalInfo() {
   const [isDragOver, setIsDragOver] = useState(false)
   const [showUploadZone, setShowUploadZone] = useState(false)
 
+  // State für Delete Account Modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
   // Daten bei Authentifizierung und MemberId laden
   useEffect(() => {
     if (isAuthenticated && memberId) {
       dispatch(getMemberByIdAction(memberId))
     }
+    console.log('memberId in PersonalInfo', memberId)
   }, [isAuthenticated, memberId, dispatch])
 
   // Redux-Daten in lokale States synchronisieren
@@ -93,6 +98,20 @@ function PersonalInfo() {
     setLocalProfilePicUrl(reduxProfilePicture || '')
     setImagePreview(null)
     setShowUploadZone(false)
+  }
+
+  // Delete Account Modal Handlers
+  const handleDeleteAccountClick = () => {
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+  }
+
+  const handleDeleteAccountSuccess = () => {
+    // This will be called after successful account deletion
+    // The modal will close and user will be redirected to home page
   }
 
   // Datei-Validierung
@@ -285,7 +304,7 @@ function PersonalInfo() {
         ? localProfilePicUrl
         : `http://localhost:3001/profileImages${localProfilePicUrl}`
     }
-    return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face'
+    return 'http://localhost:3001/profileImages/example_picture.png'
   }
 
   return (
@@ -442,11 +461,35 @@ function PersonalInfo() {
               <div className="button-group">
                 {(localProfilePicFile || localProfilePicUrl) && (
                   <Button
-                    onClick={() => {
-                      setLocalProfilePicFile(null)
-                      setLocalProfilePicUrl('')
-                      setImagePreview(null)
-                      if (fileInputRef.current) fileInputRef.current.value = ''
+                    onClick={async () => {
+                      try {
+                        // Send request to backend to set profile picture to example_picture.png
+                        await dispatch(
+                          updateMemberByIDAction({
+                            id: memberId,
+                            updatedFields: {
+                              profilePicture: '/example_picture.png',
+                            },
+                            isFormData: false,
+                          })
+                        ).unwrap()
+
+                        // Clear local state
+                        setLocalProfilePicFile(null)
+                        setLocalProfilePicUrl('/example_picture.png')
+                        setImagePreview(null)
+                        if (fileInputRef.current)
+                          fileInputRef.current.value = ''
+                      } catch (err) {
+                        console.error(
+                          'Fehler beim Entfernen des Profilbilds:',
+                          err
+                        )
+                        const errorMessage =
+                          err.message ||
+                          'Fehler beim Entfernen des Profilbilds. Bitte versuchen Sie es erneut.'
+                        alert(errorMessage)
+                      }
                     }}
                     bg="red"
                     radius="small"
@@ -613,10 +656,22 @@ function PersonalInfo() {
       </div>
 
       <div className="delete-account-container">
-        <Button bg="red" radius="small" padding="medium" fw="bold">
+        <Button
+          bg="red"
+          radius="small"
+          padding="medium"
+          fw="bold"
+          onClick={handleDeleteAccountClick}
+        >
           Delete account
         </Button>
       </div>
+
+      <DeleteAccountModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onDeleteSuccess={handleDeleteAccountSuccess}
+      />
     </div>
   )
 }

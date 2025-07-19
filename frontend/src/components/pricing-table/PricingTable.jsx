@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react' // Import useState
 import PricingColumn from './PricingColumn'
 import './PricingTable.css'
-import membershipData from './MembershipData'
 import { getProducts, getSubscribeSession } from '../../apis/stripe'
 import { useNavigate } from 'react-router-dom'
+import { useMembershipTypes } from '../../hooks/useMembershipTypes'
 
 export default function PricingTable({ onSelectPlan, onSessionCreated, page }) {
   // Receive onSelectPlan prop
   const [selectedPlanId, setSelectedPlanId] = useState(null) // State to store the ID of the selected plan
   const [products, setProducts] = useState([])
+  const [hasUserSelectedPlan, setHasUserSelectedPlan] = useState(false) // Track if user has made a selection
   const navigate = useNavigate()
-  // Set default plan when component mounts
+  
+  // Use the custom hook to load membership types
+  const { membershipTypes, loading, error } = useMembershipTypes()
+
+  // Set default plan only if no plan is currently selected and user hasn't made a selection
   useEffect(() => {
-    const defaultPlan = membershipData.find((plan) => plan.id === 'gold')
-    if (defaultPlan && onSelectPlan) {
-      onSelectPlan(defaultPlan)
+    console.log('selectedPlanId in PricingTable', selectedPlanId)
+    console.log('hasUserSelectedPlan in PricingTable', hasUserSelectedPlan)
+    if (!selectedPlanId && !hasUserSelectedPlan && onSelectPlan && membershipTypes.length > 0) {
+      const defaultPlan = membershipTypes.find((plan) => plan.id === 'gold')
+      if (defaultPlan) {
+        setSelectedPlanId(defaultPlan.id)
+        onSelectPlan(defaultPlan)
+      }
     }
-  }, [onSelectPlan])
+  }, [selectedPlanId, hasUserSelectedPlan, onSelectPlan, membershipTypes])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -48,14 +58,38 @@ export default function PricingTable({ onSelectPlan, onSessionCreated, page }) {
     if (page === 'home') {
       navigate('/signup/regform')
     } else {
+      console.log('plan in PricingTable', plan)
       setSelectedPlanId(plan.id) // Set the selected plan's ID
+      setHasUserSelectedPlan(true) // Mark that user has made a selection
       onSelectPlan(plan) // Pass the entire plan object back to the parent (PlanForm)
     }
   }
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="pricing-table">
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          Loading membership plans...
+        </div>
+      </div>
+    )
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="pricing-table">
+        <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+          Error loading membership plans: {error}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="pricing-table">
-      {membershipData.map((val) => {
+      {membershipTypes.map((val) => {
         // Removed 'key' from map, it's not needed if 'val.id' is unique
         return (
           <PricingColumn

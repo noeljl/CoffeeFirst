@@ -96,12 +96,12 @@ const authSlice = createSlice({
       .addCase(registerMemberAction.fulfilled, (state, action) => {
         state.isFetching = false
         state.error = null
-        // Optional: Auto-login nach Registration
-        // const { isAuthenticated, member } = action.payload
-        // if (isAuthenticated) {
-        //   state.isAuthenticated = true
-        //   state.member = member
-        // }
+        // Set authentication state after successful registration
+        const { user, isAuthenticated } = action.payload
+        if (isAuthenticated && user) {
+          state.isAuthenticated = true
+          state.member = user
+        }
       })
       .addCase(registerMemberAction.rejected, (state, action) => {
         state.isFetching = false

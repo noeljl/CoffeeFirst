@@ -6,6 +6,7 @@ import memberRouter from './memberRoute.js' // Make sure this path points to cof
 import reviewRouter from './reviewRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import stripeRouter from './stripeRoute.js' // Make sure this path points to coffeeShopRoutes.js
 import membershipRouter from './memberShipRoute.js'
+import visitRouter from './visitRoute.js'
 
 export default (app) => {
   app.use('/api/auth', authRouter)
@@ -15,5 +16,5 @@ export default (app) => {
   app.use('/api/member', memberRouter)
   app.use('/api/review', reviewRouter)
   app.use('/api/stripe', stripeRouter)
-  app.use('/api/membership', membershipRouter)
+  app.use('/api/visits', visitRouter)
 }

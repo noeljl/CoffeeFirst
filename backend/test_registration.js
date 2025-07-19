@@ -13,7 +13,7 @@ const testRegistration = async () => {
       throw new Error('MONGO_URI is not defined in your .env file')
     }
     await mongoose.connect(dbUri)
-    console.log('🌱 Database connection successful.')
+    //console.log('🌱 Database connection successful.')
 
     // Check if membership types exist
     const membershipTypes = await MembershipTypeModel.findAll()

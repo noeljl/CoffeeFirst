@@ -5,6 +5,7 @@ import {
   updateMembership,
 } from '../../apis/membership'
 import { addCoffeeShopToMemberList } from '../../apis/member'
+import { createVisit } from '../../apis/visit'
 import { useSelector } from 'react-redux'
 
 const CheckOut = () => {
@@ -125,8 +126,16 @@ const CheckOut = () => {
         '6873781c930a2ec016d5a015',
         'visitedCoffeeShops'
       )
-      alert('CoffeeShop wurde zu deinen besuchten Cafés hinzugefügt!')
 
+      // Create a visit record with timestamp
+      await createVisit(qrData.memberId, '6873781c930a2ec016d5a015', {
+        wasFreeCoffee: true,
+        quotaBefore: membership.coffeeQuotaLeft + 1,
+        quotaAfter: newQuota,
+        coffeeType: 'ESPRESSO', // You can make this dynamic based on what was ordered
+      })
+
+      alert('CoffeeShop wurde zu deinen besuchten Cafés hinzugefügt!')
       alert('Checkout erfolgreich!')
     } catch (err) {
       setError('Checkout-Fehler: ' + (err.message || err))
@@ -149,8 +158,8 @@ const CheckOut = () => {
         return 'membership-badge membership-gold'
       case 'Silver':
         return 'membership-badge membership-silver'
-      case 'Bronze':
-        return 'membership-badge membership-bronze'
+      case 'Black':
+        return 'membership-badge membership-black'
       default:
         return 'membership-badge'
     }
@@ -718,7 +727,7 @@ const CheckOut = () => {
           border-color: #e5e7eb;
         }
 
-        .membership-bronze {
+        .membership-black {
           background-color: #fed7aa;
           color: #c2410c;
           border-color: #fdba74;

@@ -15,6 +15,7 @@ function PlanForm() {
   const [stripeSession, setStripeSession] = useState(null)
 
   const handlePlanSelection = (selectedPlan) => {
+    console.log('selectedPlan in PlanForm ' , selectedPlan)
     dispatch(setPlanDetails({ plan: selectedPlan }))
     const signupData = JSON.parse(localStorage.getItem('signupData') || '{}')
     signupData.plan = selectedPlan

@@ -90,8 +90,51 @@ class MemberService {
 
   async deleteMember(memberId) {
     try {
-      const member = await this.membersModel.delete(memberId)
-      return { message: `Member with ID ${member.id} successfully deleted.` }
+      // First, find the member to get the associated membership and memberCard IDs
+      const member = await this.membersModel.findOneById(memberId)
+      if (!member) {
+        throw createError(404, `Member with ID ${memberId} not found.`)
+      }
+
+      // Import the necessary models for cascade deletion
+      const MembershipModel = (await import('../models/membership.js')).default
+      const MemberCardModel = (await import('../models/memberCard.js')).default
+
+      // Delete in the correct order to avoid foreign key constraint issues
+      // 1. Delete the member card first (it references membership)
+      if (member.memberCard) {
+        try {
+          await MemberCardModel.delete(member.memberCard._id)
+          console.log(`Deleted member card with ID: ${member.memberCard._id}`)
+        } catch (error) {
+          console.error(`Error deleting member card: ${error.message}`)
+          // Continue with deletion even if member card deletion fails
+        }
+      }
+
+      // 2. Delete the membership
+      if (member.membership) {
+        try {
+          await MembershipModel.delete(member.membership._id)
+          console.log(`Deleted membership with ID: ${member.membership._id}`)
+        } catch (error) {
+          console.error(`Error deleting membership: ${error.message}`)
+          // Continue with deletion even if membership deletion fails
+        }
+      }
+
+      // 3. Finally delete the member
+      const deletedMember = await this.membersModel.delete(memberId)
+      console.log(`Deleted member with ID: ${memberId}`)
+
+      return {
+        message: `Member with ID ${deletedMember.id} and associated data successfully deleted.`,
+        deletedData: {
+          member: deletedMember.id,
+          membership: member.membership?._id,
+          memberCard: member.memberCard?._id,
+        },
+      }
     } catch (error) {
       console.error(`Error in deleteMember: ${error.message}`)
       if (error.message.includes('not found')) {

@@ -2,9 +2,24 @@
 import express from 'express'
 import createError from 'http-errors' // Make sure to import http-errors
 import MembershipService from '../services/memberShipService.js'
+import MembershipTypeModel from '../models/membershipType.js'
 
 const membershipRouter = express.Router()
 const membershipService = new MembershipService()
+
+/**
+ * @route GET /api/membership/types
+ * @desc Get all membership types with their features
+ * @access Public
+ */
+membershipRouter.get('/types', async (req, res, next) => {
+  try {
+    const membershipTypes = await MembershipTypeModel.findAll()
+    res.status(200).json(membershipTypes)
+  } catch (error) {
+    next(error)
+  }
+})
 
 /**
  * @route GET /api/memberships/:id

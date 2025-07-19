@@ -18,7 +18,7 @@ const MemberSchema = new mongoose.Schema(
     passwordHash: { type: String, required: true },
     profilePicture: {
       type: String,
-      default: '/example_picture.jpeg',
+      default: '/example_picture.png',
       trim: true,
     },
     subscribe: { type: Boolean, default: false },
@@ -169,7 +169,10 @@ export class MembersModel {
 
   async findOneById(id) {
     try {
-      const member = await Member.findOne({ id }).populate('memberCard').exec()
+      const member = await Member.findOne({ id })
+        .populate('memberCard')
+        .populate('membership')
+        .exec()
 
       if (!member) throw new Error(`Member with id ${id} not found.`)
       return member
@@ -185,11 +188,13 @@ export class MembersModel {
         .populate('favoriteCoffeeShops')
         .populate('visitedCoffeeShops')
         .populate('reviewedCoffeeShops')
-        .exec();
-      if (!member) throw new Error(`Member with id ${id} not found.`);
-      return member;
+        .exec()
+      if (!member) throw new Error(`Member with id ${id} not found.`)
+      return member
     } catch (err) {
-      throw new Error(`Error finding member by id with populated lists: ${err.message}`);
+      throw new Error(
+        `Error finding member by id with populated lists: ${err.message}`
+      )
     }
   }
 
