@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
-import Membership from '../account-settings/Membership.jsx'
-import Personal from '../account-settings/PersonalInfo.jsx'
+import Membership from '../components/account-settings/Membership.jsx'
+import Personal from '../components/account-settings/PersonalInfo.jsx'
 
 // AccountSettings component
 // Renders the account settings with the current section (personal, membership)

@@ -1,12 +1,12 @@
 import { useParams, useLocation } from "react-router-dom";
-import CafeGallery from "../cafes/CafeGallery";
+import CafeGallery from "../components/cafes/CafeGallery";
 import Partners from "./Partners";
-import FilterResult from "../filter/FilterResult";
-import useGetFavorites from "../../hooks/useGetFavorites";
-import useGetWishlist from "../../hooks/useGetWishlist";
-import useGetVisitedList from "../../hooks/useGetVisitedList";
+import FilterResult from "../components/filter/FilterResult";
+import useGetFavorites from "../hooks/useGetFavorites";
+import useGetWishlist from "../hooks/useGetWishlist";
+import useGetVisitedList from "../hooks/useGetVisitedList";
 import { useSelector } from "react-redux";
-import CheckOut from '../check-out/CheckOut'
+import CheckOut from '../components/check-out/CheckOut'
 
 function Dashboard() {
   const location = useLocation();

@@ -1,30 +1,31 @@
 // dashboardMenu.js
-import Icons from '../../assets/Icons.js'
+import { FaStoreAlt, FaHeart, FaStar, FaHistory, FaUser, FaMoneyCheck, FaUserCheck } from "react-icons/fa";
+
 
 const dashboardMenu = [
   {
     title: 'Partners',
-    icon: Icons.coffeeCup,
+    icon: <FaStoreAlt size={25} />,
     link: '/dashboard/partners',
   },
   {
     title: 'Wishlist',
-    icon: Icons.wishlist,
+    icon: <FaHeart size={25} />,
     link: '/dashboard/wishlist',
   },
   {
     title: 'Favorites',
-    icon: Icons.favorite,
+    icon: <FaStar size={25} />,
     link: '/dashboard/favorites',
   },
   {
     title: 'Visited',
-    icon: Icons.map,
+    icon: <FaHistory size={25} />,
     link: '/dashboard/visited',
   },
   {
     title: 'Checkout',
-    icon: Icons.checkout, // Stelle sicher, dass ein passendes Icon existiert
+    icon: <FaUserCheck size={25} />,
     link: '/dashboard/checkout',
   },
 ]
@@ -32,15 +33,14 @@ const dashboardMenu = [
 const settingsMenu = [
   {
     title: 'Personal Info',
-    icon: Icons.person,
+    icon: <FaUser size={25} />,
     link: '/account-settings/personal',
   },
   {
     title: 'Membership',
-    icon: Icons.recurrence,
+    icon: <FaMoneyCheck size={25} />,
     link: '/account-settings/membership',
   },
 ]
 
-export default dashboardMenu
-export { settingsMenu }
+export { settingsMenu, dashboardMenu }

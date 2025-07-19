@@ -8,9 +8,9 @@ import {
 } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthProvider.js'
 // Guards / Layouts
-import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
-import DashboardLayout from './components/layout/DashboardLayout.jsx'
-import SettingsLayout from './components/layout/SettingsLayout.jsx'
+import PrivateRoute from './routes/PrivateRoute.js'
+import DashboardLayout from './layout/DashboardLayout.jsx'
+import SettingsLayout from './layout/SettingsLayout.jsx'
 import CheckOut from './components/check-out/CheckOut.jsx'
 
 // Public Pages
@@ -21,8 +21,8 @@ import PaymentResult from './pages/PaymentResult.jsx'
 import { Login, Signup } from './pages/FormPages.jsx'
 
 // Dynamic Views
-import Dashboard from './components/views/Dashboard.jsx'
-import AccountSettings from './components/views/AccountSettings.jsx'
+import Dashboard from './views/Dashboard.jsx'
+import AccountSettings from './views/AccountSettings.jsx'
 import CafePage from './pages/CafePage.jsx'
 
 // Misc

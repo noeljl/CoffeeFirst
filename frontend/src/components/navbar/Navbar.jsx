@@ -7,7 +7,7 @@ import Avatar from '../avatar/Avatar'
 import FilterModal from '../filter/FilterModal'
 import SearchBar from '../search-bar/SearchBar'
 import CheckInButton from '../check-in/CheckIn'
-import '../../App.css'
+// import '../../App.css'
 
 import Icons from '../../assets/Icons'
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import CafeGallery from '../cafes/CafeGallery';
-import CafeGroupGallery from '../cafes/CafeGroupGallery';
-import { useAllCafesGroupedByDistricts } from '../../hooks/useAllCafesGroupedByDistricts';
+import CafeGallery from '../components/cafes/CafeGallery';
+import CafeGroupGallery from '../components/cafes/CafeGroupGallery';
+import { useAllCafesGroupedByDistricts } from '../hooks/useAllCafesGroupedByDistricts';
 
 export default function Partners() {
   const location = useLocation();
