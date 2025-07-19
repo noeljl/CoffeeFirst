@@ -91,8 +91,9 @@ span {
 /* =========================
    4. Responsive Utilities
    ========================= */
+
 /* Adjust padding and font sizes for tablets */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .AppWrapper {
     padding: 0px 40px;
   }

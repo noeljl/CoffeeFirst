@@ -11,7 +11,7 @@ function Hero() {
                 <div className="hero-content-box-up">
                     <h1 id="hero-title">Your Daily Coffee, Upgraded</h1>
                     <div className="hero-content-text">
-                        <p className="hero-text">From filter to flat white – enjoy premium coffee at partner cafés across Munich.</p>
+                        <p className="hero-text" style={{lineHeight: '1.2'}}>From filter to flat white – enjoy premium coffee at partner cafés across Munich.</p>
                         <p className="hero-text">Starting at €29.99/month – cancel anytime.</p>
                     </div>
                 </div>

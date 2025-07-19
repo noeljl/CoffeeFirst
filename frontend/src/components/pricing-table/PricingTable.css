@@ -14,8 +14,8 @@
 
 /* Styling for the pricing column */
 .pricing-column {
-  flex: 1 1 30%; /* Wachsend, shrinkend, Basis 30% */
-  min-width: 300px; /* Für Mobile → stacked layout */
+  flex: 1 1 0; /* Wachsend, shrinkend, Basis 30% */
+  min-width: 250px; /* Für Mobile → stacked layout */
   padding: 20px;
   border: 1px solid #F2F2F2;
   border-radius: 10px;
@@ -60,7 +60,7 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
-  padding: 20px;
+  padding: 20px 0;
   margin: 0;
 }
 
@@ -102,5 +102,9 @@
   }
   .pricing-column {
     width: 100%;
+  }
+  .pricing-column-header {
+    border-radius: 10px;
+    padding: 10px;
   }
 }

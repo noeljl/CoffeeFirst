@@ -2,7 +2,7 @@ import React, { useState } from 'react' // Make sure this is uncommented and inc
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../buttons/Button.jsx'
-import './SignInForm.css' // This import is already correct in SignInForm.jsx
+import './Form.css'
 import { loginMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 
 export default function SignInForm() {
@@ -58,9 +58,9 @@ export default function SignInForm() {
   }
 
   return (
-    <div>
+    <div className="form-section">
       {status && <p className="error-message">{message}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}> 
         <input
           type="email"
           placeholder="Email"

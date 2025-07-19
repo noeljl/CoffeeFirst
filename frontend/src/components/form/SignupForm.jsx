@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux' // Importiere useDispatch
 import { useNavigate } from 'react-router-dom' // Importiere useNavigate
 import Button from '../buttons/Button' // Dein Button-Component
 import { setRegistrationDetails } from '../../store/auth/signupSlice' // Importiere die Redux-Aktion
-import './SignupForm.css' // Dein CSS
+import './Form.css' // Dein CSS
 
 export default function SignupForm() {
   // State für Email, Passwort und das Checkbox-Flag
@@ -30,7 +30,7 @@ export default function SignupForm() {
   }
 
   return (
-    <div>
+    <div className="form-section">
       <form onSubmit={handleSubmit}>
         {' '}
         {/* onSubmit-Handler auf das Formular anwenden */}
@@ -80,7 +80,7 @@ export default function SignupForm() {
           padding="medium"
           bg="red"
           radius="small"
-          width="full"
+          fw="bold"
         // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
         // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
         // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
