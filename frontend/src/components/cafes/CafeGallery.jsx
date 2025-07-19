@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import CafeCard from './CafeCard';
-import '../../styles/CafeGallery.css';
+import './CafeGallery.css';
 import CafeListItem from './CafeListItem';
 import { FaList, FaBorderAll } from 'react-icons/fa';
 import React, { useState } from 'react';

@@ -2,12 +2,14 @@ import React, { useState } from 'react' // Make sure this is uncommented and inc
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../buttons/Button.jsx'
-import './SignInForm.css' // This import is already correct in SignInForm.jsx
+import './Form.css'
 import { loginMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 
 export default function SignInForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [status, setStatus] = useState(false)
+  const [message, setMessage] = useState('')
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -19,7 +21,6 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     // Mache die Funktion async, um await zu nutzen
     e.preventDefault()
-    console.log('Attempting to log in with:', { email, password })
 
     try {
       const resultAction = await dispatch(
@@ -37,25 +38,29 @@ export default function SignInForm() {
             'Login erfolgreich, aber Authentifizierung ist false:',
             resultAction.payload
           )
-          alert('Login nicht erfolgreich. Bitte versuchen Sie es erneut.')
+          setStatus(true)
+          setMessage('Login nicht erfolgreich. Bitte versuchen Sie es erneut.')
         }
       } else if (loginMemberAction.rejected.match(resultAction)) {
         // Die Action wurde abgelehnt (Fehler)
         const errorMessage =
           resultAction.payload ||
-          'Login fehlgeschlagen. Ungültige Anmeldeinformationen.'
+          'Sorry, we can\'t find an account with this email address.'
         console.error('Login failed:', errorMessage)
-        alert('Login fehlgeschlagen: ' + errorMessage)
+        setStatus(true)
+        setMessage(errorMessage)
       }
     } catch (error) {
       console.error('Unhandled login error:', error)
-      alert('Ein unerwarteter Fehler ist aufgetreten.')
+      setStatus(true)
+      setMessage('Ein unerwarteter Fehler ist aufgetreten.')
     }
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="form-section">
+      {status && <p className="error-message">{message}</p>}
+      <form onSubmit={handleSubmit}> 
         <input
           type="email"
           placeholder="Email"
@@ -77,6 +82,7 @@ export default function SignInForm() {
           type="submit"
           fs="medium"
           padding="medium"
+          fw="bold"
           bg="red"
           radius="small"
           width="full"
@@ -85,9 +91,9 @@ export default function SignInForm() {
         </Button>
       </form>
       <p className="register-prompt">
-        Don't have an account?{' '}
+        New to CoffeeFirst?{' '}
         <span className="register-link" onClick={handleRegisterClick}>
-          Register here!
+          Sign up here!
         </span>
       </p>
     </div>

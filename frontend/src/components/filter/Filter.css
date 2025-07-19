@@ -26,12 +26,27 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.filter-header h2 {
+  flex: 1;
+  text-align: center;
+  font-size: 1.4rem; /* decreased from 2.3rem */
+  font-weight: 700;
+  margin: 0;
+  border-bottom: 2px solid #e0e0e0; /* subtle underline */
+  padding-bottom: 0.5rem;
 }
 
 .close-btn {
   background: none;
   border: none;
   cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .close-btn img {
@@ -75,6 +90,7 @@
 .filter-footer {
   display: flex;
   justify-content: center;
+  gap: 10px;
 }
 
 .save-button {
@@ -85,4 +101,34 @@
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+}
+
+/* FilterResult.css */
+.filter-result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 50px;
+}
+
+.filter-result-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  gap: 30px;
+}
+
+.cafe-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px;
 }

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import '../../styles/CafeCard.css'
+import './CafeCard.css'
 import renderStars from '../../functions/renderStars'
 
 // CafeCard component

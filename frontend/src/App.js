@@ -1,4 +1,5 @@
 import React from 'react'
+import './App.css'
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,19 +15,18 @@ import CheckOut from './components/check-out/CheckOut.jsx'
 
 // Public Pages
 import HomePage from './pages/HomePage.jsx'
-import RegForm from './pages/signup/RegForm.jsx'
-import PlanForm from './pages/signup/PlanForm.jsx'
-import PaymentSuccessful from './pages/signup/PaymentSuccessful.jsx'
-import Login from './pages/signin/SignIn.jsx'
+// import RegForm from './pages/RegForm.jsx'
+import PlanForm from './pages/PlanForm.jsx'
+import PaymentResult from './pages/PaymentResult.jsx'
+import { Login, Signup } from './pages/FormPages.jsx'
 
 // Dynamic Views
 import Dashboard from './components/views/Dashboard.jsx'
 import AccountSettings from './components/views/AccountSettings.jsx'
-import CafePage from './components/cafe/CafePage.jsx'
+import CafePage from './pages/CafePage.jsx'
 
 // Misc
-import NotFound from './pages/NotFound.jsx'
-import TempBlankPage from './pages/TempBlankPage.jsx'
+import Page404 from './pages/404.jsx'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { checkLoginStatus } from './store/auth/Auth.actions.js'
@@ -40,47 +40,50 @@ function App() {
   }, [dispatch])
 
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Standard-Redirect auf /login */}
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<HomePage />} />
-          {/* Öffentliche Routen */}
-          <Route path="/signup/regform" element={<RegForm />} />
-          <Route path="/signup/planform" element={<PlanForm />} />
-          <Route path="/signup/completed" element={<PaymentSuccessful />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/testing" element={<TempBlankPage />} />
-          <Route path="/check-out" element={<CheckOut />} />
+    <div className="AppWrapper">
+      <AuthProvider>
+        <Router>
+          <Routes>
+            {/* Standard-Redirect auf /login */}
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<HomePage />} />
+            {/* Öffentliche Routen */}
+            <Route path="/signup/regform" element={<Signup />} />
+            <Route path="/signup/planform" element={<PlanForm />} />
+            <Route path="/signup/completed" element={<PaymentResult />} />
+            <Route path="/login" element={<Login />} /> 
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/check-out" element={<CheckOut />} />
 
-          {/* Geschützte Bereiche */}
-          <Route element={<PrivateRoute />}>
-            {/* Dashboard */}
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route
-                index
-                element={<Navigate to="/dashboard/partners" replace />}
-              />
-              <Route path=":section" element={<Dashboard />} />
-              <Route path=":section/:cafeSlug" element={<CafePage />} />
+            {/* Geschützte Bereiche */}
+            <Route element={<PrivateRoute />}>
+              {/* Dashboard */}
+              <Route path="/dashboard" element={<DashboardLayout />}>
+                <Route
+                  index
+                  element={<Navigate to="/dashboard/partners" replace />}
+                />
+                <Route path=":section" element={<Dashboard />} />
+                <Route path=":section/:cafeSlug" element={<CafePage />} />
+              </Route>
+
+              {/* Account Settings */}
+              <Route path="/account-settings" element={<SettingsLayout />}>
+                <Route
+                  index
+                  element={<Navigate to="/account-settings/personal" replace />}
+                />
+                <Route path=":section" element={<AccountSettings />} />
+              </Route>
             </Route>
 
-            {/* Account Settings */}
-            <Route path="/account-settings" element={<SettingsLayout />}>
-              <Route
-                index
-                element={<Navigate to="/account-settings/personal" replace />}
-              />
-              <Route path=":section" element={<AccountSettings />} />
-            </Route>
-          </Route>
-
-          {/* Fallback 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+            {/* Fallback 404 */}
+            <Route path="/not-found" element={<Page404 />} />
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </div>
   )
 }
 

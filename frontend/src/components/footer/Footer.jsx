@@ -1,45 +1,33 @@
 import './Footer.css'
-import Icons from '../../assets/Icons'
-import { useNavigate } from 'react-router-dom'
+import { FaFacebook, FaInstagramSquare, FaPinterest, FaCcVisa, FaCcMastercard, FaCcAmex } from 'react-icons/fa'
 
-function Footer() {
-  const navigate = useNavigate()
+export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <img
-          src={Icons.logo}
-          alt="CoffeeFirst Logo"
-          className="footer-logo"
-          draggable={false}
-          onClick={() => {
-            navigate('/home')
-          }}
-        />
-
-        <div className="footer-center">
-          <div className="footer-links">
-            <a href="/imprint">Imprint</a>
-            <span>|</span>
-            <a href="/privacy">Privacy Policy</a>
-          </div>
-          <p>© 2025 CoffeeFirst. All Rights Reserved.</p>
+    <footer>
+      <div className="footer-row upper-row">
+        <div className="footer-icon-container payment-icons">
+         <FaCcAmex className="footer-icon" />
+         <FaCcVisa className="footer-icon" />
+         <FaCcMastercard className="footer-icon" /> 
         </div>
+        <div className="footer-icon-container social-icons">
+          <FaFacebook className="footer-icon" />
+          <FaInstagramSquare className="footer-icon" />
+          <FaPinterest className="footer-icon" />
+        </div>
+          
+      </div>
 
-        <div className="footer-socials">
-          <a href="#">
-            <img src={Icons.facebook} alt="Facebook" draggable={false} />
-          </a>
-          <a href="#">
-            <img src={Icons.linkedin} alt="LinkedIn" draggable={false} />
-          </a>
-          <a href="#">
-            <img src={Icons.x} alt="X" draggable={false} />
-          </a>
+    <div className="footer-row lower-row">
+      <div className="footer-legal">
+        <span id="footer-copyright-text">© 2025 CoffeeFirst. All Rights Reserved.</span>
+        <div className="footer-legal-links">
+          <a href="/#">Imprint</a>
+          <span>|</span>
+          <a href="/#">Privacy Policy</a>
         </div>
       </div>
+    </div>
     </footer>
   )
 }
-
-export default Footer

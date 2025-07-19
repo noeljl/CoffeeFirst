@@ -1,0 +1,110 @@
+/* =========================
+   Global Pricing Table Styles
+   ========================= */
+
+/* Main container: row on desktop, centered, with gap */
+.pricing-table {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  gap: 40px;
+}
+
+/* Styling for the pricing column */
+.pricing-column {
+  flex: 1 1 0; /* Wachsend, shrinkend, Basis 30% */
+  min-width: 250px; /* Für Mobile → stacked layout */
+  padding: 20px;
+  border: 1px solid #F2F2F2;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.pricing-column:hover {
+  border: 1px solid #B6B6B6;
+  cursor: pointer;
+}
+
+.selected-plan {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #B6B6B6;
+}
+
+/* Styling for the column header */
+.pricing-column-header {
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.membership-name {
+  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  font-weight: bold;
+}
+
+.bg-black .membership-name { color: #fff }
+
+.bg-silver { background: #F5F5F5 }
+.bg-gold { background: #FFD740 }
+.bg-black { background: #111 }
+
+/* Styling for the pricing price */
+.membership-price {
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  font-weight: 500;
+}
+
+/* Styling for the pricing advantages list */
+.pricing-table-advantages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px 0;
+  margin: 0;
+}
+
+.pricing-table-advantages-list-item {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 10px;
+  width: 100%;
+}
+
+.pricing-table-advantages-list-item-text {
+  flex-grow: 1;
+  text-align: left;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+/* =========================
+   Responsive Styles
+   ========================= */
+
+/* Stack cards vertically on tablets and below */
+@media (max-width: 1024px) {
+  .pricing-table {
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .pricing-column {
+    width: 100%;
+  }
+}
+
+/* On mobile, make cards take full width and reduce gap */
+@media (max-width: 600px) {
+  .pricing-table {
+    gap: 30px;
+  }
+  .pricing-column {
+    width: 100%;
+  }
+  .pricing-column-header {
+    border-radius: 10px;
+    padding: 10px;
+  }
+}

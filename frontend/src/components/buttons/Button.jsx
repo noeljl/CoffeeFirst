@@ -10,6 +10,7 @@ function Button({
   icon, // optional icon src
   type = 'button',
   width = 'small',
+  border = 'none',
   onClick,
 }) {
   const classes = [
@@ -20,6 +21,7 @@ function Button({
     `radius-${radius}`,
     `width-${width}`,
     `p-${padding}`,
+    `border-${border}`,
   ].join(' ')
 
   return (

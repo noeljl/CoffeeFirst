@@ -1,19 +1,132 @@
-/* Limit screen width to 1440px */
-body {
+/* =========================
+   1. CSS Reset & Base Setup
+   ========================= */
+/* Reset box-sizing and remove default margin/padding for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* Inherit box-sizing from html */
   margin: 0;
-  background-color: white; /* optional */
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  padding: 0;
 }
 
-.page-frame {
-  max-width: 1440px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 32px;
-  padding-right: 32px;
-  box-sizing: border-box;
+/* Set up base box-sizing, font size, and smooth scrolling */
+html {
+  box-sizing: border-box; /* Use border-box for easier sizing */
+  font-size: 16px; /* Base font size for rem units */
+  scroll-behavior: smooth; /* Smooth scroll for anchor links */
 }
-.favorite-wishlist-title {
-  margin-bottom: 32px; /* a bit space between heading and cafes */
+
+/* Set up base font, background, and text color for the body */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background: #ffffff; /* Softer than pure white for beamers */
+  color: #222; /* High contrast for readability */
+  min-height: 100vh; /* Ensure body fills viewport */
+  line-height: 1.5; /* Comfortable line height */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+div {
+  padding: 0;
+  margin: 0;
+}
+
+/* =========================
+   2. Main Layout Container
+   ========================= */
+/* Central wrapper for app content, with max width and padding */
+.AppWrapper {
+  max-width: 1440px; /* Limit width for large screens */
+  width: 100%; 
+  margin: 0 auto; /* Center horizontally */
+  padding: 0; /* Spacious padding for desktop */
+  /* background-color: red; */
+}
+
+/* =========================
+   3. Typography
+   ========================= */
+/* Headings: bold, dark, and spaced */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  color: #222222;
+}
+
+/* Responsive heading sizes using clamp for flexibility */
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+}
+h2 {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+}
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+h4 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+}
+h5 {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
+h6 {
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+}
+p {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  color: #222222;
+}
+
+span {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  color: #222222;
+}
+
+/* =========================
+   4. Responsive Utilities
+   ========================= */
+
+/* Adjust padding and font sizes for tablets */
+@media (max-width: 1200px) {
+  .AppWrapper {
+    padding: 0px 40px;
+  }
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.7rem; }
+}
+
+/* Further adjustments for mobile devices */
+@media (max-width: 600px) {
+  .AppWrapper {
+    padding: 0 24px;
+  }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.2rem; }
+}
+
+/* =========================
+   5. Links & Buttons
+   ========================= */
+/* Style links with brand color and smooth hover transition */
+a {
+  text-decoration: none;
+  transition: color 0.2s;
+  color: #222222;
+}
+
+/* Style buttons for consistency and accessibility */
+button {
+  font-size: 1rem;
+  padding: 0.75em 1.5em;
+  border-radius: 6px;
+  border: none;
+  color: black;
+  cursor: pointer;
+  transition: background 0.2s;
 }
