@@ -1,8 +1,8 @@
-import styles from "./../styles/Sidebar.module.css";
+import styles from "./styles/Sidebar.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
-import { SearchContext } from "../../contexts/SearchContext";
-import { dashboardMenu, settingsMenu } from "./MenuData";
+import { SearchContext } from "../contexts/SearchContext";
+import { dashboardMenu, settingsMenu } from "../data/MenuData";
 import { useSelector } from "react-redux";
 
 export default function Sidebar({ type }) {

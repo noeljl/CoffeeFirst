@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import './CafeCard.css'
+import styles from '../styles/CafeCard.module.css'
 import renderStars from '../../functions/renderStars'
+import { FaHeart, FaRegHeart, FaRegStar, FaStar, FaDirections } from 'react-icons/fa'
 
 // CafeCard component
 // Cafe:
@@ -17,30 +18,22 @@ export default function CafeCard(cafe) {
   }
 
   return (
-    <div
-      className="coffee-card"
-      onClick={handleClick}
-      style={{ cursor: 'pointer' }}
-    >
-      <img
-        src={cafe.imgSrc}
-        draggable={false}
-        alt={cafe.title}
-        onError={(e) => {
-          console.error('Image failed to load:', e.target.src)
-          e.target.style.display = 'none'
-        }}
-        onLoad={() => {
-          console.log('Image loaded successfully:', cafe.imgSrc)
-        }}
-      />
-      <div className="text-block">
-        <p className="shop-title">{cafe.title}</p>
-        <div className="rating-stars">{renderStars(cafe.rate || 0)}</div>
-        <div className="address">
-          <div className="street">{cafe.address.streetNo}</div>
-          <div className="postCode">{cafe.address.PLZ} {cafe.address.Place}</div>
+    <div className={styles.cafeCardContainer} onClick={handleClick}>
+      <div className={styles.cafeCardImage}>
+        <img src={cafe.imgSrc} alt={cafe.title} draggable={false} />
+      </div>
+      <div className={styles.cafeCardContent}>
+        <h4 className={styles.cafeCardTitle}>{cafe.title}</h4>
+        <div className={styles.cafeCardRating}>{renderStars(cafe.rate || 0)}</div>
+        <div className={styles.cafeCardAddress}>
+          <p>{cafe.address.streetNo}</p>
+          <p>{cafe.address.PLZ} {cafe.address.Place}</p>
         </div>
+      </div>
+      <div className={styles.cafeCardIcons}>
+        <FaRegHeart size={25} />
+        <FaRegStar size={25} />
+        <FaDirections size={25} />
       </div>
     </div>
   )

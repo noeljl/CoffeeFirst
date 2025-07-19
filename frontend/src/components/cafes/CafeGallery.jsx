@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import CafeCard from './CafeCard';
-import './CafeGallery.css';
+import styles from '../styles/CafeGallery.module.css';
 import CafeListItem from './CafeListItem';
-import { FaList, FaBorderAll } from 'react-icons/fa';
+import { FaList, FaBorderAll, FaChevronLeft } from 'react-icons/fa';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // CafeGallery component
 // Displays a list of cafés
@@ -11,35 +12,51 @@ import React, { useState } from 'react';
 // - coffeeShops: Array of café objects (from CafeGroupGallery component)
 // Returns:
 // - Array of café cards by using CafeCard component
-export default function CafeGallery({ coffeeShops = [], titleText, loading, error, galleryType = 'list', layoutSwitchVisible = true }) {
+export default function CafeGallery({ coffeeShops = [], titleText, loading, error, galleryType = 'list', layoutSwitchVisible = true, backButtonVisible = false }) {
   const [layout, setLayout] = useState(galleryType); // 'gallery' or 'list'
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(`/dashboard/partners`);
+  };
 
-  console.log('All coffeeShops / coords', coffeeShops)
+
   return (
-    <div className="cafe-gallery-container">
-      <div className="cafe-gallery-header">
-        <div className="cafe-gallery-header-col-left">
-          {titleText && <h2>{`${titleText}`}</h2>}
-        </div>
-        <div className="cafe-gallery-header-col-right">
-          {console.log('layoutSwitchVisible', layoutSwitchVisible)}
-          {layoutSwitchVisible && (
-            <>
-              <FaList
-                style={{ height: '20px', width: '20px', cursor: 'pointer', color: layout === 'list' ? '#000' : '#aaa' }}
-                onClick={() => setLayout('list')}
-                title="List view"
-              />
-              <FaBorderAll
-                style={{ height: '20px', width: '20px', cursor: 'pointer', color: layout === 'gallery' ? '#000' : '#aaa' }}
-                onClick={() => setLayout('gallery')}
-                title="Gallery view"
-              />
-            </>
-          )}
-        </div>
+    <div className={styles.cafeGalleryContainer}>
+      <div className={styles.cafeGalleryHeader}>
+        {titleText && (
+          <>
+            <div className={styles.cafeGalleryTitleContainer} onClick={backButtonVisible ? handleBack : undefined}>
+              {backButtonVisible && (
+                <FaChevronLeft
+                  className={styles.cafeGalleryTitleIcon}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+              <h2 className={styles.cafeGalleryTitle} style={{ cursor: backButtonVisible ? 'pointer' : 'default' }}>{`${titleText}`}</h2>
+            </div>
+            <div className={styles.cafeGalleryHeaderIcons}>
+              {console.log('layoutSwitchVisible', layoutSwitchVisible)}
+              {layoutSwitchVisible && (
+                <>
+                  <FaList
+                    size={25}
+                    style={{ cursor: 'pointer', color: layout === 'list' ? '#DA0A00' : '#222' }}
+                    onClick={() => setLayout('list')}
+                    title="List view"
+                  />
+                  <FaBorderAll
+                    size={25}
+                    style={{ cursor: 'pointer', color: layout === 'gallery' ? '#DA0A00' : '#222' }}
+                    onClick={() => setLayout('gallery')}
+                    title="Gallery view"
+                  />
+                </>
+              )}
+            </div>
+          </>
+        )}
       </div>
-      <div className="cafe-gallery-content">
+      <div className={styles.cafeGalleryContent}>
         {layout === 'gallery'
           ? <GalleryStyle coffeeShops={coffeeShops} />
           : <ListStyle coffeeShops={coffeeShops} />}
@@ -55,9 +72,7 @@ CafeGallery.propTypes = {
 
 function GalleryStyle({ coffeeShops = [], loading, error }) {
   return (
-    <div className="cafe-gallery-style"
-      style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}
-    >
+    <div className={styles.cafeGalleryStyle}>
       {coffeeShops.length > 0 ? coffeeShops.map((coffeeShop) => (
         <CafeCard
           key={coffeeShop._id}
@@ -74,9 +89,7 @@ function GalleryStyle({ coffeeShops = [], loading, error }) {
 
 function ListStyle({ coffeeShops = [], loading, error }) {
   return (
-    <div className="cafe-gallery-style"
-      style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
-    >
+    <div className={styles.cafeGalleryStyle}>
       {coffeeShops.length > 0 ? coffeeShops.map((coffeeShop) => (
         <CafeListItem
           key={coffeeShop._id}

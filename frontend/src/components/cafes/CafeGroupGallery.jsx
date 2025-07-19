@@ -1,9 +1,10 @@
 
 import React from "react";
-import './CafeGallery.css';
+import styles from '../styles/CafeGallery.module.css';
 import CafeGallery from "./CafeGallery";
 import { useAllCafesGroupedByDistricts } from "../../hooks/useAllCafesGroupedByDistricts";
 import { useNavigate } from 'react-router-dom';
+import { FaChevronRight } from 'react-icons/fa';
 
 // CafeGroupGallery component
 // Displays all cafés grouped by district (from useAllCafesGroupedByDistricts hook)
@@ -26,24 +27,18 @@ function CafeGroupGallery() {
   if (error) return <div>Error loading districts: {error.toString()}</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className={styles.cafeGroupGalleryContainer}>
       {groups.map((districtGroup) => (
         <div
           key={districtGroup._id}
-          style={{
-            marginBottom: 48,
-            display: "flex",
-            flexDirection: "column",
-            gap: 20
-          }}
         >
-          <div className="group-header">
-            <h2 style={{ fontSize: 20, fontWeight: "bold" }}>
-              {districtGroup._id}
-            </h2>
-            <button className="view-all-btn" onClick={() => handleViewAll(districtGroup._id)}>
-              View all
-            </button>
+          <div className={styles.cafeGalleryHeader}>
+            <div className={styles.cafeGalleryTitleContainer} onClick={() => handleViewAll(districtGroup._id)}>
+              <h2 className={styles.cafeGalleryTitle} style={{cursor: 'pointer'}}>
+                {districtGroup._id}
+              </h2>
+              <FaChevronRight className={styles.cafeGalleryTitleIcon} style={{cursor: 'pointer'}}/>
+            </div>
           </div>
           <CafeGallery coffeeShops={districtGroup.coffeeShops} layoutSwitchVisible={false} galleryType="gallery"/>
         </div>

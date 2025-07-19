@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import './BurgerMenu.css'
-import { dashboardMenu } from '../sidebars/MenuData'
+import { dashboardMenu } from '../../data/MenuData.js'
 import Icons from '../../assets/Icons'
 import { AuthContext } from '../../contexts/AuthProvider'
 import { useDispatch } from 'react-redux'

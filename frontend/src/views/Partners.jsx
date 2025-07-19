@@ -17,8 +17,8 @@ export default function Partners() {
     const group = groups.find(g => g._id === selectedDistrict);
     if (!group) return <div>No cafes found for {selectedDistrict}</div>;
     return (
-      <div>
-        <CafeGallery coffeeShops={group.coffeeShops} titleText={selectedDistrict} />
+      <div style={{ width: '100%'}}>
+        <CafeGallery coffeeShops={group.coffeeShops} titleText={selectedDistrict} backButtonVisible={true} />
       </div>
     );
   }
