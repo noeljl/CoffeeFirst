@@ -114,6 +114,10 @@ class AuthService {
         // Cleanup-Fehler sollten nicht den ursprünglichen Fehler überlagern
       }
 
+      // Propagate 409 errors as 409, not as 500
+      if (err.status === 409) {
+        throw err
+      }
       throw createError(
         500,
         `Registration could not be completed: ${err.message}`

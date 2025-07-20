@@ -26,8 +26,12 @@ router.post(
       return res.status(400).json({ errors: errors.array() })
     }
     try {
-      const response = await AuthServiceInstance.register(req.body)
-      res.status(200).json(response)
+      const newMember = await AuthServiceInstance.register(req.body)
+      req.login(newMember, (err) => {
+        if (err) return next(err)
+        // Return the same response format as /login
+        return res.status(200).json({ member: newMember, isAuthenticated: true })
+      })
     } catch (err) {
       next(err)
     }

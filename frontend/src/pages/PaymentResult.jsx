@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Footer from '../components/footer/Footer.jsx'
 import NavBar from '../components/navbar/Navbar.jsx'
@@ -23,6 +23,8 @@ export default function PaymentResult() {
   const [registrationStatus, setRegistrationStatus] = useState('processing') // 'processing', 'success', 'failure'
   const [countdown, setCountdown] = useState(3)
   const [errorMessage, setErrorMessage] = useState('')
+
+  const hasRegistered = useRef(false);
 
   // Hole Registrierungsdetails und Plan aus dem Redux Store
   const signupData = useSelector((state) => state.signup)
@@ -84,7 +86,11 @@ export default function PaymentResult() {
       console.log('✅ Registration successful')
     } catch (err) {
       console.error('❌ Failed to register member:', err)
-      setErrorMessage(err.message || 'Registration failed')
+      let message = err.message || 'Registration failed'
+      if (message === 'Email already registered' && email) {
+        message = `The email address ${email} is already registered. Please use a different email or log in.`
+      }
+      setErrorMessage(message)
       setRegistrationStatus('failure')
     }
   }
@@ -119,8 +125,11 @@ export default function PaymentResult() {
         setPaymentStatus(session.status)
         setSubscriptionPeriodEnd(session.expires_at)
 
-        // Registrierung mit Session-Daten direkt durchführen
-        await performRegistration(session)
+        // Only register if not already done
+        if (!hasRegistered.current) {
+          hasRegistered.current = true;
+          await performRegistration(session)
+        }
       } catch (err) {
         console.error('Failed to fetch session:', err)
         setErrorMessage('Failed to fetch payment session')

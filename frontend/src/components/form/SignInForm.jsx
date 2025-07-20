@@ -21,11 +21,14 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     // Mache die Funktion async, um await zu nutzen
     e.preventDefault()
+    setStatus(false) // Reset error state before new attempt
+    setMessage('') // Reset message before new attempt
 
     try {
       const resultAction = await dispatch(
         loginMemberAction({ email, password })
       )
+      console.log('resultAction:', resultAction)
 
       // Überprüfe, ob die Action erfolgreich war (fulfilled)
       if (loginMemberAction.fulfilled.match(resultAction)) {
@@ -42,13 +45,27 @@ export default function SignInForm() {
           setMessage('Login nicht erfolgreich. Bitte versuchen Sie es erneut.')
         }
       } else if (loginMemberAction.rejected.match(resultAction)) {
-        // Die Action wurde abgelehnt (Fehler)
-        const errorMessage =
-          resultAction.payload ||
-          'Sorry, we can\'t find an account with this email address.'
-        console.error('Login failed:', errorMessage)
+        let errorMessage = resultAction.payload;
+        if (!errorMessage) {
+          // Fallback für leeres/undefiniertes Payload
+          errorMessage = 'Login failed. Please check your credentials.';
+        } else if (typeof errorMessage === 'object') {
+          if (errorMessage.error) {
+            errorMessage = errorMessage.error;
+          } else if (errorMessage.message) {
+            errorMessage = errorMessage.message;
+          } else {
+            errorMessage = JSON.stringify(errorMessage);
+          }
+        }
+        if (errorMessage === 'Unknown email address') {
+          setMessage('E-Mail existiert nicht.');
+        } else if (errorMessage === 'Incorrect password') {
+          setMessage('Passwort ist falsch.');
+        } else {
+          setMessage(errorMessage);
+        }
         setStatus(true)
-        setMessage(errorMessage)
       }
     } catch (error) {
       console.error('Unhandled login error:', error)
@@ -59,8 +76,8 @@ export default function SignInForm() {
 
   return (
     <div className="form-section">
-      {status && <p className="error-message">{message}</p>}
-      <form onSubmit={handleSubmit}> 
+      {message && <p className="error-message" style={{ marginBottom: '8px' }}>{message}</p>}
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"

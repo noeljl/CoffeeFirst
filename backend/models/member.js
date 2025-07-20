@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import { PaymentStatus } from './enums.js'
 import { v4 as uuidv4 } from 'uuid'
+import createError from 'http-errors'
 const MemberSchema = new mongoose.Schema(
   {
     id: { type: String, required: true, unique: true },
@@ -86,7 +87,7 @@ export class MembersModel {
     } catch (err) {
       if (err.code === 11000) {
         console.error('Duplicate key:', err.keyPattern, err.keyValue)
-        throw err // oder: throw createError(409, err.message);
+        throw createError(409, 'Email already registered')
       }
       if (err.name === 'ValidationError') {
         const errors = Object.values(err.errors).map((e) => e.message)
@@ -161,7 +162,8 @@ export class MembersModel {
 
   async findOneByEmail(email) {
     try {
-      return await Member.findOne({ email }).exec()
+      // Suche nach E-Mail unabhängig von Groß-/Kleinschreibung
+      return await Member.findOne({ email: new RegExp('^' + email + '$', 'i') }).exec()
     } catch (err) {
       throw new Error(`Error finding member by email: ${err.message}`)
     }
