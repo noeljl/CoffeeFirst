@@ -1,99 +1,119 @@
-Pitch: CoffeeFirst
-CoffeeFirst is a full-stack platform that brings coffee lovers and cafés together.
+# Pitch: CoffeeFirst
 
-The app offers:
+---
 
-Digital membership cards with coffee quotas
+**CoffeeFirst** ist eine **Full-Stack-Plattform**, die Kaffee-Fans und Cafés zusammenbringt.
 
-A sustainability-oriented café search
+Die App bietet:
+* **Digitale Mitgliedskarten** mit Kaffee-Kontingent
+* Eine **nachhaltigkeitsorientierte Café-Suche**
+* **Reviews & Ratings**
+* Ein **schlankes Zahlungs- & Login-System** (lokal + OAuth)
 
-Reviews & Ratings
+Technisch besteht das Projekt aus einem **React-Frontend** und einem **Node/Express-Backend auf MongoDB** – alles **ready-to-run per Docker**.
 
-A lean payment & login system (local + OAuth)
+---
 
-Technically, the project consists of a React frontend and a Node/Express backend on MongoDB—all ready-to-run via Docker.
+## Projektaufbau
 
-Project Structure
+```
 CoffeeFirst/
-├── backend/ # Express + Mongoose API
-│   ├── models/ # DB-Schemas (Member, CoffeeShop, …)
-│   ├── services/ # Business Logic (AuthService, etc.)
-│   ├── routes/ # REST-Endpoints (/api/*)
-│   ├── loaders/ # Express/Passport/Middleware-Bootstrap
-│   └── index.js # Server Entry Point
-├── frontend/ # React-SPA (CRA)
-│   ├── src/ # React Code & Assets
-│   └── public/ # Static Files
-├── docker-compose.yml # 3-Service Setup (frontend, backend, MongoDB)
-└── README.md # (this document)
-Back-End
+├── backend/                # Express + Mongoose API
+│   ├── models/            # DB-Schemas (Member, CoffeeShop, …)
+│   ├── services/          # Business-Logik (AuthService u.a.)
+│   ├── routes/            # REST-Endpoints (/api/*)
+│   ├── loaders/           # Express/Passport/Middleware-Bootstrap
+│   └── index.js           # Server-Entry-Point
+├── frontend/              # React-SPA (CRA)
+│   ├── src/               # React-Code & Assets
+│   └── public/            # Static Files
+├── docker-compose.yml     # 3-Service-Setup (frontend, backend, MongoDB)
+└── README.md              # (dieses Dokument)
+```
 
-Node 18-Image, starts with npm run server
+### Back-End
+* Node 18-Image, startet mit `npm run server`
+* Mongoose-Models für Members, Memberships, CoffeeShops u.v.m.
 
-Mongoose Models for Members, Memberships, CoffeeShops, and more
+### Front-End
+* CRA + Redux Toolkit; Dev-Server auf `:3000`
+* API-Basispfad `http://localhost:3001/api`
 
-Front-End
+---
 
-CRA + Redux Toolkit; Dev server on :3000
+## Docker Compose – Schnellstart
 
-API base path http://localhost:3001/api
+1.  **Images bauen & Container starten**
+    ```bash
+    docker compose up --build
+    ```
 
-Docker Compose – Quick Start
-Build Images & Start Containers
+2.  **Logs ansehen**
+    ```bash
+    docker compose logs -f frontend # bzw. backend / mongodb
+    ```
 
-Bash
-docker compose up --build
-View Logs
+3.  **Alles stoppen & aufräumen**
+    ```bash
+    docker compose down -v
+    ```
 
-Bash
-docker compose logs -f frontend # or backend / mongodb
-Stop All & Clean Up
+`docker-compose.yml` definiert drei Services:
 
-Bash
-docker compose down -v
-docker-compose.yml defines three services:
+| Service  | Port  | Befehl im Container                     |
+| :------- | :---- | :-------------------------------------- |
+| frontend | 3000  | `npm install && npm start`              |
+| backend  | 3001  | `npm install && npm run server`         |
+| mongodb  | 27017 | Offizielles `mongo:5`-Image + Healthcheck |
 
-Service	Port	Command in Container
-frontend	3000	npm install && npm start
-backend	3001	npm install && npm run server
-mongodb	27017	Official mongo:5-Image + Healthcheck
-Source folders are mounted via bind mounts, so code changes are hot-reloaded live.
+Die Quellordner werden per Bind-Mount eingebunden; Code-Änderungen werden daher live neu geladen (Hot-Reload).
 
-Local Without Docker
-Prerequisite: Node 
-geq 18 and a running local MongoDB.
+---
 
-Backend
+## Lokal ohne Docker
 
-Bash
+**Voraussetzung:** Node $\geq$ 18 und eine laufende lokale MongoDB.
+
+### Backend
+```bash
 cd backend
 npm install
-npm run server # or simply: npm start
-Frontend (in a new terminal)
+npm run server # oder einfach: npm start
+```
 
-Bash
+### Frontend (in neuem Terminal)
+```bash
 cd ../frontend
 npm install
 npm start
-The backend server listens on http://localhost:3001, and the frontend on http://localhost:3000.
+```
 
-Data Sources & Assets
-Type	Storage Location	Origin / License Information
-Café Master Data	frontend/src/components/cafe/DummySingleCafeData.js	Static mock-JSON (self-created)
-List View	frontend/src/components/cafes/CafesData.js	Self-created (demo)
-Images	frontend/src/assets/dummyImages/* (PNG/JPG)	Placeholder photos (Unsplash/self-taken) – not for production
-Icons & SVGs	frontend/src/assets/Icons.js	MIT / CC-BY according to icon set
-For productive deployments, please use real café data (e.g., Yelp API) and licensed images.
+Der Back-End-Server lauscht auf `http://localhost:3001`, das Front-End auf `http://localhost:3000`.
 
-Useful NPM Scripts
-Backend (backend/package.json):
+## Datenquellen & Assets
 
-Script	Purpose
-npm run server	Start with Nodemon (Hot-Reload)
-npm test	Mocha + Chai Test-Suite
-npm run create-db	Create demo DB (Setup script)
-Frontend (frontend/package.json):
+| Art | Speicherort | Herkunft / Lizenzhinweis |
+| :-- | :---------- | :----------------------- |
+| Café-Stammdaten | `frontend/src/components/cafe/DummySingleCafeData.js` | statisches Mock-JSON (selbsterstellt) |
+| Listen-Ansicht | `frontend/src/components/cafes/CafesData.js` | selbsterstellt (Demo) |
+| Bilder | `frontend/src/assets/dummyImages/*` (PNG/JPG) | Platzhalter-Fotos (Unsplash/Eigenaufnahmen) – nicht für Produktion |
+| Icons & SVGs | `frontend/src/assets/Icons.js` | MIT / CC-BY gemäß Icon-Set |
 
-Script	Purpose
-npm start	React Dev-Server
-npm run build	Production Build
+Für produktive Deployments sollten echte Café-Daten (z. B. Yelp-API) und lizenzierte Bilder verwendet werden.
+
+## Nützliche NPM-Skripte
+
+**Backend (`backend/package.json`):**
+
+| Script | Zweck |
+| :----- | :---- |
+| `npm run server` | Start mit Nodemon (Hot-Reload) |
+| `npm test` | Mocha + Chai Test-Suite |
+| `npm run create-db` | Demo-DB anlegen (Setup-Skript) |
+
+**Frontend (`frontend/package.json`):**
+
+| Script | Zweck |
+| :----- | :---- |
+| `npm start` | React Dev-Server |
+| `npm run build` | Produktions-Build |
