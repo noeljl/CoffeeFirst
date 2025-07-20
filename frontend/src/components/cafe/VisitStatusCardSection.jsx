@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Icons from '../../assets/Icons'
-import Button from '../buttons/Button'
+import Button from '../Buttons.jsx'
 import Review from '../review/Review' // 1) Import the Review modal
 import { useLastVisit } from '../../hooks/useVisits'
 import './VisitStatusCardSection.css'

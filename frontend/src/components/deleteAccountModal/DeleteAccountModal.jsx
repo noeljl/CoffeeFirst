@@ -1,6 +1,6 @@
 import React from 'react'
 import './DeleteAccountModal.css'
-import Button from '../buttons/Button.jsx'
+import Button from '../Buttons.jsx'
 import { deleteMember } from '../../apis/member.js'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
