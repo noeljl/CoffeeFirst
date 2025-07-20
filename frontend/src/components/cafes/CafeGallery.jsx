@@ -19,7 +19,6 @@ export default function CafeGallery({ coffeeShops = [], titleText, loading, erro
     navigate(`/dashboard/discover`);
   };
 
-
   return (
     <div className={styles.cafeGalleryContainer}>
       <div className={styles.cafeGalleryHeader}>

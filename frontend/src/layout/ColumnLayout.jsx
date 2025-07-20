@@ -8,7 +8,7 @@ import styles from "./styles/ColumnLayout.module.css";
 // This component provides a two-column layout with a sidebar and main content area. It's just a shell that can be used to design the two column dashboard and settings pages.
 
 function ColumnLayout({ SidebarSlot, children, sidebarType }) {
-  const isTablet = useMediaQuery({ maxWidth: 1024 });
+  const isTablet = useMediaQuery({ maxWidth: 900 });
 
   return (
     <>

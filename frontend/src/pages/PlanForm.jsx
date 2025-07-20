@@ -4,7 +4,7 @@ import Footer from '../components/footer/Footer.jsx'
 import { useNavigate } from 'react-router-dom'
 // Corrected import path for setPlanDetails from the signupSlice
 import { setPlanDetails } from '../store/auth/signupSlice.js' // <-- IMPORTANT CHANGE HERE!
-import Button from '../components/buttons/Button.jsx'
+import Button from '../components/Buttons.jsx'
 import NavBar from '../components/navbar/Navbar.jsx'
 import PricingTable from '../components/pricing-table/PricingTable.jsx'
 import styles from './styles/LoginSignup.module.css'

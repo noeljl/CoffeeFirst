@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Filter.css';
+import styles from '../styles/FilterModal.module.css';
 import Icons from '../../assets/Icons.js';
 import { getFilteredCoffeeShops } from '../../apis/coffeeshop.js';
-import Button from '../buttons/Button.jsx';
+import Button from '../Buttons.jsx';
 import { useAllFilterOptions } from '../../hooks/useAllFilterOptions';
+import useDisableScrolling from '../../hooks/useDisableScrolling';
 
 function FilterModal({ onClose }) {
     const [selectedOffers, setSelectedOffers] = useState([]);
@@ -12,7 +13,7 @@ function FilterModal({ onClose }) {
     const [selectedSustainability, setSelectedSustainability] = useState([]);
     const navigate = useNavigate();
     const [options, loading, error] = useAllFilterOptions();
-
+    useDisableScrolling(true);
     const toggleSelection = (value, list, setList) => {
         setList(
             list.includes(value)
@@ -49,33 +50,32 @@ function FilterModal({ onClose }) {
         try {
             const result = await getFilteredCoffeeShops(filterParams);
             console.log('Filter API result:', result);
-            navigate('/dashboard/partners', { state: { filteredShops: result, filters: filterParams } });
+            navigate('/dashboard/discover', { state: { filteredShops: result, filters: filterParams } });
             onClose();
         } catch (err) {
             console.error('Filter fetch error:', err);
         }
     };
 
-    if (loading) return <div className="filter-overlay"><div className="filter-modal"><div>Loading filter options…</div></div></div>;
-    if (error) return <div className="filter-overlay"><div className="filter-modal"><div>Error loading filter options: {error.toString()}</div></div></div>;
+    // if (error) return <div className={styles.filterOverlay}><div className={styles.filterModal}><div>Error loading filter options: {error.toString()}</div></div></div>;
 
     return (
-        <div className="filter-overlay">
-            <div className="filter-modal">
-                <div className="filter-header">
+        <div className={styles.filterOverlay}>
+            <div className={styles.filterModal}>
+                <div className={styles.filterHeader}>
                     <h2>Filters</h2>
-                    <button className="close-btn" onClick={onClose}>
+                    <button className={styles.closeBtn} onClick={onClose}>
                         <img src={Icons.cancel} alt="close" />
                     </button>
                 </div>
 
-                <div className="filter-section">
+                <div className={styles.filterSection}>
                     <h3>Offers</h3>
-                    <div className="filter-options">
+                    <div className={styles.filterOptions}>
                         {options.offers.map((offer) => (
                             <button
                                 key={offer.value}
-                                className={`filter-option ${selectedOffers.includes(offer.value) ? 'active' : ''}`}
+                                className={`${styles.filterOption} ${selectedOffers.includes(offer.value) ? styles.active : ''}`}
                                 onClick={() =>
                                     toggleSelection(
                                         offer.value,
@@ -90,13 +90,13 @@ function FilterModal({ onClose }) {
                     </div>
                 </div>
 
-                <div className="filter-section">
+                <div className={styles.filterSection}>
                     <h3>Sustainability</h3>
-                    <div className="filter-options">
+                    <div className={styles.filterOptions}>
                         {options.sustainability.map((option) => (
                             <button
                                 key={option.value}
-                                className={`filter-option ${selectedSustainability.includes(option.value) ? 'active' : ''}`}
+                                className={`${styles.filterOption} ${selectedSustainability.includes(option.value) ? styles.active : ''}`}
                                 onClick={() =>
                                     toggleSelection(
                                         option.value,
@@ -111,13 +111,13 @@ function FilterModal({ onClose }) {
                     </div>
                 </div>
 
-                <div className="filter-section">
+                <div className={styles.filterSection}>
                     <h3>Coffee variants</h3>
-                    <div className="filter-options">
+                    <div className={styles.filterOptions}>
                         {options.coffeeVariants.map((variant) => (
                             <button
                                 key={variant.value}
-                                className={`filter-option ${selectedVariants.includes(variant.value) ? 'active' : ''}`}
+                                className={`${styles.filterOption} ${selectedVariants.includes(variant.value) ? styles.active : ''}`}
                                 onClick={() =>
                                     toggleSelection(
                                         variant.value,
@@ -132,7 +132,7 @@ function FilterModal({ onClose }) {
                     </div>
                 </div>
 
-                <div className="filter-footer">
+                <div className={styles.filterFooter}>
                     <Button bg="white" fs="medium" radius="small" padding="small" fw="bold" onClick={clearFilters}>Clear filters</Button>
                     <Button bg="black" fs="medium" radius="small" padding="small" fw="bold" onClick={handleSave}>
                         Save

@@ -20,9 +20,9 @@ import PlanForm from './pages/PlanForm.jsx'
 import PaymentResult from './pages/PaymentResult.jsx'
 import { Login, Signup } from './pages/FormPages.jsx'
 
-// Dynamic Views
-import Dashboard from './views/Dashboard.jsx'
-import AccountSettings from './views/AccountSettings.jsx'
+// Dynamic Pages
+import Dashboard from './pages/DashboardPage.jsx'
+import AccountSettings from './pages/AccountSettingPage.jsx'
 import CafePage from './pages/CafePage.jsx'
 
 // Misc

@@ -1,5 +1,5 @@
 /* Modal Overlay */
-.modal-overlay {
+.modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modalContent {
   background: white;
   border-radius: 12px;
   max-width: 400px;
@@ -25,16 +25,16 @@
 }
 
 /* Member Card */
-.member-card {
+.memberCard {
   padding: 40px 30px;
   text-align: center;
 }
 
-.member-avatar {
+.memberAvatar {
   margin-bottom: 24px;
 }
 
-.avatar-image {
+.avatarImage {
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -42,27 +42,27 @@
   border: 3px solid #f0f0f0;
 }
 
-.member-card-title {
+.memberCardTitle {
   font-size: 24px;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0 0 8px 0;
 }
 
-.member-name {
+.memberName {
   font-size: 20px;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0 0 4px 0;
 }
 
-.member-status {
+.memberStatus {
   font-size: 16px;
   color: #666666;
   margin: 0 0 24px 0;
 }
 
-.member-instructions {
+.memberInstructions {
   font-size: 14px;
   color: #666666;
   line-height: 1.4;
@@ -70,11 +70,11 @@
 }
 
 /* QR Code */
-.qr-code {
+.qrCode {
   margin: 0 0 32px 0;
 }
 
-.qr-placeholder {
+.qrPlaceholder {
   width: 150px;
   height: 150px;
   margin: 0 auto;
@@ -85,7 +85,7 @@
   justify-content: center;
 }
 
-.qr-pattern {
+.qrPattern {
   width: 140px;
   height: 140px;
   background-image: repeating-linear-gradient(
@@ -107,7 +107,7 @@
 }
 
 /* Done Button */
-.done-button {
+.doneButton {
   background-color: #dc2626;
   color: white;
   border: none;
@@ -120,35 +120,35 @@
   width: 100%;
 }
 
-.done-button:hover {
+.doneButton:hover {
   background-color: #b91c1c;
 }
 
-.done-button:active {
+.doneButton:active {
   background-color: #991b1b;
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
-  .modal-content {
+  .modalContent {
     width: 95%;
     margin: 20px;
   }
 
-  .member-card {
+  .memberCard {
     padding: 30px 20px;
   }
 
-  .avatar-image {
+  .avatarImage {
     width: 100px;
     height: 100px;
   }
 
-  .member-card-title {
+  .memberCardTitle {
     font-size: 20px;
   }
 
-  .member-name {
+  .memberName {
     font-size: 18px;
   }
 }

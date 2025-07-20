@@ -3,7 +3,7 @@
    ========================= */
 
 /* Main container: row on desktop, centered, with gap */
-.pricing-table {
+.pricingTable {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
@@ -13,7 +13,7 @@
 }
 
 /* Styling for the pricing column */
-.pricing-column {
+.pricingColumn {
   flex: 1 1 0; /* Wachsend, shrinkend, Basis 30% */
   min-width: 250px; /* Für Mobile → stacked layout */
   padding: 20px;
@@ -22,41 +22,41 @@
   text-align: center;
 }
 
-.pricing-column:hover {
+.pricingColumn:hover {
   border: 1px solid #B6B6B6;
   cursor: pointer;
 }
 
-.selected-plan {
+.selectedPlan {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid #B6B6B6;
 }
 
 /* Styling for the column header */
-.pricing-column-header {
+.pricingColumnHeader {
   border-radius: 10px;
   padding: 24px;
 }
 
-.membership-name {
+.membershipName {
   font-size: clamp(1.2rem, 2.5vw, 1.4rem);
   font-weight: bold;
 }
 
-.bg-black .membership-name { color: #fff }
+.bg-black .membershipName { color: #fff }
 
 .bg-silver { background: #F5F5F5 }
-.bg-gold { background: #FFD740 }
-.bg-black { background: #111 }
+.bg-gold { background: #FFD740; }
+.bg-black { background: #111; }
 
 /* Styling for the pricing price */
-.membership-price {
+.membershipPrice {
   font-size: clamp(1.5rem, 4vw, 1.8rem);
   font-weight: 500;
 }
 
 /* Styling for the pricing advantages list */
-.pricing-table-advantages-list {
+.pricingTableAdvantagesList {
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -64,7 +64,7 @@
   margin: 0;
 }
 
-.pricing-table-advantages-list-item {
+.pricingTableAdvantagesListItem {
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -72,7 +72,7 @@
   width: 100%;
 }
 
-.pricing-table-advantages-list-item-text {
+.pricingTableAdvantagesListItemText {
   flex-grow: 1;
   text-align: left;
   font-size: clamp(1rem, 2vw, 1.2rem);
@@ -84,26 +84,26 @@
 
 /* Stack cards vertically on tablets and below */
 @media (max-width: 1024px) {
-  .pricing-table {
+  .pricingTable {
     flex-direction: column;
     align-items: center;
     gap: 32px;
   }
 
-  .pricing-column {
+  .pricingColumn {
     width: 100%;
   }
 }
 
 /* On mobile, make cards take full width and reduce gap */
 @media (max-width: 600px) {
-  .pricing-table {
+  .pricingTable {
     gap: 30px;
   }
-  .pricing-column {
+  .pricingColumn {
     width: 100%;
   }
-  .pricing-column-header {
+  .pricingColumnHeader {
     border-radius: 10px;
     padding: 10px;
   }

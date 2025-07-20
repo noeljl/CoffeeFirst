@@ -1,7 +1,7 @@
 import React, { useState } from 'react' // Importiere useState
 import { useDispatch } from 'react-redux' // Importiere useDispatch
 import { useNavigate } from 'react-router-dom' // Importiere useNavigate
-import Button from '../buttons/Button' // Dein Button-Component
+import Button from '../Buttons.jsx' // Dein Button-Component
 import { setRegistrationDetails } from '../../store/auth/signupSlice' // Importiere die Redux-Aktion
 import { checkEmailExists } from '../../apis/auth'
 import './Form.css' // Dein CSS

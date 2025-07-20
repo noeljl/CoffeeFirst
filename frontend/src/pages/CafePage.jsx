@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useCafeBySlug } from "../hooks/useCafeBySlug.js";
+import './styles/CafePage.css'
 
 import CafeHeaderSection from "../components/cafe/CafeHeaderSection.jsx";
 import VisitStatusCardSection from "../components/cafe/VisitStatusCardSection.jsx";
@@ -8,9 +9,8 @@ import AboutSection from "../components/cafe/AboutSection.jsx";
 import SustainabilitySection from "../components/cafe/SustainabilitySection.jsx";
 import CoffeeVariantsSection from "../components/cafe/CoffeeVariantsSection.jsx";
 import CafeOffersSection from "../components/cafe/CafeOffersSection.jsx";
-import ReviewSummarySection from "../components/cafe/ReviewSummarySection.jsx";
 import MapEmbedSection from "../components/cafe/MapEmbedSection.jsx";
-import ReviewSummaryContainer from "../components/cafe/ReviewSummaryContainer";
+import ReviewSummaryContainer from "../components/cafe/ReviewSummaryContainer.jsx";
 
 function CafePage() {
   const { cafeSlug } = useParams();

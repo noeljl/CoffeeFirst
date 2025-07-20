@@ -3,14 +3,40 @@
 /* ============================== */
 
 .navbarContainer {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 30px 0px;
+    padding: 15px 0px;
     border-bottom: 1px solid #eee;
 }
+
+.navbarLogo {
+    padding: 0;
+    margin: 0;
+    height: 55px;
+    width: auto;
+}
+
+/* ============================== */
+/* Navbar SignedOut Styles */
+/* ============================== */
+
+.navbarButtonsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+/* ============================== */
+/* Navbar SignedIn Styles */
+/* ============================== */
 
 .navbarMiddleContainer {
     display: flex;
@@ -25,7 +51,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 10px
 }
 
 /* ============================== */
@@ -67,4 +93,16 @@
 
 .mobileMenuEntry #active {
     color: #DA0A00;
+}
+
+
+/* ============================== */
+/* Responsive Styles */
+/* ============================== */
+
+@media (max-width: 768px) {
+    .navbarLogo {
+        height: 45px;
+        width: auto;
+    }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './PersonalInfo.css'
-import Button from '../buttons/Button.jsx'
+import Button from '../Buttons.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialState as accountInitialState } from '../../store/accountSettings/AccountSettings.reducers.js'
 import {

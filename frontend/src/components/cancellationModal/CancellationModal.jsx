@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import './CancellationModal.css' // You'll need to create this CSS file
-import Button from '../buttons/Button.jsx'
+import Button from '../Buttons.jsx'
 import { cancelMembership } from '../../apis/membership.js'
 import { useSelector } from 'react-redux'
 import { getMembershipByMemberIDAction } from '../../store/accountSettings/AccountSettings.actions.js'

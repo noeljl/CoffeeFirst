@@ -1,7 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
 import CafeGallery from "../components/cafes/CafeGallery";
-import Partners from "./Partners";
-import FilterResult from "../components/filter/FilterResult";
+import DiscoverView, { FilteredCafesView } from "../views/DiscoverViews";
 import useGetFavorites from "../hooks/useGetFavorites";
 import useGetWishlist from "../hooks/useGetWishlist";
 import useGetVisitedList from "../hooks/useGetVisitedList";
@@ -23,8 +22,8 @@ function Dashboard() {
 
   const sectionMap = {
     discover: filteredShops && filteredShops.length > 0
-      ? <FilterResult cafes={filteredShops} filters={filters}/>
-      : <Partners />, // Use Partners component here
+      ? <FilteredCafesView cafes={filteredShops} filters={filters}/>
+      : <DiscoverView />, // Use Partners component here
     favorites: <CafeGallery coffeeShops={favorites} loading={favoritesLoading} error={favoritesError} titleText="Your Favorites" galleryType="list"/>,
     wishlist: <CafeGallery coffeeShops={wishlist} loading={wishlistLoading} error={wishlistError} titleText="Your Wishlist" galleryType="list"/>,
     visited: <CafeGallery coffeeShops={visited} loading={visitedLoading} error={visitedError} titleText="Your Visits" galleryType="list" />,
