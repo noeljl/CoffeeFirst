@@ -8,8 +8,14 @@ import './styles/HomePage.css'
 import CTA from '../components/cta/CTA'
 import FAQAccordion from '../components/faq/FAQAccordion'
 import faqs from '../components/faq/DummyFAQ'
+import { useAllCafes } from '../hooks/useAllCafes'
 
 function HomePage() {
+  // Get all cafes for the partners section
+  const [cafes, cafesLoading, cafesError] = useAllCafes()
+  
+  // Limit to first 12 cafes for the home page partners section
+  const limitedCafes = cafes ? cafes.slice(0, 12) : []
 
   return (
     <div>
@@ -17,40 +23,31 @@ function HomePage() {
       <Hero />
       <div className="homepage-body">
         <div className="homepage-section">
-          <h2 className="homepage-section-title">Some of our partners</h2>
-          <CoffeeGallery />
+          <h2 className="section-title">Some of our partners</h2>
+          <CoffeeGallery 
+            coffeeShops={limitedCafes} 
+            loading={cafesLoading} 
+            error={cafesError}
+          />
         </div>
-      </div>
-      <div className="homepage-section sustainability-section">
-        <img
-          src="/images/home-sustainability.png"
-          draggable={false}
-          alt="Sustainability"
-        />
-        <div className="sustainability-section-text">
-          <h2>Coffee meets sustainability</h2>
-          <p>
-            At CoffeeFirst, we believe every cup can make a difference. We
-            partner exclusively with cafés that prioritize ethically sourced
-            beans, eco-friendly packaging, and sustainable production. Our
-            goal is to support local businesses that care for both people and
-            the planet—one coffee at a time.
-          </p>
+        <div className="homepage-section">
+          <h2 className="section-title">Sustainability</h2>
+          <div className="sustainability-content">
+            <p>
+              We are committed to promoting sustainable coffee practices. Our partner cafes prioritize:
+            </p>
+            <ul>
+              <li>Ethical sourcing of coffee beans</li>
+              <li>Supporting local coffee farmers</li>
+              <li>Reducing environmental impact</li>
+              <li>Promoting fair trade practices</li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="homepage-section">
-        <h2 className="homepage-section-title">Pricing</h2>
-        <PricingTable onSelectPlan={null} onSessionCreated={null} page="home" />
-      </div>
-      <div className="homepage-section">
+        <PricingTable />
+        <FAQAccordion faqs={faqs} />
         <CTA />
       </div>
-      <div className="homepage-section">
-        <h2 className="homepage-section-title">Questions? Answers.</h2>
-        <FAQAccordion faqs={faqs} />
-      </div>
-
-
       <Footer />
     </div>
   )

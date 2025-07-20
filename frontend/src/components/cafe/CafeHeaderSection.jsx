@@ -13,67 +13,94 @@ function CafeHeaderSection({ cafe }) {
   const member = useSelector((state) => state.auth.member)
   const memberId = member?.id
 
-  // Snackbar state
+  // Snackbar state for user feedback
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
 
-  // Use hooks to get up-to-date wishlist and favorites
-  const { data: wishlist = [], loading: wishlistLoading } = useGetWishlist(memberId)
-  const { data: favorites = [], loading: favoritesLoading } = useGetFavorites(memberId)
+  // Get wishlist and favorites data with local update functions
+  const { data: wishlist = [], loading: wishlistLoading, addToWishlist, removeFromWishlist } = useGetWishlist(memberId)
+  const { data: favorites = [], loading: favoritesLoading, addToFavorites, removeFromFavorites } = useGetFavorites(memberId)
 
-  // Check if the cafe is in the lists
+  // Check if cafe is in user's lists
   const isInWishlist = wishlist.some(cafeObj => cafeObj._id === cafe._id)
   const isInFavorites = favorites.some(cafeObj => cafeObj._id === cafe._id)
 
-  // Handler for 'Add to Wishlist' button
+  // Handle adding cafe to wishlist
   const handleAddToWishlist = async (memberId, listType) => {
     try {
-      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
+      // Update local state immediately for instant UI feedback
+      addToWishlist(cafe._id)
+      // Show success message
       setSnackbarMessage('Added to wishlist!')
       setSnackbarOpen(true)
+      // Make API call in background
+      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
     } catch (err) {
+      // Revert local state if API call fails
+      removeFromWishlist(cafe._id)
       setSnackbarMessage('Failed to add to wishlist.')
       setSnackbarOpen(true)
     }
   }
 
-  // Handler for 'Add to Favorites' button
+  // Handle adding cafe to favorites
   const handleAddToFavorites = async (memberId, listType) => {
     try {
-      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
+      // Update local state immediately for instant UI feedback
+      addToFavorites(cafe._id)
+      // Show success message
       setSnackbarMessage('Added to favorites!')
       setSnackbarOpen(true)
+      // Make API call in background
+      await addCoffeeShopToMemberList(memberId, cafe._id, listType)
     } catch (err) {
+      // Revert local state if API call fails
+      removeFromFavorites(cafe._id)
       setSnackbarMessage('Failed to add to favorites.')
       setSnackbarOpen(true)
     }
   }
 
+  // Handle removing cafe from wishlist
   const handleRemoveFromWishlist = async (memberId, listType) => {
     try {
-      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
+      // Update local state immediately for instant UI feedback
+      removeFromWishlist(cafe._id)
+      // Show success message
       setSnackbarMessage('Removed from wishlist!')
       setSnackbarOpen(true)
+      // Make API call in background
+      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
     } catch (err) {
+      // Revert local state if API call fails
+      addToWishlist(cafe._id)
       setSnackbarMessage('Failed to remove from wishlist.')
       setSnackbarOpen(true)
     }
   }
 
+  // Handle removing cafe from favorites
   const handleRemoveFromFavorites = async (memberId, listType) => {
     try {
-      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
+      // Update local state immediately for instant UI feedback
+      removeFromFavorites(cafe._id)
+      // Show success message
       setSnackbarMessage('Removed from favorites!')
       setSnackbarOpen(true)
+      // Make API call in background
+      await removeCoffeeShopFromMemberList(memberId, cafe._id, listType)
     } catch (err) {
+      // Revert local state if API call fails
+      addToFavorites(cafe._id)
       setSnackbarMessage('Failed to remove from favorites.')
       setSnackbarOpen(true)
     }
   }
 
+  // Show loading state while data is being fetched
   if (wishlistLoading || favoritesLoading) return <div>Loading...</div>
 
-  // Handler for 'Get direction' button
+  // Handle getting directions to cafe
   const handleGetDirection = () => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.')
@@ -96,18 +123,21 @@ function CafeHeaderSection({ cafe }) {
 
   return (
     <>
+      {/* Snackbar for user feedback */}
       <Snackbar
         open={snackbarOpen}
         message={snackbarMessage}
         onClose={() => setSnackbarOpen(false)}
       />
       <section>
+        {/* Cafe header with name and rating */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
           <h1>{cafe.name}</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '20px' }}>
             {renderStars(cafe.averageRating || 0)}
           </div>
         </div>
+        {/* Cafe image gallery */}
         <div className="imageContainer">
           <img className="mainImage" src={cafe.images[0]} alt={cafe.name} />
           <div className="secondaryImages">
@@ -123,7 +153,9 @@ function CafeHeaderSection({ cafe }) {
             />
           </div>
         </div>
+        {/* Action buttons container */}
         <div className="buttonContainer">
+          {/* Wishlist button - toggles between add/remove */}
           <Button
             icon={Icons.heart}
             radius="small"
@@ -139,6 +171,7 @@ function CafeHeaderSection({ cafe }) {
           >
             {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
           </Button>
+          {/* Favorites button - toggles between add/remove */}
           <Button
             icon={Icons.favorite}
             radius="small"
@@ -153,6 +186,7 @@ function CafeHeaderSection({ cafe }) {
           >
             {isInFavorites ? 'Remove from Favorites' : 'Add to Favorites'}
           </Button>
+          {/* Directions button - opens Google Maps */}
           <Button
             icon={Icons.map}
             radius="small"

@@ -19,9 +19,9 @@ function Dashboard() {
   const member = useSelector((state) => state.auth.member)
   const memberId = member?.id
   // Get the favorites and wishlist of the member
-  const [favorites, favoritesLoading, favoritesError] =
+  const { data: favorites, loading: favoritesLoading, error: favoritesError } =
     useGetFavorites(memberId)
-  const [wishlist, wishlistLoading, wishlistError] = useGetWishlist(memberId)
+  const { data: wishlist, loading: wishlistLoading, error: wishlistError } = useGetWishlist(memberId)
   const [visited, visitedLoading, visitedError] = useGetVisitedList(memberId)
 
   const sectionMap = {
