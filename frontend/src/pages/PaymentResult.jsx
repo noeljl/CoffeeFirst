@@ -7,7 +7,7 @@ import { registerMemberAction } from '../store/auth/Auth.actions.js'
 import { clearSignupForm } from '../store/auth/signupSlice.js'
 import { getCompleteSession } from '../apis/stripe.js'
 import styles from './styles/LoginSignup.module.css'
-import Button from '../components/buttons/Button.jsx'
+import Button from '../components/Buttons.jsx'
 
 export default function PaymentResult() {
   const navigate = useNavigate()

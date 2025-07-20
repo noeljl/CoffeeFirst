@@ -8,9 +8,9 @@ import {
 } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthProvider.js'
 // Guards / Layouts
-import PrivateRoute from './components/PrivateRoute/PrivateRoute.js'
-import DashboardLayout from './components/layout/DashboardLayout.jsx'
-import SettingsLayout from './components/layout/SettingsLayout.jsx'
+import PrivateRoute from './routes/PrivateRoute.js'
+import DashboardLayout from './layout/DashboardLayout.jsx'
+import SettingsLayout from './layout/SettingsLayout.jsx'
 import CheckOut from './components/check-out/CheckOut.jsx'
 
 // Public Pages
@@ -20,9 +20,9 @@ import PlanForm from './pages/PlanForm.jsx'
 import PaymentResult from './pages/PaymentResult.jsx'
 import { Login, Signup } from './pages/FormPages.jsx'
 
-// Dynamic Views
-import Dashboard from './components/views/Dashboard.jsx'
-import AccountSettings from './components/views/AccountSettings.jsx'
+// Dynamic Pages
+import Dashboard from './pages/DashboardPage.jsx'
+import AccountSettings from './pages/AccountSettingPage.jsx'
 import CafePage from './pages/CafePage.jsx'
 
 // Misc
@@ -61,7 +61,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardLayout />}>
                 <Route
                   index
-                  element={<Navigate to="/dashboard/partners" replace />}
+                  element={<Navigate to="/dashboard/discover" replace />}
                 />
                 <Route path=":section" element={<Dashboard />} />
                 <Route path=":section/:cafeSlug" element={<CafePage />} />

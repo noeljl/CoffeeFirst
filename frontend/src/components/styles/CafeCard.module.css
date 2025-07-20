@@ -1,0 +1,98 @@
+/* =========================
+  Cafe Card Styles
+   ========================= */
+
+.cafeCardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 16px;
+  width: 250px;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.cafeCardContainer:hover {
+  cursor: pointer;
+  background-color: #F2F2F2;
+}
+
+.cafeCardImage {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  align-items: top;
+}
+  
+.cafeCardImage img{
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.cafeCardContent {
+  padding: 0 10px;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cafeCardTitle {
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cafeCardRating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.cafeCardAddress {
+  margin: 0;
+  padding: 0;
+}
+
+.cafeCardAddress p {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.cafeCardIcons {
+  display: flex;
+  justify-content: left;
+  gap: 20px;
+  padding: 0 10px;
+  padding-bottom: 10px;
+  margin: 0;
+}
+
+/* =========================
+  Responsive Styles
+   ========================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .cafeCardContainer {
+    width: 200px;
+  }
+  
+  .cafeCardImage {
+    height: 160px;
+  }
+}

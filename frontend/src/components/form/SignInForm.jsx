@@ -1,7 +1,7 @@
 import React, { useState } from 'react' // Make sure this is uncommented and includes useState
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Button from '../buttons/Button.jsx'
+import Button from '../Buttons.jsx'
 import './Form.css'
 import { loginMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 

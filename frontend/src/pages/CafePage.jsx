@@ -9,7 +9,6 @@ import AboutSection from '../components/cafe/AboutSection.jsx'
 import SustainabilitySection from '../components/cafe/SustainabilitySection.jsx'
 import CoffeeVariantsSection from '../components/cafe/CoffeeVariantsSection.jsx'
 import CafeOffersSection from '../components/cafe/CafeOffersSection.jsx'
-import ReviewSummarySection from '../components/cafe/ReviewSummarySection.jsx'
 import MapEmbedSection from '../components/cafe/MapEmbedSection.jsx'
 import ReviewSummaryContainer from '../components/cafe/ReviewSummaryContainer'
 

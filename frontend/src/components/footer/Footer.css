@@ -69,10 +69,10 @@ footer {
    Responsive Styles
    ========================= */
 
-/* For screens <= 1400px, make container width fluid */
+/* For screens <= 1024px (tablet and mobile), add bottom margin for mobile menu */
 @media (max-width: 1024px) {
   footer {
-    /* TODO: add responsive styles */
+    margin-bottom: 80px; /* Account for mobile menu height */
   }
 }
 
@@ -81,6 +81,7 @@ footer {
   footer {
     padding: 30px 0;
     gap: 20px;
+    margin-bottom: 80px; /* Account for mobile menu height */
   }
 
   #footer-copyright-text,

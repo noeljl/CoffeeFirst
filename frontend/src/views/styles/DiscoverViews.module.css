@@ -1,0 +1,31 @@
+/* FilterResult.css */
+.filterResultContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 50px;
+    width: 100%;
+    padding: 0 20px;
+  }
+  
+  .filterResultHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 30px;
+  }
+  
+  .cafeList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  
+  .textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 10px;
+  }

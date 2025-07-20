@@ -7,7 +7,7 @@ import Icons from '../../assets/Icons.js';
 import { useAllDistricts } from '../../hooks/useAllDistricts.js';
 import { useAllCafes } from '../../hooks/useAllCafes.js';
 
-function SearchBar() {
+export default function SearchBar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchBarRef = useRef(null);
@@ -30,13 +30,13 @@ function SearchBar() {
   // Handler for district selection
   const handleDistrictSelect = (districtName) => {
     setSearchFilter({ type: 'district', name: districtName });
-    navigate('/dashboard/partners?district=' + encodeURIComponent(districtName));
+    navigate('/dashboard/discover?district=' + encodeURIComponent(districtName));
     setModalOpen(false);
   };
 
   const handleCafeSelect = (cafeSlug) => {
     setSearchFilter({ type: 'cafe', name: cafeSlug });
-    navigate('/dashboard/partners?cafe=' + encodeURIComponent(cafeSlug));
+    navigate('/dashboard/discover?cafe=' + encodeURIComponent(cafeSlug));
     setModalOpen(false);
   };
 
@@ -87,5 +87,3 @@ function SearchBar() {
     </div>
   );
 }
-
-export default SearchBar;

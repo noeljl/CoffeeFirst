@@ -1,0 +1,154 @@
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modalContent {
+  background: white;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Member Card */
+.memberCard {
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.memberAvatar {
+  margin-bottom: 24px;
+}
+
+.avatarImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+}
+
+.memberCardTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.memberName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.memberStatus {
+  font-size: 16px;
+  color: #666666;
+  margin: 0 0 24px 0;
+}
+
+.memberInstructions {
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.4;
+  margin: 0 0 32px 0;
+}
+
+/* QR Code */
+.qrCode {
+  margin: 0 0 32px 0;
+}
+
+.qrPlaceholder {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  background: #000;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qrPattern {
+  width: 140px;
+  height: 140px;
+  background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      white 3px,
+      white 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      white 3px,
+      white 6px
+    );
+  background-size: 10px 10px;
+  border-radius: 4px;
+}
+
+/* Done Button */
+.doneButton {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 48px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.doneButton:hover {
+  background-color: #b91c1c;
+}
+
+.doneButton:active {
+  background-color: #991b1b;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .modalContent {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .memberCard {
+    padding: 30px 20px;
+  }
+
+  .avatarImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .memberCardTitle {
+    font-size: 20px;
+  }
+
+  .memberName {
+    font-size: 18px;
+  }
+}

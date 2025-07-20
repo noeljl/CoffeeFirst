@@ -1,103 +1,91 @@
-import React, { useState, useContext, useEffect } from 'react'
-import './Navbar.css'
-import Button from '../buttons/Button'
+import React, { useContext, useEffect } from 'react'
+import styles from './Navbar.module.css'
+import Button, { SearchButton, SearchButtonIcon, FilterButtonText, FilterButtonIcon, CheckInButton, CheckInButtonIcon, BurgerMenuButton, BurgerMenuButtonIcon } from '../Buttons.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
-import BurgerMenuButton from '../burger-menu/BurgerMenu'
-import Avatar from '../avatar/Avatar'
-import FilterModal from '../filter/FilterModal'
-import SearchBar from '../search-bar/SearchBar'
-import CheckInButton from '../check-in/CheckIn'
-import '../../App.css'
-
-import Icons from '../../assets/Icons'
-
-// Import your SearchContext
 import { SearchContext } from '../../contexts/SearchContext'
 import { useSelector } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
+import logo from '../../assets/Logo.svg'
 
 // Handles both navbar types: logged in and out.
-function NavBar() {
+export default function NavBar() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const location = useLocation()
   // Get both searchFilter and setSearchFilter from context
   const { searchFilter, setSearchFilter } = useContext(SearchContext)
+
+  // Set media queries to show mobile or desktop navbar
+  const isTablet = useMediaQuery({ maxWidth: 900 })
 
   useEffect(() => {
     setSearchFilter(null)
   }, [location.pathname, setSearchFilter])
 
   return (
-    <div className="page-frame">
+    <>
       {isAuthenticated ? (
-        <SignedIn
-          searchFilter={searchFilter}
-          setSearchFilter={setSearchFilter}
-        />
+        isTablet ? (
+          <SignedInMobile />
+        ) : (
+          <SignedInDefault
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+          />
+        )
       ) : (
         <SignedOut />
       )}
-    </div>
+    </>
   )
 }
 
-// Logged out navbar.
+/* ============================== */
+/* Signed Out Navbar */
+/* ============================== */
+
 function SignedOut() {
   const navigate = useNavigate()
   return (
-    <div className="navbar-container">
-      <div className="navbar-logo-container">
+    <div className={styles.navbarContainer}>
       <img
-        src={Icons.logo}
+        src={logo}
         alt="CoffeeFirst Logo"
-        className="logo"
+        className={styles.navbarLogo}
         draggable={false}
         onClick={() => {
           navigate('/home')
         }}
       />
-      </div>
-      <div className="navbar-buttons-container">
-        <Button
-          bg="white"
-          fs="medium"
-          radius="small"
-          padding="medium"
-          fw="bold"
-          onClick={() => navigate('/login')}
-          border="red"
-        >
-          Sign in
+      <div className={styles.navbarButtonsContainer}>
+        <Button bg="white" fs="medium" radius="small" padding="small" fw="bold" onClick={() => navigate('/login')}>
+          Login
         </Button>
-        <Button
-          bg="red"
-          fs="medium"
-          radius="small"
-          padding="medium"
-          fw="bold"
-          onClick={() => navigate('/signup/regform')}
-        >
-          Sign up
+        <Button bg="red" fs="medium" radius="small" padding="small" fw="bold" onClick={() => navigate('/signup/regform')}>
+          Sign Up
         </Button>
       </div>
     </div>
   )
 }
 
+/* ============================== */
+/* Signed In Default Navbar */
+/* ============================== */
+
 // Pass searchFilter and setSearchFilter as props to SignedIn
-function SignedIn({ searchFilter, setSearchFilter }) {
+function SignedInDefault({ searchFilter, setSearchFilter }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isFilterOpen, setFilterOpen] = useState(false)
 
   // Handler for search selection
   const handleSearchSelect = (filter) => {
     setSearchFilter(filter)
     if (filter.type === 'district') {
-      if (location.pathname !== '/dashboard/partners') {
-        navigate('/dashboard/partners')
+      if (location.pathname !== '/dashboard/discover') {
+        navigate('/dashboard/discover')
       }
     } else if (filter.type === 'cafe') {
-      navigate(`/dashboard/partners/${encodeURIComponent(filter.name)}`)
+      navigate(`/dashboard/discover/${encodeURIComponent(filter.name)}`)
     }
   }
 
@@ -110,39 +98,46 @@ function SignedIn({ searchFilter, setSearchFilter }) {
   }, [searchFilter])
 
   return (
-    <div className="navbar-container">
+    <div className={styles.navbarContainer}>
       <img
-        src={Icons.logo}
+        src={logo}
         alt="CoffeeFirst Logo"
-        className="logo"
+        className={styles.navbarLogo}
         draggable={false}
         onClick={() => {
-          navigate('/home')
+          navigate('/dashboard/discover')
         }}
       />
-      <div className="gap-nav-middle">
+      <div className={styles.navbarMiddleContainer}>
         {/* Pass searchFilter to SearchBar */}
-        <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} />
-        <Button
-          bg="white"
-          fs="small"
-          radius="full"
-          icon={Icons.filter}
-          padding="medium"
-          fw="bold"
-          onClick={() => setFilterOpen(true)}
-        >
-          Filter
-        </Button>
-        {isFilterOpen && <FilterModal onClose={() => setFilterOpen(false)} />}
+        {/* <SearchBar onSelect={handleSearchSelect} searchFilter={searchFilter} /> */}
+        <SearchButton />
+        <FilterButtonText />
       </div>
-      <div className="gap">
+      <div className={styles.navbarRightContainer}>
         <CheckInButton />
-        <Avatar />
-        <BurgerMenuButton />
+        <BurgerMenuButtonIcon />
       </div>
     </div>
   )
 }
 
-export default NavBar
+/* ============================== */
+/* Signed In Mobile Navbar */
+/* ============================== */
+
+function SignedInMobile() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  return (
+    <div className={styles.navbarContainer}>
+      <img src={logo} alt="CoffeeFirst Logo" className={styles.navbarLogo} draggable={false} onClick={() => navigate('/dashboard/discover')} />
+      <div className={styles.navbarRightContainer}>
+        <SearchButtonIcon />
+        <FilterButtonIcon />
+        <CheckInButtonIcon />
+      </div>
+    </div>
+  )
+}

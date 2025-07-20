@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import './CafeListItem.css'
+import styles from '../styles/CafeListItem.module.css'
 import renderStars from '../../functions/renderStars'
 import handleGetDirection from '../../functions/handleGetDirection'
 import { FaHeart, FaRegHeart, FaRegStar, FaStar, FaDirections } from 'react-icons/fa'
@@ -13,13 +13,13 @@ export default function CafeListItem(cafe) {
 
 
     return (
-        <div className="cafe-list-item-container"
+        <div className={styles.cafeListItemContainer}
             style={{ cursor: 'pointer' }}
         >
-            <div className="col-left"
+            <div className={styles.colLeft}
                 onClick={handleClick}>
                 <img
-                    className="cafe-list-item-img"
+                    className={styles.cafeListItemImg}
                     src={cafe.imgSrc}
                     draggable={false}
                     alt={cafe.title}
@@ -31,20 +31,20 @@ export default function CafeListItem(cafe) {
                         console.log('Image loaded successfully:', cafe.imgSrc)
                     }}
                 />
-                <div className="text-block">
-                    <div className="shop-title">{cafe.title}</div>
-                    <div className="rating-stars">{renderStars(cafe.rate || 0)}</div>
-                    <div className="address">
-                        <div className="street">{cafe.address.streetNo}</div>
-                        <div className="postCode">{cafe.address.PLZ} {cafe.address.Place}</div>
+                <div className={styles.textBlock}>
+                    <div className={styles.cafeTitle}>{cafe.title}</div>    
+                    <div className={styles.ratingStars}>{renderStars(cafe.rate || 0)}</div>
+                    <div className={styles.address}>
+                        <div className={styles.street}>{cafe.address.streetNo}</div>
+                        <div className={styles.postCode}>{cafe.address.PLZ} {cafe.address.Place}</div>
                     </div>
                 </div>
             </div>
-            <div className="col-right">
-                <div className="icon-btn">
-                    <FaRegHeart style={{ height: '30px', width: '30px' }} />
-                    <FaRegStar style={{ height: '30px', width: '30px' }} />
-                    <FaDirections style={{ height: '30px', width: '30px' }} onClick={() => handleGetDirection(cafe.coords)} />
+            <div className={styles.colRight}>
+                <div className={styles.iconBtn}>
+                    <FaRegHeart className={styles.faIcons} />
+                    <FaRegStar className={styles.faIcons} />
+                    <FaDirections className={styles.faIcons} onClick={() => handleGetDirection(cafe.coords)} />
                 </div>
             </div>
         </div>

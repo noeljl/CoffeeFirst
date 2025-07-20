@@ -1,0 +1,143 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  height: 40px;
+  width: auto;
+}
+
+/* Padding */
+.p-small { padding: clamp(0.5rem, 1.5vw, 1.1rem) clamp(0.5rem, 1.5vw, 1.1rem); }
+.p-medium { padding: clamp(1rem, 1.5vw, 1.3rem) clamp(1rem, 1.5vw, 1.3rem); }
+
+/* Font sizes */
+.fs-small { font-size: clamp(0.8rem, 1.5vw, 0.9rem); }
+.fs-medium { font-size: clamp(1rem, 1.5vw, 1.2rem); }
+.fs-large { font-size: clamp(1.2rem, 1.5vw, 1.4rem); }
+
+/* Font weight */
+.fw-bold { font-weight: 600;}
+
+/* Button width*/
+.width-full {
+  width: 100%;
+}
+
+.width-cirle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(40px, 5vw, 50px);
+  width: clamp(40px, 5vw, 50px);
+  border: 1px solid #D4D4D4;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+}
+
+/* Backgrounds */
+.bg-red { background-color: #DA0000; color: white; }
+.bg-white { background-color: #ffffff; color: black; border: 1px solid #D4D4D4; }
+.bg-black { background-color: #222222; color: white;}
+
+.border-red { border: 1px solid #DA0000; }
+
+/* Hover effect */
+.bg-red:hover { background-color: #ff0808; }
+.bg-white:hover { border: 1px solid #222; }
+.bg-black:hover { background-color: #000000; }
+
+/* Border radius */
+.radius-full { border-radius: 40px; }
+.radius-small { border-radius: 5px; }
+
+/* Icon styling */
+.btn-icon {
+  width: 25px;
+  height: 25px;
+}
+
+/* ============================== */
+/* Search Button */
+/* ============================== */
+
+
+
+/* ============================== */
+/* Filter Button Icon */
+/* ============================== */
+
+
+/* ============================== */
+/* Responsive Styles*/
+/* ============================== */
+
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .searchButton {
+    max-width: 350px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  .searchButton {
+    max-width: 300px;
+    height: clamp(34px, 4.5vw, 40px);
+  }
+  
+  .searchButton p {
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+  }
+}
+
+/* Large mobile devices */
+@media (max-width: 600px) {
+  .searchButton {
+    max-width: 250px;
+    height: clamp(32px, 5vw, 38px);
+    gap: clamp(4px, 1.5vw, 8px);
+  }
+  
+  .searchButton p {
+    font-size: clamp(0.65rem, 2.2vw, 0.8rem);
+  }
+  
+  .searchButton img {
+    width: clamp(16px, 2.8vw, 20px);
+    height: clamp(16px, 2.8vw, 20px);
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .searchButton {
+    max-width: 200px;
+    height: clamp(30px, 5.5vw, 36px);
+    padding: clamp(6px, 1.5vw, 10px) clamp(10px, 2vw, 14px);
+  }
+  
+  .searchButton p {
+    font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+  }
+  
+  .searchButton img {
+    width: clamp(14px, 3vw, 18px);
+    height: clamp(14px, 3vw, 18px);
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .searchButton {
+    max-width: 180px;
+    height: clamp(28px, 6vw, 34px);
+  }
+  
+  .searchButton p {
+    font-size: clamp(0.55rem, 2.8vw, 0.7rem);
+  }
+}

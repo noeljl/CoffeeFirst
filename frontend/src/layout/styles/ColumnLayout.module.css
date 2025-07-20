@@ -1,0 +1,55 @@
+/* =========================
+  Column Layout
+   ========================= */
+
+.layoutContainer {
+  display: flex;
+  flex-direction: row;
+  min-height: 60vh;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  width: 20%;
+  min-width: 250px;
+  border-right: 1px solid #F2F2F2;
+  padding: 50px 20px;
+  margin: 0;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  padding: 50px 0;
+  padding-left: 20px;
+  scroll-behavior: smooth;
+  margin: 0;
+}
+
+/* =========================
+  Responsive Styles
+   ========================= */
+
+@media (max-width: 1024px) {
+  .main {
+    padding-bottom: 20px; /* Reduced padding since footer has its own margin */
+  }
+}
+
+@media (max-width: 900px) {
+  .layoutContainer {
+    flex-direction: column;
+    min-height: auto;
+  }
+  .sidebar {
+    display: none;
+  }
+  .main {
+    padding: 50px 0;
+    padding-bottom: 20px; /* Reduced padding since footer has its own margin */
+  }
+}
