@@ -31,89 +31,47 @@ CoffeeFirst/
 └── README.md              # (dieses Dokument)
 ```
 
-### Back-End
-* Node 18-Image, startet mit `npm run server`
-* Mongoose-Models für Members, Memberships, CoffeeShops u.v.m.
+# Projekt-Readme
 
-### Front-End
-* CRA + Redux Toolkit; Dev-Server auf `:3000`
-* API-Basispfad `http://localhost:3001/api`
+Dieses Projekt ist eine Webanwendung, die es Benutzern ermöglicht, Informationen über Cafés zu finden und zu teilen. Es verfügt über ein Frontend, das mit React erstellt wurde, und ein Backend, das mit Node.js und MongoDB entwickelt wurde. Die Anwendung kann entweder mit Docker oder manuell mit npm-Befehlen ausgeführt werden.
 
----
+## Projektstruktur
 
-## Docker Compose – Schnellstart
+Das Projekt ist in zwei Hauptteile gegliedert:
+* **Frontend:** Der Frontend-Code befindet sich im `/frontend`-Verzeichnis und wurde mit Create React App erstellt.
+* **Backend:** Der Backend-Code befindet sich im `/backend`-Verzeichnis und verwendet Node.js und Express.js. Es stellt eine API für das Frontend bereit und stellt eine Verbindung zu einer MongoDB-Datenbank her.
 
-1.  **Images bauen & Container starten**
-    ```bash
-    docker compose up --build
-    ```
+## Docker Compose
 
-2.  **Logs ansehen**
-    ```bash
-    docker compose logs -f frontend # bzw. backend / mongodb
-    ```
+Die `docker-compose.yml`-Datei definiert drei Dienste: `frontend`, `backend` und `mongodb`.
+* `frontend`: Baut und führt die React-Anwendung auf Port 3000 aus.
+* `backend`: Baut und führt die Node.js-Anwendung auf Port 3001 aus.
+* `mongodb`: Führt eine MongoDB-Instanz auf Port 27017 aus.
 
-3.  **Alles stoppen & aufräumen**
-    ```bash
-    docker compose down -v
-    ```
+### Befehle
 
-`docker-compose.yml` definiert drei Services:
+* **Starten:** `docker-compose up`
+* **Herunterfahren:** `docker-compose down`
 
-| Service  | Port  | Befehl im Container                     |
-| :------- | :---- | :-------------------------------------- |
-| frontend | 3000  | `npm install && npm start`              |
-| backend  | 3001  | `npm install && npm run server`         |
-| mongodb  | 27017 | Offizielles `mongo:5`-Image + Healthcheck |
+## Ohne Docker ausführen
 
-Die Quellordner werden per Bind-Mount eingebunden; Code-Änderungen werden daher live neu geladen (Hot-Reload).
+### Frontend
 
----
-
-## Lokal ohne Docker
-
-**Voraussetzung:** Node $\geq$ 18 und eine laufende lokale MongoDB.
-
-### Backend
 ```bash
-cd backend
-npm install
-npm run server # oder einfach: npm start
-```
-
-### Frontend (in neuem Terminal)
-```bash
-cd ../frontend
+cd frontend
 npm install
 npm start
 ```
 
-Der Back-End-Server lauscht auf `http://localhost:3001`, das Front-End auf `http://localhost:3000`.
+### Backend
 
-## Datenquellen & Assets
+```bash
+cd backend
+npm install
+npm start
+```
 
-| Art | Speicherort | Herkunft / Lizenzhinweis |
-| :-- | :---------- | :----------------------- |
-| Café-Stammdaten | `frontend/src/components/cafe/DummySingleCafeData.js` | statisches Mock-JSON (selbsterstellt) |
-| Listen-Ansicht | `frontend/src/components/cafes/CafesData.js` | selbsterstellt (Demo) |
-| Bilder | `frontend/src/assets/dummyImages/*` (PNG/JPG) | Platzhalter-Fotos (Unsplash/Eigenaufnahmen) – nicht für Produktion |
-| Icons & SVGs | `frontend/src/assets/Icons.js` | MIT / CC-BY gemäß Icon-Set |
+## Datenursprung
 
-Für produktive Deployments sollten echte Café-Daten (z. B. Yelp-API) und lizenzierte Bilder verwendet werden.
-
-## Nützliche NPM-Skripte
-
-**Backend (`backend/package.json`):**
-
-| Script | Zweck |
-| :----- | :---- |
-| `npm run server` | Start mit Nodemon (Hot-Reload) |
-| `npm test` | Mocha + Chai Test-Suite |
-| `npm run create-db` | Demo-DB anlegen (Setup-Skript) |
-
-**Frontend (`frontend/package.json`):**
-
-| Script | Zweck |
-| :----- | :---- |
-| `npm start` | React Dev-Server |
-| `npm run build` | Produktions-Build |
+* **Bilder:** Bilddaten werden aus dem Verzeichnis `/frontend/src/assets` bezogen.
+* **Café-Daten:** Café-Daten werden aus der MongoDB-Datenbank abgerufen.
