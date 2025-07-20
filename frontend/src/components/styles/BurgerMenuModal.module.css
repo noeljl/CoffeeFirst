@@ -1,0 +1,55 @@
+/*===============================================
+Burger menu modal
+===============================================*/
+
+/* Overlay for burger menu */
+.burgerMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+}
+
+/* Menu styling*/
+.burgerMenuContainer {
+  position: absolute;
+  top: 85px;
+  right: 0px;
+  background-color: #fff;
+  border-radius: 10px;
+  width: auto;
+  z-index: 1000;
+  padding: 10px 0;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.burgerMenuEntry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 18px 20px;
+  margin: 0;
+  cursor: pointer;
+  gap: 15px;
+  width: 100%;
+}
+
+.burgerMenuEntry:hover {
+  background-color: #f5f5f5;
+}
+
+.burgerMenuEntryText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}

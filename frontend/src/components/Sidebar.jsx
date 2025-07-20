@@ -10,7 +10,7 @@ export default function Sidebar({ type }) {
   const location = useLocation();
   const { setSearchFilter } = useContext(SearchContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  
   return (
     <div className={styles.sidebarContainer}>
       {type === "dashboard" ? <DashboardSidebar navigate={navigate} location={location} setSearchFilter={setSearchFilter} /> : <SettingsSidebar navigate={navigate} location={location} />}
