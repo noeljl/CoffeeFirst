@@ -39,11 +39,11 @@ export default function MobileMenu() {
         <p className={styles.mobileMenuEntryText} id={isActive('/dashboard/favorites') ? styles.active : ""}>Favorites</p>
       </div>
       <div className={styles.mobileMenuEntry}
-        onClick={() => navigate('/account-settings/personal')}
-        id={isActive('/account-settings/personal') ? styles.active : ""}
+        onClick={() => navigate('/profile')}
+        id={isActive('/profile') ? styles.active : ""}
       >
-        <FaUser size={20} id={isActive('/account-settings/personal') ? styles.active : ""}/>
-        <p className={styles.mobileMenuEntryText} id={isActive('/account-settings/personal') ? styles.active : ""}>Profile</p>
+        <FaUser size={20} id={isActive('/profile') ? styles.active : ""}/>
+        <p className={styles.mobileMenuEntryText} id={isActive('/profile') ? styles.active : ""}>Profile</p>
       </div>
     </div>
   )

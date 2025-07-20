@@ -44,12 +44,12 @@ const CheckOut = () => {
             resolve({ rawData: code.data })
           }
         } else {
-          reject(new Error('Kein QR-Code im Bild gefunden'))
+          reject(new Error('No QR code found in image'))
         }
       }
 
       img.onerror = () => {
-        reject(new Error('Fehler beim Laden des Bildes'))
+        reject(new Error('Error loading image'))
       }
 
       img.src = URL.createObjectURL(imageFile)
@@ -92,7 +92,7 @@ const CheckOut = () => {
         setQrData(processedData)
       }
     } catch (err) {
-      setError(err.message || 'Fehler beim Scannen des QR-Codes')
+      setError(err.message || 'Error scanning QR code')
       setQrData(null)
     } finally {
       setIsLoading(false)
@@ -108,7 +108,7 @@ const CheckOut = () => {
       // 1. Membership aus DB holen
       const membership = await getMembershipByMemberId(qrData.memberId)
       if (!membership || !membership._id) {
-        throw new Error('Mitgliedschaft nicht gefunden')
+        throw new Error('Membership not found')
       }
       // 2. coffeeQuotaLeft um 1 reduzieren (aber nicht < 0)
       const newQuota = Math.max(0, (membership.coffeeQuotaLeft || 0) - 1)
@@ -174,16 +174,14 @@ const CheckOut = () => {
         {/* Header */}
         <div className="checkout-header">
           <h1 className="checkout-title">Checkout</h1>
-          <p className="checkout-subtitle">
-            QR-Code scannen und Kaffee bestellen
-          </p>
+          <p className="checkout-subtitle">Scan QR code and order coffee</p>
         </div>
 
         {/* Main Content Card */}
         <div className="checkout-card">
           {/* Upload Section */}
           <div className="upload-section">
-            <h2 className="upload-title">QR-Code hochladen</h2>
+            <h2 className="upload-title">Upload QR Code</h2>
 
             <div className="upload-area">
               <input
@@ -204,10 +202,8 @@ const CheckOut = () => {
                     />
                   </svg>
                 </div>
-                <p className="upload-text">
-                  Klicken Sie hier oder ziehen Sie eine Datei hierher
-                </p>
-                <p className="upload-subtext">PNG, JPG oder JPEG (max. 10MB)</p>
+                <p className="upload-text">Click here or drag a file here</p>
+                <p className="upload-subtext">PNG, JPG or JPEG (max. 10MB)</p>
               </label>
             </div>
 
@@ -229,7 +225,7 @@ const CheckOut = () => {
             <div className="loading-section">
               <div className="loading-content">
                 <div className="loading-spinner"></div>
-                <p className="loading-text">QR-Code wird verarbeitet...</p>
+                <p className="loading-text">Processing QR code...</p>
               </div>
             </div>
           )}
@@ -277,7 +273,7 @@ const CheckOut = () => {
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                     />
                   </svg>
-                  Mitgliedsinformationen
+                  Member Information
                 </h2>
 
                 <div className="member-grid">
@@ -362,7 +358,7 @@ const CheckOut = () => {
                       d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
                     />
                   </svg>
-                  Verfügbares Kaffee-Kontingent
+                  Available Coffee Quota
                 </h3>
                 <div className="quota-content">
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -371,8 +367,8 @@ const CheckOut = () => {
                     </span>
                     <span className="quota-text">
                       {qrData.coffeeQuotaLeft === 1
-                        ? 'Kaffee verbleibend'
-                        : 'Kaffees verbleibend'}
+                        ? 'Coffee remaining'
+                        : 'Coffees remaining'}
                     </span>
                   </div>
                   <div className="quota-icon-wrapper">
@@ -409,17 +405,17 @@ const CheckOut = () => {
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  Mitgliedschaftszeitraum
+                  Membership Period
                 </h3>
                 <div className="period-grid">
                   <div className="period-field">
-                    <label className="period-label">Startdatum</label>
+                    <label className="period-label">Start Date</label>
                     <p className="period-value">
                       {formatDate(qrData.startDate)}
                     </p>
                   </div>
                   <div className="period-field">
-                    <label className="period-label">Enddatum</label>
+                    <label className="period-label">End Date</label>
                     <p className="period-value">{formatDate(qrData.endDate)}</p>
                   </div>
                 </div>
@@ -455,19 +451,16 @@ const CheckOut = () => {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"
                     />
                   </svg>
-                  {isLoading ? 'Wird verarbeitet...' : 'Kaffee bestellen'}
+                  {isLoading ? 'Processing...' : 'Order Coffee'}
                 </button>
 
                 {qrData.coffeeQuotaLeft === 0 && (
-                  <p className="error-message">
-                    Kein Kaffee-Kontingent mehr verfügbar
-                  </p>
+                  <p className="error-message">No coffee quota available</p>
                 )}
 
                 {qrData.paymentStatus !== 'Success' && (
                   <p className="error-message">
-                    Zahlung erforderlich - Bitte aktualisieren Sie Ihre
-                    Zahlungsinformationen
+                    Payment required - Please update your payment information
                   </p>
                 )}
               </div>

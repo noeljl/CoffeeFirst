@@ -24,6 +24,7 @@ import { Login, Signup } from './pages/FormPages.jsx'
 import Dashboard from './pages/DashboardPage.jsx'
 import AccountSettings from './pages/AccountSettingPage.jsx'
 import CafePage from './pages/CafePage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
 
 // Misc
 import Page404 from './pages/404.jsx'
@@ -75,6 +76,9 @@ function App() {
                 />
                 <Route path=":section" element={<AccountSettings />} />
               </Route>
+
+              {/* Profile Page */}
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
 
             {/* Fallback 404 */}
