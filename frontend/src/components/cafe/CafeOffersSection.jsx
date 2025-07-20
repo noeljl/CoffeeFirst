@@ -1,5 +1,6 @@
 import { AMENITY_ICONS } from './amenityIcons';
 import "./SustainabilitySection.css";
+import '../../pages/styles/CafePage.css'
 
 function CafeOffersSection({ list }) {
   return <section className='sustainabilitySection'>

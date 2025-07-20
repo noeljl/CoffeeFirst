@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import styles from './Navbar.module.css'
+import styles from '../styles/Navbar.module.css'
 import Button, { SearchButton, SearchButtonIcon, FilterButtonText, FilterButtonIcon, CheckInButton, CheckInButtonIcon, BurgerMenuButton, BurgerMenuButtonIcon } from '../Buttons.jsx'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { SearchContext } from '../../contexts/SearchContext'

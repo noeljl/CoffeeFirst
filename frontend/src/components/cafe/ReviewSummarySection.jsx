@@ -1,6 +1,6 @@
 import "./ReviewSummarySection.css";
 import Icons from "../../assets/Icons";
-
+import '../../pages/styles/CafePage.css'
 // Helper function to convert boolean values to "Yes"/"No" strings
 const formatBooleanValue = (value) => {
   if (typeof value === 'boolean') {

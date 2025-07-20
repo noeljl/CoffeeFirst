@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import styles from '../styles/CafeCard.module.css'
 import renderStars from '../../functions/renderStars'
 import { FaHeart, FaRegHeart, FaRegStar, FaStar, FaDirections } from 'react-icons/fa'
+import handleGetDirection from '../../functions/handleGetDirection'
+
 
 // CafeCard component
 // Cafe:
@@ -12,9 +14,8 @@ import { FaHeart, FaRegHeart, FaRegStar, FaStar, FaDirections } from 'react-icon
 // - slug: Slug of the café
 export default function CafeCard(cafe) {
   const navigate = useNavigate()
-
   const handleClick = () => {
-    navigate(`/dashboard/partners/${cafe.slug}`)
+    navigate(`/dashboard/discover/${cafe.slug}`)
   }
 
   return (

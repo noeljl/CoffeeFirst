@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useCafeBySlug } from '../hooks/useCafeBySlug.js'
 
 import CafeHeaderSection from '../components/cafe/CafeHeaderSection.jsx'
-import VisitStatusCardSection from '../components/cafe/VisitStatusCardSection.jsx'
+import VisitStatusCard from '../components/cafe/VisitStatusCard.jsx'
 
 import AboutSection from '../components/cafe/AboutSection.jsx'
 import SustainabilitySection from '../components/cafe/SustainabilitySection.jsx'
@@ -11,6 +11,8 @@ import CoffeeVariantsSection from '../components/cafe/CoffeeVariantsSection.jsx'
 import CafeOffersSection from '../components/cafe/CafeOffersSection.jsx'
 import MapEmbedSection from '../components/cafe/MapEmbedSection.jsx'
 import ReviewSummaryContainer from '../components/cafe/ReviewSummaryContainer'
+
+import './styles/CafePage.css'
 
 function CafePage() {
   const { cafeSlug } = useParams()
@@ -32,9 +34,9 @@ function CafePage() {
   if (!cafe) return <div style={{ padding: '2rem' }}>Café not found.</div>
 
   return (
-    <>
+    <div className="cafe-container">
       <CafeHeaderSection cafe={cafe} />
-      <VisitStatusCardSection
+      <VisitStatusCard
         cafe={cafe}
         onReviewSubmitted={handleReviewSubmitted} // Pass callback
       />
@@ -49,7 +51,7 @@ function CafePage() {
         refreshTrigger={reviewSubmitted} // Pass trigger to refresh
       />
       <MapEmbedSection coords={cafe.coords} />
-    </>
+    </div>
   )
 }
 

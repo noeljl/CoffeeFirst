@@ -6,6 +6,7 @@ import {
   Pin,
   InfoWindow,
 } from '@vis.gl/react-google-maps';
+import '../../pages/styles/CafePage.css'
 
 export default function MapEmbedSection({coords}) {
   const position = { lat: coords.lat, lng: coords.lng };

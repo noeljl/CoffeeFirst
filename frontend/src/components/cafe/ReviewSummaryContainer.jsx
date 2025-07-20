@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchReviewSummary } from "../../apis/review";
 import ReviewSummarySection from "./ReviewSummarySection";
+import '../../pages/styles/CafePage.css'
 
 const mapSummaryToRatings = (summary) => {
   console.log("Raw summary data:", summary); // Debug log to see raw data

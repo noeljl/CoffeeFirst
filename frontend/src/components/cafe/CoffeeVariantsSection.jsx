@@ -1,5 +1,6 @@
 import "./SustainabilitySection.css";
 import Icons from '../../assets/Icons';
+import '../../pages/styles/CafePage.css'
 
 function CoffeeVariantsSection({list}) {
  return <section className='sustainabilitySection'>
