@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logoutMemberAction } from '../store/auth/Auth.actions.js'
 import NavBar from '../components/navbar/Navbar'
 import Footer from '../components/footer/Footer'
-import MobileMenu from '../components/navbar/MobileMenu'
+import MenuMobile from '../components/navbar/MenuMobile'
 import { useMediaQuery } from 'react-responsive'
 import { CheckInButton } from '../components/Buttons.jsx'
 
@@ -43,7 +43,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <Footer />
-      {isMobile && <MobileMenu />}
+      {isMobile && <MenuMobile />}
     </div>
   )
 } 
