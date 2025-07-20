@@ -1,9 +1,9 @@
-import "./AboutSection.css";
+import styles from"../styles/AboutSection.module.css";
 
 function AboutSection({title, description}) {
-  return <section className="aboutSection">
-    <h2 className="title text">{title}</h2>
-    <p className="description text">{description}</p>
+  return <section className={styles.aboutSection}>
+    <h3>{title}</h3>
+    <p>{description}</p>
   </section>;
 }
 

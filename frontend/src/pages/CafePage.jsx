@@ -40,8 +40,8 @@ function CafePage() {
         cafe={cafe}
         onReviewSubmitted={handleReviewSubmitted} // Pass callback
       />
-      <AboutSection title="About the café" description={cafe.aboutCafe} />
-      <AboutSection title="About the coffee" description={cafe.aboutCoffee} />
+      <AboutSection title="Discover the Café" description={cafe.aboutCafe} />
+      <AboutSection title="What’s Brewing?" description={cafe.aboutCoffee} />
       <SustainabilitySection list={cafe.sustainabilityFeatures} />
       <CoffeeVariantsSection list={cafe.coffeeTypes} />
       <CafeOffersSection list={cafe.amenities} />

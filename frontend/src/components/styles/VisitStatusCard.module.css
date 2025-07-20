@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: row;
     height: 85px;
-    width: 60%;
-    border: 1px solid #D4D4D4;
-    border-radius: 10px;
+    width: 100%;
+    border-top: 1px solid #D4D4D4;
+    border-bottom: 1px solid #D4D4D4;
     justify-content: space-between;
     align-items: center;
     padding: 0px 15px;
@@ -14,6 +14,8 @@
 .leftContainer {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
     padding: 0px;
     margin: 0px;
@@ -30,18 +32,19 @@
 .textContainer {
     display: flex;
     flex-direction: column;
-    gap: 5px;
     padding: 0px;
     margin: 0px;
 }
 
 .textContainer h3 {
+    font-size: clamp(1rem, 1vw, 1.2rem);
     font-weight: bold;
     margin: 0;
     padding: 0;
 }
 
 .textContainer p {
+    font-size: clamp(0.8rem, 1vw, 1rem);
     margin: 0;
     padding: 0;
 }

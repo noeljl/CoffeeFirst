@@ -3,58 +3,5 @@
   flex-direction: column;
   padding: 0;
   margin: 0;
-
+  gap: 40px;
 }
-
-/* .cafe-hero {
-  text-align: center;
-}
-
-.cafe-hero-img {
-  width: 100%;
-  border-radius: 12px;
-  max-height: 350px;
-  object-fit: cover;
-}
-
-.cafe-name {
-  margin-top: 1rem;
-  font-size: 2rem;
-}
-
-.cafe-address {
-  color: #777;
-}
-
-.cafe-section {
-  margin-top: 2rem;
-}
-
-.icon-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.icon-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: #f4f4f4;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-}
-
-.icon-item img {
-  width: 24px;
-  height: 24px;
-}
-
-.cafe-map {
-  width: 100%;
-  height: 300px;
-  border: none;
-  border-radius: 12px;
-  margin-top: 1rem;
-} */

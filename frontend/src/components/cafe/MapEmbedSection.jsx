@@ -6,13 +6,12 @@ import {
   Pin,
   InfoWindow,
 } from '@vis.gl/react-google-maps';
-import '../../pages/styles/CafePage.css'
 
 export default function MapEmbedSection({coords}) {
   const position = { lat: coords.lat, lng: coords.lng };
 
   return (
-    <section style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <section style={{ display: "flex", flexDirection: "column", gap: "20px", paddingBottom: "50px" }}>
       <h2 style={{fontSize: "22px"}}>Find the café</h2>
     <APIProvider apiKey={"AIzaSyC89_WpYeV6ocfM01wfJRSuIa6XadUq8pY"}>
       <div style={{ height: "620px", width: "100%", borderRadius: "10px", overflow: "hidden" }}>

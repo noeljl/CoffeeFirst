@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import Icons from '../../assets/Icons.js'
 import Button from '../Buttons.jsx'
 import Review from '../review/Review.jsx' // 1) Import the Review modal
 import { useLastVisit } from '../../hooks/useVisits.js'
-import styles from'./VisitStatusCard.module.css'
+import styles from'../styles/VisitStatusCard.module.css'
+import { FaRegCalendarAlt, FaPen } from "react-icons/fa";
 
-function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
+export default function VisitStatusCard({ cafe, onReviewSubmitted }) {
   const member = useSelector((state) => state.auth.member)
   const memberId = member?.id
 
@@ -35,7 +35,37 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
     }
   }
 
-  if (loading) {
+return (
+  <div className={styles.statusContainer}>
+    <div className={styles.leftContainer}>
+      <FaRegCalendarAlt size={30} color='#222' />
+      <div className={styles.textContainer}>
+        <h3>Your last visit</h3>
+        {loading ? <p>Loading...</p> : undefined}
+        {error ? <p>Some coffee came on your server. Give us a moment to fix it.</p> : undefined}
+        {!lastVisit ? <p>No visit yet</p> : undefined}
+        {lastVisit && <p>Your last visit was on {formatDate(lastVisit.visitDate)}</p>}
+      </div>
+    </div>
+    <div className={styles.rightContainer}>
+      <Button icon={<FaPen size={15} />} bg="white" fs="medium" radius="full" padding="medium" width="full" onClick={handleOpenReview}>
+        My review
+      </Button>
+      {showReviewModal && (
+        <Review
+          onClose={handleCloseReview}
+          cafe={cafe}
+          onReviewSubmitted={handleReviewSubmitted} // Pass callback
+        />
+      )}
+    </div>
+  </div>
+  )
+}
+
+
+
+  {/* if (loading) {
     return (
       <section className={styles.statusContainer}>
         <div className={styles.visitInfo}>
@@ -99,7 +129,7 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
         </div>
       </div>
       {/* 3) Open modal on click */}
-      <Button
+      {/* <Button
         bg="white"
         fw="bold"
         fs="medium"
@@ -109,17 +139,13 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
         onClick={handleOpenReview} // Add click handler
       >
         Your review
-      </Button>
+      </Button> */}
       {/* 4)Conditionally render the modal */}
-      {showReviewModal && (
+      {/* {showReviewModal && (
         <Review
           onClose={handleCloseReview}
           cafe={cafe}
           onReviewSubmitted={handleReviewSubmitted} // Pass callback
         />
       )}
-    </section>
-  )
-}
-
-export default VisitStatusCardSection
+    </section> */}
