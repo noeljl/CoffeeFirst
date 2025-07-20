@@ -31,11 +31,6 @@ export default function CafeCard(cafe) {
           <p>{cafe.address.PLZ} {cafe.address.Place}</p>
         </div>
       </div>
-      <div className={styles.cafeCardIcons}>
-        <FaRegHeart size={25} />
-        <FaRegStar size={25} />
-        <FaDirections size={25} />
-      </div>
     </div>
   )
 }

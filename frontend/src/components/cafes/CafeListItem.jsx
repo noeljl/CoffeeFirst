@@ -42,9 +42,7 @@ export default function CafeListItem(cafe) {
             </div>
             <div className={styles.colRight}>
                 <div className={styles.iconBtn}>
-                    <FaRegHeart className={styles.faIcons} />
-                    <FaRegStar className={styles.faIcons} />
-                    <FaDirections className={styles.faIcons} onClick={() => handleGetDirection(cafe.coords)} />
+                    <FaDirections size={30} className={styles.faIcons} onClick={() => handleGetDirection(cafe.coords)} />
                 </div>
             </div>
         </div>
