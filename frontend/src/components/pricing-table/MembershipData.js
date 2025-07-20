@@ -1,4 +1,4 @@
-const membershipData = [
+export const membershipData = [
   {
     id: 'silver',
     name: 'Silver',
@@ -37,4 +37,3 @@ const membershipData = [
   },
 ]
 
-export default membershipData

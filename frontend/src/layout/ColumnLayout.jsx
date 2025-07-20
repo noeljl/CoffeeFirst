@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMediaQuery } from 'react-responsive'
-import Footer from '../components/footer/Footer'
+import Footer from '../components/Footer'
 import NavBar from '../components/navbar/Navbar'
 import MenuMobile from '../components/navbar/MenuMobile'
 import styles from './styles/ColumnLayout.module.css'

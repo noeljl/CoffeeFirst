@@ -1,4 +1,4 @@
-import './Footer.css'
+import './styles/Footer.css'
 import { FaFacebook, FaInstagramSquare, FaPinterest, FaCcVisa, FaCcMastercard, FaCcAmex } from 'react-icons/fa'
 
 export default function Footer() {

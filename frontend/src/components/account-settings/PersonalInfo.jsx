@@ -9,7 +9,7 @@ import {
   changeMemberPasswordAction,
 } from '../../store/accountSettings/AccountSettings.actions.js'
 import FormData from 'form-data'
-import DeleteAccountModal from '../deleteAccountModal/DeleteAccountModal.jsx'
+import DeleteAccountModal from '../modals/DeleteAccountModal.jsx'
 
 /**
  * PersonalInfo

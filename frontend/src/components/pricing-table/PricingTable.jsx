@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react' // Import useState
 import PricingColumn from './PricingColumn'
 import styles from '../styles/PricingTable.module.css'
-import membershipData from './MembershipData'
+import { membershipData } from './MembershipData'
 import { getProducts, getSubscribeSession } from '../../apis/stripe'
 import { useNavigate } from 'react-router-dom'
 import { useMembershipTypes } from '../../hooks/useMembershipTypes'
