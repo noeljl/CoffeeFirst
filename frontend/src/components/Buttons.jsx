@@ -3,6 +3,8 @@ import { FiSearch, FiFilter, FiGrid, FiMenu } from 'react-icons/fi'
 import { useState } from 'react'
 import FilterModal from './modals/FilterModal'
 import CheckInModal from './modals/CheckInModal'
+import BurgerMenuModal from './modals/BurgerMenuModal'
+import SearchBarModal from './modals/SearchBarModal'
 import { useCheckin } from '../hooks/useCheckin'
 
 /* ============================== */
@@ -46,16 +48,24 @@ export default function Button({
 /* ============================== */
 
 export function SearchButton() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   return (
-    <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiSearch size={20} color="#222" />} width="circle">
-      Find our next café
-    </Button>
+    <>
+      <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiSearch size={20} color="#222" />} width="circle" onClick={() => setIsSearchOpen(true)}>
+        Find our next café
+      </Button>
+    {isSearchOpen && <SearchBarModal onClose={() => setIsSearchOpen(false)} />}
+    </>
   )
 }
 
 export function SearchButtonIcon() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false) 
   return (
-    <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiSearch size={20} color="#222" />} width="circle" />
+    <>
+      <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiSearch size={20} color="#222" />} width="circle" onClick={() => setIsSearchOpen(true)} />
+      {isSearchOpen && <SearchBarModal onClose={() => setIsSearchOpen(false)} />}
+    </>
   )
 }
 
@@ -178,15 +188,23 @@ export function CheckInButtonIcon() {
 /* ============================== */
 
 export function BurgerMenuButton() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
-    <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiMenu size={20} color="#222" />} width="circle">
-      Menu
-    </Button>
+    <>
+      <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiMenu size={20} color="#222" />} width="circle" onClick={() => setIsMenuOpen(true)}>
+        Menu
+      </Button>
+      {isMenuOpen && <BurgerMenuModal onClose={() => setIsMenuOpen(false)} />}
+    </>
   )
 }
 
 export function BurgerMenuButtonIcon() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
-    <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiMenu size={20} color="#222" />} width="circle" />
+    <>
+      <Button bg="white" fs="small" radius="full" padding="medium" icon={<FiMenu size={20} color="#222" />} width="circle" onClick={() => setIsMenuOpen(true)} />
+      {isMenuOpen && <BurgerMenuModal onClose={() => setIsMenuOpen(false)} />}
+    </>
   )
 }
