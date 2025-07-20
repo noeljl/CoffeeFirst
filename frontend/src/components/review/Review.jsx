@@ -1,7 +1,7 @@
 // RatingModal.jsx
 import React, { useState, useEffect } from "react";
 import "./Review.css";
-import coffeeImage from "../../assets/png/coffee-cup.png"; // image for the review pop-up 
+import coffeeImage from "../../assets/png/hero-background.jpg"; // image for the review pop-up 
 import { createReview } from "../../apis/review"; // Import the API function
 
 function Review({ onClose, cafe, onReviewSubmitted }) {
