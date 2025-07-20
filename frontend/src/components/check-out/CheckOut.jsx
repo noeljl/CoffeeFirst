@@ -9,6 +9,7 @@ import { createVisit } from '../../apis/visit'
 import { useSelector } from 'react-redux'
 import Button from '../Buttons.jsx'
 import styles from '../styles/CheckInModal.module.css'
+import stylesCheckout from './CheckOut.module.css'
 
 const CheckOut = () => {
   const [qrData, setQrData] = useState(null)
@@ -168,33 +169,33 @@ const CheckOut = () => {
   }
 
   return (
-    <div className="checkout-container">
+    <div className={stylesCheckout.checkoutContainer}>
       {/* Load jsQR library */}
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 
-      <div className="checkout-wrapper">
+      <div className={stylesCheckout.checkoutWrapper}>
         {/* Header */}
-        <div className="checkout-header">
-          <h1 className="checkout-title">Checkout</h1>
-          <p className="checkout-subtitle">Scan QR code and order coffee</p>
+        <div className={stylesCheckout.checkoutHeader}>
+          <h1 className={stylesCheckout.checkoutTitle}>Checkout</h1>
+          <p className={stylesCheckout.checkoutSubtitle}>Scan QR code and order coffee</p>
         </div>
 
         {/* Main Content Card */}
-        <div className="checkout-card">
+        <div className={stylesCheckout.checkoutCard}>
           {/* Upload Section */}
-          <div className="upload-section">
-            <h2 className="upload-title">Upload QR Code</h2>
+          <div className={stylesCheckout.uploadSection}>
+            <h2 className={stylesCheckout.uploadTitle}>Upload QR Code</h2>
 
-            <div className="upload-area">
+            <div className={stylesCheckout.uploadArea}>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="upload-input"
+                className={stylesCheckout.uploadInput}
                 id="qr-upload"
               />
               <label htmlFor="qr-upload" style={{ cursor: 'pointer' }}>
-                <div className="upload-icon">
+                <div className={stylesCheckout.uploadIcon}>
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -204,18 +205,18 @@ const CheckOut = () => {
                     />
                   </svg>
                 </div>
-                <p className="upload-text">Click here or drag a file here</p>
-                <p className="upload-subtext">PNG, JPG or JPEG (max. 10MB)</p>
+                <p className={stylesCheckout.uploadText}>Click here or drag a file here</p>
+                <p className={stylesCheckout.uploadSubtext}>PNG, JPG or JPEG (max. 10MB)</p>
               </label>
             </div>
 
             {uploadedImage && (
-              <div className="uploaded-image-container">
-                <div className="uploaded-image-wrapper">
+              <div className={stylesCheckout.uploadedImageContainer}>
+                <div className={stylesCheckout.uploadedImageWrapper}>
                   <img
                     src={uploadedImage}
                     alt="Uploaded QR Code"
-                    className="uploaded-image"
+                      className={stylesCheckout.uploadedImage}
                   />
                 </div>
               </div>
@@ -224,21 +225,21 @@ const CheckOut = () => {
 
           {/* Loading State */}
           {isLoading && (
-            <div className="loading-section">
-              <div className="loading-content">
-                <div className="loading-spinner"></div>
-                <p className="loading-text">Processing QR code...</p>
+            <div className={stylesCheckout.loadingSection}>
+              <div className={stylesCheckout.loadingContent}>
+                <div className={stylesCheckout.loadingSpinner}></div>
+                <p className={stylesCheckout.loadingText}>Processing QR code...</p>
               </div>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="error-section">
-              <div className="error-alert">
-                <div className="error-content">
+            <div className={stylesCheckout.errorSection}>
+              <div className={stylesCheckout.errorAlert}>
+                <div className={stylesCheckout.errorContent}>
                   <svg
-                    className="error-icon"
+                    className={stylesCheckout.errorIcon}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -250,7 +251,7 @@ const CheckOut = () => {
                       d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <p className="error-text">{error}</p>
+                  <p className={stylesCheckout.errorText}>{error}</p>
                 </div>
               </div>
             </div>
@@ -258,12 +259,12 @@ const CheckOut = () => {
 
           {/* Member Information */}
           {qrData && (
-            <div className="member-section">
+            <div className={stylesCheckout.memberSection}>
               {/* Member Details */}
               <div style={{ marginBottom: '2rem' }}>
-                <h2 className="section-title">
+                <h2 className={stylesCheckout.sectionTitle}>
                   <svg
-                    className="section-icon"
+                    className={stylesCheckout.sectionIcon}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -278,32 +279,32 @@ const CheckOut = () => {
                   Member Information
                 </h2>
 
-                <div className="member-grid">
-                  <div className="member-field">
-                    <label className="field-label">Vollständiger Name</label>
-                    <p className="field-value">
+                <div className={stylesCheckout.memberGrid}>
+                  <div className={stylesCheckout.memberField}>
+                    <label className={stylesCheckout.fieldLabel}>Vollständiger Name</label>
+                    <p className={stylesCheckout.fieldValue}>
                       {qrData.firstName} {qrData.lastName}
                     </p>
                   </div>
 
-                  <div className="member-field">
-                    <label className="field-label">E-Mail-Adresse</label>
-                    <p className="field-value">{qrData.email}</p>
+                  <div className={stylesCheckout.memberField}>
+                    <label className={stylesCheckout.fieldLabel}>E-Mail-Adresse</label>
+                    <p className={stylesCheckout.fieldValue}>{qrData.email}</p>
                   </div>
 
-                  <div className="member-field">
-                    <label className="field-label">Mitgliedschaftstyp</label>
+                  <div className={stylesCheckout.memberField}>
+                    <label className={stylesCheckout.fieldLabel}>Mitgliedschaftstyp</label>
                     <span className={getMembershipClass(qrData.membership)}>
                       {qrData.membership}
                     </span>
                   </div>
 
-                  <div className="member-field">
-                    <label className="field-label">Zahlungsstatus</label>
-                    <div className="payment-status">
+                  <div className={stylesCheckout.memberField}>
+                    <label className={stylesCheckout.fieldLabel}>Zahlungsstatus</label>
+                    <div className={stylesCheckout.paymentStatus}>
                       {qrData.paymentStatus === 'Success' ? (
                         <svg
-                          className="payment-icon payment-success"
+                          className={stylesCheckout.paymentIcon}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -317,7 +318,7 @@ const CheckOut = () => {
                         </svg>
                       ) : (
                         <svg
-                          className="payment-icon payment-failed"
+                          className={stylesCheckout.paymentIcon}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -333,8 +334,8 @@ const CheckOut = () => {
                       <span
                         className={
                           qrData.paymentStatus === 'Success'
-                            ? 'payment-success'
-                            : 'payment-failed'
+                            ? stylesCheckout.paymentSuccess
+                            : stylesCheckout.paymentFailed
                         }
                       >
                         {qrData.paymentStatus}
@@ -345,10 +346,10 @@ const CheckOut = () => {
               </div>
 
               {/* Coffee Quota */}
-              <div className="quota-section">
-                <h3 className="quota-header">
+              <div className={stylesCheckout.quotaSection}>
+                <h3 className={stylesCheckout.quotaHeader}>
                   <svg
-                    className="section-icon"
+                    className={stylesCheckout.sectionIcon}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -362,20 +363,20 @@ const CheckOut = () => {
                   </svg>
                   Available Coffee Quota
                 </h3>
-                <div className="quota-content">
+                <div className={stylesCheckout.quotaContent}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span className="quota-number">
+                    <span className={stylesCheckout.quotaNumber}>
                       {qrData.coffeeQuotaLeft}
                     </span>
-                    <span className="quota-text">
+                    <span className={stylesCheckout.quotaText}>
                       {qrData.coffeeQuotaLeft === 1
                         ? 'Coffee remaining'
                         : 'Coffees remaining'}
                     </span>
                   </div>
-                  <div className="quota-icon-wrapper">
+                  <div className={stylesCheckout.quotaIconWrapper}>
                     <svg
-                      className="quota-icon"
+                      className={stylesCheckout.quotaIcon}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -392,10 +393,10 @@ const CheckOut = () => {
               </div>
 
               {/* Membership Period */}
-              <div className="period-section">
-                <h3 className="section-title">
+                  <div className={stylesCheckout.periodSection}>
+                <h3 className={stylesCheckout.sectionTitle}>
                   <svg
-                    className="section-icon"
+                    className={stylesCheckout.sectionIcon}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -409,22 +410,22 @@ const CheckOut = () => {
                   </svg>
                   Membership Period
                 </h3>
-                <div className="period-grid">
-                  <div className="period-field">
-                    <label className="period-label">Start Date</label>
-                    <p className="period-value">
+                <div className={stylesCheckout.periodGrid}>
+                  <div className={stylesCheckout.periodField}>
+                    <label className={stylesCheckout.periodLabel}>Start Date</label>
+                    <p className={stylesCheckout.periodValue}>
                       {formatDate(qrData.startDate)}
                     </p>
                   </div>
-                  <div className="period-field">
-                    <label className="period-label">End Date</label>
-                    <p className="period-value">{formatDate(qrData.endDate)}</p>
+                  <div className={stylesCheckout.periodField}>
+                    <label className={stylesCheckout.periodLabel}>End Date</label>
+                    <p className={stylesCheckout.periodValue}>{formatDate(qrData.endDate)}</p>
                   </div>
                 </div>
               </div>
 
               {/* Checkout Button */}
-              <div className="checkout-button-section">
+              <div className={stylesCheckout.checkoutButtonSection}>
                 <button
                   onClick={handleCheckout}
                   disabled={
@@ -432,16 +433,16 @@ const CheckOut = () => {
                     qrData.coffeeQuotaLeft === 0 ||
                     qrData.paymentStatus !== 'Success'
                   }
-                  className={`checkout-button ${
+                  className={`${stylesCheckout.checkoutButton} ${
                     isLoading ||
                     qrData.coffeeQuotaLeft === 0 ||
                     qrData.paymentStatus !== 'Success'
-                      ? 'checkout-button-disabled'
-                      : 'checkout-button-active'
+                      ? stylesCheckout.checkoutButtonDisabled
+                      : stylesCheckout.checkoutButtonActive
                   }`}
                 >
                   <svg
-                    className="checkout-button-icon"
+                    className={stylesCheckout.checkoutButtonIcon}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -457,11 +458,11 @@ const CheckOut = () => {
                 </button>
 
                 {qrData.coffeeQuotaLeft === 0 && (
-                  <p className="error-message">No coffee quota available</p>
+                  <p className={stylesCheckout.errorMessage}>No coffee quota available</p>
                 )}
 
                 {qrData.paymentStatus !== 'Success' && (
-                  <p className="error-message">
+                      <p className={stylesCheckout.errorMessage}>
                     Payment required - Please update your payment information
                   </p>
                 )}
@@ -474,445 +475,6 @@ const CheckOut = () => {
       {showSuccessModal && (
         <SuccessModal onClose={() => setShowSuccessModal(false)} />
       )}
-
-      <style jsx>{`
-        .checkout-container {
-          min-height: 100vh;
-          background-color: #f9fafb;
-          padding: 2rem 1rem;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-            sans-serif;
-        }
-
-        .checkout-wrapper {
-          max-width: 64rem;
-          margin: 0 auto;
-        }
-
-        .checkout-header {
-          text-align: center;
-          margin-bottom: 2rem;
-        }
-
-        .checkout-title {
-          font-size: 1.875rem;
-          font-weight: 700;
-          color: #111827;
-          margin-bottom: 0.5rem;
-        }
-
-        .checkout-subtitle {
-          color: #6b7280;
-          font-size: 1rem;
-        }
-
-        .checkout-card {
-          background: white;
-          border-radius: 1rem;
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-          border: 1px solid #e5e7eb;
-          overflow: hidden;
-        }
-
-        .upload-section {
-          padding: 2rem;
-          border-bottom: 1px solid #f3f4f6;
-        }
-
-        .upload-title {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: #111827;
-          margin-bottom: 1.5rem;
-        }
-
-        .upload-area {
-          border: 2px dashed #d1d5db;
-          border-radius: 0.75rem;
-          padding: 2rem;
-          text-align: center;
-          cursor: pointer;
-          transition: border-color 0.2s ease;
-        }
-
-        .upload-area:hover {
-          border-color: #dc2626;
-        }
-
-        .upload-input {
-          display: none;
-        }
-
-        .upload-icon {
-          width: 4rem;
-          height: 4rem;
-          background-color: #f3f4f6;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 1rem;
-          transition: background-color 0.2s ease;
-        }
-
-        .upload-icon:hover {
-          background-color: #e5e7eb;
-        }
-
-        .upload-icon svg {
-          width: 2rem;
-          height: 2rem;
-          color: #9ca3af;
-        }
-
-        .upload-text {
-          font-size: 1.125rem;
-          font-weight: 500;
-          color: #374151;
-          margin-bottom: 0.25rem;
-        }
-
-        .upload-subtext {
-          font-size: 0.875rem;
-          color: #6b7280;
-        }
-
-        .uploaded-image-container {
-          margin-top: 1.5rem;
-          text-align: center;
-        }
-
-        .uploaded-image-wrapper {
-          display: inline-block;
-          padding: 0.5rem;
-          background-color: #f9fafb;
-          border-radius: 0.5rem;
-        }
-
-        .uploaded-image {
-          max-width: 12rem;
-          max-height: 12rem;
-          object-fit: contain;
-          border-radius: 0.5rem;
-        }
-
-        .loading-section {
-          padding: 2rem;
-          text-align: center;
-          border-bottom: 1px solid #f3f4f6;
-        }
-
-        .loading-content {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.75rem;
-        }
-
-        .loading-spinner {
-          width: 2rem;
-          height: 2rem;
-          border: 2px solid #dc2626;
-          border-top: 2px solid transparent;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-          color: #6b7280;
-          font-weight: 500;
-        }
-
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        .error-section {
-          padding: 2rem;
-          border-bottom: 1px solid #f3f4f6;
-        }
-
-        .error-alert {
-          background-color: #fef2f2;
-          border: 1px solid #fecaca;
-          border-radius: 0.5rem;
-          padding: 1rem;
-        }
-
-        .error-content {
-          display: flex;
-          align-items: center;
-        }
-
-        .error-icon {
-          width: 1.25rem;
-          height: 1.25rem;
-          color: #dc2626;
-          margin-right: 0.75rem;
-        }
-
-        .error-text {
-          color: #b91c1c;
-          font-weight: 500;
-        }
-
-        .member-section {
-          padding: 2rem;
-        }
-
-        .section-title {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: #111827;
-          margin-bottom: 1.5rem;
-          display: flex;
-          align-items: center;
-        }
-
-        .section-icon {
-          width: 1.5rem;
-          height: 1.5rem;
-          color: #6b7280;
-          margin-right: 0.5rem;
-        }
-
-        .member-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        .member-field {
-          background-color: #f9fafb;
-          border-radius: 0.5rem;
-          padding: 1rem;
-        }
-
-        .field-label {
-          display: block;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #6b7280;
-          margin-bottom: 0.25rem;
-        }
-
-        .field-value {
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: #111827;
-        }
-
-        .membership-badge {
-          display: inline-flex;
-          padding: 0.25rem 0.75rem;
-          border-radius: 9999px;
-          font-size: 0.875rem;
-          font-weight: 500;
-          border: 1px solid;
-        }
-
-        .membership-gold {
-          background-color: #fef3c7;
-          color: #92400e;
-          border-color: #fde68a;
-        }
-
-        .membership-silver {
-          background-color: #f3f4f6;
-          color: #374151;
-          border-color: #e5e7eb;
-        }
-
-        .membership-black {
-          background-color: #fed7aa;
-          color: #c2410c;
-          border-color: #fdba74;
-        }
-
-        .payment-status {
-          display: flex;
-          align-items: center;
-        }
-
-        .payment-icon {
-          width: 1.25rem;
-          height: 1.25rem;
-          margin-right: 0.5rem;
-        }
-
-        .payment-success {
-          color: #16a34a;
-        }
-
-        .payment-failed {
-          color: #dc2626;
-        }
-
-        .quota-section {
-          background: linear-gradient(135deg, #fefbf3 0%, #fef3c7 100%);
-          border: 1px solid #fde68a;
-          border-radius: 0.5rem;
-          padding: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        .quota-header {
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: #92400e;
-          margin-bottom: 1rem;
-          display: flex;
-          align-items: center;
-        }
-
-        .quota-content {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .quota-number {
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: #92400e;
-          margin-right: 0.5rem;
-        }
-
-        .quota-text {
-          color: #a16207;
-          font-weight: 500;
-        }
-
-        .quota-icon-wrapper {
-          width: 4rem;
-          height: 4rem;
-          background-color: #fef3c7;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .quota-icon {
-          width: 2rem;
-          height: 2rem;
-          color: #d97706;
-        }
-
-        .period-section {
-          margin-bottom: 2rem;
-        }
-
-        .period-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1rem;
-        }
-
-        .period-field {
-          background-color: #eff6ff;
-          border: 1px solid #bfdbfe;
-          border-radius: 0.5rem;
-          padding: 1rem;
-        }
-
-        .period-label {
-          display: block;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #1d4ed8;
-          margin-bottom: 0.25rem;
-        }
-
-        .period-value {
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: #1e3a8a;
-        }
-
-        .checkout-button-section {
-          text-align: center;
-          padding-top: 1rem;
-        }
-
-        .checkout-button {
-          display: inline-flex;
-          align-items: center;
-          padding: 1rem 2rem;
-          font-size: 1.125rem;
-          font-weight: 600;
-          border-radius: 0.75rem;
-          border: none;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          text-decoration: none;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .checkout-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .checkout-button-active {
-          background-color: #dc2626;
-          color: white;
-        }
-
-        .checkout-button-active:hover {
-          background-color: #b91c1c;
-        }
-
-        .checkout-button-disabled {
-          background-color: #d1d5db;
-          color: #6b7280;
-          cursor: not-allowed;
-        }
-
-        .checkout-button-disabled:hover {
-          transform: none;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .checkout-button-icon {
-          width: 1.5rem;
-          height: 1.5rem;
-          margin-right: 0.5rem;
-        }
-
-        .error-message {
-          color: #dc2626;
-          font-weight: 500;
-          margin-top: 0.75rem;
-        }
-
-        @media (max-width: 768px) {
-          .checkout-container {
-            padding: 1rem;
-          }
-
-          .member-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .period-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .quota-content {
-            flex-direction: column;
-            gap: 1rem;
-          }
-
-          .checkout-button {
-            width: 100%;
-            justify-content: center;
-          }
-        }
-      `}</style>
     </div>
   )
 }
