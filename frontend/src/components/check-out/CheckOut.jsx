@@ -7,12 +7,15 @@ import {
 import { addCoffeeShopToMemberList } from '../../apis/member'
 import { createVisit } from '../../apis/visit'
 import { useSelector } from 'react-redux'
+import Button from '../Buttons.jsx'
+import styles from '../styles/CheckInModal.module.css'
 
 const CheckOut = () => {
   const [qrData, setQrData] = useState(null)
   const [uploadedImage, setUploadedImage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const member = useSelector((state) => state.auth.member)
   const memberId = member?.id
@@ -135,8 +138,7 @@ const CheckOut = () => {
         coffeeType: 'ESPRESSO', // You can make this dynamic based on what was ordered
       })
 
-      alert('CoffeeShop wurde zu deinen besuchten Cafés hinzugefügt!')
-      alert('Checkout erfolgreich!')
+      setShowSuccessModal(true)
     } catch (err) {
       setError('Checkout-Fehler: ' + (err.message || err))
     } finally {
@@ -468,6 +470,10 @@ const CheckOut = () => {
           )}
         </div>
       </div>
+
+      {showSuccessModal && (
+        <SuccessModal onClose={() => setShowSuccessModal(false)} />
+      )}
 
       <style jsx>{`
         .checkout-container {
@@ -912,3 +918,19 @@ const CheckOut = () => {
 }
 
 export default CheckOut
+
+function SuccessModal({ onClose }) {
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent} style={{ padding: '2rem', textAlign: 'center' }}>
+        <svg width="64" height="64" fill="none" stroke="#22c55e" strokeWidth="2" viewBox="0 0 24 24" style={{ margin: '0 auto 1rem' }}>
+          <circle cx="12" cy="12" r="10" stroke="#22c55e" strokeWidth="2" fill="#f0fdf4" />
+          <path d="M9 12l2 2 4-4" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <h2 style={{ color: '#16a34a', fontWeight: 700, fontSize: '1.5rem', marginBottom: '1rem' }}>Checkout erfolgreich!</h2>
+        <p style={{ color: '#374151', marginBottom: '2rem' }}>CoffeeShop wurde zu deinen besuchten Cafés hinzugefügt.</p>
+        <Button bg="red" fs="medium" radius="small" width="full" onClick={onClose}>Schließen</Button>
+      </div>
+    </div>
+  )
+}

@@ -25,7 +25,11 @@ visitRouter.post('/', async (req, res, next) => {
       throw createError(400, 'Member ID and Coffee Shop ID are required')
     }
 
-    const visit = await visitService.createVisit(memberId, coffeeShopId, visitData)
+    const visit = await visitService.createVisit(
+      memberId,
+      coffeeShopId,
+      visitData
+    )
     res.status(201).json(visit)
   } catch (error) {
     next(error)
@@ -47,7 +51,10 @@ visitRouter.get('/member/:memberId', async (req, res, next) => {
     const { memberId } = req.params
     const { limit } = req.query
 
-    const visits = await visitService.getMemberVisits(memberId, parseInt(limit) || 50)
+    const visits = await visitService.getMemberVisits(
+      memberId,
+      parseInt(limit) || 50
+    )
     res.status(200).json(visits)
   } catch (error) {
     next(error)
@@ -69,7 +76,10 @@ visitRouter.get('/coffeeshop/:coffeeShopId', async (req, res, next) => {
     const { coffeeShopId } = req.params
     const { limit } = req.query
 
-    const visits = await visitService.getCoffeeShopVisits(coffeeShopId, parseInt(limit) || 50)
+    const visits = await visitService.getCoffeeShopVisits(
+      coffeeShopId,
+      parseInt(limit) || 50
+    )
     res.status(200).json(visits)
   } catch (error) {
     next(error)
@@ -135,7 +145,10 @@ visitRouter.get('/recent/:memberId', async (req, res, next) => {
     const { memberId } = req.params
     const { days } = req.query
 
-    const visits = await visitService.getRecentVisits(memberId, parseInt(days) || 30)
+    const visits = await visitService.getRecentVisits(
+      memberId,
+      parseInt(days) || 30
+    )
     res.status(200).json(visits)
   } catch (error) {
     next(error)
@@ -163,4 +176,4 @@ visitRouter.get('/history/:memberId/:coffeeShopId', async (req, res, next) => {
   }
 })
 
-export default visitRouter 
+export default visitRouter
