@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./FAQAccordion.css";
+import "./styles/FAQAccordion.css";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 
 function FAQAccordion({ faqs }) {

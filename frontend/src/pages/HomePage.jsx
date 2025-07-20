@@ -1,13 +1,13 @@
 import React from 'react'
-import Hero from '../components/hero/Hero'
+import Hero from '../components/Hero'
 import CoffeeGallery from '../components/cafes/CafeGallery'
-import Footer from '../components/footer/Footer'
+import Footer from '../components/Footer.jsx'
 import PricingTable from '../components/pricing-table/PricingTable'
 import NavBar from '../components/navbar/Navbar'
 import './styles/HomePage.css'
-import CTA from '../components/cta/CTA'
-import FAQAccordion from '../components/faq/FAQAccordion'
-import faqs from '../components/faq/DummyFAQ'
+import CTA from '../components/CTA'
+import FAQAccordion from '../components/FAQAccordion'
+import faqs from '../data/FAQData.js'
 import { useAllCafes } from '../hooks/useAllCafes'
 
 function HomePage() {

@@ -2,7 +2,7 @@ import React, { useState } from 'react' // Make sure this is uncommented and inc
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '../Buttons.jsx'
-import './Form.css'
+import '../styles/Form.css'
 import { loginMemberAction } from '../../store/auth/Auth.actions.js' // Pfad ist korrekt
 
 export default function SignInForm() {

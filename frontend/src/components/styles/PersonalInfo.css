@@ -2,41 +2,39 @@
 .personal-info-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #f8f9fa;
+  margin: 0;
 }
 
 .personal-info-container {
   flex: 1;
   width: 100%;
   max-width: none;
-  margin: 0; /* Removed margins to eliminate gaps */
-  padding: 0; /* Removed padding to eliminate gaps */
+  margin: 0;
+  padding: 0;
   background-color: #fff;
-  border-radius: 0; /* Removed border radius since it's full width now */
-  box-shadow: none; /* Removed box shadow since it's integrated into layout */
+  border-radius: 0;
+  padding-bottom: 50px;
 }
 
 .personal-info-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #1a1a1a;
-  padding: 2rem 0 0 0; /* Add top padding only for title */
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 30px;
 }
 
 .info-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 40px;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
   border-bottom: 1px solid #e5e7eb;
   position: relative;
+  padding-bottom: 40px;
 }
 
 .info-item:last-child {
@@ -219,76 +217,4 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
-
-/* Delete account section styling */
-.delete-account-container {
-  padding: 2rem 0;
-  border-top: 1px solid #e5e7eb;
-  margin-top: 2rem;
-}
-
-.delete-account-container button {
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.delete-account-container button:hover {
-  background-color: #dc2626;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .personal-info-container {
-    padding: 1rem;
-  }
-
-  .personal-info-title {
-    font-size: 1.75rem;
-    padding: 1rem 0 0 0;
-  }
-
-  .info-item {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 1.5rem 0;
-  }
-
-  .button-group {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
-  .edit-button {
-    align-self: flex-start;
-  }
-}
-
-@media (max-width: 480px) {
-  .personal-info-container {
-    padding: 0.5rem;
-  }
-
-  .personal-info-title {
-    padding: 0.5rem 0 0 0;
-  }
-
-  .info-item {
-    padding: 1rem 0;
-  }
-
-  .button-group {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
 }

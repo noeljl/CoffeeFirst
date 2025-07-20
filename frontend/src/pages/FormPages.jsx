@@ -1,6 +1,6 @@
 import React from 'react'
 import NavBar from '../components/navbar/Navbar.jsx'
-import Footer from '../components/footer/Footer.jsx'
+import Footer from '../components/Footer.jsx'
 import SignInForm from '../components/form/SignInForm.jsx'
 import SignupForm from '../components/form/SignupForm.jsx'
 import styles from './styles/LoginSignup.module.css'  // Importiere das CSS-Modul

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import Footer from '../components/footer/Footer.jsx'
+import Footer from '../components/Footer.jsx'
 import { useNavigate } from 'react-router-dom'
 // Corrected import path for setPlanDetails from the signupSlice
 import { setPlanDetails } from '../store/auth/signupSlice.js' // <-- IMPORTANT CHANGE HERE!

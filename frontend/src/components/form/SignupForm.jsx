@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom' // Importiere useNavigate
 import Button from '../Buttons.jsx' // Dein Button-Component
 import { setRegistrationDetails } from '../../store/auth/signupSlice' // Importiere die Redux-Aktion
 import { checkEmailExists } from '../../apis/auth'
-import './Form.css' // Dein CSS
+import '../styles/Form.css' // Dein CSS
 
 export default function SignupForm() {
   // State für Email, Passwort und das Checkbox-Flag

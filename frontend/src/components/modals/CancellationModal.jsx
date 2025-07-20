@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import './CancellationModal.css' // You'll need to create this CSS file
+import styles from '../styles/CancellationModal.module.css'
 import Button from '../Buttons.jsx'
 import { cancelMembership } from '../../apis/membership.js'
 import { useSelector } from 'react-redux'
@@ -51,9 +51,9 @@ export default function CancellationModal({
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className="heart-icon">
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <div className={styles.heartIcon}>
           {/* You can use an SVG icon or an image for the broken heart */}
           <svg
             width="100"
@@ -72,12 +72,12 @@ export default function CancellationModal({
         </div>
         <h2>We're sorry to see you go!</h2>
         <p>Your coffee journey doesn't have to end here.</p>
-        <div className="modal-buttons">
-          <Button className="continue-button" bg="black" onClick={onContinue}>
+        <div className={styles.modalButtons}>
+          <Button className={styles.continueButton} bg="black" onClick={onContinue}>
             Continue
           </Button>
           <Button
-            className="cancel-button"
+            className={styles.cancelButton}
             bg="red"
             onClick={handleCancelMembership}
             disabled={!membershipId?._id} // Disable button if membership data not loaded

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import './PersonalInfo.css'
+import '../styles/PersonalInfo.css'
 import Button from '../Buttons.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialState as accountInitialState } from '../../store/accountSettings/AccountSettings.reducers.js'
@@ -9,7 +9,7 @@ import {
   changeMemberPasswordAction,
 } from '../../store/accountSettings/AccountSettings.actions.js'
 import FormData from 'form-data'
-import DeleteAccountModal from '../deleteAccountModal/DeleteAccountModal.jsx'
+import DeleteAccountModal from '../modals/DeleteAccountModal.jsx'
 
 /**
  * PersonalInfo
@@ -309,7 +309,7 @@ function PersonalInfo() {
 
   return (
     <div className="personal-info-container">
-      <h1 className="personal-info-title">Personal information</h1>
+      <h2 className="personal-info-title">Personal information</h2>
 
       {isLoading && <p>Loading…</p>}
       {error && <p className="error-text">{error}</p>}
@@ -655,7 +655,6 @@ function PersonalInfo() {
         </div>
       </div>
 
-      <div className="delete-account-container">
         <Button
           bg="red"
           radius="small"
@@ -665,7 +664,6 @@ function PersonalInfo() {
         >
           Delete account
         </Button>
-      </div>
 
       <DeleteAccountModal
         isOpen={isDeleteModalOpen}

@@ -1,7 +1,7 @@
 // src/pages/membership/Membership.jsx
 import React, { useEffect, useState } from 'react'
-import CancellationModal from '../cancellationModal/CancellationModal'
-import './Membership.css'
+import CancellationModal from '../modals/CancellationModal'
+import  '../styles/Membership.css'
 import Button from '../Buttons.jsx'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBillingPortal } from '../../apis/stripe.js'

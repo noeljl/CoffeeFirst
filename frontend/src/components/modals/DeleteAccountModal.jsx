@@ -1,5 +1,5 @@
 import React from 'react'
-import './DeleteAccountModal.css'
+import '../styles/DeleteAccountModal.css'
 import Button from '../Buttons.jsx'
 import { deleteMember } from '../../apis/member.js'
 import { useSelector } from 'react-redux'
