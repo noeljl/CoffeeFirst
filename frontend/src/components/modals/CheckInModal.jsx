@@ -14,20 +14,16 @@ export default function CheckInModal({
   qrCodeContent,
 }) {
   useDisableScrolling(true)
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.memberCard}>
           <div className={styles.memberAvatar}>
             <img
+              className={styles.avatarImage}
               src={getCurrentImageSrc()}
               alt="Profilbild"
-              style={{
-                width: '150px',
-                height: '150px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-              }}
               onError={(e) => {
                 console.log('Image failed to load:', e.target.src)
                 e.target.src =
@@ -41,7 +37,6 @@ export default function CheckInModal({
             {firstName} {lastName}
           </h3>
           <p className={styles.memberStatus}>{membershipName} Member</p>
-
           <p className={styles.memberInstructions}>
             Please show your member card at the
             <br />
@@ -50,10 +45,10 @@ export default function CheckInModal({
 
           <div className={styles.qrCode}>
             {qrCodeContent ? (
-              // Use QRCodeCanvas instead of QRCode
+              // Use QRCodeCanvas instead of QRCode with larger size
               <QRCodeCanvas
                 value={qrCodeContent}
-                size={200} // Adjust size as needed
+                size={180} // Increased for better visibility
                 level="H" // Error correction level (L, M, Q, H)
                 includeMargin={false}
               />

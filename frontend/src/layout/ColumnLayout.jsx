@@ -2,7 +2,7 @@ import React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import Footer from '../components/footer/Footer'
 import NavBar from '../components/navbar/Navbar'
-import MobileMenu from '../components/navbar/MobileMenu'
+import MobileMenu from '../components/navbar/mobileMenu'
 import styles from './styles/ColumnLayout.module.css'
 
 // This component provides a two-column layout with a sidebar and main content area. It's just a shell that can be used to design the two column dashboard and settings pages.
