@@ -15,6 +15,7 @@ export default function SignupForm() {
   const [subscribe, setSubscribe] = useState(false) // Für die Checkbox
   const [emailError, setEmailError] = useState('')
   const [checkingEmail, setCheckingEmail] = useState(false)
+  const [passwordError, setPasswordError] = useState('')
 
   // Hooks initialisieren
   const dispatch = useDispatch()
@@ -39,9 +40,26 @@ export default function SignupForm() {
     }
   }
 
+  // Password strength checker
+  const isStrongPassword = (pwd) => {
+    // At least 8 characters, at least one letter and one number
+    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/.test(
+      pwd
+    )
+  }
+
   // Handler für das Absenden des Formulars
   const handleSubmit = async (e) => {
     e.preventDefault()
+    // Password strength validation
+    if (!isStrongPassword(password)) {
+      setPasswordError(
+        'Password must be at least 8 characters and contain both letters and numbers.'
+      )
+      return
+    } else {
+      setPasswordError('')
+    }
     // Prüfe, ob die E-Mail bereits vergeben ist
     const emailTaken = await checkEmailExistsClick(email)
     if (emailTaken) {
@@ -93,6 +111,11 @@ export default function SignupForm() {
           onChange={(e) => setPassword(e.target.value)} // State bei Änderung aktualisieren
           required
         />
+        {passwordError && (
+          <div style={{ color: 'red', marginBottom: '8px' }}>
+            {passwordError}
+          </div>
+        )}
         <label className="checkbox-container">
           <input
             type="checkbox"
@@ -109,9 +132,9 @@ export default function SignupForm() {
           radius="small"
           width="full"
           fw="bold"
-        // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
-        // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
-        // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
+          // Der onClick hier ist nicht mehr nötig, da der onSubmit des Formulars greift
+          // Wenn du hier einen zusätzlichen onClick für den Button hättest, würde er VOR dem onSubmit ausgelöst.
+          // Für das Speichern der Daten und Navigieren ist der onSubmit des Formulars der richtige Ort.
         >
           NEXT
         </Button>

@@ -31,6 +31,9 @@ const upload = multer({ storage: storage })
  * @access Public (oder anpassen basierend auf deiner Auth-Implementierung)
  */
 memberRouter.get('/:id', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return next(createError(401, 'Unauthorized'))
+  }
   try {
     const member = await memberService.findMemberByID(req.params.id)
     res.status(200).json(member)
@@ -206,6 +209,9 @@ memberRouter.delete(
 
 // Add auth middleware if necessary
 memberRouter.get('/:id/:listType', async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return next(createError(401, 'Unauthorized'))
+  }
   try {
     const list = await memberService.getList(req.params.id, req.params.listType)
     res.json(list)
