@@ -1,59 +1,65 @@
-# Pitch: CoffeeFirst
+# CoffeeFirst
+
+**CoffeeFirst** is a **full-stack platform** that brings coffee enthusiasts and cafés together.
+
+The app offers:
+- **Digital membership cards** with coffee quotas
+- **A sustainability-focused café search**
+- **Reviews & ratings**
+- **A streamlined payment & login system** (local + OAuth)
+
+Technically, the project consists of a **React frontend** and a **Node/Express backend on MongoDB** – everything **ready-to-run via Docker**.
 
 ---
 
-**CoffeeFirst** ist eine **Full-Stack-Plattform**, die Kaffee-Fans und Cafés zusammenbringt.
-
-Die App bietet:
-* **Digitale Mitgliedskarten** mit Kaffee-Kontingent
-* Eine **nachhaltigkeitsorientierte Café-Suche**
-* **Reviews & Ratings**
-* Ein **schlankes Zahlungs- & Login-System** (lokal + OAuth)
-
-Technisch besteht das Projekt aus einem **React-Frontend** und einem **Node/Express-Backend auf MongoDB** – alles **ready-to-run per Docker**.
-
----
-
-## Projektaufbau
+## Project Structure
 
 ```
 CoffeeFirst/
-├── backend/                # Express + Mongoose API
-│   ├── models/            # DB-Schemas (Member, CoffeeShop, …)
-│   ├── services/          # Business-Logik (AuthService u.a.)
-│   ├── routes/            # REST-Endpoints (/api/*)
-│   ├── loaders/           # Express/Passport/Middleware-Bootstrap
-│   └── index.js           # Server-Entry-Point
-├── frontend/              # React-SPA (CRA)
-│   ├── src/               # React-Code & Assets
-│   └── public/            # Static Files
-├── docker-compose.yml     # 3-Service-Setup (frontend, backend, MongoDB)
-└── README.md              # (dieses Dokument)
+├── backend/              # Express + Mongoose API
+│   ├── models/          # DB schemas (Member, CoffeeShop, …)
+│   ├── services/        # Business logic (AuthService etc.)
+│   ├── routes/          # REST endpoints (/api/*)
+│   ├── loaders/         # Express/Passport/Middleware bootstrap
+│   └── index.js         # Server entry point
+├── frontend/            # React SPA (CRA)
+│   ├── src/            # React code & assets
+│   └── public/         # Static files
+├── docker-compose.yml   # 3-service setup (frontend, backend, MongoDB)
+└── README.md           # This document
 ```
 
-# Projekt-Readme
+## Getting Started
 
-Dieses Projekt ist eine Webanwendung, die es Benutzern ermöglicht, Informationen über Cafés zu finden und zu teilen. Es verfügt über ein Frontend, das mit React erstellt wurde, und ein Backend, das mit Node.js und MongoDB entwickelt wurde. Die Anwendung kann entweder mit Docker oder manuell mit npm-Befehlen ausgeführt werden.
+This project is a web application that allows users to find and share information about cafés. It features a frontend built with React and a backend developed with Node.js and MongoDB. The application can be run either with Docker or manually using npm commands.
 
-## Projektstruktur
+### Prerequisites
 
-Das Projekt ist in zwei Hauptteile gegliedert:
-* **Frontend:** Der Frontend-Code befindet sich im `/frontend`-Verzeichnis und wurde mit Create React App erstellt.
-* **Backend:** Der Backend-Code befindet sich im `/backend`-Verzeichnis und verwendet Node.js und Express.js. Es stellt eine API für das Frontend bereit und stellt eine Verbindung zu einer MongoDB-Datenbank her.
+- Docker and Docker Compose (recommended)
+- Node.js and npm (for manual setup)
+- MongoDB (for manual setup)
 
-## Docker Compose
+## Running with Docker (Recommended)
 
-Die `docker-compose.yml`-Datei definiert drei Dienste: `frontend`, `backend` und `mongodb`.
-* `frontend`: Baut und führt die React-Anwendung auf Port 3000 aus.
-* `backend`: Baut und führt die Node.js-Anwendung auf Port 3001 aus.
-* `mongodb`: Führt eine MongoDB-Instanz auf Port 27017 aus.
+The `docker-compose.yml` file defines three services: `frontend`, `backend`, and `mongodb`.
 
-### Befehle
+- **`frontend`**: Builds and runs the React application on port 3000
+- **`backend`**: Builds and runs the Node.js application on port 3001
+- **`mongodb`**: Runs a MongoDB instance on port 27017
 
-* **Starten:** `docker-compose up`
-* **Herunterfahren:** `docker-compose down`
+### Commands
 
-## Ohne Docker ausführen
+**Start the application:**
+```bash
+docker-compose up
+```
+
+**Stop the application:**
+```bash
+docker-compose down
+```
+
+## Running Without Docker
 
 ### Frontend
 
@@ -63,6 +69,8 @@ npm install
 npm start
 ```
 
+The frontend will be available at `http://localhost:3000`
+
 ### Backend
 
 ```bash
@@ -71,7 +79,42 @@ npm install
 npm start
 ```
 
-## Datenursprung
+The backend API will be available at `http://localhost:3001`
 
-* **Bilder:** Bilddaten werden aus dem Verzeichnis `/frontend/src/assets` bezogen.
-* **Café-Daten:** Café-Daten werden aus der MongoDB-Datenbank abgerufen.
+### Database
+
+Make sure you have MongoDB running locally on port 27017, or update the connection string in your backend configuration.
+
+## Data Sources
+
+- **Images:** Image data is sourced from the `/frontend/src/assets` directory
+- **Café data:** Café data is retrieved from the MongoDB database
+
+## Features
+
+- Digital membership cards with coffee quotas
+- Sustainability-focused café search and discovery
+- User reviews and ratings system
+- Streamlined authentication (local + OAuth)
+- Responsive React frontend
+- RESTful API backend
+- MongoDB data persistence
+
+## Technology Stack
+
+**Frontend:**
+- React (Create React App)
+- Modern JavaScript (ES6+)
+
+**Backend:**
+- Node.js
+- Express.js
+- Mongoose (MongoDB ODM)
+- Passport.js (Authentication)
+
+**Database:**
+- MongoDB
+
+**DevOps:**
+- Docker
+- Docker Compose
