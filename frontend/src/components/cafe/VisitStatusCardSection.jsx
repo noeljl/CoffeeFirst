@@ -5,6 +5,7 @@ import Button from '../Buttons.jsx'
 import Review from '../review/Review' // 1) Import the Review modal
 import { useLastVisit } from '../../hooks/useVisits'
 import './VisitStatusCardSection.css'
+import '../../pages/styles/CafePage.css'
 
 function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
   const member = useSelector((state) => state.auth.member)

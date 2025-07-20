@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './Navbar.module.css'
+import styles from '../styles/Navbar.module.css'
 import { FaSearch, FaHeart, FaStar, FaUser } from 'react-icons/fa'
 import { useNavigate, useLocation } from 'react-router-dom'
 

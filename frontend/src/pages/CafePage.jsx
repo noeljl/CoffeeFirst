@@ -12,6 +12,8 @@ import CafeOffersSection from '../components/cafe/CafeOffersSection.jsx'
 import MapEmbedSection from '../components/cafe/MapEmbedSection.jsx'
 import ReviewSummaryContainer from '../components/cafe/ReviewSummaryContainer'
 
+import './styles/CafePage.css'
+
 function CafePage() {
   const { cafeSlug } = useParams()
   const { cafe, loading, error } = useCafeBySlug(cafeSlug)
@@ -32,7 +34,7 @@ function CafePage() {
   if (!cafe) return <div style={{ padding: '2rem' }}>Café not found.</div>
 
   return (
-    <>
+    <div className="cafe-container">
       <CafeHeaderSection cafe={cafe} />
       <VisitStatusCardSection
         cafe={cafe}
@@ -49,7 +51,7 @@ function CafePage() {
         refreshTrigger={reviewSubmitted} // Pass trigger to refresh
       />
       <MapEmbedSection coords={cafe.coords} />
-    </>
+    </div>
   )
 }
 

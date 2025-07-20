@@ -2,6 +2,7 @@ import React from 'react'
 import { useLastVisit } from '../../hooks/useVisits'
 import { useSelector } from 'react-redux'
 import './VisitHistorySection.css'
+import '../../pages/styles/CafePage.css'
 
 const VisitHistorySection = ({ coffeeShopId }) => {
   const member = useSelector((state) => state.auth.member)

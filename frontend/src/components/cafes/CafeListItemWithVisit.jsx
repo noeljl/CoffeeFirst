@@ -15,7 +15,7 @@ export default function CafeListItemWithVisit({ cafe, lastVisit, visitStats }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(`/dashboard/partners/${cafe.slug}`)
+    navigate(`/dashboard/discover/${cafe.slug}`)
   }
 
   const formatVisitDate = (visitDate) => {

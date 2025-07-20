@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logoutMemberAction } from '../store/auth/Auth.actions.js'
 import NavBar from '../components/navbar/Navbar'
 import Footer from '../components/footer/Footer'
-import MobileMenu from '../components/navbar/mobileMenu'
+import MobileMenu from '../components/navbar/MobileMenu'
 import { useMediaQuery } from 'react-responsive'
 import { CheckInButton } from '../components/Buttons.jsx'
 
