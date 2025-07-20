@@ -1,7 +1,7 @@
 import express from 'express'
 import createError from 'http-errors'
 import VisitService from '../services/visitService.js'
-import requireAuth from '../middleware/requireAuth.js'
+// import requireAuth from '../middleware/requireAuth.js' // No longer needed
 
 const visitRouter = express.Router()
 const visitService = new VisitService()
@@ -14,7 +14,10 @@ const visitService = new VisitService()
  * @body {object} visitData - Optional additional visit data
  * @access Private
  */
-visitRouter.post('/', requireAuth, async (req, res, next) => {
+visitRouter.post('/', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { memberId, coffeeShopId, ...visitData } = req.body
 
@@ -36,7 +39,10 @@ visitRouter.post('/', requireAuth, async (req, res, next) => {
  * @query {number} limit - Maximum number of visits to return (default: 50)
  * @access Private
  */
-visitRouter.get('/member/:memberId', requireAuth, async (req, res, next) => {
+visitRouter.get('/member/:memberId', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { memberId } = req.params
     const { limit } = req.query
@@ -55,7 +61,10 @@ visitRouter.get('/member/:memberId', requireAuth, async (req, res, next) => {
  * @query {number} limit - Maximum number of visits to return (default: 50)
  * @access Private
  */
-visitRouter.get('/coffeeshop/:coffeeShopId', requireAuth, async (req, res, next) => {
+visitRouter.get('/coffeeshop/:coffeeShopId', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { coffeeShopId } = req.params
     const { limit } = req.query
@@ -74,7 +83,10 @@ visitRouter.get('/coffeeshop/:coffeeShopId', requireAuth, async (req, res, next)
  * @param {string} coffeeShopId - Coffee Shop ID
  * @access Private
  */
-visitRouter.get('/last/:memberId/:coffeeShopId', requireAuth, async (req, res, next) => {
+visitRouter.get('/last/:memberId/:coffeeShopId', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { memberId, coffeeShopId } = req.params
 
@@ -94,7 +106,10 @@ visitRouter.get('/last/:memberId/:coffeeShopId', requireAuth, async (req, res, n
  * @param {string} memberId - Member ID
  * @access Private
  */
-visitRouter.get('/stats/:memberId', requireAuth, async (req, res, next) => {
+visitRouter.get('/stats/:memberId', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { memberId } = req.params
 
@@ -112,7 +127,10 @@ visitRouter.get('/stats/:memberId', requireAuth, async (req, res, next) => {
  * @query {number} days - Number of days to look back (default: 30)
  * @access Private
  */
-visitRouter.get('/recent/:memberId', requireAuth, async (req, res, next) => {
+visitRouter.get('/recent/:memberId', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { memberId } = req.params
     const { days } = req.query
@@ -131,7 +149,10 @@ visitRouter.get('/recent/:memberId', requireAuth, async (req, res, next) => {
  * @param {string} coffeeShopId - Coffee Shop ID
  * @access Private
  */
-visitRouter.get('/history/:memberId/:coffeeShopId', requireAuth, async (req, res, next) => {
+visitRouter.get('/history/:memberId/:coffeeShopId', async (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Nicht eingeloggt' })
+  }
   try {
     const { memberId, coffeeShopId } = req.params
 
