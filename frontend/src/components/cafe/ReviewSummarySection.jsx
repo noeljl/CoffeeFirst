@@ -1,6 +1,5 @@
-import "./ReviewSummarySection.css";
-import Icons from "../../assets/Icons";
-import '../../pages/styles/CafePage.css'
+import styles from "../styles/ReviewSummarySection.module.css";
+import { FaStar, FaCoffee, FaStore, FaTree, FaUsers } from "react-icons/fa";
 // Helper function to convert boolean values to "Yes"/"No" strings
 const formatBooleanValue = (value) => {
   if (typeof value === 'boolean') {
@@ -16,93 +15,105 @@ const formatReviewCount = (count) => {
   return `${count} reviews`;
 };
 
-function ReviewSummarySection({ ratings }) {
+export default function ReviewSummarySection({ ratings }) {
   return (
-    <section className="reviewContainer">
-      <div className="titleContainer">
-        <img src={Icons.ratingStar} className="icon" alt="" />
-        <h2 className="title">{ratings.average} - {formatReviewCount(ratings.total)}</h2>
+    <div className={styles.reviewContainer}>
+      <div className={styles.titleContainer}>
+        <FaStar className={styles.icon} />
+        <h3>{ratings.average} - {formatReviewCount(ratings.total)}</h3>
       </div>
-      <div>
-        <div className="titleContainer">
-          <img src={Icons.cupHot} className="icon" alt="" />
-          <h3>Coffee Quality</h3>
+
+      {/* Coffee Quality */}
+      <div className={styles.ratingsContainer}>
+        <div className={styles.ratingsCategory}>
+          <FaCoffee className={styles.categoryIcon} />
+          <h4>Coffee Quality</h4>
         </div>
-        <div className="ratingsContainer">
-           <div className="ratingItem">
-            <p className="ratingLabel">☕ Taste</p>
-            <p className="ratingValue">{ratings.coffeeQuality.taste}</p>
+        <div className={styles.itemContainer}>
+          <div className={styles.ratingItem}>
+            <h4>Taste</h4>
+            <p>{ratings.coffeeQuality.taste}</p>
           </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">🎨 Presentation</p>
-            <p className="ratingValue">{ratings.coffeeQuality.presentation}</p>
+          <div className={styles.ratingItem}>
+            <h4>Presentation</h4>
+            <p>{ratings.coffeeQuality.presentation}</p>
           </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">🌡️ Temperature</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.coffeeQuality.temperature)}</p>
-          </div>
-        </div>
-        <div className="titleContainer">
-          <img src={Icons.coffeeShop} className="icon" alt="" />
-          <h3>Café Experience</h3>
-        </div>
-        <div className="ratingsContainer">
-          <div className="ratingItem">
-            <p className="ratingLabel">💫 Vibe</p>
-            <p className="ratingValue">{ratings.experience.vibe}</p>
-          </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">✨ Aesthetics</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.experience.aesthetics)}</p>
-          </div>
-           <div className="ratingItem">
-            <p className="ratingLabel">😊 Service Friendliness</p>
-            <p className="ratingValue">{ratings.experience.friendliness}</p>
-          </div>
-           <div className="ratingItem">
-            <p className="ratingLabel">💰 Pricing</p>
-            <p className="ratingValue">{ratings.experience.pricing}</p>
-          </div>
-        </div>
-        <div className="titleContainer">
-          <img src={Icons.tree} className="icon" alt="" />
-          <h3>Sustainability</h3>
-        </div>
-        <div className="ratingsContainer">
-          <div className="ratingItem">
-            <p className="ratingLabel">♻️ Eco-Friendly Packaging</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.sustainability.ecoPackaging)}</p>
-          </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">🌱 Vegan Friendliness</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.sustainability.veganFriendly)}</p>
-          </div>
-        </div>
-         <div className="titleContainer">
-          <img src={Icons.communityGroup} className="icon" alt="" />
-          <h3>Community-Based Tags</h3>
-        </div>
-        <div className="ratingsContainer">
-          <div className="ratingItem">
-            <p className="ratingLabel">📱 Social Media</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.tags.socialMedia)}</p>
-          </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">📚 Great for Studying</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.tags.goodForStudying)}</p>
-          </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">💕 Date Spot</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.tags.dateSpot)}</p>
-          </div>
-          <div className="ratingItem">
-            <p className="ratingLabel">🐕 Pet Friendly</p>
-            <p className="ratingValue">{formatBooleanValue(ratings.tags.petFriendly)}</p>
+          <div className={styles.ratingItem}>
+            <h4>Temperature</h4>
+            <p>{formatBooleanValue(ratings.coffeeQuality.temperature)}</p>
           </div>
         </div>
       </div>
-    </section >
+
+      {/* Café Experience */}
+      <div className={styles.ratingsContainer}>
+        <div className={styles.ratingsCategory}>
+          <FaStore className={styles.categoryIcon} />
+          <h4>Café Experience</h4>
+        </div>
+        <div className={styles.itemContainer}>
+          <div className={styles.ratingItem}>
+            <h4>Vibe</h4>
+            <p>{ratings.experience.vibe}</p>
+          </div>
+          <div className={styles.ratingItem}>
+            <h4>Aesthetics</h4>
+            <p>{formatBooleanValue(ratings.experience.aesthetics)}</p>
+          </div>
+          <div className={styles.ratingItem}>
+            <h4>Service Friendliness</h4>
+            <p>{ratings.experience.friendliness}</p>
+          </div>
+          <div className={styles.ratingItem}>
+            <h4>Pricing</h4>
+            <p>{ratings.experience.pricing}</p>
+          </div>
+        </div>
+      </div>
+
+      {/*Green Impact*/}
+      <div className={styles.ratingsContainer}>
+        <div className={styles.ratingsCategory}>
+          <FaTree className={styles.categoryIcon} />
+          <h4>Green Impact</h4>
+        </div>
+        <div className={styles.itemContainer}>
+          <div className={styles.ratingItem}>
+            <h4>Eco-Friendly Packaging</h4>
+            <p>{formatBooleanValue(ratings.sustainability.ecoPackaging)}</p>
+          </div>
+          <div className={styles.ratingItem}>
+            <h4>Vegan Friendliness</h4>
+            <p>{formatBooleanValue(ratings.sustainability.veganFriendly)}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Community-Based Tags */}
+      <div className={styles.ratingsContainer}>
+        <div className={styles.ratingsCategory}>
+          <FaUsers className={styles.categoryIcon} />
+          <h4>Community-Based Tags</h4>
+        </div>  
+        <div className={styles.itemContainer}>
+        <div className={styles.ratingItem}>
+            <h4>Social Media</h4>
+            <p>{formatBooleanValue(ratings.tags.socialMedia)}</p>
+          </div>
+          <div className={styles.ratingItem}>
+            <h4>Great for Studying</h4>
+            <p>{formatBooleanValue(ratings.tags.goodForStudying)}</p>
+          </div>  
+          <div className={styles.ratingItem}>
+            <h4>Date Spot</h4>
+            <p>{formatBooleanValue(ratings.tags.dateSpot)}</p>
+          </div>
+          <div className={styles.ratingItem}>
+            <h4>Pet Friendly</h4>
+            <p>{formatBooleanValue(ratings.tags.petFriendly)}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default ReviewSummarySection;

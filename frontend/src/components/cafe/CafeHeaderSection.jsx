@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Snackbar from '../snackbar/Snackbar'
 import { FaHeart,FaRegHeart, FaStar, FaRegStar, FaDirections } from 'react-icons/fa'
-import styles from './CafeHeader.module.css'
+import styles from '../styles/CafeHeader.module.css'
 
 import { useSelector } from 'react-redux'
 import useGetWishlist from '../../hooks/useGetWishlist'

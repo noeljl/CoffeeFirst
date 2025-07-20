@@ -1,16 +1,15 @@
-import "./SustainabilitySection.css";
+import styles from "../styles/CafeDetails.module.css";
 import Icons from '../../assets/Icons';
-import '../../pages/styles/CafePage.css'
 
 function CoffeeVariantsSection({list}) {
- return <section className='sustainabilitySection'>
-    <h2 className='sectionName'>Coffee variants (in membership included)</h2>
-    <div className="sustainabilityAspects">
-      <div className="aspectGrid">
+ return <section className={styles.detailsSection}>
+    <h3>Coffee You Can Order</h3>
+    <div className={styles.aspectsContainer}>
+      <div className={styles.aspectGrid}>
         {list.map((aspect, index) => (
-          <div className="sustainabilityAspect" key={index}>
+          <div className={styles.aspect} key={index}>
             <img src={Icons.coffeeBean} />
-            <div className="aspectDetails">{aspect}</div>
+            <div className={styles.aspectDetails}>{aspect}</div>
           </div>
         ))}
       </div>

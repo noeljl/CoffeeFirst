@@ -1,22 +1,24 @@
-import Icons from '../../assets/Icons';
-import "./SustainabilitySection.css";
-import '../../pages/styles/CafePage.css'
+import styles from "../styles/CafeDetails.module.css";
+import { FaTree } from "react-icons/fa";
+import Icons from "../../assets/Icons";
 
-function SustainabilitySection({ list }) {
-  return <section className='sustainabilitySection'>
-    <h2 className='sectionName'>Sustainability commitment</h2>
-    <div className="sustainabilityAspects">
-      <div className="aspectGrid">
-        {list.map((aspect, index) => (
-          <div className="sustainabilityAspect" key={index}>
-            <img src={Icons.tree} />
-            <div className="aspectDetails">{aspect}</div>
-          </div>
-        ))}
+export default function SustainabilitySection({ list }) {
+  return (
+    <section className={styles.detailsSection}>
+      <div className={styles.titleContainer}>
+        <h3>Green Impact</h3>
+        <img className={styles.fairtradeLogo} src={Icons.fairtradeLogo} alt="Fairtrade logo" />
       </div>
-      <img id="fairtradeLogo" src={Icons.fairtradeLogo} alt="Fairtrade logo" />
-    </div>
-  </section>;
+      <div className={styles.aspectsContainer}>
+        <div className={styles.aspectGrid}>
+          {list.map((aspect, index) => (
+            <div className={styles.aspect} key={index}>
+              <FaTree size={25} />
+              <div className={styles.aspectDetails}>{aspect}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
 }
-
-export default SustainabilitySection;

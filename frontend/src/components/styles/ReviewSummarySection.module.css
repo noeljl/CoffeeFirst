@@ -1,0 +1,153 @@
+/* ReviewSummarySection.css - Modern, responsive, clean look */
+
+.reviewContainer {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #D4D4D4;
+  gap: 40px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 50px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 0; 
+  margin: 0;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  color: #222;
+}
+
+.titleContainer h3 {
+  font-size: clamp(1.5rem, 2vw, 1.4rem);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.ratingsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  gap: 20px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.ratingsCategory {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.categoryIcon {
+  width: 25px;
+  height: 25px;
+  color: #222;
+}
+
+.ratingsCategory h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+.itemContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 5rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.ratingItem {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+}
+
+.ratingItem h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.ratingItem p {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+.ratingLabel {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 2px;
+  color: #222;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.ratingValue {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #444;
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 900px) {
+  .reviewContainer {
+    gap: 24px;
+  }
+  .ratingsContainer {
+    gap: 10px 0px;
+  }
+  .itemContainer {
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .titleContainer h3 {
+    font-size: 1.5rem;
+  }
+  .icon {
+    width: 22px;
+    height: 22px;
+  }
+  .ratingItem h4 {
+    font-size: 1rem;
+  }
+  .ratingItem p { 
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .reviewContainer {
+    gap: 30px;
+  }
+}

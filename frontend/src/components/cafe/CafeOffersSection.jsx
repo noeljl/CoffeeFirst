@@ -1,17 +1,15 @@
 import { AMENITY_ICONS } from './amenityIcons';
-import "./SustainabilitySection.css";
-import '../../pages/styles/CafePage.css'
+import styles from "../styles/CafeDetails.module.css";
 
 function CafeOffersSection({ list }) {
-  return <section className='sustainabilitySection'>
-    <h2 className='sectionName'>What this café offers</h2>
-    <div className="sustainabilityAspects">
-      <div className="aspectGrid">
+  return <section className={styles.detailsSection}>
+    <h3>Features & Extras</h3>
+    <div className={styles.aspectsContainer}>
+      <div className={styles.aspectGrid}>
         {list.map((aspect, index) => (
-          <div className="sustainabilityAspect" key={index}>
-            
-            <img id="icon"src={AMENITY_ICONS[aspect]} alt={aspect} />
-            <div className="aspectDetails">{aspect.replace(/_/g, ' ')}</div>
+          <div className={styles.aspect} key={index}>
+            <img src={AMENITY_ICONS[aspect]} alt={aspect} />
+            <div className={styles.aspectDetails}>{aspect.replace(/_/g, ' ')}</div>
           </div>
         ))}
       </div>
