@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import Icons from '../../assets/Icons'
+import Icons from '../../assets/Icons.js'
 import Button from '../Buttons.jsx'
-import Review from '../review/Review' // 1) Import the Review modal
-import { useLastVisit } from '../../hooks/useVisits'
-import './VisitStatusCardSection.css'
-import '../../pages/styles/CafePage.css'
+import Review from '../review/Review.jsx' // 1) Import the Review modal
+import { useLastVisit } from '../../hooks/useVisits.js'
+import styles from'./VisitStatusCard.module.css'
 
 function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
   const member = useSelector((state) => state.auth.member)
@@ -38,14 +37,14 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
 
   if (loading) {
     return (
-      <section className="statusContainer">
-        <div className="visitInfo">
+      <section className={styles.statusContainer}>
+        <div className={styles.visitInfo}>
           <img
             src={Icons.coffeeShopColor}
             alt="Cafe Icon"
-            className="cafeIcon"
-          />
-          <div className="textContainer">
+            className={styles.cafeIcon}
+          />  
+          <div className={styles.textContainer}>
             <h2 id="visitTitle">Letzter Besuch</h2>
             <p id="visitDate">Laden...</p>
           </div>
@@ -56,14 +55,14 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
 
   if (error) {
     return (
-      <section className="statusContainer">
-        <div className="visitInfo">
+      <section className={styles.statusContainer}>
+        <div className={styles.visitInfo}>
           <img
             src={Icons.coffeeShopColor}
             alt="Cafe Icon"
-            className="cafeIcon"
+            className={styles.cafeIcon}
           />
-          <div className="textContainer">
+          <div className={styles.textContainer}>
             <h2 id="visitTitle">Letzter Besuch</h2>
             <p id="visitDate">Fehler beim Laden</p>
           </div>
@@ -74,14 +73,14 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
 
   if (!lastVisit) {
     return (
-      <section className="statusContainer">
-        <div className="visitInfo">
+      <section className={styles.statusContainer}>
+        <div className={styles.visitInfo}>
           <img
             src={Icons.coffeeShopColor}
             alt="Cafe Icon"
-            className="cafeIcon"
+            className={styles.cafeIcon}
           />
-          <div className="textContainer">
+          <div className={styles.textContainer}>
             <h2 id="visitTitle">Letzter Besuch</h2>
             <p id="visitDate">Noch kein Besuch</p>
           </div>
@@ -91,10 +90,10 @@ function VisitStatusCardSection({ cafe, onReviewSubmitted }) {
   }
 
   return (
-    <section className="statusContainer">
-      <div className="visitInfo">
-        <img src={Icons.coffeeShopColor} alt="Cafe Icon" className="cafeIcon" />
-        <div className="textContainer">
+    <section className={styles.statusContainer}>
+      <div className={styles.visitInfo}>
+        <img src={Icons.coffeeShopColor} alt="Cafe Icon" className={styles.cafeIcon} />
+        <div className={styles.textContainer}>
           <h2 id="visitTitle">Letzter Besuch</h2>
           <p id="visitDate">{formatDate(lastVisit.visitDate)}</p>
         </div>

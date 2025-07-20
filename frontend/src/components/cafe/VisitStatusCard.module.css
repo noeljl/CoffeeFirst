@@ -11,9 +11,18 @@
     margin-top: 20px;
 }
 
-.statusContainer .visitInfo {
+.leftContainer {
     display: flex;
+    flex-direction: row;
     gap: 20px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.rightContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
     padding: 0px;
     margin: 0px;
 }
@@ -26,22 +35,13 @@
     margin: 0px;
 }
 
-.cafeIcon {
-    width: 50px;
-    height: 50px;
-    margin: 0;
-    padding: 0;
-}
-
-#visitTitle {
-    font-size: 22px;
+.textContainer h3 {
     font-weight: bold;
     margin: 0;
     padding: 0;
 }
 
-#visitDate {
-    font-size: 16px;
+.textContainer p {
     margin: 0;
     padding: 0;
 }

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useCafeBySlug } from '../hooks/useCafeBySlug.js'
 
 import CafeHeaderSection from '../components/cafe/CafeHeaderSection.jsx'
-import VisitStatusCardSection from '../components/cafe/VisitStatusCardSection.jsx'
+import VisitStatusCard from '../components/cafe/VisitStatusCard.jsx'
 
 import AboutSection from '../components/cafe/AboutSection.jsx'
 import SustainabilitySection from '../components/cafe/SustainabilitySection.jsx'
@@ -36,7 +36,7 @@ function CafePage() {
   return (
     <div className="cafe-container">
       <CafeHeaderSection cafe={cafe} />
-      <VisitStatusCardSection
+      <VisitStatusCard
         cafe={cafe}
         onReviewSubmitted={handleReviewSubmitted} // Pass callback
       />
