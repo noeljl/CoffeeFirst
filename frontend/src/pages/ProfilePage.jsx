@@ -37,6 +37,11 @@ export default function ProfilePage() {
           <Button bg="white" fs="medium" radius="full" padding="medium" width="full" onClick={() => navigate('/account-settings/personal')}>
             Account Settings
           </Button>
+          {isMobile && (
+            <Button bg="white" fs="medium" radius="full" padding="medium" width="full" onClick={() => navigate('/account-settings/membership')}>
+              Membership
+            </Button>
+          )}
           <Button bg="black" fs="medium" radius="full" padding="medium" width="full" onClick={handleLogout}>
             Logout
           </Button>
